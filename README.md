@@ -76,7 +76,7 @@ hero height, and the mobile menu.
 | | Requests | Size |
 | --- | --- | --- |
 | Modular source | 27 | — |
-| `dist/index.html` | **0** | 407KB (132KB of it fonts) |
+| `dist/index.html` | **0** | 475KB (132KB of it fonts) |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:
@@ -125,6 +125,10 @@ Each stage's doc ends with its own open items. Across the project:
 - **Arabic copy.** Untranslated blocks carry `data-i18n-pending`, which
   typesets them as LTR islands so their punctuation and numerals render
   correctly. Remove the attribute from an element as its translation lands.
-- **Remaining service data** — Stages 05+ need the packages for Websites,
-  E-Commerce, Social Media, Digital Marketing and Integrated Solutions.
+  Where a string ships in both languages, it uses `data-lang-copy` instead and
+  needs nothing further.
+- **Remaining service data** — Digital Marketing and Integrated Solutions have
+  no packages yet, so their Services rows point at `#pricing`. Websites and
+  E-Commerce have prices but no per-package inclusions; their tiers render in
+  the `--brief` variant until those arrive.
 - `apple-touch-icon.png`, `og-image.png`, and the page's OG/canonical values.
