@@ -236,6 +236,28 @@
     unicode-bidi: isolate;
   }
 
+  /* BILINGUAL CONTENT
+     Where the source document supplies a string in both languages, both ship
+     in the markup and CSS shows the one matching the document language. No
+     script is involved, so the correct language renders before hydration and
+     with JavaScript disabled.
+
+     Distinct from [data-i18n-pending], which marks copy that has NO
+     translation yet. A string with both variants needs neither the pending
+     attribute nor its LTR-island treatment.
+
+     `lang` on the element itself is what tells a screen reader which voice to
+     use; the data attribute is the styling hook, kept separate so the two
+     concerns cannot collide (and so it never clashes with the language
+     toggle's own data-lang). */
+  html:not([lang|="ar"]) [data-lang-copy="ar"] {
+    display: none;
+  }
+
+  html[lang|="ar"] [data-lang-copy="en"] {
+    display: none;
+  }
+
   /* INTERIM: copy that has not been translated yet.
      English text left inside an RTL paragraph has its direction-neutral
      characters reordered: a trailing full stop jumps to the start of the line

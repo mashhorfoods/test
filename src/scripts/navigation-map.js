@@ -74,6 +74,7 @@ export const STRINGS = {
     // authored in the markup, never here.
     currency: 'SAR',
     billingOnce: 'One-time',
+    billingMonthly: 'Monthly',
   },
   ar: {
     brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
@@ -87,6 +88,7 @@ export const STRINGS = {
     footerNav: 'روابط سريعة',
     currency: 'ر.س',
     billingOnce: 'لمرة واحدة',
+    billingMonthly: 'شهريًا',
   },
 };
 

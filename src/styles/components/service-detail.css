@@ -724,7 +724,7 @@
 }
 
 /* =============================================================================
-   COMPONENT — COMMERCE SYSTEM  (Stage 06)
+   COMPONENT — MODULE GRID  (Stage 06)
    The connected pieces of an online store as an asymmetric module grid: the
    storefront leads, with cart, payment, shipping and categories arranged
    around it and joined by an accent rail.
@@ -739,7 +739,7 @@
    ============================================================================= */
 
 @layer components {
-  .c-commerce {
+  .c-modules {
     display: grid;
     gap: var(--space-16);
     margin-block-end: var(--section-space-tight);
@@ -749,7 +749,7 @@
   }
 
   @media (min-width: 64em) {
-    .c-commerce {
+    .c-modules {
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: var(--space-24);
     }
@@ -757,18 +757,18 @@
 
   /* The storefront is the anchor: full width on mobile, half the field on
      desktop, so the composition is asymmetric rather than four equal boxes. */
-  .c-commerce__item--lead {
+  .c-modules__item--lead {
     grid-column: 1 / -1;
   }
 
   @media (min-width: 64em) {
-    .c-commerce__item--lead {
+    .c-modules__item--lead {
       grid-column: 1 / span 2;
       grid-row: 1 / span 2;
     }
   }
 
-  .c-commerce__module {
+  .c-modules__module {
     position: relative;
     block-size: 100%;
     display: flex;
@@ -784,25 +784,25 @@
   }
 
   @media (min-width: 48em) {
-    .c-commerce__module {
+    .c-modules__module {
       padding: var(--space-24);
     }
   }
 
   /* Emphasis only. The label and its fragment are always readable, so nothing
      is conveyed by hover alone. */
-  .c-commerce__module:hover {
+  .c-modules__module:hover {
     border-color: var(--color-border-accent);
     background-color: var(--color-bg-sunken);
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .c-commerce__module:hover {
+    .c-modules__module:hover {
       transform: translateY(-3px);
     }
   }
 
-  .c-commerce__label {
+  .c-modules__label {
     display: flex;
     align-items: center;
     gap: var(--space-8);
@@ -814,13 +814,13 @@
     color: var(--color-text-secondary);
   }
 
-  [dir="rtl"] .c-commerce__label {
+  [dir="rtl"] .c-modules__label {
     text-transform: none;
     letter-spacing: var(--tracking-normal);
     font-size: var(--text-body-sm);
   }
 
-  .c-commerce__step {
+  .c-modules__step {
     font-family: var(--font-display);
     font-size: var(--text-label);
     font-weight: var(--weight-semibold);
@@ -831,7 +831,7 @@
     flex-shrink: 0;
   }
 
-  .c-commerce__figure {
+  .c-modules__figure {
     display: grid;
     place-items: center;
     flex: 1;
@@ -839,7 +839,7 @@
     margin: 0;
   }
 
-  .c-commerce__figure svg {
+  .c-modules__figure svg {
     inline-size: 100%;
     block-size: auto;
     max-block-size: 100%;

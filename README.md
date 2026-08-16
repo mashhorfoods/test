@@ -13,6 +13,7 @@ docs/03-services.md         Services overview, documented
 docs/04-branding.md         Branding & Design, documented
 docs/05-websites.md         Websites, documented
 docs/06-ecommerce.md        E-Commerce, documented
+docs/07-social.md           Social Media Management, documented
 index.html                  Homepage shell — header + placeholder sections
 scaffold.css                Temporary placeholder-section styles (not shipped)
 styleguide.html             Living specimen sheet for every token and component
@@ -50,7 +51,8 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 04 | Branding & Design | Done |
 | 05 | Websites | Done |
 | 06 | E-Commerce | Done |
-| 07+ | Social, Marketing, Integrated, Pricing, Why Us, Process, Contact, Footer | Placeholders |
+| 07 | Social Media Management | Done |
+| 08+ | Marketing, Integrated, Pricing, Why Us, Process, Contact, Footer | Placeholders |
 
 ## Single-file build
 
