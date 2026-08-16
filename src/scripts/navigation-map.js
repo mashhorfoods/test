@@ -78,6 +78,8 @@ export const STRINGS = {
     // Category-level billing summaries for the pricing tabs (Stage 10).
     billingAllOnce: 'One-time projects',
     billingAllMonthly: 'Billed monthly',
+    // Add-ons are quoted as starting prices, never as a final figure.
+    priceFrom: 'From',
   },
   ar: {
     brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
@@ -94,6 +96,7 @@ export const STRINGS = {
     billingMonthly: 'شهريًا',
     billingAllOnce: 'مشاريع لمرة واحدة',
     billingAllMonthly: 'تُحتسب شهريًا',
+    priceFrom: 'يبدأ من',
   },
 };
 

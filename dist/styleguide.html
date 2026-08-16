@@ -4795,6 +4795,205 @@
 }
 
 
+/* ---- src/styles/components/addons.css ---- */
+/* =============================================================================
+   ADD-ONS — STAGE 11
+   A modular tray of optional services, grouped for scanning.
+
+   NOT .c-tier. A tier card is a package you buy; an add-on is a module you
+   attach to one. Giving them the same card would say they are the same kind
+   of thing, and would put twelve more full-weight cards on a page that
+   already carries fourteen. These are smaller, denser units — a component
+   tray rather than another price list (rule 34).
+
+   NOT INTERACTIVE. There is no cart and no selection system (rule 27), so
+   the modules are list items with hover emphasis only. Making each one a
+   button would add twelve focus stops that do nothing and twelve CTAs
+   competing with the section's one (rule 26).
+   ============================================================================= */
+
+@layer components {
+  .c-addons {
+    margin-block-start: var(--space-48);
+  }
+
+  .c-addons__group + .c-addons__group {
+    margin-block-start: var(--space-64);
+  }
+
+  /* Category label. A real h3 at label scale: the grouping is a genuine
+     document structure, and a screen reader should hear "Design, list of 3
+     items" rather than twelve undifferentiated rows. */
+  .c-addons__category {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-16);
+    margin-block-end: var(--space-24);
+    padding-block-end: var(--space-12);
+    border-block-end: var(--border-hairline);
+    color: var(--color-text-secondary);
+  }
+
+  .c-addons__count {
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    margin-inline-start: auto;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .c-addons__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48em) {
+    .c-addons__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--grid-gutter);
+    }
+  }
+
+  @media (min-width: 64em) {
+    .c-addons__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* --- The module ------------------------------------------------------- */
+  .c-addon {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: var(--space-4) var(--space-16);
+    padding: var(--space-24);
+    background-color: var(--color-bg);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-addon:hover {
+    border-color: var(--color-border-accent);
+    background-color: var(--color-surface);
+  }
+
+  .c-addon__index {
+    grid-row: 1 / span 2;
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    font-weight: var(--weight-semibold);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    /* Western numerals in both languages: keep the pair LTR so an RTL line
+       box cannot split "01" or push it to the wrong end. */
+    direction: ltr;
+    unicode-bidi: isolate;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-addon:hover .c-addon__index {
+    color: var(--color-accent);
+  }
+
+  .c-addon__name {
+    font-family: var(--font-display);
+    font-size: var(--text-body);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    /* Names mix Arabic and Latin ("Landing Page إضافية"). Isolating each name
+       keeps the run from reordering against its neighbours in the grid. */
+    unicode-bidi: isolate;
+    overflow-wrap: break-word;
+    min-inline-size: 0;
+  }
+
+  /* --- Price ------------------------------------------------------------
+     THREE STATES, and they must not be confusable (rule 12):
+       starting price   From 10 SAR   — figure, always prefixed
+       by quantity      By quantity   — words, no figure
+       by project       By project    — words, no figure
+     The two variable states are words rather than figures, which is a
+     structural difference, not a colour one: nothing that lacks a numeral
+     can be misread as a fixed price. */
+  .c-addon__price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-8);
+    margin-block-start: var(--space-8);
+  }
+
+  .c-addon__from {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .c-addon__figure {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    font-size: var(--text-price-sm);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-primary);
+    /* Isolated, NOT pinned to ltr: Arabic writes the figure first too, and
+       forcing the direction reversed it into "ر.س 10" (see docs/05). */
+    unicode-bidi: isolate;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-addon:hover .c-addon__figure {
+    color: var(--color-accent);
+  }
+
+  .c-addon__currency {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-secondary);
+  }
+
+  /* A quoted service. Set as text at body size rather than as a figure, so
+     the difference from a price is legible before the words are read. */
+  .c-addon--custom .c-addon__quote {
+    display: inline-block;
+    /* Without this the chip is a stretched grid item and fills the column,
+       which reads as an input field rather than as a pricing state. */
+    justify-self: start;
+    margin-block-start: var(--space-8);
+    padding: var(--space-4) var(--space-12);
+    border: var(--border-hairline);
+    border-radius: var(--radius-xs);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+  }
+
+  .c-addon--custom:hover .c-addon__quote {
+    border-color: var(--color-border-accent);
+    color: var(--color-text-primary);
+  }
+
+  /* No reduced-motion block here on purpose: 02-tokens.css collapses
+     --duration-fast at the token level, so every transition in the product
+     is already instant. Restating it per component gives two mechanisms that
+     can disagree, and the first version of this file did exactly that. */
+}
+
+
 /* ---- src/styles/components/ecosystem.css ---- */
 /* =============================================================================
    ECOSYSTEM — STAGE 09, INTEGRATED SOLUTIONS
@@ -6259,6 +6458,8 @@ const STRINGS = {
     // Category-level billing summaries for the pricing tabs (Stage 10).
     billingAllOnce: 'One-time projects',
     billingAllMonthly: 'Billed monthly',
+    // Add-ons are quoted as starting prices, never as a final figure.
+    priceFrom: 'From',
   },
   ar: {
     brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
@@ -6275,6 +6476,7 @@ const STRINGS = {
     billingMonthly: 'شهريًا',
     billingAllOnce: 'مشاريع لمرة واحدة',
     billingAllMonthly: 'تُحتسب شهريًا',
+    priceFrom: 'يبدأ من',
   },
 };
 
