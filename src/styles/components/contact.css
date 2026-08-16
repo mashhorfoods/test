@@ -1,0 +1,223 @@
+/* =============================================================================
+   CONTACT — STAGE 17
+   The channels, the external profiles, and a form that actually sends.
+
+   THE CHANNELS ARE THE HERO (rule 06). They are set at heading scale as full
+   rows, not as small print beside a form — a visitor who wants to phone should
+   not have to hunt past three inputs to find the number. On mobile they come
+   first in the DOM for the same reason: tapping a number beats typing a
+   message on a phone.
+
+   NO FAKE ANYTHING (rule 03). The form's action is a real `mailto:` to the
+   approved address, so it works with no backend and with no JavaScript. The
+   script only upgrades it to a properly encoded mailto with subject and body.
+   There is no invented endpoint and no fabricated success state — the status
+   line says what actually happened, which is that the mail app was opened.
+   ============================================================================= */
+
+@layer components {
+  .c-contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--section-space-tight);
+    margin-block-start: var(--space-48);
+  }
+
+  @media (min-width: 64em) {
+    .c-contact {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: var(--grid-gutter);
+      align-items: start;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     CHANNELS
+     ----------------------------------------------------------------------- */
+  .c-contact__heading {
+    margin-block-end: var(--space-16);
+    color: var(--color-text-muted);
+  }
+
+  .c-channels {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-channel {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-4) var(--space-16);
+    padding-block: var(--space-24);
+    border-block-end: var(--border-hairline);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-channel:hover,
+  .c-channel:focus-visible {
+    background-color: var(--color-surface);
+  }
+
+  .c-channel__label {
+    grid-column: 1;
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  [dir="rtl"] .c-channel__label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  .c-channel:hover .c-channel__label,
+  .c-channel:focus-visible .c-channel__label {
+    color: var(--color-accent);
+  }
+
+  .c-channel__value {
+    grid-column: 1;
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    /* A phone number is ONE left-to-right run whose leading "+" is a
+       direction-neutral character — without the pin it jumps to the other end
+       of the line in Arabic. This is the opposite case to a price, where
+       pinning broke it (see docs/05): a price is a figure followed by a
+       currency word, which Arabic orders the same way. */
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: start;
+    overflow-wrap: anywhere;
+  }
+
+  .c-channel__go {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    inline-size: var(--icon-md);
+    block-size: var(--icon-md);
+    flex-shrink: 0;
+    color: var(--color-accent);
+    fill: none;
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-standard),
+      translate var(--duration-base) var(--ease-out);
+  }
+
+  .c-channel:hover .c-channel__go,
+  .c-channel:focus-visible .c-channel__go {
+    opacity: 1;
+    translate: var(--space-4) 0;
+  }
+
+  [dir="rtl"] .c-channel:hover .c-channel__go,
+  [dir="rtl"] .c-channel:focus-visible .c-channel__go {
+    translate: calc(-1 * var(--space-4)) 0;
+  }
+
+  /* Coarse pointers never hover, so the affordance is permanent there. */
+  @media (hover: none) {
+    .c-channel__go {
+      opacity: 1;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     EXTERNAL PROFILES
+     ----------------------------------------------------------------------- */
+  .c-elsewhere {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+    margin: var(--space-32) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-elsewhere__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    min-block-size: 44px;
+    padding-inline: var(--space-16);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-display);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-elsewhere__link:hover,
+  .c-elsewhere__link:focus-visible {
+    color: var(--color-accent);
+    border-color: var(--color-border-accent);
+    background-color: var(--color-surface);
+  }
+
+  /* The outbound mark is a diagonal arrow: it means "leaves this site", not
+     "forward", so it does NOT mirror under RTL. */
+  .c-elsewhere__mark {
+    inline-size: var(--icon-sm);
+    block-size: var(--icon-sm);
+    fill: none;
+    opacity: 0.7;
+  }
+
+  /* -----------------------------------------------------------------------
+     FORM
+     ----------------------------------------------------------------------- */
+  .c-contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    padding: var(--space-24);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+  }
+
+  @media (min-width: 48em) {
+    .c-contact__form {
+      padding: var(--space-32);
+    }
+  }
+
+  .c-contact__form .c-btn {
+    inline-size: 100%;
+    justify-content: center;
+  }
+
+  .c-contact__note {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  /* The status line is a live region. It is empty until something actually
+     happens, and it never claims a message was delivered — only that the mail
+     app was handed the message. */
+  .c-contact__status {
+    font-size: var(--text-body-sm);
+    color: var(--color-accent);
+  }
+
+  .c-contact__status:empty {
+    display: none;
+  }
+}

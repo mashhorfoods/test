@@ -5631,6 +5631,232 @@
 }
 
 
+/* ---- src/styles/components/contact.css ---- */
+/* =============================================================================
+   CONTACT — STAGE 17
+   The channels, the external profiles, and a form that actually sends.
+
+   THE CHANNELS ARE THE HERO (rule 06). They are set at heading scale as full
+   rows, not as small print beside a form — a visitor who wants to phone should
+   not have to hunt past three inputs to find the number. On mobile they come
+   first in the DOM for the same reason: tapping a number beats typing a
+   message on a phone.
+
+   NO FAKE ANYTHING (rule 03). The form's action is a real `mailto:` to the
+   approved address, so it works with no backend and with no JavaScript. The
+   script only upgrades it to a properly encoded mailto with subject and body.
+   There is no invented endpoint and no fabricated success state — the status
+   line says what actually happened, which is that the mail app was opened.
+   ============================================================================= */
+
+@layer components {
+  .c-contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--section-space-tight);
+    margin-block-start: var(--space-48);
+  }
+
+  @media (min-width: 64em) {
+    .c-contact {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: var(--grid-gutter);
+      align-items: start;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     CHANNELS
+     ----------------------------------------------------------------------- */
+  .c-contact__heading {
+    margin-block-end: var(--space-16);
+    color: var(--color-text-muted);
+  }
+
+  .c-channels {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-channel {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-4) var(--space-16);
+    padding-block: var(--space-24);
+    border-block-end: var(--border-hairline);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-channel:hover,
+  .c-channel:focus-visible {
+    background-color: var(--color-surface);
+  }
+
+  .c-channel__label {
+    grid-column: 1;
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  [dir="rtl"] .c-channel__label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  .c-channel:hover .c-channel__label,
+  .c-channel:focus-visible .c-channel__label {
+    color: var(--color-accent);
+  }
+
+  .c-channel__value {
+    grid-column: 1;
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    /* A phone number is ONE left-to-right run whose leading "+" is a
+       direction-neutral character — without the pin it jumps to the other end
+       of the line in Arabic. This is the opposite case to a price, where
+       pinning broke it (see docs/05): a price is a figure followed by a
+       currency word, which Arabic orders the same way. */
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: start;
+    overflow-wrap: anywhere;
+  }
+
+  .c-channel__go {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    inline-size: var(--icon-md);
+    block-size: var(--icon-md);
+    flex-shrink: 0;
+    color: var(--color-accent);
+    fill: none;
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-standard),
+      translate var(--duration-base) var(--ease-out);
+  }
+
+  .c-channel:hover .c-channel__go,
+  .c-channel:focus-visible .c-channel__go {
+    opacity: 1;
+    translate: var(--space-4) 0;
+  }
+
+  [dir="rtl"] .c-channel:hover .c-channel__go,
+  [dir="rtl"] .c-channel:focus-visible .c-channel__go {
+    translate: calc(-1 * var(--space-4)) 0;
+  }
+
+  /* Coarse pointers never hover, so the affordance is permanent there. */
+  @media (hover: none) {
+    .c-channel__go {
+      opacity: 1;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     EXTERNAL PROFILES
+     ----------------------------------------------------------------------- */
+  .c-elsewhere {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+    margin: var(--space-32) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-elsewhere__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    min-block-size: 44px;
+    padding-inline: var(--space-16);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-display);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-elsewhere__link:hover,
+  .c-elsewhere__link:focus-visible {
+    color: var(--color-accent);
+    border-color: var(--color-border-accent);
+    background-color: var(--color-surface);
+  }
+
+  /* The outbound mark is a diagonal arrow: it means "leaves this site", not
+     "forward", so it does NOT mirror under RTL. */
+  .c-elsewhere__mark {
+    inline-size: var(--icon-sm);
+    block-size: var(--icon-sm);
+    fill: none;
+    opacity: 0.7;
+  }
+
+  /* -----------------------------------------------------------------------
+     FORM
+     ----------------------------------------------------------------------- */
+  .c-contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    padding: var(--space-24);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+  }
+
+  @media (min-width: 48em) {
+    .c-contact__form {
+      padding: var(--space-32);
+    }
+  }
+
+  .c-contact__form .c-btn {
+    inline-size: 100%;
+    justify-content: center;
+  }
+
+  .c-contact__note {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  /* The status line is a live region. It is empty until something actually
+     happens, and it never claims a message was delivered — only that the mail
+     app was handed the message. */
+  .c-contact__status {
+    font-size: var(--text-body-sm);
+    color: var(--color-accent);
+  }
+
+  .c-contact__status:empty {
+    display: none;
+  }
+}
+
+
 /* ---- src/styles/components/footer.css ---- */
 /* =============================================================================
    FOOTER — STAGE 15
@@ -5644,10 +5870,12 @@
    as the primary button in the fourth column instead — prominent within the
    footer, subordinate to the section above it.
 
-   NOTHING INVENTED. There is no approved email, phone, WhatsApp, social
-   profile or legal page anywhere in the source, so none appears. The layout
-   holds a fourth column and a bottom row that take those the moment they
-   exist, without moving anything else.
+   NOTHING INVENTED. Stage 15 shipped with no email, phone, WhatsApp, social
+   profile or legal page, because none existed in the source, and it parked a
+   bottom row to take them "the moment they exist". Stage 17 supplied the three
+   profiles, so that row is now filled — from the same SOCIAL_LINKS array the
+   drawer renders, so the two can never disagree. There is still no legal page,
+   so none appears.
    ============================================================================= */
 
 @layer components {
@@ -5810,6 +6038,35 @@
   .c-footer__copyright {
     font-size: var(--text-small);
     color: var(--color-text-muted);
+  }
+
+  /* --- Social ------------------------------------------------------------
+     The only off-site destinations in the footer. They rest secondary like
+     every other footer link and move toward the accent on hover — the footer
+     is closure, not a second call to action. */
+  .c-footer__social {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-8) var(--space-24);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-footer__social a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 44px;
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-footer__social a:hover,
+  .c-footer__social a:focus-visible {
+    color: var(--color-accent);
   }
 
   .c-footer__year {
@@ -7262,7 +7519,47 @@ const PRIMARY_CTA = {
  *
  * @type {{label: string, href: string}[]}
  */
-const SOCIAL_LINKS = [];
+const SOCIAL_LINKS = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhalabsalah/' },
+  { label: 'Behance', href: 'https://www.behance.net/MuhalabSalah' },
+  { label: 'Website', href: 'https://muhalabsalah.github.io/muhalabsalah/' },
+];
+
+/**
+ * The approved contact channels (Stage 17 §02), verbatim.
+ *
+ * `display` is what the visitor sees and must never be reformatted — the
+ * numbers are business data. `href` is the action. Everything that shows a
+ * channel reads from here, so the visible number and the dialled number
+ * cannot drift apart.
+ *
+ * @type {{key: string, label: string, labelAr: string, display: string,
+ *         href: string, external?: boolean}[]}
+ */
+const CONTACT_CHANNELS = [
+  {
+    key: 'whatsapp',
+    label: 'WhatsApp',
+    labelAr: 'واتساب',
+    display: '+249 962672192',
+    href: 'https://wa.me/249962672192',
+    external: true,
+  },
+  {
+    key: 'phone',
+    label: 'Phone',
+    labelAr: 'الهاتف',
+    display: '+249 119005441',
+    href: 'tel:+249119005441',
+  },
+  {
+    key: 'email',
+    label: 'Email',
+    labelAr: 'البريد الإلكتروني',
+    display: 'muhalabsalah@gmail.com',
+    href: 'mailto:muhalabsalah@gmail.com',
+  },
+];
 
 /**
  * The six service categories, in the order the Services section lists them.
@@ -7300,6 +7597,8 @@ const STRINGS = {
     footerNav: 'Quick links',
     footerServices: 'Services',
     footerStart: 'Start',
+    footerElsewhere: 'Elsewhere',
+    opensNewTab: '(opens in a new tab)',
     backToTop: 'Back to top',
     rights: 'All rights reserved.',
     // Currency SYMBOL only — the price figure itself is business data and is
@@ -7312,6 +7611,13 @@ const STRINGS = {
     billingAllMonthly: 'Billed monthly',
     // Add-ons are quoted as starting prices, never as a final figure.
     priceFrom: 'From',
+    contactChannels: 'Direct channels',
+    contactElsewhere: 'Elsewhere',
+    formName: 'Your name',
+    formEmail: 'Your email',
+    formMessage: 'What are you looking to build?',
+    formSend: 'Send message',
+    formNote: 'Opens your email app with the message ready to send.',
   },
   ar: {
     brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
@@ -7325,6 +7631,8 @@ const STRINGS = {
     footerNav: 'روابط سريعة',
     footerServices: 'خدماتنا',
     footerStart: 'ابدأ',
+    footerElsewhere: 'مواقع أخرى',
+    opensNewTab: '(يفتح في نافذة جديدة)',
     backToTop: 'العودة إلى الأعلى',
     rights: 'جميع الحقوق محفوظة.',
     currency: 'ر.س',
@@ -7333,6 +7641,13 @@ const STRINGS = {
     billingAllOnce: 'مشاريع لمرة واحدة',
     billingAllMonthly: 'تُحتسب شهريًا',
     priceFrom: 'يبدأ من',
+    contactChannels: 'قنوات التواصل',
+    contactElsewhere: 'روابط أخرى',
+    formName: 'الاسم',
+    formEmail: 'البريد الإلكتروني',
+    formMessage: 'ما الذي تريد إنشاءه؟',
+    formSend: 'إرسال الرسالة',
+    formNote: 'يفتح تطبيق البريد لديك والرسالة جاهزة للإرسال.',
   },
 };
 
@@ -7500,7 +7815,15 @@ function renderSurfaces() {
         const link = document.createElement('a');
         link.href = href;
         link.textContent = label;
+        // These are the only off-site destinations on the site. They leave it,
+        // so they open in a new tab, say so to a screen reader, and carry the
+        // rel that stops the opened page reaching back through window.opener.
+        link.target = '_blank';
         link.rel = 'noopener noreferrer';
+        const note = document.createElement('span');
+        note.className = 'u-visually-hidden';
+        note.textContent = ` ${t('opensNewTab')}`;
+        link.append(note);
         item.append(link);
         return item;
       })
@@ -8255,6 +8578,53 @@ function initMotion() {
   initScrollCue();
 }
 
+
+/* ---- src/scripts/contact.js ---- */
+/**
+ * CONTACT FORM — Stage 17
+ *
+ * The form already works without this file: its action is a real
+ * `mailto:` to the approved address, which every browser can submit.
+ *
+ * What this adds is a properly encoded message. A native mailto POST sends
+ * the fields as `name=…&email=…` in whatever encoding the browser picks, and
+ * several mail clients render that badly or drop it. Building the URL here
+ * gives a clean subject line and a readable body in every client.
+ *
+ * There is no backend and nothing here pretends otherwise: no fetch, no fake
+ * success state, and a status line that says only what actually happened —
+ * the mail app was opened with the message ready.
+ */
+function initContact(scope = document) {
+  scope.querySelectorAll('[data-contact-form]').forEach((form) => {
+    const status = form.querySelector('[data-contact-status]');
+    const to = form.dataset.contactForm;
+
+    form.addEventListener('submit', (event) => {
+      // Let the browser run native validation first; if it fails, this
+      // handler never sees the event.
+      event.preventDefault();
+
+      const data = new FormData(form);
+      const name = String(data.get('name') ?? '').trim();
+      const email = String(data.get('email') ?? '').trim();
+      const message = String(data.get('message') ?? '').trim();
+
+      const subject = name ? `Project enquiry — ${name}` : 'Project enquiry';
+      const body = [message, '', `— ${name}`, email].filter(Boolean).join('\n');
+
+      // encodeURIComponent, not the raw strings: an apostrophe or a line break
+      // in the message would otherwise truncate the URL.
+      const href = `mailto:${to}?subject=${encodeURIComponent(subject)}`
+        + `&body=${encodeURIComponent(body)}`;
+
+      window.location.href = href;
+
+      if (status) status.textContent = t('formNote');
+    });
+  });
+}
+
 /* ---- src/scripts/main.js ---- */
 /**
  * ENTRY POINT
@@ -8268,10 +8638,12 @@ function initMotion() {
 
 
 
+
 function boot() {
   initNavigation();
   initDisclosure();
   initMotion();
+  initContact();
 }
 
 if (document.readyState === 'loading') {

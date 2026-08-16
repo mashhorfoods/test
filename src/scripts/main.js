@@ -11,11 +11,13 @@
 import { initNavigation } from './navigation.js';
 import { initDisclosure } from './disclosure.js';
 import { initMotion } from './motion.js';
+import { initContact } from './contact.js';
 
 function boot() {
   initNavigation();
   initDisclosure();
   initMotion();
+  initContact();
 }
 
 if (document.readyState === 'loading') {

@@ -63,9 +63,6 @@
     />
 
     <link rel="stylesheet" href="./src/styles/main.css" />
-    <!-- Scaffolding for the not-yet-built sections. Deleted as each stage
-         lands; it styles nothing that ships. -->
-    <link rel="stylesheet" href="./scaffold.css" />
 
     <script>
       document.documentElement.classList.remove('no-js');
@@ -4043,14 +4040,141 @@
         </div>
       </section>
 
-      <section id="contact" class="s-placeholder">
+      <!-- =============================================================
+           12 — CONTACT (Stage 17)
+           The channels, the external profiles, and a form that sends.
+
+           EVERY VALUE IS THE APPROVED ONE, character for character. The
+           visible number is business data and is never reformatted; the href
+           is the action. Both come from CONTACT_CHANNELS in
+           navigation-map.js, so the number shown and the number dialled
+           cannot drift apart, and a test compares both against the brief.
+
+           THE FORM HAS NO BACKEND AND DOES NOT PRETEND TO. Its action is a
+           real mailto: to the approved address, so it submits with
+           JavaScript disabled; the script only upgrades it to a properly
+           encoded mailto with a subject and a readable body. No fetch, no
+           invented endpoint, no fabricated success message — the status line
+           says only that the mail app was opened.
+
+           The channels come FIRST in the DOM. On a phone, tapping a number
+           beats typing a message, and a visitor who wants to call should not
+           have to scroll past three inputs to find the number.
+           ============================================================= -->
+      <section id="contact" class="l-section c-detail" aria-labelledby="contact-title">
         <div class="l-container">
-          <p class="t-label">Stage 07</p>
-          <h2 class="t-h1">Contact</h2>
-          <p class="t-body t-measure">
-            Every primary CTA in the header and the mobile menu resolves here,
-            so the conversion path is never more than one click away (§19).
-          </p>
+          <header class="c-detail__head" data-reveal-group>
+            <div class="c-detail__intro">
+              <p class="t-label c-detail__eyebrow">
+                <span class="c-detail__number">12</span>
+                <span data-i18n-pending>Contact</span>
+              </p>
+              <h2 class="c-detail__headline" id="contact-title" data-i18n-pending>
+                Let’s talk.<br />
+                <span class="c-detail__accent">Let’s build it.</span>
+              </h2>
+            </div>
+            <p class="t-body-lg c-detail__lead" data-i18n-pending>
+              Pick whichever channel suits you. Message, call, or send the
+              brief straight through — whatever gets the conversation started.
+            </p>
+          </header>
+
+          <div class="c-contact">
+            <div data-reveal-group>
+              <h3 class="t-label c-contact__heading" data-i18n="contactChannels">Direct channels</h3>
+              <ul class="c-channels">
+              <li>
+                <a class="c-channel" href="https://wa.me/249962672192" target="_blank" rel="noopener noreferrer"
+                  aria-label="Message us on WhatsApp on +249 962672192">
+                  <span class="c-channel__label"><span data-lang-copy="en">WhatsApp</span><span data-lang-copy="ar" lang="ar">واتساب</span></span>
+                  <span class="c-channel__value">+249 962672192</span>
+                  <svg class="c-channel__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" /></svg>
+                </a>
+              </li>
+              <li>
+                <a class="c-channel" href="tel:+249119005441"
+                  aria-label="Call us on +249 119005441">
+                  <span class="c-channel__label"><span data-lang-copy="en">Phone</span><span data-lang-copy="ar" lang="ar">الهاتف</span></span>
+                  <span class="c-channel__value">+249 119005441</span>
+                  <svg class="c-channel__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" /></svg>
+                </a>
+              </li>
+              <li>
+                <a class="c-channel" href="mailto:muhalabsalah@gmail.com"
+                  aria-label="Email us on muhalabsalah@gmail.com">
+                  <span class="c-channel__label"><span data-lang-copy="en">Email</span><span data-lang-copy="ar" lang="ar">البريد الإلكتروني</span></span>
+                  <span class="c-channel__value">muhalabsalah@gmail.com</span>
+                  <svg class="c-channel__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" /></svg>
+                </a>
+              </li>
+              </ul>
+
+              <h3 class="t-label c-contact__heading" style="margin-block-start: var(--space-32)"
+                data-i18n="contactElsewhere">Elsewhere</h3>
+              <ul class="c-elsewhere">
+              <li>
+                <a class="c-elsewhere__link" href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">
+                  LinkedIn
+                  <span class="u-visually-hidden">(opens in a new tab)</span>
+                  <svg class="c-elsewhere__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9" stroke="currentColor" stroke-width="2" stroke-linecap="square" /></svg>
+                </a>
+              </li>
+              <li>
+                <a class="c-elsewhere__link" href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">
+                  Behance
+                  <span class="u-visually-hidden">(opens in a new tab)</span>
+                  <svg class="c-elsewhere__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9" stroke="currentColor" stroke-width="2" stroke-linecap="square" /></svg>
+                </a>
+              </li>
+              <li>
+                <a class="c-elsewhere__link" href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer">
+                  Website
+                  <span class="u-visually-hidden">(opens in a new tab)</span>
+                  <svg class="c-elsewhere__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9" stroke="currentColor" stroke-width="2" stroke-linecap="square" /></svg>
+                </a>
+              </li>
+              </ul>
+            </div>
+
+            <form class="c-contact__form" data-reveal
+              data-contact-form="muhalabsalah@gmail.com"
+              action="mailto:muhalabsalah@gmail.com"
+              method="post" enctype="text/plain"
+              aria-labelledby="contact-form-title">
+              <h3 class="t-label c-contact__heading" id="contact-form-title" data-i18n="formSend">Send message</h3>
+
+              <p class="c-field">
+                <label class="c-field__label" for="contact-name" data-i18n="formName">Your name</label>
+                <input class="c-field__control" id="contact-name" name="name" type="text"
+                  autocomplete="name" required />
+              </p>
+
+              <p class="c-field">
+                <label class="c-field__label" for="contact-email" data-i18n="formEmail">Your email</label>
+                <input class="c-field__control" id="contact-email" name="email" type="email"
+                  autocomplete="email" required />
+              </p>
+
+              <p class="c-field">
+                <label class="c-field__label" for="contact-message" data-i18n="formMessage">What are you looking to build?</label>
+                <textarea class="c-field__control" id="contact-message" name="message"
+                  rows="5" required></textarea>
+              </p>
+
+              <button class="c-btn c-btn--primary" type="submit">
+                <span data-i18n="formSend">Send message</span>
+                <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+
+              <p class="c-contact__note" data-i18n="formNote">
+                Opens your email app with the message ready to send.
+              </p>
+              <p class="c-contact__status" data-contact-status role="status" aria-live="polite"></p>
+            </form>
+          </div>
         </div>
       </section>
     </main>
@@ -4067,10 +4191,13 @@
          row. The action is carried forward as the primary button in the
          fourth column instead.
 
-         NOTHING INVENTED. There is no approved email, phone, WhatsApp,
-         social profile or legal page anywhere in the source, so none
-         appears — §14/§15/§17 all say not to create them. The fourth column
-         and the bottom row take them the moment they exist.
+         NOTHING INVENTED. Stage 15 shipped with no contact detail and no
+         social profile, because none existed — §14/§15/§17 all say not to
+         create them — and parked a bottom row for them. Stage 17 supplied
+         three profiles, so that row now holds them, rendered from the same
+         SOCIAL_LINKS the drawer uses. Still no legal page, so still none
+         here. The direct channels live in the contact section, one screen
+         above, rather than being repeated here.
 
          SEEDED, NOT JUST RENDERED. Both link lists are written out in the
          markup as well as carrying [data-nav-render]. The script replaces
@@ -4134,6 +4261,17 @@
         <p class="c-footer__mark" aria-hidden="true">PIXORA</p>
 
         <div class="c-footer__bottom">
+          <!-- Seeded like the two link lists above, and re-rendered from
+               SOCIAL_LINKS on boot so the footer and the drawer can never
+               drift apart. Off-site, so each opens in a new tab and says so. -->
+          <nav aria-label="Elsewhere" data-i18n-label="footerElsewhere" data-social-block>
+            <ul class="c-footer__social" data-social-render>
+              <li><a href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer">Website<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+            </ul>
+          </nav>
+
           <p class="c-footer__copyright">
             © <span class="c-footer__year" data-year>2026</span> Pixora.
             <span data-i18n="rights">All rights reserved.</span>

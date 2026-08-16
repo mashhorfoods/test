@@ -23,8 +23,8 @@ docs/13-process.md          Process / how we work, documented
 docs/14-final-cta.md        Final CTA / conversion, documented
 docs/15-footer.md           Footer, documented
 docs/16-qa.md               Global QA & production readiness
-index.html                  The homepage — eleven sections, header and footer
-scaffold.css                Temporary placeholder-section styles (not shipped)
+docs/17-contact.md          Contact, documented
+index.html                  The homepage — twelve sections, header and footer
 styleguide.html             Living specimen sheet for every token and component
 styleguide.css              Chrome for the specimen page (documentation only)
 src/styles/                 The product stylesheet
@@ -39,8 +39,8 @@ src/styles/                 The product stylesheet
   components/               button · card · header · navigation · hero ·
                             orbit · services · service-detail ·
                             campaign · pricing · addons · value ·
-                            process · cta · footer · ecosystem ·
-                            disclosure · field
+                            process · cta · contact · footer ·
+                            ecosystem · disclosure · field
 src/data/pricing.json       Generated package data (see tools/)
 tools/build-pricing.js      Regenerates the pricing section from the
                             service sections — run after any package change
@@ -49,6 +49,7 @@ src/scripts/                Vanilla ES modules, no dependencies
   navigation-map.js         Single source of section order and labels
   navigation.js             Sticky header, mobile menu, scroll spy, language
   disclosure.js             Accordion, tabs, tooltip, responsive disclosure
+  contact.js                Upgrades the contact form to an encoded mailto
   motion.js                 Scroll reveal, animated counters
 src/assets/brand/           Favicon mark + brand documentation
 src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
@@ -72,10 +73,10 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 11 | Add-ons & extra services | Done |
 | 12 | Why us / value proposition | Done |
 | 13 | Process / how we work | Done — labels are placeholders, see below |
-| 14 | Final CTA / conversion | Done — needs a contact mechanism |
+| 14 | Final CTA / conversion | Done |
 | 15 | Footer | Done |
-| 16 | Global QA & production readiness | Done — one blocker, see below |
-| — | Contact | Placeholder — awaiting contact details |
+| 16 | Global QA & production readiness | Done |
+| 17 | Contact | Done |
 
 ## Single-file build
 
@@ -146,16 +147,18 @@ replaced from that document in Stage 01.
 ## Production readiness
 
 Audited end to end in Stage 16 — see `docs/16-qa.md`. Measured, in both
-directions: no horizontal overflow at twelve widths, 95 links with zero dead
-anchors, every text colour at AA, every interactive target ≥ 44px, a keyboard
+directions: no horizontal overflow at twelve widths, 107 links with zero dead
+anchors, every off-site destination approved and opening safely, every text colour at AA, every interactive target ≥ 44px, a keyboard
 walk that paints a ring at every stop, all 28 package figures unchanged, one
 currency per language, no console errors, and the whole page readable with
 JavaScript disabled. First contentful paint 260ms; 3,416 DOM nodes; no
 framework and no library.
 
-**One blocker remains before launch: there is no contact mechanism.** Every
-CTA points at `#contact`, which is still a placeholder because no email, phone
-number, WhatsApp number or form endpoint exists in the supplied data.
+Stage 17 closed the one blocker that audit left open: `#contact` is now a real
+section with WhatsApp, phone and email, three external profiles, and a form
+whose `action` is a `mailto:` to the approved address — so it submits with
+JavaScript disabled and claims no delivery it cannot verify. See
+`docs/17-contact.md`.
 
 ## Outstanding
 
@@ -178,11 +181,13 @@ Each stage's doc ends with its own open items. Across the project:
   its data. Additional Services arrived in Stage 11 and is now section 08.
 - **E-Commerce has no positioning statements**, so those two cards have no
   purpose line.
-- **A contact mechanism — the single biggest gap.** No email address, phone
-  number, WhatsApp number or form endpoint exists anywhere in the supplied
-  data, so `#contact` is still a placeholder and every CTA on the site scrolls
-  to it. One approved contact detail turns twenty-plus buttons into a working
-  conversion.
+- **A form service.** The contact form posts to a `mailto:`, which depends on
+  the visitor having a working mail client. Any endpoint replaces the `action`
+  and one submit handler; nothing else moves.
+- **The supplied contact details are worth a second look.** Both numbers are
+  **+249 (Sudan)** on a site briefed for the Saudi market, and the email and all
+  three profile links are personal rather than Pixora-branded. They ship exactly
+  as supplied, because the brief forbids changing them.
 - **The real working process.** Stage 13's six stage names (Discover, Plan,
   Create, Build, Launch, Grow) come from the brief, not from the agency — no
   workflow exists in the source. Every description under them is anchored to a

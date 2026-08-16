@@ -141,7 +141,15 @@ function renderSurfaces() {
         const link = document.createElement('a');
         link.href = href;
         link.textContent = label;
+        // These are the only off-site destinations on the site. They leave it,
+        // so they open in a new tab, say so to a screen reader, and carry the
+        // rel that stops the opened page reaching back through window.opener.
+        link.target = '_blank';
         link.rel = 'noopener noreferrer';
+        const note = document.createElement('span');
+        note.className = 'u-visually-hidden';
+        note.textContent = ` ${t('opensNewTab')}`;
+        link.append(note);
         item.append(link);
         return item;
       })

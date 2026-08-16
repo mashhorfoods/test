@@ -56,7 +56,47 @@ export const PRIMARY_CTA = {
  *
  * @type {{label: string, href: string}[]}
  */
-export const SOCIAL_LINKS = [];
+export const SOCIAL_LINKS = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhalabsalah/' },
+  { label: 'Behance', href: 'https://www.behance.net/MuhalabSalah' },
+  { label: 'Website', href: 'https://muhalabsalah.github.io/muhalabsalah/' },
+];
+
+/**
+ * The approved contact channels (Stage 17 §02), verbatim.
+ *
+ * `display` is what the visitor sees and must never be reformatted — the
+ * numbers are business data. `href` is the action. Everything that shows a
+ * channel reads from here, so the visible number and the dialled number
+ * cannot drift apart.
+ *
+ * @type {{key: string, label: string, labelAr: string, display: string,
+ *         href: string, external?: boolean}[]}
+ */
+export const CONTACT_CHANNELS = [
+  {
+    key: 'whatsapp',
+    label: 'WhatsApp',
+    labelAr: 'واتساب',
+    display: '+249 962672192',
+    href: 'https://wa.me/249962672192',
+    external: true,
+  },
+  {
+    key: 'phone',
+    label: 'Phone',
+    labelAr: 'الهاتف',
+    display: '+249 119005441',
+    href: 'tel:+249119005441',
+  },
+  {
+    key: 'email',
+    label: 'Email',
+    labelAr: 'البريد الإلكتروني',
+    display: 'muhalabsalah@gmail.com',
+    href: 'mailto:muhalabsalah@gmail.com',
+  },
+];
 
 /**
  * The six service categories, in the order the Services section lists them.
@@ -94,6 +134,8 @@ export const STRINGS = {
     footerNav: 'Quick links',
     footerServices: 'Services',
     footerStart: 'Start',
+    footerElsewhere: 'Elsewhere',
+    opensNewTab: '(opens in a new tab)',
     backToTop: 'Back to top',
     rights: 'All rights reserved.',
     // Currency SYMBOL only — the price figure itself is business data and is
@@ -106,6 +148,13 @@ export const STRINGS = {
     billingAllMonthly: 'Billed monthly',
     // Add-ons are quoted as starting prices, never as a final figure.
     priceFrom: 'From',
+    contactChannels: 'Direct channels',
+    contactElsewhere: 'Elsewhere',
+    formName: 'Your name',
+    formEmail: 'Your email',
+    formMessage: 'What are you looking to build?',
+    formSend: 'Send message',
+    formNote: 'Opens your email app with the message ready to send.',
   },
   ar: {
     brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
@@ -119,6 +168,8 @@ export const STRINGS = {
     footerNav: 'روابط سريعة',
     footerServices: 'خدماتنا',
     footerStart: 'ابدأ',
+    footerElsewhere: 'مواقع أخرى',
+    opensNewTab: '(يفتح في نافذة جديدة)',
     backToTop: 'العودة إلى الأعلى',
     rights: 'جميع الحقوق محفوظة.',
     currency: 'ر.س',
@@ -127,6 +178,13 @@ export const STRINGS = {
     billingAllOnce: 'مشاريع لمرة واحدة',
     billingAllMonthly: 'تُحتسب شهريًا',
     priceFrom: 'يبدأ من',
+    contactChannels: 'قنوات التواصل',
+    contactElsewhere: 'روابط أخرى',
+    formName: 'الاسم',
+    formEmail: 'البريد الإلكتروني',
+    formMessage: 'ما الذي تريد إنشاءه؟',
+    formSend: 'إرسال الرسالة',
+    formNote: 'يفتح تطبيق البريد لديك والرسالة جاهزة للإرسال.',
   },
 };
 

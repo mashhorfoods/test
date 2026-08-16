@@ -10,10 +10,12 @@
    as the primary button in the fourth column instead — prominent within the
    footer, subordinate to the section above it.
 
-   NOTHING INVENTED. There is no approved email, phone, WhatsApp, social
-   profile or legal page anywhere in the source, so none appears. The layout
-   holds a fourth column and a bottom row that take those the moment they
-   exist, without moving anything else.
+   NOTHING INVENTED. Stage 15 shipped with no email, phone, WhatsApp, social
+   profile or legal page, because none existed in the source, and it parked a
+   bottom row to take them "the moment they exist". Stage 17 supplied the three
+   profiles, so that row is now filled — from the same SOCIAL_LINKS array the
+   drawer renders, so the two can never disagree. There is still no legal page,
+   so none appears.
    ============================================================================= */
 
 @layer components {
@@ -176,6 +178,35 @@
   .c-footer__copyright {
     font-size: var(--text-small);
     color: var(--color-text-muted);
+  }
+
+  /* --- Social ------------------------------------------------------------
+     The only off-site destinations in the footer. They rest secondary like
+     every other footer link and move toward the accent on hover — the footer
+     is closure, not a second call to action. */
+  .c-footer__social {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-8) var(--space-24);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-footer__social a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 44px;
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-footer__social a:hover,
+  .c-footer__social a:focus-visible {
+    color: var(--color-accent);
   }
 
   .c-footer__year {
