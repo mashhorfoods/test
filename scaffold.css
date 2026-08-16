@@ -19,14 +19,10 @@
     margin-block-end: var(--space-16);
   }
 
-  /* The hero band carries no top border — the header must read as the first
-     layer of the page, not a bar sitting on a separate block (§20). */
-  .s-placeholder--hero {
+  /* Services follows the hero directly. No rule between them — the hero's cue
+     line carries the eye across the boundary instead (Stage 02 §26). */
+  #services.s-placeholder {
     border-block-start: 0;
-    min-block-size: 100vh;
-    /* Clears the fixed header without a spacer element. */
-    padding-block-start: calc(var(--header-height) + var(--space-64));
-    background-color: var(--color-bg-deep);
   }
 
   .s-footer-scaffold {

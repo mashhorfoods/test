@@ -57,10 +57,23 @@ large fills, body text, decorative flooding.
 
 ## 2. Typography
 
-**Families.** Latin display and UI: `Space Grotesk` (geometric, characterful)
-and `Inter` (neutral, highly legible at small sizes). Arabic: `IBM Plex Sans
-Arabic`, chosen because its geometric construction and weight range match the
-Latin pair — it is a first-class partner, not a fallback.
+**Families.** Latin: **Poppins** (geometric, high x-height, confident at
+display sizes). Arabic: **Cairo** — a matched geometric Arabic sans, a
+first-class partner rather than a fallback.
+
+Both are **self-hosted** from `src/assets/fonts` and declared in
+`src/styles/00-fonts.css`. No third-party connection, nothing external on the
+critical path. Total 156KB across 11 faces, and `unicode-range` means an
+English page never downloads the Arabic file (Cairo ships as a variable font,
+so one file per subset covers weights 400–700).
+
+Two Poppins faces are preloaded in the document head — the 400 and 700 the
+first screen needs.
+
+**Poppins-specific tuning.** It is a true geometric with wide, round counters
+and long descenders, so display leading sits at `1.02` rather than the sub-1.0
+a condensed grotesque could carry, and the hero headline is sized against its
+column rather than the viewport (see below).
 
 **Scale.** Every step is fluid via `clamp()` between roughly 360px and 1440px,
 so type never jumps at a breakpoint.
@@ -69,6 +82,7 @@ so type never jumps at a breakpoint.
 | --- | --- | --- |
 | `--text-display-xl` | 44 → 104px | Hero display |
 | `--text-display-l` | 36 → 80px | Major statements |
+| `--text-hero` | 40 → 76px | Hero H1 — capped by column width on desktop |
 | `--text-h1` | 32 → 62px | Page / section headline |
 | `--text-h2` | 26 → 46px | Section heading |
 | `--text-h3` | 21 → 33px | Card / item title |
@@ -428,4 +442,4 @@ These need the approved content before they can be finalised:
   supplied document, replacing every placeholder in `styleguide.html`.
 - `og:url`, `og:image`, `og:site_name`, canonical, `hreflang` alternates for
   `ar`/`en`, and Organization JSON-LD.
-- Self-hosted font files to remove the third-party round trip.
+- ~~Self-hosted font files~~ — done in Stage 02.

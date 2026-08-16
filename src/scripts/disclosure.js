@@ -152,14 +152,18 @@ function initTabs(root) {
     if (tab && tabs.includes(tab)) select(tab, { moveFocus: false });
   });
 
+  const list = root.querySelector('[role="tablist"]');
+  const vertical = list?.getAttribute('aria-orientation') === 'vertical';
+
   root.addEventListener('keydown', (event) => {
     const index = tabs.indexOf(event.target);
     if (index === -1) return;
 
-    // Arrow direction follows the writing direction, so RTL feels native.
+    // A vertical tablist moves on Up/Down. A horizontal one moves on
+    // Left/Right, swapped under RTL so travel follows the reading direction.
     const rtl = getComputedStyle(root).direction === 'rtl';
-    const forward = rtl ? 'ArrowLeft' : 'ArrowRight';
-    const back = rtl ? 'ArrowRight' : 'ArrowLeft';
+    const forward = vertical ? 'ArrowDown' : rtl ? 'ArrowLeft' : 'ArrowRight';
+    const back = vertical ? 'ArrowUp' : rtl ? 'ArrowRight' : 'ArrowLeft';
 
     const keys = {
       [forward]: index + 1,
@@ -172,6 +176,15 @@ function initTabs(root) {
     event.preventDefault();
     select(tabs[(keys[event.key] + tabs.length) % tabs.length]);
   });
+
+  // Opt-in hover activation for preview-style tablists. Fine pointers only —
+  // on touch there is no hover, and tapping already selects. Focus is never
+  // moved, so a mouse passing over the list cannot steal it from the keyboard.
+  if (root.hasAttribute('data-tabs-hover') && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    tabs.forEach((tab) => {
+      tab.addEventListener('pointerenter', () => select(tab, { moveFocus: false }));
+    });
+  }
 
   const initial = tabs.find((tab) => tab.hasAttribute('data-tab-selected')) ?? tabs[0];
   select(initial, { moveFocus: false });

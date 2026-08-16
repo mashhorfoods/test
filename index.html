@@ -21,11 +21,22 @@
     <!-- TODO Stage 02+: og:url, og:image (1200x630), og:site_name, twitter:card,
          canonical, hreflang alternates for ar/en, Organization JSON-LD. -->
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fonts are self-hosted, so there is no third-party connection to open.
+         The two faces the first screen needs are preloaded; the rest are
+         fetched only if the page's content calls for them (unicode-range). -->
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap"
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./src/assets/fonts/poppins-latin-700.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./src/assets/fonts/poppins-latin-400.woff2"
+      crossorigin
     />
 
     <link rel="stylesheet" href="./src/styles/main.css" />
@@ -228,15 +239,315 @@
          business content appears here.
          ================================================================= -->
     <main id="main">
-      <section id="home" class="s-placeholder s-placeholder--hero">
-        <div class="l-container">
-          <p class="t-label">Stage 02</p>
-          <h1 class="t-display-l">Hero</h1>
-          <p class="t-body-lg t-measure">
-            Reserved for the hero. The header floats over this area with no
-            divider, so the two read as one layer (§20). Scroll to see the
-            header take on its separation and compact states.
-          </p>
+      <!-- =============================================================
+           HERO
+           Every fragment illustration below is abstract and decorative:
+           no statistics, no client marks, no third-party interfaces.
+           ============================================================= -->
+      <section id="home" class="c-hero">
+        <div class="l-container c-hero__inner">
+          <div class="c-hero__content" data-reveal-group>
+            <p class="t-label c-hero__eyebrow" data-i18n-pending>Creative Digital Partner</p>
+
+            <h1 class="c-hero__headline" data-i18n-pending>
+              Your Brand.<br />
+              Your Digital Presence.<br />
+              <span class="c-hero__accent">One Partner.</span>
+            </h1>
+
+            <p class="t-body-lg c-hero__lead" data-i18n-pending>
+              We build brands, websites, online stores and digital experiences —
+              then connect them with content, social media and performance
+              marketing to help your business grow.
+            </p>
+
+            <div class="l-cluster c-hero__actions">
+              <a
+                class="c-btn c-btn--primary c-btn--lg"
+                href="#contact"
+                data-cta-link
+              >
+                <span data-cta-label>Start Your Project</span>
+                <svg
+                  class="c-btn__icon u-flip-rtl"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M5 12h13M13 6l6 6-6 6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="square"
+                  />
+                </svg>
+              </a>
+
+              <a class="c-btn c-btn--secondary c-btn--lg" href="#services">
+                Explore Our Services
+                <svg
+                  class="c-btn__icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M12 5v13M6 13l6 6 6-6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="square"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- ===========================================================
+               DIGITAL ECOSYSTEM
+               The stage illustration switches with the selected service.
+               Service names stay visible at all times — the interaction
+               enriches the story, it is never required to read it.
+               =========================================================== -->
+          <div
+            class="c-hero__visual"
+            data-reveal
+            style="--reveal-delay: 300ms"
+          >
+            <div class="c-ecosystem" data-tabs data-tabs-hover>
+              <p class="c-ecosystem__caption" data-i18n-pending>
+                All your digital needs. From one place.
+              </p>
+
+              <div class="c-ecosystem__body">
+                <div class="c-ecosystem__stage">
+                  <!-- Branding & Design -->
+                  <div class="c-ecosystem__panel" data-tab-panel="branding">
+                    <svg viewBox="0 0 200 125" aria-hidden="true" focusable="false">
+                      <g fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5">
+                        <rect x="12" y="16" width="80" height="46" />
+                        <path d="M12 74h58M12 84h44" />
+                      </g>
+                      <path
+                        d="M38 52 52 24 66 52 M44 44h16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                      />
+                      <g>
+                        <rect x="108" y="16" width="26" height="26" fill="var(--color-accent)" />
+                        <rect x="140" y="16" width="26" height="26" fill="currentColor" opacity="0.28" />
+                        <rect x="108" y="48" width="26" height="26" fill="currentColor" opacity="0.16" />
+                        <rect x="140" y="48" width="26" height="26" fill="currentColor" opacity="0.4" />
+                      </g>
+                      <path d="M108 88h58" stroke="var(--color-accent)" stroke-width="2" />
+                    </svg>
+                    <p class="u-visually-hidden">
+                      Abstract illustration representing branding and design.
+                    </p>
+                  </div>
+
+                  <!-- Websites -->
+                  <div class="c-ecosystem__panel" data-tab-panel="websites">
+                    <svg viewBox="0 0 200 125" aria-hidden="true" focusable="false">
+                      <rect
+                        x="14" y="14" width="172" height="97"
+                        fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"
+                      />
+                      <path d="M14 32h172" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+                      <g fill="currentColor" opacity="0.45">
+                        <circle cx="26" cy="23" r="2.5" />
+                        <circle cx="35" cy="23" r="2.5" />
+                        <circle cx="44" cy="23" r="2.5" />
+                      </g>
+                      <rect x="26" y="44" width="72" height="30" fill="var(--color-accent)" opacity="0.9" />
+                      <g stroke="currentColor" stroke-width="2" opacity="0.35">
+                        <path d="M110 48h64M110 58h48M110 68h56" />
+                      </g>
+                      <g fill="currentColor" opacity="0.2">
+                        <rect x="26" y="86" width="44" height="14" />
+                        <rect x="78" y="86" width="44" height="14" />
+                        <rect x="130" y="86" width="44" height="14" />
+                      </g>
+                    </svg>
+                    <p class="u-visually-hidden">
+                      Abstract illustration representing website design and build.
+                    </p>
+                  </div>
+
+                  <!-- E-Commerce -->
+                  <div class="c-ecosystem__panel" data-tab-panel="ecommerce">
+                    <svg viewBox="0 0 200 125" aria-hidden="true" focusable="false">
+                      <g fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.45">
+                        <rect x="14" y="14" width="52" height="52" />
+                        <rect x="74" y="14" width="52" height="52" />
+                      </g>
+                      <rect
+                        x="134" y="14" width="52" height="52"
+                        fill="none" stroke="var(--color-accent)" stroke-width="2"
+                      />
+                      <g fill="currentColor" opacity="0.25">
+                        <rect x="24" y="40" width="32" height="16" />
+                        <rect x="84" y="34" width="32" height="22" />
+                      </g>
+                      <rect x="144" y="30" width="32" height="26" fill="var(--color-accent)" opacity="0.85" />
+                      <g stroke="currentColor" stroke-width="2" opacity="0.3">
+                        <path d="M14 80h40M74 80h40" />
+                      </g>
+                      <path d="M134 80h40" stroke="var(--color-accent)" stroke-width="2" />
+                      <path
+                        d="M18 98h10l5 16h30l4-11"
+                        fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"
+                      />
+                      <circle cx="36" cy="119" r="3" fill="currentColor" opacity="0.5" />
+                      <circle cx="58" cy="119" r="3" fill="currentColor" opacity="0.5" />
+                    </svg>
+                    <p class="u-visually-hidden">
+                      Abstract illustration representing an online store.
+                    </p>
+                  </div>
+
+                  <!-- Social Media -->
+                  <div class="c-ecosystem__panel" data-tab-panel="social">
+                    <svg viewBox="0 0 200 125" aria-hidden="true" focusable="false">
+                      <rect
+                        x="40" y="10" width="120" height="105"
+                        fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"
+                      />
+                      <circle cx="58" cy="28" r="8" fill="var(--color-accent)" />
+                      <g stroke="currentColor" stroke-width="2" opacity="0.35">
+                        <path d="M74 24h44M74 33h28" />
+                      </g>
+                      <rect x="52" y="46" width="96" height="38" fill="currentColor" opacity="0.16" />
+                      <path
+                        d="M74 74l14-14 10 10 12-14 16 18"
+                        fill="none" stroke="currentColor" stroke-width="2" opacity="0.45"
+                      />
+                      <g fill="none" stroke="currentColor" stroke-width="2" opacity="0.4">
+                        <path d="M52 98h18M80 98h18" />
+                      </g>
+                      <path d="M108 98h18" stroke="var(--color-accent)" stroke-width="2" />
+                      <path
+                        d="M14 44c0 12 8 20 20 20"
+                        fill="none" stroke="var(--color-accent)" stroke-width="1.5" opacity="0.6"
+                      />
+                      <path
+                        d="M186 62c0 12-8 20-20 20"
+                        fill="none" stroke="var(--color-accent)" stroke-width="1.5" opacity="0.6"
+                      />
+                    </svg>
+                    <p class="u-visually-hidden">
+                      Abstract illustration representing social media content.
+                    </p>
+                  </div>
+
+                  <!-- Digital Marketing & Ads -->
+                  <div class="c-ecosystem__panel" data-tab-panel="marketing">
+                    <svg viewBox="0 0 200 125" aria-hidden="true" focusable="false">
+                      <g stroke="currentColor" stroke-width="1.5" opacity="0.28">
+                        <path d="M14 108h172M14 80h172M14 52h172M14 24h172" />
+                      </g>
+                      <g fill="currentColor" opacity="0.28">
+                        <rect x="26" y="76" width="20" height="32" />
+                        <rect x="58" y="62" width="20" height="46" />
+                        <rect x="90" y="68" width="20" height="40" />
+                      </g>
+                      <rect x="122" y="42" width="20" height="66" fill="var(--color-accent)" opacity="0.55" />
+                      <rect x="154" y="24" width="20" height="84" fill="var(--color-accent)" />
+                      <path
+                        d="M26 92 58 74 90 80 122 52 164 20"
+                        fill="none" stroke="var(--color-accent)" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round"
+                      />
+                      <circle cx="164" cy="20" r="4" fill="var(--color-accent)" />
+                    </svg>
+                    <p class="u-visually-hidden">
+                      Abstract illustration representing digital marketing and
+                      advertising.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="c-ecosystem__spine">
+                  <div
+                    role="tablist"
+                    aria-orientation="vertical"
+                    aria-label="Our digital ecosystem"
+                  >
+                    <button
+                      class="c-ecosystem__node"
+                      type="button"
+                      data-tab="branding"
+                      data-tab-selected
+                      style="--i: 0"
+                    >
+                      <span class="c-ecosystem__index" aria-hidden="true">01</span>
+                      Branding &amp; Design
+                    </button>
+                    <button
+                      class="c-ecosystem__node"
+                      type="button"
+                      data-tab="websites"
+                      style="--i: 1"
+                    >
+                      <span class="c-ecosystem__index" aria-hidden="true">02</span>
+                      Websites
+                    </button>
+                    <button
+                      class="c-ecosystem__node"
+                      type="button"
+                      data-tab="ecommerce"
+                      style="--i: 2"
+                    >
+                      <span class="c-ecosystem__index" aria-hidden="true">03</span>
+                      E-Commerce
+                    </button>
+                    <button
+                      class="c-ecosystem__node"
+                      type="button"
+                      data-tab="social"
+                      style="--i: 3"
+                    >
+                      <span class="c-ecosystem__index" aria-hidden="true">04</span>
+                      Social Media
+                    </button>
+                    <button
+                      class="c-ecosystem__node"
+                      type="button"
+                      data-tab="marketing"
+                      style="--i: 4"
+                    >
+                      <span class="c-ecosystem__index" aria-hidden="true">05</span>
+                      Digital Marketing &amp; Ads
+                    </button>
+                  </div>
+
+                  <p class="c-ecosystem__growth" style="--i: 5">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path
+                        d="M4 18 10 11l4 4 6-8M15 7h5v5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="square"
+                      />
+                    </svg>
+                    Growth
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scroll cue doubles as the link into Services, so the transition is
+             a real affordance rather than decoration. -->
+        <div class="c-hero__cue-wrap l-container">
+          <a class="c-hero__cue" href="#services" data-scroll-cue>
+            <span class="t-label">Scroll to explore</span>
+            <span class="c-hero__cue-track" aria-hidden="true"></span>
+          </a>
         </div>
       </section>
 

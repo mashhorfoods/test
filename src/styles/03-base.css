@@ -236,6 +236,17 @@
     unicode-bidi: isolate;
   }
 
+  /* INTERIM: copy that has not been translated yet.
+     English text left inside an RTL paragraph gets its trailing punctuation
+     reordered to the start of the line (".Your Brand"), because a full stop is
+     a direction-neutral character and adopts the paragraph direction. Marking
+     the block as an LTR island typesets it correctly as what it is — English.
+     Remove the attribute from an element the moment its Arabic copy lands. */
+  [dir="rtl"] [data-i18n-pending] {
+    direction: ltr;
+    text-align: start;
+  }
+
   /* Directional glyphs (arrows, chevrons) must mirror; brand marks must not. */
   [dir="rtl"] .u-flip-rtl {
     transform: scaleX(-1);

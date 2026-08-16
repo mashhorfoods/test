@@ -1,0 +1,490 @@
+/* =============================================================================
+   COMPONENT — HERO
+   The homepage's opening statement plus the digital-ecosystem panel.
+
+   Three deliberate compositions rather than one that scales:
+     mobile  — single column; ecosystem is a compact stage above its spine
+     tablet  — single column page, but the ecosystem splits into two columns
+     desktop — two-column page; ecosystem returns to stage-over-spine
+   ============================================================================= */
+
+@layer components {
+  .c-hero {
+    position: relative;
+    /* Clears the fixed header without a spacer element, and gives the header
+       a continuous ground so the two read as one layer. */
+    padding-block-start: calc(var(--header-height) + var(--space-48));
+    padding-block-end: var(--space-64);
+  }
+
+  @media (min-width: 48em) {
+    .c-hero {
+      padding-block-start: calc(var(--header-height) + var(--space-64));
+      padding-block-end: var(--space-80);
+    }
+  }
+
+  @media (min-width: 64em) {
+    .c-hero {
+      display: grid;
+      align-content: center;
+      /* 75-95vh, never a forced 100vh. svh keeps mobile browser chrome from
+         pushing the CTAs out of the first screen; vh is the fallback. */
+      min-block-size: 88vh;
+      min-block-size: min(90svh, 1000px);
+      padding-block-start: calc(var(--header-height) + var(--space-48));
+      padding-block-end: var(--space-64);
+    }
+  }
+
+  .c-hero__inner {
+    display: grid;
+    gap: var(--space-48);
+  }
+
+  @media (min-width: 64em) {
+    .c-hero__inner {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--grid-gutter);
+      align-items: center;
+    }
+
+    /* 7/5, not 6/6 — the split is asymmetric by design, and the wider text
+       column keeps the two CTAs on one row at standard desktop widths. */
+    .c-hero__content {
+      grid-column: 1 / span 7;
+    }
+
+    .c-hero__visual {
+      grid-column: 8 / span 5;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     COPY
+     ----------------------------------------------------------------------- */
+  .c-hero__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--stack-heading-body);
+  }
+
+  .c-hero__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+  }
+
+  /* A short accent rule anchors the eyebrow to the grid's leading edge. */
+  .c-hero__eyebrow::before {
+    content: "";
+    inline-size: var(--rule-width);
+    block-size: var(--border-width-strong);
+    background-color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .c-hero__headline {
+    font-family: var(--font-display);
+    font-size: var(--text-hero);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    /* Breaks are authored with <br>. Wrapping stays enabled as the safety net
+       so a long line can never overflow and be clipped — but `balance` from
+       the reset would fight the authored breaks, so it is overridden. */
+    text-wrap: wrap;
+  }
+
+  /* Poppins is wide: "Your Digital Presence." measures 10.6em, so at the token
+     maximum it would overrun a 7-column text block on every desktop width.
+     Sizing against the column (cqw) instead of the viewport means the headline
+     fits its own container at any width and in any language, with a floor that
+     keeps it emphatic. */
+  @media (min-width: 64em) {
+    .c-hero__content {
+      container-type: inline-size;
+    }
+
+    .c-hero__headline {
+      font-size: max(3.5rem, min(var(--text-hero), 9.2cqw));
+    }
+  }
+
+  /* Tracking is relaxed on the narrowest screens, where tight display tracking
+     costs more legibility than it buys character. */
+  @media (max-width: 23.75em) {
+    .c-hero__headline {
+      letter-spacing: var(--tracking-heading);
+    }
+  }
+
+  /* One strategic phrase in accent — the differentiator, not the whole
+     headline (Stage 02 §08). */
+  .c-hero__accent {
+    color: var(--color-accent);
+  }
+
+  .c-hero__lead {
+    max-inline-size: 52ch;
+  }
+
+  .c-hero__actions {
+    margin-block-start: var(--space-8);
+    gap: var(--space-16);
+  }
+
+  /* Full-width stacked CTAs on the narrowest screens keep both comfortably
+     tappable instead of squeezing them onto one row. */
+  @media (max-width: 29.99em) {
+    .c-hero__actions {
+      inline-size: 100%;
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     ECOSYSTEM PANEL
+     A stage showing an abstract fragment for the active service, over a spine
+     of the services themselves. The service names are always visible — the
+     interaction changes only the illustration (§11).
+     ----------------------------------------------------------------------- */
+  .c-ecosystem {
+    position: relative;
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-sunken);
+    overflow: hidden;
+  }
+
+  /* Corner tick — a single quiet mark of "interface", not decoration for its
+     own sake. */
+  .c-ecosystem::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: var(--rule-width);
+    block-size: var(--border-width-strong);
+    background-color: var(--color-accent);
+    z-index: var(--z-raised);
+  }
+
+  .c-ecosystem__caption {
+    display: block;
+    padding: var(--space-16) var(--space-24);
+    border-block-end: var(--border-hairline);
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-secondary);
+  }
+
+  .c-ecosystem__body {
+    display: grid;
+  }
+
+  /* Tablet recomposes the panel into two columns so it stays wide and short
+     rather than a tall block competing with the headline (§16). */
+  @media (min-width: 48em) and (max-width: 63.99em) {
+    .c-ecosystem__body {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .c-ecosystem__stage {
+      border-block-end: 0;
+      border-inline-end: var(--border-hairline);
+    }
+  }
+
+  /* --- Stage -------------------------------------------------------------
+     Fixed ratio so switching fragments never shifts the layout. */
+  .c-ecosystem__stage {
+    position: relative;
+    display: grid;
+    /* minmax(0, 1fr), not the implicit `auto`: an auto row grows to the
+       illustration's natural height and spills over the stage's fixed height
+       into the spine below. This pins the row to the stage. */
+    grid-template-rows: minmax(0, 1fr);
+    aspect-ratio: 16 / 10;
+    padding: var(--space-24);
+    border-block-end: var(--border-hairline);
+    background-color: var(--color-bg);
+    overflow: hidden;
+  }
+
+  @media (min-width: 48em) and (max-width: 63.99em) {
+    .c-ecosystem__stage {
+      aspect-ratio: auto;
+    }
+  }
+
+  /* On desktop the panel is what decides whether the hero fits one screen, so
+     the stage follows the viewport instead of its own ratio. Short laptop
+     windows get a shorter stage rather than a hero that runs past the fold. */
+  @media (min-width: 64em) {
+    .c-ecosystem__stage {
+      aspect-ratio: auto;
+      block-size: clamp(180px, 24svh, 280px);
+    }
+  }
+
+  .c-ecosystem__panel {
+    grid-area: 1 / 1;
+    display: grid;
+    place-items: center;
+    min-inline-size: 0;
+    min-block-size: 0;
+  }
+
+  .c-ecosystem__panel:focus-visible {
+    box-shadow: var(--focus-ring);
+    border-radius: var(--radius-sm);
+  }
+
+  /* preserveAspectRatio letterboxes the drawing inside whatever box it gets,
+     so constraining both axes is enough — the fragment always fits. */
+  .c-ecosystem__panel svg {
+    inline-size: 100%;
+    block-size: 100%;
+    max-inline-size: 100%;
+    max-block-size: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .c-ecosystem__panel[data-entering="true"] {
+      animation: ecosystem-fragment var(--duration-base) var(--ease-out) both;
+    }
+  }
+
+  @keyframes ecosystem-fragment {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+
+  /* --- Spine -------------------------------------------------------------
+     The connector line is a single pseudo-element behind the nodes, so the
+     "connected system" reads as one continuous thread. */
+  .c-ecosystem__spine {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-12) var(--space-24) var(--space-16);
+  }
+
+  .c-ecosystem__spine::before {
+    content: "";
+    position: absolute;
+    inset-block: var(--space-32);
+    inset-inline-start: calc(var(--space-24) + 3px);
+    inline-size: var(--border-width);
+    background: linear-gradient(
+      to bottom,
+      var(--color-border-strong),
+      var(--color-accent)
+    );
+  }
+
+  .c-ecosystem__node {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    min-block-size: var(--touch-target-min);
+    padding-inline: var(--space-16) var(--space-8);
+    text-align: start;
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  /* The node dot sits on the connector line. */
+  .c-ecosystem__node::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    inline-size: 7px;
+    block-size: 7px;
+    border-radius: var(--radius-circle);
+    background-color: var(--color-bg-sunken);
+    box-shadow: 0 0 0 var(--border-width) var(--color-border-strong);
+    transition: background-color var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard),
+      scale var(--duration-fast) var(--ease-out);
+  }
+
+  .c-ecosystem__node:hover {
+    color: var(--color-text-primary);
+  }
+
+  .c-ecosystem__node[aria-selected="true"] {
+    color: var(--color-accent);
+    font-weight: var(--weight-semibold);
+  }
+
+  .c-ecosystem__node[aria-selected="true"]::before {
+    background-color: var(--color-accent);
+    box-shadow: 0 0 0 var(--border-width) var(--color-accent);
+    scale: 1.3;
+  }
+
+  .c-ecosystem__index {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    inline-size: 2ch;
+    flex-shrink: 0;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-ecosystem__node[aria-selected="true"] .c-ecosystem__index {
+    color: var(--color-accent);
+  }
+
+  [dir="rtl"] .c-ecosystem__index {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* --- Growth outcome ----------------------------------------------------
+     Not a service, so not a tab: the result the five services add up to. */
+  .c-ecosystem__growth {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    margin-block-start: var(--space-12);
+    padding-block-start: var(--space-12);
+    padding-inline-start: var(--space-16);
+    border-block-start: var(--border-hairline);
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  [dir="rtl"] .c-ecosystem__growth {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+  }
+
+  .c-ecosystem__growth svg {
+    inline-size: var(--icon-md);
+    block-size: var(--icon-md);
+    flex-shrink: 0;
+  }
+
+  /* Entrance: nodes settle in sequence once the panel reveals (§10). */
+  @media (prefers-reduced-motion: no-preference) {
+    .js [data-reveal] .c-ecosystem__node,
+    .js [data-reveal] .c-ecosystem__growth {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity var(--duration-base) var(--ease-out),
+        transform var(--duration-base) var(--ease-out);
+    }
+
+    .js [data-reveal].is-revealed .c-ecosystem__node,
+    .js [data-reveal].is-revealed .c-ecosystem__growth {
+      opacity: 1;
+      transform: none;
+      transition-delay: calc(70ms * var(--i, 0) + 380ms);
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     SCROLL CUE / TRANSITION INTO SERVICES
+     Doubles as the link into the next section, so the cue is useful rather
+     than ornamental. Its line continues past the hero's edge, which is what
+     keeps the boundary soft (§26).
+     ----------------------------------------------------------------------- */
+  /* Wrapper is a container, so the cue aligns to the same edge as the headline
+     rather than to the raw viewport. */
+  .c-hero__cue-wrap {
+    display: none;
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    pointer-events: none;
+  }
+
+  /* Shown only when the window is tall enough to hold it below the content.
+     On a short laptop window the composition needs the room more than the page
+     needs a hint that it scrolls. */
+  @media (min-width: 64em) and (min-height: 50em) {
+    .c-hero__cue-wrap {
+      display: block;
+    }
+  }
+
+  .c-hero__cue {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-8);
+    pointer-events: auto;
+    text-decoration: none;
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-standard),
+      opacity var(--duration-base) var(--ease-standard);
+  }
+
+  .c-hero__cue:hover {
+    color: var(--color-accent);
+  }
+
+  /* Fades out as soon as the user starts scrolling — the cue has done its job
+     and should not persist (§14). */
+  .c-hero__cue.is-dismissed {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .c-hero__cue-track {
+    position: relative;
+    inline-size: var(--border-width);
+    block-size: var(--space-32);
+    background-color: var(--color-border-strong);
+    overflow: hidden;
+  }
+
+  /* The one looping animation in the system. It is justified: this element
+     exists solely to signal "there is more below", it is small, and it removes
+     itself the moment the user acts on it. */
+  .c-hero__cue-track::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    block-size: 40%;
+    background-color: var(--color-accent);
+    animation: cue-travel 2.4s var(--ease-in-out) infinite;
+  }
+
+  @keyframes cue-travel {
+    0% {
+      transform: translateY(-100%);
+    }
+    60%,
+    100% {
+      transform: translateY(250%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-hero__cue-track::after {
+      animation: none;
+      block-size: 100%;
+      background-color: var(--color-border-accent);
+    }
+  }
+}

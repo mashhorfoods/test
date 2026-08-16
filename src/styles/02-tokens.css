@@ -77,16 +77,18 @@
 
     /* ---------------------------------------------------------------------
        02 — TYPEFACES
-       Latin: geometric/contemporary sans.
-       Arabic: matched geometric Arabic sans — a first-class pairing, not a
-       fallback. See 03-base.css for the [dir="rtl"] and :lang(ar) rules.
+       Latin: Poppins — geometric, high x-height, confident at display sizes.
+       Arabic: Cairo — a matched geometric Arabic sans, a first-class pairing
+       rather than a fallback. Both are self-hosted (00-fonts.css); see
+       03-base.css for the [dir="rtl"] and :lang(ar) rules.
+
+       Poppins is a true geometric with round, wide counters, so display
+       tracking is tightened a little further than a neo-grotesque would need,
+       and display line-height is looser to clear its long descenders.
        --------------------------------------------------------------------- */
-    --font-display: "Space Grotesk", "IBM Plex Sans Arabic", "Segoe UI",
-      system-ui, sans-serif;
-    --font-body: "Inter", "IBM Plex Sans Arabic", "Segoe UI", system-ui,
-      sans-serif;
-    --font-arabic: "IBM Plex Sans Arabic", "Space Grotesk", "Inter", system-ui,
-      sans-serif;
+    --font-display: "Poppins", "Cairo", "Segoe UI", system-ui, sans-serif;
+    --font-body: "Poppins", "Cairo", "Segoe UI", system-ui, sans-serif;
+    --font-arabic: "Cairo", "Poppins", "Segoe UI", system-ui, sans-serif;
 
     /* ---------------------------------------------------------------------
        02b — TYPE SCALE
@@ -95,6 +97,10 @@
        --------------------------------------------------------------------- */
     --text-display-xl: clamp(2.75rem, 1.35rem + 6.2vw, 6.5rem);
     --text-display-l: clamp(2.25rem, 1.25rem + 4.45vw, 5rem);
+    /* The page's single strongest type role — the hero H1. Tuned to land in
+       the ranges the hero brief calls for: ~40px at 375, ~59px at 768,
+       ~72px at 1024, capped at 76px. */
+    --text-hero: clamp(2.5rem, 1.35rem + 4.9vw, 4.75rem);
     --text-h1: clamp(2rem, 1.3rem + 3.1vw, 3.9rem);
     --text-h2: clamp(1.625rem, 1.16rem + 2.06vw, 2.9rem);
     --text-h3: clamp(1.3125rem, 1.05rem + 1.16vw, 2.05rem);
@@ -109,8 +115,10 @@
     --text-price-sm: clamp(1.75rem, 1.4rem + 1.55vw, 2.6rem);
     --text-stat: clamp(2.5rem, 1.7rem + 3.55vw, 4.75rem);
 
-    /* Line heights — tighter as type gets larger. */
-    --leading-display: 0.95;
+    /* Line heights — tighter as type gets larger. Poppins has long descenders,
+       so display leading sits a little above the 0.9x a condensed grotesque
+       could carry; below ~1.0 its descenders clash with the next line. */
+    --leading-display: 1.02;
     --leading-tight: 1.08;
     --leading-heading: 1.18;
     --leading-snug: 1.35;
