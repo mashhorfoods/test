@@ -5260,6 +5260,212 @@
 }
 
 
+/* ---- src/styles/components/process.css ---- */
+/* =============================================================================
+   PROCESS — STAGE 13, HOW WE WORK
+   A serpentine track: six steps that read left-to-right, fold, and read back.
+
+   WHY A TRACK RATHER THAN A ROW OF CARDS (rule 04/08)
+   The page already has gapped card grids (add-ons, commerce modules) and
+   three ordered .c-pipeline strips. A seventh variation of either would read
+   as the same component again. This is a gapless divided TRACK: one continuous
+   rule runs across each row, the cells are separated by hairlines rather than
+   space, and the numerals sit ON the rule as markers. The result reads as a
+   path with divisions rather than as six objects.
+
+   THE FOLD IS THE POINT. Six steps across one row would be a corporate
+   timeline; folding after three gives the sequence a shape, and — because the
+   placement is explicit grid placement, not `order` — the DOM stays 01..06 so
+   the reading order is never scrambled for keyboard or screen-reader users.
+
+   NOT INTERACTIVE. Every step's name, line and note are rendered at rest, so
+   there is nothing to open and nothing to activate; hover only emphasises.
+   Six focus stops that do nothing would be worse than none (rule 13's "do not
+   make essential content accessible only through hover", read the other way).
+   ============================================================================= */
+
+@layer components {
+  .c-track {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    margin-block-start: var(--space-48);
+    padding: 0;
+    list-style: none;
+    /* The track's own outer edge. Cells contribute the inner divisions, so
+       the whole thing reads as one ruled object rather than six bordered
+       ones. */
+    border-block-end: var(--border-hairline);
+  }
+
+  .c-step {
+    position: relative;
+    display: grid;
+    gap: var(--space-8);
+    align-content: start;
+    padding: var(--space-24) 0;
+    border-block-start: var(--border-hairline);
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-step:hover {
+    background-color: var(--color-surface);
+  }
+
+  /* --- The marker --------------------------------------------------------
+     Large enough to set the rhythm of the section, muted enough not to
+     outrank the step name (rule 11). It sits directly under the rule it
+     belongs to, so the row reads as ticks on a track. */
+  .c-step__num {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-border-strong);
+    /* Western numerals in both languages — keep the pair from splitting or
+       jumping to the wrong end of an RTL line box. */
+    direction: ltr;
+    unicode-bidi: isolate;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-step:hover .c-step__num {
+    color: var(--color-accent);
+  }
+
+  .c-step__name {
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+  }
+
+  .c-step__body {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    max-inline-size: 42ch;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-step:hover .c-step__body {
+    color: var(--color-text-primary);
+  }
+
+  /* The approved capability each step maps to. Metadata, not a promise —
+     every one of these strings appears in a package or capability list
+     elsewhere on the page. */
+  .c-step__note {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    margin-block-start: var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  [dir="rtl"] .c-step__note {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  .c-step__note::before {
+    content: "";
+    inline-size: var(--space-12);
+    block-size: 2px;
+    flex-shrink: 0;
+    background-color: var(--color-border-strong);
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-step:hover .c-step__note {
+    color: var(--color-accent);
+  }
+
+  .c-step:hover .c-step__note::before {
+    background-color: var(--color-accent);
+  }
+
+  /* =======================================================================
+     TABLET — two columns, straight. Not the serpentine squeezed: at two
+     across, a fold every row is a zig-zag rather than a path, and zig-zags
+     are read as decoration.
+     ======================================================================= */
+  @media (min-width: 48em) {
+    .c-track {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .c-step {
+      padding: var(--space-32) var(--space-24);
+    }
+
+    /* Inner divisions. Logical, so the divider lands on the correct side of
+       each cell in both directions. */
+    .c-step:nth-child(2n) {
+      border-inline-start: var(--border-hairline);
+    }
+  }
+
+  /* =======================================================================
+     DESKTOP — three columns, folded once.
+     Explicit placement: DOM order stays 01..06 and the serpentine is a
+     property of the grid. Under RTL the columns mirror, so the path starts
+     at the trailing edge and folds the other way with no extra rules.
+     ======================================================================= */
+  @media (min-width: 64em) {
+    .c-track {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .c-step:nth-child(1) { grid-column: 1; grid-row: 1; }
+    .c-step:nth-child(2) { grid-column: 2; grid-row: 1; }
+    .c-step:nth-child(3) { grid-column: 3; grid-row: 1; }
+    /* The fold: 04 sits under 03, and the row reads back. */
+    .c-step:nth-child(4) { grid-column: 3; grid-row: 2; }
+    .c-step:nth-child(5) { grid-column: 2; grid-row: 2; }
+    .c-step:nth-child(6) { grid-column: 1; grid-row: 2; }
+
+    /* Divide by COLUMN, not by DOM position. Cells 1 and 6 hold column 1 in
+       their respective rows and take no leading divider; every other cell
+       does. An earlier version put the divider on the trailing edge of the
+       second row instead, which drew a stray border down the track's outer
+       edge and left the 06|05 boundary undivided. */
+    .c-step:nth-child(1),
+    .c-step:nth-child(6) {
+      border-inline-start: 0;
+    }
+
+    .c-step:nth-child(2),
+    .c-step:nth-child(3),
+    .c-step:nth-child(4),
+    .c-step:nth-child(5) {
+      border-inline-start: var(--border-hairline);
+      border-inline-end: 0;
+    }
+
+    /* The turn. A short accent segment on the trailing edge where the path
+       folds from 03 into 04 — the one place the reading direction changes,
+       and the only place the track needs to say so. */
+    .c-step:nth-child(4)::before {
+      content: "";
+      position: absolute;
+      inset-block-start: -1px;
+      inset-inline-end: 0;
+      inline-size: var(--space-48);
+      block-size: 2px;
+      background-color: var(--color-accent);
+    }
+  }
+}
+
+
 /* ---- src/styles/components/ecosystem.css ---- */
 /* =============================================================================
    ECOSYSTEM — STAGE 09, INTEGRATED SOLUTIONS
@@ -11313,10 +11519,109 @@ if (document.readyState === 'loading') {
         </div>
       </section>
 
-      <section id="process" class="s-placeholder">
+      <!-- =============================================================
+           10 — PROCESS (Stage 13)
+           WHERE THESE SIX STAGES COME FROM. The Services & Pricing document
+           contains no agency-wide workflow — the only sequence on the site is
+           the SERVICE flow in the Integrated Solutions row, which is what the
+           agency offers, not how it works. §02 covers exactly this case:
+           where the process wording is not finalised, build the architecture
+           on neutral labels. The six names below are the brief's own (§07).
+
+           Every description and every note is anchored to a capability that
+           already appears on this page — Audience Research, Development,
+           Required integrations, Testing, Deployment, Delivery ready for use,
+           monthly reporting. Nothing states a turnaround time, a guarantee, a
+           result or a deliverable that is not already published.
+
+           The composition is a serpentine TRACK, not a row of cards: one
+           continuous rule per row, hairline divisions, numerals sitting on
+           the rule. Placement is explicit grid placement, so the DOM stays
+           01..06 and the fold is a property of the grid — under RTL the
+           columns mirror and the path folds the other way for free.
+           ============================================================= -->
+      <section id="process" class="l-section c-detail" aria-labelledby="process-title">
         <div class="l-container">
-          <p class="t-label">Stage 06</p>
-          <h2 class="t-h1">Process</h2>
+          <header class="c-detail__head" data-reveal-group>
+            <div class="c-detail__intro">
+              <p class="t-label c-detail__eyebrow">
+                <span class="c-detail__number">10</span>
+                <span data-i18n-pending>How We Work</span>
+              </p>
+              <h2 class="c-detail__headline" id="process-title" data-i18n-pending>
+                A clear process.<br />
+                <span class="c-detail__accent">From idea to launch.</span>
+              </h2>
+            </div>
+            <p class="t-body-lg c-detail__lead" data-i18n-pending>
+              Six stages, in order. Each one names the part of the service it
+              draws on, so you can see where your package fits before you
+              start.
+            </p>
+          </header>
+
+          <ol class="c-track" data-reveal-group>
+            <li class="c-step">
+              <span class="c-step__num" aria-hidden="true">01</span>
+              <h3 class="c-step__name" data-i18n-pending>Discover</h3>
+              <p class="c-step__body" data-i18n-pending>Understand the business, its goals and the audience it is trying to reach, before anything is designed.</p>
+              <p class="c-step__note" data-i18n-pending>Audience Research</p>
+            </li>
+
+            <li class="c-step">
+              <span class="c-step__num" aria-hidden="true">02</span>
+              <h3 class="c-step__name" data-i18n-pending>Plan</h3>
+              <p class="c-step__body" data-i18n-pending>Agree the scope — which package, which add-ons, and exactly what is included in each.</p>
+              <p class="c-step__note" data-i18n-pending>Packages &amp; Add-Ons</p>
+            </li>
+
+            <li class="c-step">
+              <span class="c-step__num" aria-hidden="true">03</span>
+              <h3 class="c-step__name" data-i18n-pending>Create</h3>
+              <p class="c-step__body" data-i18n-pending>Logo, colour system, typography and layouts, plus the copy and creative the project needs.</p>
+              <p class="c-step__note" data-i18n-pending>Identity &amp; Design</p>
+            </li>
+
+            <li class="c-step">
+              <span class="c-step__num" aria-hidden="true">04</span>
+              <h3 class="c-step__name" data-i18n-pending>Build</h3>
+              <p class="c-step__body" data-i18n-pending>Development, setup and the integrations the site or store requires.</p>
+              <p class="c-step__note" data-i18n-pending>Development &amp; Integrations</p>
+            </li>
+
+            <li class="c-step">
+              <span class="c-step__num" aria-hidden="true">05</span>
+              <h3 class="c-step__name" data-i18n-pending>Launch</h3>
+              <p class="c-step__body" data-i18n-pending>Testing, deployment and handover — delivered ready for use.</p>
+              <p class="c-step__note" data-i18n-pending>Testing &amp; Deployment</p>
+            </li>
+
+            <li class="c-step">
+              <span class="c-step__num" aria-hidden="true">06</span>
+              <h3 class="c-step__name" data-i18n-pending>Grow</h3>
+              <p class="c-step__body" data-i18n-pending>Ongoing social media management and advertising, with a report every month.</p>
+              <p class="c-step__note" data-i18n-pending>Monthly Management &amp; Reporting</p>
+            </li>
+          </ol>
+
+          <div class="c-detail__foot" data-reveal>
+            <p class="t-body" data-i18n-pending>
+              Ready to get started?
+            </p>
+            <a class="c-btn c-btn--primary" href="#contact" data-cta-link>
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+            <a class="c-link" href="#pricing">
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false" style="transform: scaleX(-1)">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+              <span data-i18n-pending>Back to packages</span>
+            </a>
+          </div>
         </div>
       </section>
 

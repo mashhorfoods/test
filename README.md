@@ -19,6 +19,7 @@ docs/09-integrated.md       Integrated Solutions, documented
 docs/10-pricing.md          Pricing architecture, documented
 docs/11-add-ons.md          Add-ons & extra services, documented
 docs/12-why-us.md           Why us / value proposition, documented
+docs/13-process.md          Process / how we work, documented
 index.html                  Homepage shell — header + placeholder sections
 scaffold.css                Temporary placeholder-section styles (not shipped)
 styleguide.html             Living specimen sheet for every token and component
@@ -35,7 +36,7 @@ src/styles/                 The product stylesheet
   components/               button · card · header · navigation · hero ·
                             orbit · services · service-detail ·
                             campaign · pricing · addons · value ·
-                            ecosystem · disclosure · field
+                            process · ecosystem · disclosure · field
 src/data/pricing.json       Generated package data (see tools/)
 tools/build-pricing.js      Regenerates the pricing section from the
                             service sections — run after any package change
@@ -66,7 +67,8 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 10 | Pricing architecture | Done — 5 of 6 package categories |
 | 11 | Add-ons & extra services | Done |
 | 12 | Why us / value proposition | Done |
-| — | Process, Contact, Footer | Placeholders |
+| 13 | Process / how we work | Done — labels are placeholders, see below |
+| — | Contact, Footer | Placeholders |
 
 ## Single-file build
 
@@ -89,8 +91,8 @@ hero height, the ecosystem wiring, and the mobile menu.
 
 | | Requests | Size |
 | --- | --- | --- |
-| Modular source | 33 | — |
-| `dist/index.html` | **0** | 667KB (132KB of it fonts) |
+| Modular source | 34 | — |
+| `dist/index.html` | **0** | 680KB (132KB of it fonts) |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:
@@ -153,6 +155,11 @@ Each stage's doc ends with its own open items. Across the project:
   its data. Additional Services arrived in Stage 11 and is now section 08.
 - **E-Commerce has no positioning statements**, so those two cards have no
   purpose line.
+- **The real working process.** Stage 13's six stage names (Discover, Plan,
+  Create, Build, Launch, Grow) come from the brief, not from the agency — no
+  workflow exists in the source. Every description under them is anchored to a
+  published capability, and no turnaround time is stated anywhere. Send the
+  actual process and the labels swap.
 - **Any substantiable proof** — a client count, a completed-project figure, a
   named reference. Why Us argues entirely from the delivery model because no
   such fact exists in the source; real proof would strengthen it considerably.
