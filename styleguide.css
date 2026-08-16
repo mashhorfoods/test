@@ -1,0 +1,176 @@
+/* =============================================================================
+   STYLEGUIDE CHROME — DOCUMENTATION ONLY
+   This file styles the specimen page itself (swatch tiles, spec frames,
+   annotation text). It is NOT part of the product stylesheet and must never be
+   imported by the website. Everything inside a specimen frame is styled purely
+   by src/styles/main.css.
+   ============================================================================= */
+
+@layer utilities {
+  .sg-page {
+    padding-block: var(--space-64) var(--space-160);
+  }
+
+  .sg-masthead {
+    padding-block: var(--space-64) var(--space-48);
+    border-block-end: var(--border-defined);
+    margin-block-end: var(--space-64);
+  }
+
+  .sg-section {
+    padding-block: var(--section-space-tight);
+    border-block-start: var(--border-hairline);
+  }
+
+  .sg-section:first-of-type {
+    border-block-start: 0;
+  }
+
+  .sg-section__number {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Specimen frame — an isolated stage for a component. */
+  .sg-specimen {
+    padding: var(--space-32);
+    border: var(--border-width) dashed var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-deep);
+  }
+
+  .sg-specimen + .sg-specimen {
+    margin-block-start: var(--space-16);
+  }
+
+  .sg-caption {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-block-end: var(--space-12);
+  }
+
+  /* Colour swatches */
+  .sg-swatch {
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .sg-swatch__chip {
+    block-size: 88px;
+  }
+
+  .sg-swatch__meta {
+    padding: var(--space-12) var(--space-16);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    background-color: var(--color-surface);
+  }
+
+  .sg-swatch__name {
+    font-family: var(--font-display);
+    font-size: var(--text-small);
+    font-weight: var(--weight-semibold);
+  }
+
+  .sg-swatch__value,
+  .sg-mono {
+    font-family: ui-monospace, "SFMono-Regular", "Consolas", monospace;
+    font-size: var(--text-label);
+    color: var(--color-text-muted);
+  }
+
+  .sg-contrast {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Spacing scale visualisation */
+  .sg-space-row {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: var(--space-16);
+    align-items: center;
+    padding-block: var(--space-8);
+    border-block-end: var(--border-width) solid var(--color-border-subtle);
+  }
+
+  .sg-space-bar {
+    block-size: 12px;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-xs);
+  }
+
+  /* Grid visualisation */
+  .sg-grid-demo > * {
+    background-color: var(--color-accent-subtle);
+    border: var(--border-width) solid var(--color-border-accent);
+    border-radius: var(--radius-xs);
+    padding: var(--space-12);
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    color: var(--color-accent);
+  }
+
+  /* Spec tables */
+  .sg-table {
+    inline-size: 100%;
+    font-size: var(--text-body-sm);
+  }
+
+  .sg-table :is(th, td) {
+    padding: var(--space-12) var(--space-16);
+    border-block-end: var(--border-width) solid var(--color-border-subtle);
+    vertical-align: top;
+  }
+
+  .sg-table th {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .sg-table td {
+    color: var(--color-text-secondary);
+  }
+
+  .sg-table code {
+    font-family: ui-monospace, "SFMono-Regular", "Consolas", monospace;
+    font-size: 0.85em;
+    color: var(--color-accent);
+  }
+
+  /* Tables must scroll inside their own container, never the page. */
+  .sg-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* A do / don't note. */
+  .sg-note {
+    padding: var(--space-16) var(--space-24);
+    border-inline-start: var(--border-width-strong) solid var(--color-accent);
+    background-color: var(--color-accent-subtle);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  [dir="rtl"] .sg-note {
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  }
+}

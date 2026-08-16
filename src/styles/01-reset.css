@@ -1,0 +1,144 @@
+/* =============================================================================
+   RESET
+   Minimal, opinionated, accessibility-preserving. No normalize.css dependency.
+   ============================================================================= */
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Anchor scrolling must clear the fixed header. */
+    scroll-padding-block-start: calc(var(--header-height, 72px) + 1.5rem);
+    /* No horizontal overflow, ever — rule 09. */
+    overflow-x: clip;
+  }
+
+  body {
+    min-block-size: 100vh;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Smooth anchor scrolling only when the user has not asked for less motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    html:focus-within {
+      scroll-behavior: smooth;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: inherit;
+    font-weight: inherit;
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  figcaption {
+    text-wrap: pretty;
+  }
+
+  ul[role="list"],
+  ol[role="list"] {
+    list-style: none;
+    padding: 0;
+  }
+
+  img,
+  picture,
+  svg,
+  video,
+  canvas {
+    display: block;
+    max-inline-size: 100%;
+    block-size: auto;
+  }
+
+  svg {
+    fill: currentcolor;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  button {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  table {
+    border-collapse: collapse;
+    inline-size: 100%;
+  }
+
+  th {
+    text-align: start;
+    font-weight: inherit;
+  }
+
+  summary {
+    cursor: pointer;
+  }
+
+  :target {
+    scroll-margin-block-start: calc(var(--header-height, 72px) + 1.5rem);
+  }
+
+  /* Remove the default focus ring only where a token ring replaces it.
+     Keyboard focus is never removed — see 03-base.css. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  /* Belt-and-braces: if a user disables motion mid-session, kill anything a
+     component forgot to tokenise. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

@@ -1,0 +1,303 @@
+/* =============================================================================
+   STAGE 00 — DESIGN TOKENS
+   The single source of truth for every visual decision in the product.
+   Nothing downstream may hardcode a colour, size, duration or easing curve.
+   ============================================================================= */
+
+@layer tokens {
+  :root {
+    /* ---------------------------------------------------------------------
+       01 — COLOUR / RAW PALETTE
+       Raw values are private (prefixed `--_`). Sections must consume the
+       semantic tokens below, never these.
+       --------------------------------------------------------------------- */
+    --_charcoal-900: #141414;
+    --_charcoal-800: #1a1a1a;
+    --_charcoal-700: #202020; /* brand foundation */
+    --_charcoal-600: #262626;
+    --_charcoal-500: #2e2e2e;
+    --_charcoal-400: #383838;
+
+    --_white: #ffffff;
+
+    --_yellow-300: #f8e07a;
+    --_yellow-400: #f6d85c;
+    --_yellow-500: #f4d13f; /* brand accent */
+    --_yellow-600: #d9b62f;
+    --_yellow-700: #b9991f;
+
+    /* Status hues are desaturated to sit inside the charcoal/white/yellow
+       system. They exist only for form validation and system feedback. */
+    --_success: #7bc47f;
+    --_danger: #e2725b;
+
+    /* ---------------------------------------------------------------------
+       01b — COLOUR / SEMANTIC TOKENS
+       --------------------------------------------------------------------- */
+
+    /* Backgrounds — charcoal is the dominant foundation.
+       Two bands sit below the foundation and one sits above it, so the ladder
+       reads honestly: sunken < bg < surface < surface-hover < surface-active. */
+    --color-bg: var(--_charcoal-700);
+    --color-bg-deep: var(--_charcoal-900); /* deepest full-bleed band */
+    --color-bg-sunken: var(--_charcoal-800); /* recessed wells, disabled fields */
+
+    /* Surfaces — differentiation comes from contrast + border, not shadow. */
+    --color-surface: var(--_charcoal-600);
+    --color-surface-hover: var(--_charcoal-500);
+    --color-surface-active: var(--_charcoal-400);
+    --color-surface-accent: rgba(244, 209, 63, 0.08);
+
+    /* Text — contrast verified against --color-bg in docs/00-design-system.md */
+    --color-text-primary: var(--_white); /* 16.3:1 */
+    --color-text-secondary: rgba(255, 255, 255, 0.72); /*  8.9:1 */
+    --color-text-muted: rgba(255, 255, 255, 0.48); /*  4.8:1 — AA */
+    --color-text-accent: var(--_yellow-500); /* 10.9:1 */
+    --color-text-on-accent: var(--_charcoal-700); /* 10.9:1 */
+    --color-text-disabled: rgba(255, 255, 255, 0.32); /* non-essential only */
+
+    /* Accent */
+    --color-accent: var(--_yellow-500);
+    --color-accent-hover: var(--_yellow-400);
+    --color-accent-active: var(--_yellow-600);
+    --color-accent-subtle: rgba(244, 209, 63, 0.14);
+    --color-accent-disabled: rgba(244, 209, 63, 0.28);
+
+    /* Borders */
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-border-strong: rgba(255, 255, 255, 0.2);
+    --color-border-accent: var(--_yellow-500);
+    --color-border-subtle: rgba(255, 255, 255, 0.06);
+
+    /* System */
+    --color-focus: var(--_yellow-500);
+    --color-overlay: rgba(15, 15, 15, 0.88);
+    --color-success: var(--_success);
+    --color-danger: var(--_danger);
+
+    /* ---------------------------------------------------------------------
+       02 — TYPEFACES
+       Latin: geometric/contemporary sans.
+       Arabic: matched geometric Arabic sans — a first-class pairing, not a
+       fallback. See 03-base.css for the [dir="rtl"] and :lang(ar) rules.
+       --------------------------------------------------------------------- */
+    --font-display: "Space Grotesk", "IBM Plex Sans Arabic", "Segoe UI",
+      system-ui, sans-serif;
+    --font-body: "Inter", "IBM Plex Sans Arabic", "Segoe UI", system-ui,
+      sans-serif;
+    --font-arabic: "IBM Plex Sans Arabic", "Space Grotesk", "Inter", system-ui,
+      sans-serif;
+
+    /* ---------------------------------------------------------------------
+       02b — TYPE SCALE
+       Fluid between 360px and 1440px viewports. Every step is a token; no
+       section may introduce an ad-hoc font-size.
+       --------------------------------------------------------------------- */
+    --text-display-xl: clamp(2.75rem, 1.35rem + 6.2vw, 6.5rem);
+    --text-display-l: clamp(2.25rem, 1.25rem + 4.45vw, 5rem);
+    --text-h1: clamp(2rem, 1.3rem + 3.1vw, 3.9rem);
+    --text-h2: clamp(1.625rem, 1.16rem + 2.06vw, 2.9rem);
+    --text-h3: clamp(1.3125rem, 1.05rem + 1.16vw, 2.05rem);
+    --text-h4: clamp(1.125rem, 1.01rem + 0.5vw, 1.45rem);
+    --text-body-lg: clamp(1.0625rem, 1rem + 0.28vw, 1.25rem);
+    --text-body: 1rem;
+    --text-body-sm: 0.9375rem;
+    --text-small: 0.875rem;
+    --text-label: 0.75rem;
+    --text-meta: 0.8125rem;
+    --text-price: clamp(2.25rem, 1.6rem + 2.9vw, 4rem);
+    --text-price-sm: clamp(1.75rem, 1.4rem + 1.55vw, 2.6rem);
+    --text-stat: clamp(2.5rem, 1.7rem + 3.55vw, 4.75rem);
+
+    /* Line heights — tighter as type gets larger. */
+    --leading-display: 0.95;
+    --leading-tight: 1.08;
+    --leading-heading: 1.18;
+    --leading-snug: 1.35;
+    --leading-body: 1.6;
+    --leading-relaxed: 1.75;
+
+    /* Weights */
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+
+    /* Tracking — negative on display type, positive on labels only.
+       Reset to 0 for Arabic (see 03-base.css). */
+    --tracking-display: -0.035em;
+    --tracking-heading: -0.02em;
+    --tracking-normal: 0;
+    --tracking-wide: 0.04em;
+    --tracking-label: 0.12em;
+
+    /* ---------------------------------------------------------------------
+       03 — SPACING SCALE
+       Named by px value so the scale is self-documenting and impossible to
+       misremember. Arbitrary margins are a governance violation.
+       --------------------------------------------------------------------- */
+    --space-0: 0;
+    --space-4: 0.25rem;
+    --space-8: 0.5rem;
+    --space-12: 0.75rem;
+    --space-16: 1rem;
+    --space-24: 1.5rem;
+    --space-32: 2rem;
+    --space-48: 3rem;
+    --space-64: 4rem;
+    --space-80: 5rem;
+    --space-96: 6rem;
+    --space-120: 7.5rem;
+    --space-160: 10rem;
+
+    /* Section rhythm — fluid, derived from the scale's large end. */
+    --section-space: clamp(4rem, 2.4rem + 7vw, 8.5rem);
+    --section-space-tight: clamp(3rem, 2rem + 4.4vw, 5.5rem);
+    --section-space-loose: clamp(5.5rem, 3rem + 11vw, 10rem);
+    --stack-heading-body: clamp(1rem, 0.7rem + 1.3vw, 1.75rem);
+    --stack-body-cta: clamp(1.5rem, 1rem + 2.2vw, 2.75rem);
+
+    /* ---------------------------------------------------------------------
+       04 — GRID & CONTAINERS
+       --------------------------------------------------------------------- */
+    --grid-columns: 4; /* mobile   */
+    --grid-gutter: var(--space-16);
+    --container-max: 1320px;
+    --container-max-narrow: 820px;
+    --container-max-wide: 1560px;
+    --container-gutter: var(--space-24);
+
+    /* ---------------------------------------------------------------------
+       05 — RADIUS
+       Restrained. Sharp + modern + confident, not soft SaaS.
+       --------------------------------------------------------------------- */
+    --radius-none: 0;
+    --radius-xs: 2px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-pill: 999px; /* tags and toggles only */
+    --radius-circle: 50%;
+
+    /* ---------------------------------------------------------------------
+       06 — BORDERS
+       --------------------------------------------------------------------- */
+    --border-width: 1px;
+    --border-width-strong: 2px;
+    --border-hairline: var(--border-width) solid var(--color-border);
+    --border-defined: var(--border-width) solid var(--color-border-strong);
+    --border-accent: var(--border-width) solid var(--color-border-accent);
+
+    /* ---------------------------------------------------------------------
+       07 — ELEVATION
+       Depth is expressed through contrast, border and spacing. Shadow is a
+       last resort and exists only for genuinely floating layers.
+       --------------------------------------------------------------------- */
+    --shadow-none: none;
+    --shadow-overlay: 0 24px 64px -24px rgba(0, 0, 0, 0.75);
+    --shadow-accent-glow: 0 0 0 1px var(--color-accent),
+      0 12px 32px -16px rgba(244, 209, 63, 0.45);
+
+    /* ---------------------------------------------------------------------
+       08 — MOTION
+       --------------------------------------------------------------------- */
+    --duration-instant: 100ms;
+    --duration-fast: 180ms; /* interaction feedback   */
+    --duration-base: 300ms; /* standard transition    */
+    --duration-slow: 500ms; /* complex/entrance       */
+    --ease-standard: cubic-bezier(0.2, 0.6, 0.2, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+    --transition-interactive: color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard),
+      transform var(--duration-fast) var(--ease-standard);
+
+    /* Reveal distance for scroll entrances. */
+    --reveal-distance: 24px;
+
+    /* ---------------------------------------------------------------------
+       09 — FOCUS
+       One ring, everywhere. Legible on charcoal, on surfaces and on yellow.
+       --------------------------------------------------------------------- */
+    --focus-ring-width: 2px;
+    --focus-ring-offset: 2px;
+    --focus-ring: 0 0 0 var(--focus-ring-offset) var(--color-bg),
+      0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width))
+        var(--color-focus);
+
+    /* ---------------------------------------------------------------------
+       10 — SIZING
+       --------------------------------------------------------------------- */
+    --touch-target-min: 44px; /* mobile-first, non-negotiable */
+    --control-height-sm: 40px;
+    --control-height: 48px;
+    --control-height-lg: 56px;
+    --header-height: 72px;
+    --icon-sm: 16px;
+    --icon-md: 20px;
+    --icon-lg: 24px;
+    --rule-width: 40px;
+
+    /* ---------------------------------------------------------------------
+       11 — LAYERS
+       --------------------------------------------------------------------- */
+    --z-base: 0;
+    --z-raised: 10;
+    --z-sticky: 100;
+    --z-header: 200;
+    --z-overlay: 300;
+    --z-drawer: 400;
+    --z-tooltip: 500;
+    --z-skip-link: 600;
+  }
+
+  /* -----------------------------------------------------------------------
+     RESPONSIVE TOKEN OVERRIDES
+     The grid and container rhythm change by breakpoint; the rest of the
+     system is fluid and needs no overrides.
+     ----------------------------------------------------------------------- */
+
+  /* Tablet — 768px. The grid is re-authored, not shrunk. */
+  @media (min-width: 48em) {
+    :root {
+      --grid-columns: 8;
+      --grid-gutter: var(--space-24);
+      --container-gutter: var(--space-32);
+      --header-height: 80px;
+    }
+  }
+
+  /* Desktop — 1024px */
+  @media (min-width: 64em) {
+    :root {
+      --grid-columns: 12;
+      --grid-gutter: var(--space-32);
+      --container-gutter: var(--space-48);
+      --header-height: 88px;
+    }
+  }
+
+  /* Large desktop — 1440px */
+  @media (min-width: 90em) {
+    :root {
+      --container-gutter: var(--space-64);
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     REDUCED MOTION — collapse durations at the token level so every
+     component inherits the preference without writing its own query.
+     ----------------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --duration-instant: 1ms;
+      --duration-fast: 1ms;
+      --duration-base: 1ms;
+      --duration-slow: 1ms;
+      --reveal-distance: 0px;
+    }
+  }
+}

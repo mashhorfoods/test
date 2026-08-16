@@ -1,0 +1,31 @@
+/* =============================================================================
+   MASTER STYLESHEET — STAGE 00
+   Single entry point. The @layer statement below is the cascade contract: it
+   fixes layer order up front, so a later layer always wins regardless of import
+   order or selector specificity. Specificity wars become structurally
+   impossible, and any section added in Stage 01+ inherits the system by
+   default.
+
+   Each imported file declares its own @layer block, so these imports are
+   plain — do not add layer() here or the layers will nest.
+
+   BUILD NOTE: @import costs a round trip per file. For production, concatenate
+   these into one stylesheet with a bundler (or a `cat` step in this order).
+   The layer statement must remain the first rule.
+   ============================================================================= */
+
+@layer reset, tokens, base, layout, components, motion, utilities;
+
+@import url("./01-reset.css");
+@import url("./02-tokens.css");
+@import url("./03-base.css");
+@import url("./04-layout.css");
+
+@import url("./components/button.css");
+@import url("./components/card.css");
+@import url("./components/navigation.css");
+@import url("./components/disclosure.css");
+@import url("./components/field.css");
+
+@import url("./05-motion.css");
+@import url("./06-utilities.css");

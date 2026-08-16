@@ -1,0 +1,196 @@
+/* =============================================================================
+   COMPONENT — FIELD
+   Form controls. Defined at Stage 00 so any later contact / quote form
+   inherits the system rather than inventing its own input style.
+   ============================================================================= */
+
+@layer components {
+  .c-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .c-field__label {
+    font-family: var(--font-display);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+  }
+
+  /* Required marker uses the accent, plus a text alternative for SR users. */
+  .c-field__required {
+    color: var(--color-accent);
+  }
+
+  .c-field__control {
+    inline-size: 100%;
+    min-block-size: var(--control-height);
+    padding: var(--space-12) var(--space-16);
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-body);
+    transition: border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-field__control:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .c-field__control:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    background-color: var(--color-surface-hover);
+  }
+
+  .c-field__control:disabled {
+    color: var(--color-text-disabled);
+    background-color: var(--color-bg-sunken);
+    cursor: not-allowed;
+  }
+
+  textarea.c-field__control {
+    min-block-size: calc(var(--control-height) * 2.5);
+    line-height: var(--leading-body);
+  }
+
+  /* Native select needs an explicit chevron; it is direction-aware. */
+  select.c-field__control {
+    appearance: none;
+    padding-inline-end: var(--space-48);
+    background-image: linear-gradient(
+        45deg,
+        transparent 50%,
+        currentcolor 50%
+      ),
+      linear-gradient(135deg, currentcolor 50%, transparent 50%);
+    background-position: calc(100% - 20px) 55%, calc(100% - 14px) 55%;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+  }
+
+  [dir="rtl"] select.c-field__control {
+    background-position: 20px 55%, 14px 55%;
+  }
+
+  /* Help text is supporting; error text is not — it uses full-strength colour. */
+  .c-field__help {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .c-field__error {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-size: var(--text-small);
+    color: var(--color-danger);
+  }
+
+  .c-field[data-invalid="true"] .c-field__control {
+    border-color: var(--color-danger);
+  }
+
+  /* Checkbox / radio — custom mark, native input kept for semantics. */
+  .c-choice {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    min-block-size: var(--touch-target-min);
+    cursor: pointer;
+  }
+
+  .c-choice__input {
+    appearance: none;
+    flex-shrink: 0;
+    inline-size: var(--icon-lg);
+    block-size: var(--icon-lg);
+    margin: 0;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-xs);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: var(--transition-interactive);
+  }
+
+  .c-choice__input[type="radio"] {
+    border-radius: var(--radius-circle);
+  }
+
+  .c-choice__input::before {
+    content: "";
+    inline-size: 10px;
+    block-size: 10px;
+    background-color: var(--color-text-on-accent);
+    clip-path: polygon(14% 44%, 0 65%, 39% 100%, 100% 16%, 83% 0, 38% 62%);
+    transform: scale(0);
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .c-choice__input[type="radio"]::before {
+    clip-path: none;
+    border-radius: var(--radius-circle);
+    inline-size: 8px;
+    block-size: 8px;
+  }
+
+  .c-choice__input:hover {
+    border-color: var(--color-accent);
+  }
+
+  .c-choice__input:checked {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .c-choice__input:checked::before {
+    transform: scale(1);
+  }
+
+  .c-choice__label {
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+  }
+
+  /* -----------------------------------------------------------------------
+     SEGMENTED TOGGLE — e.g. monthly / annual billing switches.
+     ----------------------------------------------------------------------- */
+  .c-segmented {
+    display: inline-flex;
+    padding: var(--space-4);
+    background-color: var(--color-surface);
+    border: var(--border-hairline);
+    border-radius: var(--radius-pill);
+  }
+
+  .c-segmented__option {
+    min-block-size: var(--control-height-sm);
+    padding-inline: var(--space-24);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-display);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    transition: var(--transition-interactive);
+  }
+
+  @media (pointer: coarse) {
+    .c-segmented__option {
+      min-block-size: var(--touch-target-min);
+    }
+  }
+
+  .c-segmented__option:hover {
+    color: var(--color-text-primary);
+  }
+
+  .c-segmented__option[aria-pressed="true"] {
+    background-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+  }
+}

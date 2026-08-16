@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- ===================================================================
+         SEO FOUNDATION (rule 21)
+         This head is the template every page in Stage 01+ copies. Titles,
+         descriptions and OG values are per-page; the structure is fixed.
+         =================================================================== -->
+    <title>Master Design System — Stage 00 Specimen Sheet</title>
+    <meta
+      name="description"
+      content="The Stage 00 master design system: colour tokens, type scale, spacing, grid, components, motion and accessibility rules that every subsequent stage must follow."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#202020" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Master Design System — Stage 00" />
+    <meta
+      property="og:description"
+      content="Colour, typography, spacing, grid, components, motion and accessibility rules for the design system."
+    />
+    <meta property="og:locale" content="en" />
+    <!-- Stage 01 adds: og:url, og:image (1200×630), og:site_name, twitter:card,
+         canonical link, hreflang alternates for ar/en, and Organization JSON-LD
+         built from the approved business document. -->
+
+    <!-- Fonts: preconnect then load with display=swap so text paints
+         immediately in the fallback face. Self-host before launch to remove
+         the third-party round trip (rule 20). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="./src/styles/main.css" />
+    <link rel="stylesheet" href="./styleguide.css" />
+
+    <!-- Sets the `js` flag before first paint so motion.js's hidden state
+         never causes a flash of already-visible content. -->
+    <script>
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
+    </script>
+
+    <script type="module" src="./src/scripts/main.js"></script>
+  </head>
+
+  <body>
+    <a class="c-skip-link" href="#main">Skip to content</a>
+
+    <main id="main" class="l-container sg-page">
+      <!-- =================================================================
+           MASTHEAD
+           ================================================================= -->
+      <header class="sg-masthead">
+        <p class="t-label">Stage 00 — Global Design System</p>
+        <h1 class="t-display-l" style="margin-block: var(--space-16)">
+          The system every stage inherits
+        </h1>
+        <p class="t-body-lg t-measure">
+          This is a specimen sheet, not a page design. It documents the tokens,
+          primitives and components that Stage 01 onward must build from. No
+          header, hero, services, pricing or footer is designed here — and no
+          business data appears anywhere on this page.
+        </p>
+      </header>
+
+      <!-- =================================================================
+           01 — COLOUR TOKENS
+           ================================================================= -->
+      <section class="sg-section" aria-labelledby="sg-colour">
+        <p class="sg-section__number">01</p>
+        <h2 class="t-h2 u-mbe-16" id="sg-colour">Colour tokens</h2>
+        <p class="t-body t-measure u-mbe-32">
+          Charcoal is the foundation, white carries the text, yellow is an
+          accent and an interaction language — never a background. Sections
+          consume semantic tokens only; raw palette values are private.
+        </p>
+
+        <div class="l-autogrid u-mbe-32" style="--min-col: 13rem">
+          <div class="sg-swatch">
+            <div class="sg-swatch__chip" style="background: var(--color-bg)"></div>
+            <div class="sg-swatch__meta">
+              <span class="sg-swatch__name">Background</span>
+              <span class="sg-swatch__value">--color-bg · #202020</span>
+            </div>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-swatch__chip" style="background: var(--color-bg-deep)"></div>
+            <div class="sg-swatch__meta">
+              <span class="sg-swatch__name">Deep band</span>
+              <span class="sg-swatch__value">--color-bg-deep · #141414</span>
+            </div>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-swatch__chip" style="background: var(--color-surface)"></div>
+            <div class="sg-swatch__meta">
+              <span class="sg-swatch__name">Surface</span>
+              <span class="sg-swatch__value">--color-surface · #262626</span>
+            </div>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-swatch__chip" style="background: var(--color-text-primary)"></div>
+            <div class="sg-swatch__meta">
+              <span class="sg-swatch__name">Text primary</span>
+              <span class="sg-swatch__value">--color-text-primary · #FFFFFF</span>
+              <span class="sg-contrast">16.3:1 — AAA</span>
+            </div>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-swatch__chip" style="background: var(--color-accent)"></div>
+            <div class="sg-swatch__meta">
+              <span class="sg-swatch__name">Accent</span>
+              <span class="sg-swatch__value">--color-accent · #F4D13F</span>
+              <span class="sg-contrast">10.9:1 — AAA</span>
+            </div>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-swatch__chip" style="background: var(--color-border-strong)"></div>
+            <div class="sg-swatch__meta">
+              <span class="sg-swatch__name">Border strong</span>
+              <span class="sg-swatch__value">--color-border-strong · 20% white</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-specimen">
+          <p class="sg-caption">Text hierarchy on charcoal</p>
+          <p class="u-text-primary" style="margin-block-end: var(--space-8)">
+            Primary — 16.3:1, passes AAA at every size.
+          </p>
+          <p class="u-text-secondary" style="margin-block-end: var(--space-8)">
+            Secondary — 8.9:1, passes AAA. Body copy and supporting text.
+          </p>
+          <p class="u-text-muted">
+            Muted — 4.8:1, passes AA. Metadata and labels only, never for
+            pricing, package contents or anything a decision depends on.
+          </p>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           02 — TYPOGRAPHY
+           ================================================================= -->
+      <section class="sg-section" aria-labelledby="sg-type">
+        <p class="sg-section__number">02</p>
+        <h2 class="t-h2 u-mbe-16" id="sg-type">Typography scale</h2>
+        <p class="t-body t-measure u-mbe-32">
+          Every step is fluid between 360px and 1440px, so there are no
+          breakpoint jumps in type size. Semantic heading level and visual role
+          are separate: pick <code class="sg-mono">h1–h6</code> for the document
+          outline, pick <code class="sg-mono">.t-*</code> for the appearance.
+        </p>
+
+        <div class="sg-specimen l-stack" style="--gap: var(--space-24)">
+          <div>
+            <p class="sg-caption">.t-display-xl — 44 → 104px</p>
+            <p class="t-display-xl">Display</p>
+          </div>
+          <div>
+            <p class="sg-caption">.t-h1 — 32 → 62px</p>
+            <p class="t-h1">Section headline</p>
+          </div>
+          <div>
+            <p class="sg-caption">.t-h2 — 26 → 46px</p>
+            <p class="t-h2">Subsection heading</p>
+          </div>
+          <div>
+            <p class="sg-caption">.t-h3 — 21 → 33px</p>
+            <p class="t-h3">Card and item title</p>
+          </div>
+          <div>
+            <p class="sg-caption">.t-body-lg — 17 → 20px</p>
+            <p class="t-body-lg t-measure">
+              Lead paragraph. Long-form copy is capped at 62 characters by
+              <code class="sg-mono">.t-measure</code> so lines stay readable no
+              matter how wide the grid column is.
+            </p>
+          </div>
+          <div>
+            <p class="sg-caption">.t-label / .t-meta / .t-price</p>
+            <p class="t-label">Section label</p>
+            <p class="t-meta">Metadata · tabular figures</p>
+            <p class="t-price">0,000</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           03 — SPACING
+           ================================================================= -->
+      <section class="sg-section" aria-labelledby="sg-space">
+        <p class="sg-section__number">03</p>
+        <h2 class="t-h2 u-mbe-16" id="sg-space">Spacing scale</h2>
+        <p class="t-body t-measure u-mbe-32">
+          Tokens are named by their pixel value, so the scale is impossible to
+          misremember. An arbitrary margin is a governance violation.
+        </p>
+
+        <div class="sg-specimen">
+          <div class="sg-space-row">
+            <span class="sg-mono">--space-4</span
+            ><span class="sg-space-bar" style="inline-size: var(--space-4)"></span>
+          </div>
+          <div class="sg-space-row">
+            <span class="sg-mono">--space-8</span
+            ><span class="sg-space-bar" style="inline-size: var(--space-8)"></span>
+          </div>
+          <div class="sg-space-row">
+            <span class="sg-mono">--space-16</span
+            ><span class="sg-space-bar" style="inline-size: var(--space-16)"></span>
+          </div>
+          <div class="sg-space-row">
+            <span class="sg-mono">--space-32</span
+            ><span class="sg-space-bar" style="inline-size: var(--space-32)"></span>
+          </div>
+          <div class="sg-space-row">
+            <span class="sg-mono">--space-64</span
+            ><span class="sg-space-bar" style="inline-size: var(--space-64)"></span>
+          </div>
+          <div class="sg-space-row">
+            <span class="sg-mono">--space-96</span
+            ><span class="sg-space-bar" style="inline-size: var(--space-96)"></span>
+          </div>
+          <div class="sg-space-row">
+            <span class="sg-mono">--space-160</span
+            ><span class="sg-space-bar" style="inline-size: var(--space-160)"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           04 — GRID
+           ================================================================= -->
+      <section class="sg-section" aria-labelledby="sg-grid">
+        <p class="sg-section__number">04</p>
+        <h2 class="t-h2 u-mbe-16" id="sg-grid">Grid system</h2>
+        <p class="t-body t-measure u-mbe-32">
+          4 columns on mobile, 8 on tablet, 12 on desktop — re-authored per
+          breakpoint, not shrunk. Children declare spans with custom properties
+          rather than 36 generated utility classes. Resize to watch the spans
+          re-flow.
+        </p>
+
+        <div class="sg-specimen">
+          <p class="sg-caption">Full grid — one cell per column</p>
+          <div class="l-grid sg-grid-demo u-mbe-32">
+            <div class="l-col" style="--span: 1">1</div>
+            <div class="l-col" style="--span: 1">2</div>
+            <div class="l-col" style="--span: 1">3</div>
+            <div class="l-col" style="--span: 1">4</div>
+            <div class="l-col u-hide-mobile" style="--span: 1">5</div>
+            <div class="l-col u-hide-mobile" style="--span: 1">6</div>
+            <div class="l-col u-hide-mobile" style="--span: 1">7</div>
+            <div class="l-col u-hide-mobile" style="--span: 1">8</div>
+          </div>
+
+          <p class="sg-caption">Asymmetric composition — 4 / 4 / 4 → 8 / 4</p>
+          <div class="l-grid sg-grid-demo">
+            <div class="l-col" style="--span: 4; --span-md: 8; --span-lg: 8">
+              --span-lg: 8
+            </div>
+            <div class="l-col" style="--span: 4; --span-md: 4; --span-lg: 4">
+              --span-lg: 4
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           05 — BUTTONS & CTA HIERARCHY
+           ================================================================= -->
+      <section class="sg-section" aria-labelledby="sg-buttons">
+        <p class="sg-section__number">05</p>
+        <h2 class="t-h2 u-mbe-16" id="sg-buttons">Buttons &amp; CTA hierarchy</h2>
+        <p class="t-body t-measure u-mbe-32">
+          One primary per visual area. Secondary supports it, ghost carries
+          tertiary actions. Every variant has a hover, active, focus and
+          disabled state, and every target clears 44×44px.
+        </p>
+
+        <div class="sg-specimen">
+          <p class="sg-caption">Variants</p>
+          <div class="l-cluster">
+            <button class="c-btn c-btn--primary" type="button">
+              Primary action
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M5 12h13M13 6l6 6-6 6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="square"
+                />
+              </svg>
+            </button>
+            <button class="c-btn c-btn--secondary" type="button">Secondary</button>
+            <button class="c-btn c-btn--ghost" type="button">Ghost</button>
+            <button class="c-btn c-btn--icon" type="button" aria-label="Close">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+            </button>
+            <button class="c-btn c-btn--primary" type="button" disabled>Disabled</button>
+          </div>
+        </div>
+
+        <div class="sg-specimen">
+          <p class="sg-caption">Sizes · inline link</p>
+          <div class="l-cluster">
+            <button class="c-btn c-btn--primary c-btn--sm" type="button">Small</button>
+            <button class="c-btn c-btn--primary" type="button">Default</button>
+            <button class="c-btn c-btn--primary c-btn--lg" type="button">Large</button>
+            <a class="c-link" href="#sg-buttons">Inline text link</a>
+          </div>
+        </div>
+
+        <div class="sg-note" style="margin-block-start: var(--space-16)">
+          Tab through the row above. The focus ring is a single token
+          (<code class="sg-mono">--focus-ring</code>) drawn as a double
+          box-shadow, so it stays visible on charcoal, on surfaces and on yellow
+          alike.
+        </div>
+      </section>
+
+      <!-- =================================================================
+           06 — CARDS
+           ================================================================= -->
+      <section class="sg-section" aria-labelledby="sg-cards">
+        <p class="sg-section__number">06</p>
+        <h2 class="t-h2 u-mbe-16" id="sg-cards">Card system</h2>
+        <p class="t-body t-measure u-mbe-32">
+          Four roles on one base. Hierarchy comes from border, surface contrast
+          and typography — not shadow. All content below is placeholder
+          structure; real services and packages arrive in Stage 01 from the
+          approved document.
+        </p>
+
+        <div class="sg-specimen">
+          <p class="sg-caption">Service card — interactive</p>
+          <div class="l-autogrid" style="--min-col: 17rem">
+            <article class="c-card c-card--service c-card--interactive">
+              <p class="c-card__index">01</p>
+              <h3 class="t-h3 c-card__title">
+                <a class="c-card__link" href="#sg-cards">Service title</a>
+              </h3>
+              <p class="c-card__body t-body-sm">
+                One or two lines describing the service. Populated in Stage 01.
+              </p>
+            </article>
+            <article class="c-card c-card--service c-card--interactive">
+              <p class="c-card__index">02</p>
+              <h3 class="t-h3 c-card__title">
+                <a class="c-card__link" href="#sg-cards">Service title</a>
+              </h3>
+              <p class="c-card__body t-body-sm">
+                Hover or focus the card: the accent rule extends and the index
+                numeral shifts to yellow.
+              </p>
+            </article>
+            <article class="c-card c-card--feature">
+              <span class="c-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 3l2.6 6.1 6.4.6-4.8 4.3 1.4 6.4-5.6-3.4-5.6 3.4 1.4-6.4L3 9.7l6.4-.6z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                  />
+                </svg>
+              </span>
+              <h3 class="t-h4 c-card__title">Feature card</h3>
+              <p class="c-card__body t-body-sm">
+                Borderless variant for supporting capability grids.
+              </p>
+            </article>
+          </div>
+        </div>
+
+        <div class="sg-specimen">
+          <p class="sg-caption">Pricing card — structure only, no business data</p>
+          <div class="l-autogrid" style="--min-col: 17rem">
+            <article class="c-card c-card--pricing">
+              <div>
+                <h3 class="t-h3 c-card__title">Package name</h3>
+                <p class="c-card__audience">Who this package is for.</p>
+              </div>
+              <div class="c-card__price-block">
+                <p class="t-price-sm c-card__price">0,000</p>
+                <p class="c-card__billing">Billing model</p>
+              </div>
+              <ul class="c-card__features">
+                <li class="c-card__feature">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M5 13l4 4L19 7"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    />
+                  </svg>
+                  <span>Included item</span>
+                </li>
+                <li class="c-card__feature">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M5 13l4 4L19 7"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    />
+                  </svg>
+                  <span>Included item</span>
+                </li>
+              </ul>
+              <div class="c-card__footer">
+                <button class="c-btn c-btn--secondary c-btn--block" type="button">
+                  Secondary CTA
+                </button>
+              </div>
+            </article>
+
+            <article class="c-card c-card--pricing c-card--featured">
+              <span class="c-card__ribbon">Recommended</span>
+              <div>
+                <h3 class="t-h3 c-card__title">Package name</h3>
+                <p class="c-card__audience">Who this package is for.</p>
+              </div>
+              <div class="c-card__price-block">
+                <p class="t-price-sm c-card__price">0,000</p>
+                <p class="c-card__billing">Billing model</p>
+              </div>
+              <ul class="c-card__features">
+                <li class="c-card__feature">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M5 13l4 4L19 7"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    />
+                  </svg>
+                  <span>Included item</span>
+                </li>
+                <li class="c-card__feature">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M5 13l4 4L19 7"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    />
+                  </svg>
+                  <span>Included item</span>
+                </li>
+              </ul>
+              <div class="c-card__footer">
+                <button class="c-btn c-btn--primary c-btn--block" type="button">
+                  Primary CTA
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           07 — INTERACTIVE ELEMENTS
+           ================================================================= -->
+      <section class="sg-section" aria-labelledby="sg-interactive">
+        <p class="sg-section__number">07</p>
+        <h2 class="t-h2 u-mbe-16" id="sg-interactive">Interactive elements</h2>
+        <p class="t-body t-measure u-mbe-32">
+          Accordion, tabs and tooltip. All three are keyboard-operable and all
+          three render their content without JavaScript — no business
+          information is ever gated behind an interaction.
+        </p>
+
+        <div class="sg-specimen">
+          <p class="sg-caption">Accordion — arrow keys move between triggers</p>
+          <div class="c-accordion" data-accordion data-accordion-single>
+            <div class="c-accordion__item" data-accordion-open>
+              <h3>
+                <button class="c-accordion__trigger" data-accordion-trigger>
+                  First disclosure
+                  <span class="c-accordion__indicator" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="c-accordion__panel" data-accordion-panel>
+                <div class="c-accordion__panel-inner">
+                  <div class="c-accordion__content t-body-sm">
+                    The panel animates on
+                    <code class="sg-mono">grid-template-rows</code>, so no height
+                    is measured in JavaScript and nothing is clipped from the
+                    accessibility tree.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="c-accordion__item">
+              <h3>
+                <button class="c-accordion__trigger" data-accordion-trigger>
+                  Second disclosure
+                  <span class="c-accordion__indicator" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="c-accordion__panel" data-accordion-panel>
+                <div class="c-accordion__panel-inner">
+                  <div class="c-accordion__content t-body-sm">
+                    Collapsed panels are marked <code class="sg-mono">inert</code>,
+                    so their links never become invisible tab stops.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-specimen">
+          <p class="sg-caption">Tabs — roving tabindex, direction-aware arrows</p>
+          <div data-tabs>
+            <div class="c-tabs__list" role="tablist" aria-label="Specimen tabs">
+              <button class="c-tabs__tab" data-tab="one" data-tab-selected>Tab one</button>
+              <button class="c-tabs__tab" data-tab="two">Tab two</button>
+              <button class="c-tabs__tab" data-tab="three">Tab three</button>
+            </div>
+            <div class="c-tabs__panel t-body-sm" data-tab-panel="one">
+              First panel. In RTL, Left/Right arrow keys swap so movement always
+              follows the reading direction.
+            </div>
+            <div class="c-tabs__panel t-body-sm" data-tab-panel="two">
+              Second panel.
+            </div>
+            <div class="c-tabs__panel t-body-sm" data-tab-panel="three">
+              Third panel.
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-specimen">
+          <p class="sg-caption">Tooltip · segmented toggle · tag</p>
+          <div class="l-cluster">
+            <span class="c-tooltip" data-tooltip>
+              <button
+                class="c-tooltip__trigger"
+                type="button"
+                data-tooltip-trigger
+                aria-label="More information"
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="9"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M12 11v6M12 7.5v.01"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+              <span class="c-tooltip__bubble" data-tooltip-bubble>
+                Supplementary detail only — never essential information.
+              </span>
+            </span>
+
+            <div class="c-segmented" role="group" aria-label="Billing period">
+              <button class="c-segmented__option" type="button" aria-pressed="true">
+                Option A
+              </button>
+              <button class="c-segmented__option" type="button" aria-pressed="false">
+                Option B
+              </button>
+            </div>
+
+            <span class="c-tag c-tag--accent">Accent tag</span>
+            <span class="c-tag">Neutral tag</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           08 — NAVIGATION SPECIMEN
+           ================================================================= -->
+      <section class="sg-section" aria-labelledby="sg-nav">
+        <p class="sg-section__number">08</p>
+        <h2 class="t-h2 u-mbe-16" id="sg-nav">Navigation components</h2>
+        <p class="t-body t-measure u-mbe-32">
+          Component specimens only — the site header is designed in a later
+          stage. Header, drawer and footer links all render from one array
+          (<code class="sg-mono">src/scripts/navigation-map.js</code>), so their
+          order cannot drift apart.
+        </p>
+
+        <div class="sg-specimen">
+          <p class="sg-caption">Nav link states</p>
+          <ul class="c-nav__list" style="display: flex; flex-wrap: wrap">
+            <li>
+              <a class="c-nav__link" href="#sg-nav" aria-current="true">Active</a>
+            </li>
+            <li><a class="c-nav__link" href="#sg-nav">Default</a></li>
+            <li><a class="c-nav__link" href="#sg-nav">Hover me</a></li>
+          </ul>
+        </div>
+
+        <div class="sg-specimen">
+          <p class="sg-caption">Menu trigger — 44×44px, animates to a close mark</p>
+          <button class="c-menu-trigger" type="button" style="display: inline-grid">
+            <span class="c-menu-trigger__bars" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </span>
+            <span class="u-visually-hidden">Toggle menu</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           09 — FORM FIELDS
+           ================================================================= -->
+      <section class="sg-section" aria-labelledby="sg-fields">
+        <p class="sg-section__number">09</p>
+        <h2 class="t-h2 u-mbe-16" id="sg-fields">Form fields</h2>
+        <p class="t-body t-measure u-mbe-32">
+          Defined now so any later enquiry or quote form inherits the system
+          instead of inventing its own input style.
+        </p>
+
+        <div class="sg-specimen l-grid" style="--row-gap: var(--space-24)">
+          <div class="l-col" style="--span: 4; --span-md: 4; --span-lg: 6">
+            <div class="c-field">
+              <label class="c-field__label" for="sg-name">
+                Label <span class="c-field__required" aria-hidden="true">*</span>
+                <span class="u-visually-hidden">(required)</span>
+              </label>
+              <input class="c-field__control" id="sg-name" type="text" required />
+              <p class="c-field__help">Help text uses muted colour.</p>
+            </div>
+          </div>
+
+          <div class="l-col" style="--span: 4; --span-md: 4; --span-lg: 6">
+            <div class="c-field" data-invalid="true">
+              <label class="c-field__label" for="sg-email">Invalid state</label>
+              <input
+                class="c-field__control"
+                id="sg-email"
+                type="email"
+                aria-describedby="sg-email-error"
+                aria-invalid="true"
+              />
+              <p class="c-field__error" id="sg-email-error">
+                Error text is full-strength, never low-opacity.
+              </p>
+            </div>
+          </div>
+
+          <div class="l-col" style="--span: 4; --span-md: 8; --span-lg: 12">
+            <label class="c-choice">
+              <input class="c-choice__input" type="checkbox" />
+              <span class="c-choice__label">Checkbox with a 44px touch target</span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           10 — MOTION
+           ================================================================= -->
+      <section class="sg-section" aria-labelledby="sg-motion">
+        <p class="sg-section__number">10</p>
+        <h2 class="t-h2 u-mbe-16" id="sg-motion">Motion</h2>
+        <p class="t-body t-measure u-mbe-32">
+          Durations and easing are tokens, and reduced-motion collapses them at
+          the token level — so a component cannot forget to respect the
+          preference. Content is visible by default; motion never gates it.
+        </p>
+
+        <div class="sg-scroll u-mbe-32">
+          <table class="sg-table">
+            <caption class="u-visually-hidden">Motion tokens</caption>
+            <thead>
+              <tr>
+                <th scope="col">Token</th>
+                <th scope="col">Value</th>
+                <th scope="col">Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>--duration-fast</code></td>
+                <td>180ms</td>
+                <td>Hover, focus, press — immediate feedback</td>
+              </tr>
+              <tr>
+                <td><code>--duration-base</code></td>
+                <td>300ms</td>
+                <td>Accordion, tabs, nav indicators</td>
+              </tr>
+              <tr>
+                <td><code>--duration-slow</code></td>
+                <td>500ms</td>
+                <td>Scroll reveals, drawer, complex transitions</td>
+              </tr>
+              <tr>
+                <td><code>--ease-out</code></td>
+                <td>cubic-bezier(.16, 1, .3, 1)</td>
+                <td>Entrances — decelerating, no overshoot</td>
+              </tr>
+              <tr>
+                <td><code>--ease-standard</code></td>
+                <td>cubic-bezier(.2, .6, .2, 1)</td>
+                <td>State changes and colour transitions</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="sg-specimen" data-reveal>
+          <p class="sg-caption">Scroll reveal · animated counter</p>
+          <p class="t-stat">
+            <span class="c-counter" data-count-to="248">248</span>
+          </p>
+          <p class="t-body-sm">
+            The final value is already in the markup, so it is correct before,
+            during and after the count — and correct with JavaScript disabled.
+            Tabular figures stop the layout shifting while it runs.
+          </p>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           11 — RTL
+           ================================================================= -->
+      <section class="sg-section" aria-labelledby="sg-rtl">
+        <p class="sg-section__number">11</p>
+        <h2 class="t-h2 u-mbe-16" id="sg-rtl">RTL / LTR</h2>
+        <p class="t-body t-measure u-mbe-32">
+          Layout mirrors automatically because every rule uses logical
+          properties — there is no mirrored stylesheet to maintain. What changes
+          per script is the typeface, letter-spacing (tracking breaks Arabic
+          letter joins), text-transform (Arabic has no case) and line-height.
+        </p>
+
+        <div class="sg-specimen" dir="rtl" lang="ar">
+          <p class="t-label">تسمية القسم</p>
+          <h3 class="t-h3" style="margin-block: var(--space-12)">
+            عنوان تجريبي للتحقق من الاتجاه
+          </h3>
+          <p class="t-body-sm">
+            هذا نص بديل للتحقق من المحاذاة والمسافات والاتجاه. الأرقام تبقى من
+            اليسار إلى اليمين:
+            <span class="t-price-sm u-bidi-isolate" style="font-size: 1em">0,000</span>
+          </p>
+          <div class="l-cluster" style="margin-block-start: var(--space-24)">
+            <button class="c-btn c-btn--primary" type="button">
+              إجراء أساسي
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M5 12h13M13 6l6 6-6 6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="square"
+                />
+              </svg>
+            </button>
+            <button class="c-btn c-btn--secondary" type="button">إجراء ثانوي</button>
+          </div>
+        </div>
+
+        <div class="sg-note" style="margin-block-start: var(--space-16)">
+          The arrow above carries <code class="sg-mono">.u-flip-rtl</code> and
+          mirrors with the layout. Brand marks and logos must never carry it.
+        </div>
+      </section>
+
+      <!-- =================================================================
+           12 — NAMING CONVENTION
+           ================================================================= -->
+      <section class="sg-section" aria-labelledby="sg-naming">
+        <p class="sg-section__number">12</p>
+        <h2 class="t-h2 u-mbe-16" id="sg-naming">Naming convention</h2>
+
+        <div class="sg-scroll">
+          <table class="sg-table">
+            <caption class="u-visually-hidden">Class prefixes</caption>
+            <thead>
+              <tr>
+                <th scope="col">Prefix</th>
+                <th scope="col">Meaning</th>
+                <th scope="col">Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>l-</code></td>
+                <td>Layout primitive</td>
+                <td><code>l-container</code>, <code>l-grid</code></td>
+              </tr>
+              <tr>
+                <td><code>c-</code></td>
+                <td>Component (BEM: block__element--modifier)</td>
+                <td><code>c-card__title c-card--featured</code></td>
+              </tr>
+              <tr>
+                <td><code>t-</code></td>
+                <td>Typography role</td>
+                <td><code>t-h2</code>, <code>t-price</code></td>
+              </tr>
+              <tr>
+                <td><code>u-</code></td>
+                <td>Utility — single purpose</td>
+                <td><code>u-text-accent</code></td>
+              </tr>
+              <tr>
+                <td><code>is- / has-</code></td>
+                <td>Transient state, set by JavaScript</td>
+                <td><code>is-open</code>, <code>is-revealed</code></td>
+              </tr>
+              <tr>
+                <td><code>data-*</code></td>
+                <td>Behaviour hook — never styled</td>
+                <td><code>data-accordion</code>, <code>data-reveal</code></td>
+              </tr>
+              <tr>
+                <td><code>--_name</code></td>
+                <td>Private custom property, internal to one file</td>
+                <td><code>--_span</code>, <code>--_bg</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

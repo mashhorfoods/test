@@ -1,0 +1,299 @@
+/* =============================================================================
+   COMPONENT — NAVIGATION
+   Header shell, desktop nav, menu trigger and mobile drawer.
+   Rule 18: header, drawer and footer quick links all render the SAME section
+   order from one source array (see src/scripts/navigation.js).
+   ============================================================================= */
+
+@layer components {
+  /* -----------------------------------------------------------------------
+     HEADER
+     ----------------------------------------------------------------------- */
+  .c-header {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: var(--z-header);
+    block-size: var(--header-height);
+    display: flex;
+    align-items: center;
+    border-block-end: var(--border-width) solid transparent;
+    transition: background-color var(--duration-base) var(--ease-standard),
+      border-color var(--duration-base) var(--ease-standard);
+  }
+
+  /* Set by navigation.js once the page scrolls past the hero threshold. */
+  .c-header.is-scrolled {
+    background-color: rgba(32, 32, 32, 0.85);
+    backdrop-filter: blur(12px);
+    border-block-end-color: var(--color-border);
+  }
+
+  @supports not (backdrop-filter: blur(12px)) {
+    .c-header.is-scrolled {
+      background-color: var(--color-bg);
+    }
+  }
+
+  .c-header__inner {
+    inline-size: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-32);
+  }
+
+  .c-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-12);
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-heading);
+    text-decoration: none;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+  }
+
+  /* Offset for in-page anchors so headings are not hidden behind the header. */
+  .c-header-offset {
+    scroll-margin-block-start: calc(var(--header-height) + var(--space-32));
+  }
+
+  /* -----------------------------------------------------------------------
+     DESKTOP NAV
+     ----------------------------------------------------------------------- */
+  .c-nav {
+    display: none;
+  }
+
+  @media (min-width: 64em) {
+    .c-nav {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+    }
+  }
+
+  .c-nav__list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .c-nav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--touch-target-min);
+    padding-inline: var(--space-16);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-nav__link:hover {
+    color: var(--color-text-primary);
+  }
+
+  /* Active indicator — the yellow accent is the navigation's position cue. */
+  .c-nav__link::after {
+    content: "";
+    position: absolute;
+    inset-block-end: calc(50% - 0.95em);
+    inset-inline-start: var(--space-16);
+    inline-size: calc(100% - (var(--space-16) * 2));
+    block-size: var(--border-width-strong);
+    background-color: var(--color-accent);
+    transform: scaleX(0);
+    /* transform-origin has no logical keywords, so the RTL case is explicit. */
+    transform-origin: left center;
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  [dir="rtl"] .c-nav__link::after {
+    transform-origin: right center;
+  }
+
+  .c-nav__link:hover::after {
+    transform: scaleX(0.4);
+  }
+
+  .c-nav__link[aria-current="true"],
+  .c-nav__link.is-active {
+    color: var(--color-text-primary);
+  }
+
+  .c-nav__link[aria-current="true"]::after,
+  .c-nav__link.is-active::after {
+    transform: scaleX(1);
+  }
+
+  /* -----------------------------------------------------------------------
+     MENU TRIGGER — animated bars, 44px touch target, hidden from desktop.
+     ----------------------------------------------------------------------- */
+  .c-menu-trigger {
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--touch-target-min);
+    block-size: var(--touch-target-min);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+    transition: var(--transition-interactive);
+  }
+
+  .c-menu-trigger:hover {
+    border-color: var(--color-border-accent);
+    color: var(--color-accent);
+  }
+
+  @media (min-width: 64em) {
+    .c-menu-trigger {
+      display: none;
+    }
+  }
+
+  .c-menu-trigger__bars {
+    position: relative;
+    inline-size: 18px;
+    block-size: 12px;
+  }
+
+  .c-menu-trigger__bars span {
+    position: absolute;
+    inset-inline: 0;
+    block-size: var(--border-width-strong);
+    background-color: currentcolor;
+    transition: transform var(--duration-base) var(--ease-out),
+      opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-menu-trigger__bars span:nth-child(1) {
+    inset-block-start: 0;
+  }
+  .c-menu-trigger__bars span:nth-child(2) {
+    inset-block-start: 5px;
+  }
+  .c-menu-trigger__bars span:nth-child(3) {
+    inset-block-start: 10px;
+  }
+
+  .c-menu-trigger[aria-expanded="true"] .c-menu-trigger__bars span:nth-child(1) {
+    transform: translateY(5px) rotate(45deg);
+  }
+  .c-menu-trigger[aria-expanded="true"] .c-menu-trigger__bars span:nth-child(2) {
+    opacity: 0;
+  }
+  .c-menu-trigger[aria-expanded="true"] .c-menu-trigger__bars span:nth-child(3) {
+    transform: translateY(-5px) rotate(-45deg);
+  }
+
+  /* -----------------------------------------------------------------------
+     MOBILE DRAWER — rule 19. A designed experience, not a collapsed desktop
+     nav: large type, generous targets, CTA pinned in view.
+     ----------------------------------------------------------------------- */
+  .c-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-drawer);
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg);
+    padding-block-start: var(--header-height);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-standard),
+      visibility 0s linear var(--duration-base);
+  }
+
+  .c-drawer.is-open {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+  }
+
+  @media (min-width: 64em) {
+    .c-drawer {
+      display: none;
+    }
+  }
+
+  .c-drawer__inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-48);
+    padding-block: var(--space-48);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .c-drawer__list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .c-drawer__item {
+    border-block-end: var(--border-hairline);
+  }
+
+  .c-drawer__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16);
+    min-block-size: 64px;
+    padding-block: var(--space-16);
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-heading);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-drawer__link:hover,
+  .c-drawer__link[aria-current="true"] {
+    color: var(--color-accent);
+  }
+
+  .c-drawer__index {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Staggered entrance — items settle in sequence once the drawer opens. */
+  @media (prefers-reduced-motion: no-preference) {
+    .c-drawer__item {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity var(--duration-base) var(--ease-out),
+        transform var(--duration-base) var(--ease-out);
+    }
+
+    .c-drawer.is-open .c-drawer__item {
+      opacity: 1;
+      transform: none;
+      transition-delay: calc(60ms * var(--i, 0));
+    }
+  }
+
+  /* Locks background scroll while the drawer is open (set by navigation.js). */
+  .is-scroll-locked {
+    overflow: hidden;
+  }
+}

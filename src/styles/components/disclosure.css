@@ -1,0 +1,255 @@
+/* =============================================================================
+   COMPONENT — DISCLOSURE
+   Accordion, tabs and tooltip. Rule 14: no essential business information may
+   be hidden behind an interaction — these organise detail, they never gate it.
+   ============================================================================= */
+
+@layer components {
+  /* -----------------------------------------------------------------------
+     ACCORDION
+     Panels animate on grid-template-rows so the height is never measured in
+     JavaScript and content is not clipped from the accessibility tree.
+     Without JS every panel renders open — progressive enhancement.
+     ----------------------------------------------------------------------- */
+  .c-accordion {
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-accordion__item {
+    border-block-end: var(--border-hairline);
+  }
+
+  .c-accordion__trigger {
+    inline-size: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-24);
+    min-block-size: var(--touch-target-min);
+    padding-block: var(--space-24);
+    text-align: start;
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-accordion__trigger:hover {
+    color: var(--color-accent);
+  }
+
+  .c-accordion__trigger[aria-expanded="true"] {
+    color: var(--color-accent);
+  }
+
+  /* Plus/minus indicator built from two rules — no icon font, no SVG. */
+  .c-accordion__indicator {
+    position: relative;
+    flex-shrink: 0;
+    inline-size: var(--icon-lg);
+    block-size: var(--icon-lg);
+  }
+
+  .c-accordion__indicator::before,
+  .c-accordion__indicator::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: var(--icon-md);
+    block-size: var(--border-width-strong);
+    background-color: currentcolor;
+    translate: -50% -50%;
+    transition: rotate var(--duration-base) var(--ease-out),
+      opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-accordion__indicator::after {
+    rotate: 90deg;
+  }
+
+  .c-accordion__trigger[aria-expanded="true"] .c-accordion__indicator::after {
+    rotate: 0deg;
+    opacity: 0;
+  }
+
+  .c-accordion__panel {
+    display: grid;
+    grid-template-rows: 1fr; /* open by default — no-JS fallback */
+    transition: grid-template-rows var(--duration-base) var(--ease-out);
+  }
+
+  .c-accordion__panel[data-collapsed="true"] {
+    grid-template-rows: 0fr;
+  }
+
+  .c-accordion__panel-inner {
+    overflow: hidden;
+    min-block-size: 0;
+  }
+
+  .c-accordion__content {
+    padding-block-end: var(--space-32);
+    padding-inline-end: var(--space-48);
+    color: var(--color-text-secondary);
+    max-inline-size: 68ch;
+  }
+
+  /* -----------------------------------------------------------------------
+     TABS
+     Roving tabindex + arrow keys handled in src/scripts/disclosure.js.
+     The tablist scrolls horizontally on mobile — the page never does.
+     ----------------------------------------------------------------------- */
+  .c-tabs__list {
+    display: flex;
+    gap: var(--space-4);
+    border-block-end: var(--border-hairline);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .c-tabs__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .c-tabs__tab {
+    position: relative;
+    flex-shrink: 0;
+    min-block-size: var(--touch-target-min);
+    padding: var(--space-12) var(--space-24);
+    font-family: var(--font-display);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-tabs__tab:hover {
+    color: var(--color-text-primary);
+  }
+
+  .c-tabs__tab::after {
+    content: "";
+    position: absolute;
+    inset-block-end: -1px;
+    inset-inline: 0;
+    block-size: var(--border-width-strong);
+    background-color: var(--color-accent);
+    transform: scaleX(0);
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .c-tabs__tab[aria-selected="true"] {
+    color: var(--color-accent);
+  }
+
+  .c-tabs__tab[aria-selected="true"]::after {
+    transform: scaleX(1);
+  }
+
+  .c-tabs__panel {
+    padding-block-start: var(--space-32);
+  }
+
+  .c-tabs__panel:focus-visible {
+    box-shadow: var(--focus-ring);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .c-tabs__panel[data-entering="true"] {
+      animation: tab-in var(--duration-base) var(--ease-out) both;
+    }
+  }
+
+  @keyframes tab-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     TOOLTIP
+     Supplementary detail only. Available on hover AND keyboard focus, and
+     wired with aria-describedby so it reaches assistive tech.
+     ----------------------------------------------------------------------- */
+  .c-tooltip {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .c-tooltip__bubble {
+    position: absolute;
+    inset-block-end: calc(100% + var(--space-8));
+    inset-inline-start: 50%;
+    /* --tooltip-shift is set by disclosure.js when the centred bubble would
+       collide with a viewport edge; it is 0 in the common case. */
+    translate: calc(-50% + var(--tooltip-shift, 0px)) 4px;
+    z-index: var(--z-tooltip);
+    inline-size: max-content;
+    max-inline-size: min(24ch, calc(100vw - var(--space-32)));
+    padding: var(--space-8) var(--space-12);
+    background-color: var(--color-bg-deep);
+    color: var(--color-text-primary);
+    border: var(--border-defined);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-small);
+    line-height: var(--leading-snug);
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--duration-fast) var(--ease-standard),
+      translate var(--duration-fast) var(--ease-out),
+      visibility 0s linear var(--duration-fast);
+  }
+
+  .c-tooltip:hover .c-tooltip__bubble,
+  .c-tooltip:focus-within .c-tooltip__bubble {
+    opacity: 1;
+    visibility: visible;
+    translate: calc(-50% + var(--tooltip-shift, 0px)) 0;
+    transition-delay: 0s;
+  }
+
+  /* Info affordance that opens a tooltip. */
+  .c-tooltip__trigger {
+    display: grid;
+    place-items: center;
+    inline-size: var(--touch-target-min);
+    block-size: var(--touch-target-min);
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-tooltip__trigger:hover,
+  .c-tooltip__trigger:focus-visible {
+    color: var(--color-accent);
+  }
+
+  /* -----------------------------------------------------------------------
+     HOVER REVEAL — supplementary content that appears on hover/focus but is
+     always present for screen readers and always visible on touch devices.
+     ----------------------------------------------------------------------- */
+  .c-reveal__extra {
+    opacity: 1;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .c-reveal__extra {
+      opacity: 0;
+      translate: 0 6px;
+      transition: opacity var(--duration-base) var(--ease-standard),
+        translate var(--duration-base) var(--ease-out);
+    }
+
+    .c-reveal:hover .c-reveal__extra,
+    .c-reveal:focus-within .c-reveal__extra {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+}

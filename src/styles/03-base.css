@@ -1,0 +1,269 @@
+/* =============================================================================
+   BASE
+   Document defaults, the typography role classes, focus, selection and the
+   bidirectional (RTL/LTR) foundation.
+   ============================================================================= */
+
+@layer base {
+  /* -----------------------------------------------------------------------
+     DOCUMENT
+     ----------------------------------------------------------------------- */
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-normal);
+  }
+
+  /* -----------------------------------------------------------------------
+     TYPOGRAPHY ROLES
+     Every heading in the product uses one of these classes. Semantic level
+     (h1..h6) is chosen for document outline; the class is chosen for visual
+     hierarchy. The two are decoupled on purpose so heading order is never
+     broken for the sake of appearance — SEO rule 21.
+     ----------------------------------------------------------------------- */
+  .t-display-xl,
+  .t-display-l {
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .t-display-xl {
+    font-size: var(--text-display-xl);
+  }
+
+  .t-display-l {
+    font-size: var(--text-display-l);
+  }
+
+  .t-h1,
+  .t-h2,
+  .t-h3,
+  .t-h4 {
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .t-h1 {
+    font-size: var(--text-h1);
+    line-height: var(--leading-tight);
+  }
+
+  .t-h2 {
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
+  }
+
+  .t-h3 {
+    font-size: var(--text-h3);
+    line-height: var(--leading-heading);
+    font-weight: var(--weight-semibold);
+  }
+
+  .t-h4 {
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-normal);
+  }
+
+  .t-body-lg {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+  }
+
+  .t-body {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  .t-body-sm {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  .t-small {
+    font-size: var(--text-small);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+  }
+
+  /* Eyebrow / section label. Uppercase + wide tracking is a Latin device —
+     it is neutralised for Arabic further down. */
+  .t-label {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .t-meta {
+    font-size: var(--text-meta);
+    line-height: var(--leading-snug);
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Price and large numerals. Tabular figures keep columns aligned and stop
+     animated counters from reflowing — rule 13. */
+  .t-price,
+  .t-price-sm,
+  .t-stat {
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  .t-price {
+    font-size: var(--text-price);
+  }
+
+  .t-price-sm {
+    font-size: var(--text-price-sm);
+  }
+
+  .t-stat {
+    font-size: var(--text-stat);
+    color: var(--color-accent);
+  }
+
+  /* Measure control — long-form copy must never run the full grid width. */
+  .t-measure {
+    max-inline-size: 62ch;
+  }
+
+  .t-measure-tight {
+    max-inline-size: 46ch;
+  }
+
+  /* -----------------------------------------------------------------------
+     INLINE TEXT
+     ----------------------------------------------------------------------- */
+  strong,
+  b {
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+  }
+
+  ::placeholder {
+    color: var(--color-text-muted);
+    opacity: 1;
+  }
+
+  hr {
+    border: 0;
+    border-block-start: var(--border-hairline);
+  }
+
+  /* -----------------------------------------------------------------------
+     FOCUS — rule 06. One visible ring, applied to everything focusable.
+     ----------------------------------------------------------------------- */
+  /* The ring is a box-shadow, so it already traces each element's own
+     border-radius. Do not set a radius here — it would square off pill
+     controls the moment they receive focus. */
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  /* Forced-colours users get the OS ring instead. */
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 3px solid CanvasText;
+      outline-offset: 2px;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     RTL / LTR — rule 22. Arabic is a first-class experience.
+     Layout direction is handled entirely by CSS logical properties, so no
+     component needs a mirrored stylesheet. What *does* change per script:
+       - the typeface
+       - letter-spacing (Arabic is cursive; tracking breaks joins)
+       - text-transform (Arabic has no letter case)
+       - line-height (taller to clear ascenders/descenders and diacritics)
+     ----------------------------------------------------------------------- */
+  :lang(ar),
+  [dir="rtl"] {
+    font-family: var(--font-arabic);
+    line-height: var(--leading-relaxed);
+    letter-spacing: var(--tracking-normal);
+  }
+
+  :lang(ar) :is(.t-display-xl, .t-display-l, .t-h1, .t-h2, .t-h3, .t-h4),
+  [dir="rtl"] :is(.t-display-xl, .t-display-l, .t-h1, .t-h2, .t-h3, .t-h4) {
+    font-family: var(--font-arabic);
+    letter-spacing: var(--tracking-normal);
+    line-height: var(--leading-heading);
+  }
+
+  :lang(ar) .t-label,
+  [dir="rtl"] .t-label {
+    font-family: var(--font-arabic);
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-weight: var(--weight-semibold);
+  }
+
+  /* Prices and figures stay LTR even inside an RTL paragraph — numerals and
+     currency read left-to-right in Arabic typesetting. */
+  :lang(ar) :is(.t-price, .t-price-sm, .t-stat),
+  [dir="rtl"] :is(.t-price, .t-price-sm, .t-stat) {
+    letter-spacing: var(--tracking-normal);
+  }
+
+  .u-bidi-isolate {
+    unicode-bidi: isolate;
+  }
+
+  /* Directional glyphs (arrows, chevrons) must mirror; brand marks must not. */
+  [dir="rtl"] .u-flip-rtl {
+    transform: scaleX(-1);
+  }
+
+  /* -----------------------------------------------------------------------
+     SKIP LINK — keyboard users reach content without traversing the nav.
+     ----------------------------------------------------------------------- */
+  .c-skip-link {
+    position: fixed;
+    inset-block-start: var(--space-16);
+    inset-inline-start: var(--space-16);
+    z-index: var(--z-skip-link);
+    padding: var(--space-12) var(--space-24);
+    background-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+    font-family: var(--font-display);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transform: translateY(calc(-100% - var(--space-32)));
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  /* :focus, not :focus-visible — the skip link is keyboard-only by nature and
+     must reveal itself however focus arrived. */
+  .c-skip-link:focus {
+    transform: translateY(0);
+    box-shadow: var(--focus-ring);
+  }
+}

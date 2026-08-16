@@ -1,0 +1,284 @@
+/* =============================================================================
+   COMPONENT — CARD
+   One base card, four roles: service, pricing, feature, content.
+   Hierarchy comes from border + surface contrast + typography, never shadow.
+   ============================================================================= */
+
+@layer components {
+  .c-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--space-32);
+    background-color: var(--color-surface);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    transition: border-color var(--duration-base) var(--ease-standard),
+      background-color var(--duration-base) var(--ease-standard),
+      transform var(--duration-base) var(--ease-out);
+  }
+
+  .c-card__title {
+    color: var(--color-text-primary);
+  }
+
+  .c-card__body {
+    color: var(--color-text-secondary);
+  }
+
+  /* Footer pinned to the bottom so cards in a row align their CTAs. */
+  .c-card__footer {
+    margin-block-start: auto;
+    padding-block-start: var(--space-24);
+  }
+
+  /* Interactive card — the whole surface is clickable via __link, which
+     stretches over the card while leaving real text selectable. */
+  .c-card--interactive:hover {
+    border-color: var(--color-border-strong);
+    background-color: var(--color-surface-hover);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .c-card--interactive:hover {
+      transform: translateY(-4px);
+    }
+  }
+
+  .c-card__link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .c-card__link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  /* Focus travels to the inner link, so the ring is drawn on the card. */
+  .c-card:has(.c-card__link:focus-visible) {
+    box-shadow: var(--focus-ring);
+    border-color: var(--color-border-accent);
+  }
+
+  .c-card__link:focus-visible {
+    box-shadow: none;
+  }
+
+  /* -----------------------------------------------------------------------
+     SERVICE CARD — leading index numeral, title, description, action.
+     ----------------------------------------------------------------------- */
+  .c-card--service {
+    padding-block-start: var(--space-24);
+  }
+
+  .c-card__index {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+    transition: color var(--duration-base) var(--ease-standard);
+  }
+
+  .c-card--interactive:hover .c-card__index {
+    color: var(--color-accent);
+  }
+
+  /* Accent rule that grows on hover — a restrained, non-decorative signal. */
+  .c-card--service::before {
+    content: "";
+    position: absolute;
+    inset-block-start: -1px;
+    inset-inline-start: -1px;
+    block-size: var(--border-width-strong);
+    inline-size: var(--rule-width);
+    background-color: var(--color-accent);
+    transition: inline-size var(--duration-base) var(--ease-out);
+  }
+
+  .c-card--service:hover::before {
+    inline-size: calc(100% + 2px);
+  }
+
+  /* -----------------------------------------------------------------------
+     PRICING CARD — rule 16. Scannable: name → who → price → includes → CTA.
+     ----------------------------------------------------------------------- */
+  .c-card--pricing {
+    gap: var(--space-24);
+    padding-block: var(--space-48);
+  }
+
+  .c-card__price-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block-end: var(--space-24);
+    border-block-end: var(--border-hairline);
+  }
+
+  .c-card__price {
+    color: var(--color-accent);
+  }
+
+  /* Secondary, not muted: the billing model is decision-relevant information,
+     and muted (4.8:1 on the base) drops below AA on the lighter featured-card
+     surface. */
+  .c-card__billing {
+    color: var(--color-text-secondary);
+    font-size: var(--text-small);
+  }
+
+  .c-card__audience {
+    color: var(--color-text-secondary);
+    font-size: var(--text-body-sm);
+  }
+
+  /* Feature list — accent check, readable secondary text. */
+  .c-card__features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-card__feature {
+    display: grid;
+    grid-template-columns: var(--icon-md) 1fr;
+    gap: var(--space-12);
+    align-items: start;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+  }
+
+  .c-card__feature svg {
+    inline-size: var(--icon-md);
+    block-size: var(--icon-md);
+    color: var(--color-accent);
+    margin-block-start: 0.15em;
+  }
+
+  /* Recommended package — the one emphasised card in a pricing row. It sits a
+     step *above* the others on the surface ladder, plus an accent border and
+     ribbon. Emphasis, not a shadow. */
+  .c-card--featured {
+    background-color: var(--color-surface-hover);
+    border-color: var(--color-border-accent);
+  }
+
+  .c-card__ribbon {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: var(--space-32);
+    transform: translateY(-50%);
+    padding: var(--space-4) var(--space-12);
+    background-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    border-radius: var(--radius-xs);
+  }
+
+  [dir="rtl"] .c-card__ribbon {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+  }
+
+  /* -----------------------------------------------------------------------
+     FEATURE CARD — borderless, for supporting capability grids.
+     ----------------------------------------------------------------------- */
+  .c-card--feature {
+    background-color: transparent;
+    border: 0;
+    border-block-start: var(--border-hairline);
+    border-radius: var(--radius-none);
+    padding: var(--space-24) 0 0;
+  }
+
+  .c-card__icon {
+    display: grid;
+    place-items: center;
+    inline-size: var(--space-48);
+    block-size: var(--space-48);
+    color: var(--color-accent);
+    background-color: var(--color-accent-subtle);
+    border-radius: var(--radius-sm);
+  }
+
+  .c-card__icon svg {
+    inline-size: var(--icon-lg);
+    block-size: var(--icon-lg);
+  }
+
+  /* -----------------------------------------------------------------------
+     CONTENT CARD — media + copy.
+     ----------------------------------------------------------------------- */
+  .c-card--content {
+    padding: 0;
+    overflow: hidden;
+    gap: 0;
+  }
+
+  .c-card--content .c-card__media {
+    aspect-ratio: var(--ratio, 3 / 2);
+    overflow: hidden;
+  }
+
+  .c-card--content .c-card__media img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .c-card--content:hover .c-card__media img {
+      transform: scale(1.04);
+    }
+  }
+
+  .c-card--content .c-card__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    padding: var(--space-24);
+  }
+
+  /* -----------------------------------------------------------------------
+     TAG / PILL — the only place --radius-pill is permitted.
+     ----------------------------------------------------------------------- */
+  .c-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    padding: var(--space-4) var(--space-12);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    border: var(--border-hairline);
+    border-radius: var(--radius-pill);
+  }
+
+  .c-tag--accent {
+    color: var(--color-accent);
+    border-color: var(--color-border-accent);
+    background-color: var(--color-accent-subtle);
+  }
+
+  [dir="rtl"] .c-tag {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+  }
+}
