@@ -127,8 +127,13 @@ Each stage's doc ends with its own open items. Across the project:
   correctly. Remove the attribute from an element as its translation lands.
   Where a string ships in both languages, it uses `data-lang-copy` instead and
   needs nothing further.
+- **Draft feature splits.** Websites and E-Commerce have approved prices but no
+  approved per-package inclusions. Their cards show a split of the service's own
+  capabilities that is an **inference awaiting sign-off** — every line is
+  approved wording, but which package each line sits in is not. Each such card
+  carries `data-draft-features`, so `[data-draft-features]` selects everything
+  still unconfirmed (five cards today) and the lists are plain markup to swap.
 - **Remaining service data** — Digital Marketing and Integrated Solutions have
-  no packages yet, so their Services rows point at `#pricing`. Websites and
-  E-Commerce have prices but no per-package inclusions; their tiers render in
-  the `--brief` variant until those arrive.
+  no packages yet, so their Services rows point at `#pricing`. E-Commerce also
+  has no positioning statements, so those two cards have no purpose line.
 - `apple-touch-icon.png`, `og-image.png`, and the page's OG/canonical values.

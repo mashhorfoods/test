@@ -4123,6 +4123,22 @@
     font-size: var(--text-body-sm);
   }
 
+  /* A flex row does not wrap, and a flex item will not shrink past its
+     min-content width — so an uppercase, letter-spaced caption clipped its
+     own box below ~360px. The page never scrolled (an ancestor clips), which
+     is exactly why this went unnoticed: the text was simply cut off.
+     Let the row wrap, and let the text wrap inside it. */
+  .c-device__label,
+  .c-modules__label {
+    flex-wrap: wrap;
+  }
+
+  .c-device__label > span,
+  .c-modules__label > span {
+    min-inline-size: 0;
+    overflow-wrap: break-word;
+  }
+
   .c-device__label::before {
     content: "";
     inline-size: 6px;
@@ -4195,23 +4211,11 @@
     color: var(--color-text-primary);
   }
 
-  /* =======================================================================
-     TIER — no-features variant (Stage 05)
-     The websites packages have approved prices and positioning but their
-     per-package inclusions are not in the source document, so the card omits
-     the feature block entirely rather than showing an invented one.
-     ======================================================================= */
-  .c-tier--brief {
-    gap: var(--space-16);
-  }
-
-  /* Only a leading rule. A closing one frames an empty region and reads as a
-     feature list that failed to load, rather than a card that has none. */
-  .c-tier--brief .c-tier__price-block {
-    margin-block-start: var(--space-8);
-    border-block-end: 0;
-    padding-block-end: 0;
-  }
+  /* The `--brief` variant (a tier card with no feature block, added in
+     Stage 05 for the packages whose inclusions were not supplied) was removed
+     once every service section adopted the Branding card in full. Nothing
+     used it, and keeping a "card with no features" variant on hand invites
+     shipping one again. */
 }
 
 @layer components {
@@ -7140,11 +7144,13 @@ if (document.readyState === 'loading') {
            verbatim from the Services & Pricing document.
 
            The source supplies prices and positioning but NOT per-package
-           inclusions, so these cards carry no feature list. The capability
-           strip describes the SERVICE, not any one package — claiming all
-           ten apply to every tier would be an assumption. The tier component
-           already renders features (see Branding); the block returns as soon
-           as the data does.
+           inclusions. The per-package split below is therefore a DRAFT the
+           client approved for review, not source data: every line is one of
+           the ten approved capabilities, but which tier each lands in is an
+           inference. Cards carrying an inferred split are marked
+           [data-draft-features] so they can be found and replaced in one pass
+           when the real inclusions arrive. No capability, wording or quantity
+           outside the approved ten appears anywhere.
 
            The device frames are one layout reflowing, not three screenshots:
            same nav bar, accent hero, content row and foot at each width.
@@ -7272,8 +7278,13 @@ if (document.readyState === 'loading') {
           </ol>
 
           <div class="c-tiers" data-reveal-group>
-          <article class="c-tier c-tier--brief" style="--i: 0"
+          <article class="c-tier" style="--i: 0" data-draft-features
             aria-labelledby="web-landing-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>Foundation</span>
+            </p>
+
             <div>
               <h3 class="c-tier__name" id="web-landing-name" data-i18n-pending>Landing Page</h3>
               <p class="c-tier__purpose" data-i18n-pending>For focused campaigns, launches and simple digital presence.</p>
@@ -7287,6 +7298,14 @@ if (document.readyState === 'loading') {
               <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
             </p>
 
+            <ul class="c-tier__features">
+              <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Domain registration</span></li>
+              <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Hosting</span></li>
+              <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website UI/UX design</span></li>
+              <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Responsive implementation</span></li>
+              <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Delivery ready for use</span></li>
+            </ul>
+
             <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
               aria-describedby="web-landing-name">
               <span data-cta-label>Start Your Project</span>
@@ -7296,8 +7315,13 @@ if (document.readyState === 'loading') {
             </a>
           </article>
 
-          <article class="c-tier c-tier--brief" style="--i: 1"
+          <article class="c-tier" style="--i: 1" data-draft-features
             aria-labelledby="web-business-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>System</span>
+            </p>
+
             <div>
               <h3 class="c-tier__name" id="web-business-name" data-i18n-pending>Business Website</h3>
               <p class="c-tier__purpose" data-i18n-pending>For companies and organizations requiring a professional multi-page website.</p>
@@ -7311,6 +7335,34 @@ if (document.readyState === 'loading') {
               <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
             </p>
 
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Domain registration</span></li>
+                <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Hosting</span></li>
+                <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website UI/UX design</span></li>
+                <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website development</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Responsive implementation</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website setup</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Testing</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Delivery ready for use</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 8 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
             <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
               aria-describedby="web-business-name">
               <span data-cta-label>Start Your Project</span>
@@ -7320,8 +7372,13 @@ if (document.readyState === 'loading') {
             </a>
           </article>
 
-          <article class="c-tier c-tier--brief" style="--i: 2"
+          <article class="c-tier" style="--i: 2" data-draft-features
             aria-labelledby="web-professional-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 1.5 24 7.5 13 13.5 2 7.5 13 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /><path d="M2 12.5 13 18.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.6" /><path d="M2 17.5 13 23.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.32" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>Ecosystem</span>
+            </p>
+
             <div>
               <h3 class="c-tier__name" id="web-professional-name" data-i18n-pending>Professional Website</h3>
               <p class="c-tier__purpose" data-i18n-pending>For businesses requiring a more advanced digital presence, content architecture, integrations and enhanced functionality.</p>
@@ -7334,6 +7391,36 @@ if (document.readyState === 'loading') {
               </span>
               <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
             </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Domain registration</span></li>
+                <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Hosting</span></li>
+                <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website UI/UX design</span></li>
+                <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website development</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Responsive implementation</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website setup</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Required integrations</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Testing</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Deployment</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Delivery ready for use</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 10 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
 
             <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
               aria-describedby="web-professional-name">
@@ -7373,9 +7460,15 @@ if (document.readyState === 'loading') {
            the Services & Pricing document.
 
            As with Websites, the source supplies prices but NOT per-package
-           inclusions — and here not positioning statements either — so the
-           cards carry neither. No package is marked recommended: the source
-           designates one for Branding, and does not for this service.
+           inclusions, so the split below is a DRAFT for review drawn from the
+           six approved capabilities, marked [data-draft-features]. Positioning
+           statements were not supplied either and are NOT invented, so these
+           two cards have no purpose line. With only six capabilities to
+           divide, Professional gains a single line over Starter — the clearest
+           argument for supplying the real inclusions.
+
+           No package is marked recommended: the source designates one for
+           Branding, and does not for this service.
 
            No figure appears in any fragment. Order counts, revenue and
            conversion rates would all be business performance that was never
@@ -7534,8 +7627,13 @@ if (document.readyState === 'loading') {
           </ol>
 
           <div class="c-tiers c-tiers--pair" data-reveal-group>
-          <article class="c-tier c-tier--brief" style="--i: 0"
+          <article class="c-tier" style="--i: 0" data-draft-features
             aria-labelledby="ecom-starter-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>Foundation</span>
+            </p>
+
             <div>
               <h3 class="c-tier__name" id="ecom-starter-name" data-i18n-pending>E-Commerce Starter</h3>
             </div>
@@ -7548,6 +7646,14 @@ if (document.readyState === 'loading') {
               <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
             </p>
 
+            <ul class="c-tier__features">
+              <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Online Store Creation</span></li>
+              <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Product Setup</span></li>
+              <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Categories</span></li>
+              <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Shipping Configuration</span></li>
+              <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Payment Configuration</span></li>
+            </ul>
+
             <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
               aria-describedby="ecom-starter-name">
               <span data-cta-label>Start Your Project</span>
@@ -7557,8 +7663,13 @@ if (document.readyState === 'loading') {
             </a>
           </article>
 
-          <article class="c-tier c-tier--brief" style="--i: 1"
+          <article class="c-tier" style="--i: 1" data-draft-features
             aria-labelledby="ecom-professional-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>System</span>
+            </p>
+
             <div>
               <h3 class="c-tier__name" id="ecom-professional-name" data-i18n-pending>E-Commerce Professional</h3>
             </div>
@@ -7570,6 +7681,32 @@ if (document.readyState === 'loading') {
               </span>
               <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
             </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Online Store Creation</span></li>
+                <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Product Setup</span></li>
+                <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Categories</span></li>
+                <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Shipping Configuration</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Payment Configuration</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Required Service Integrations</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 6 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
 
             <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
               aria-describedby="ecom-professional-name">

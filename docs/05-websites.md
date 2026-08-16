@@ -6,23 +6,51 @@ ten-step delivery pipeline, and three packages. Reuses `.c-detail` and
 
 ---
 
-## 1. A content gap, stated plainly
+## 1. A content gap, and the draft that now fills it
 
 The brief supplies **prices and positioning statements but not per-package
 inclusions**. §14 says to use the exact approved inclusions; §32 forbids
-inventing them. Both cannot be satisfied, so:
+inventing them. Both cannot be satisfied.
 
-- The three cards carry package name, positioning statement, price, billing
-  model and CTA — **no feature list**.
-- The ten capabilities are presented as what the **service** covers, not as any
-  one package's contents. Claiming all ten apply to a 175 SAR Landing Page
-  would be an assumption, not a fact from the document.
+The section originally resolved this by showing no feature list at all (a
+`--brief` tier variant) and presenting the ten capabilities as what the
+*service* covers. The client subsequently asked for every card to carry its own
+inclusions, in the same form as Branding, and chose the "draft a split for
+review" option over supplying the real data first.
 
-The tier component already renders features (see Branding); a `--brief`
-variant omits the block. **The feature lists return the moment the data does** —
-it is one array per package in the markup, nothing structural.
+So the cards now show a split, under these limits:
 
-A test asserts no card in this section shows a feature list.
+- **Every line is one of the ten approved capabilities**, spelled exactly as the
+  document spells it, in the document's own order. No new capability, wording or
+  quantity was introduced.
+- **Which tier each capability lands in is an inference, not source data.** That
+  is the whole of what was added, and it is the whole of what needs approving.
+- Each card carries `data-draft-features`, so every inferred split on the page
+  can be found — and replaced — in one pass when the real inclusions arrive.
+
+| Package | Price | Inclusions in the draft |
+| --- | --- | --- |
+| Landing Page | 175 SAR | Domain registration · Hosting · Website UI/UX design · Responsive implementation · Delivery ready for use (5) |
+| Business Website | 450 SAR | the five above · Website development · Website setup · Testing (8) |
+| Professional Website | 700 SAR | all ten |
+
+Lists are **spelled out rather than abbreviated to "Everything in …"**. Branding
+uses the carry-forward line because its source document writes it; here nothing
+is quoted, and a cumulative shorthand would have made each card *shorter* than
+the one below it — the list would shrink as the price rose. Spelled out, length
+tracks price: 5 → 8 → 10.
+
+Two lines in the split are worth a second look before it is approved:
+
+- **Landing Page has "Delivery ready for use" but not "Testing".** Reasonable if
+  the tier is a light hand-off; wrong if every delivery is tested.
+- **Landing Page has no "Website development".** Only correct if landing pages
+  are built from a template rather than developed.
+
+A test asserts every feature string is an approved capability, that no card
+repeats a line, that each card follows the source's capability order, that the
+lists are strictly cumulative and strictly growing, and that the disclosure
+toggle's count matches the list it reveals.
 
 ### Verbatim data
 
@@ -104,8 +132,10 @@ Verified: in EN the figure sits left of the currency, in AR right of it.
 Headless Chromium, LTR and RTL:
 
 - All three prices and all ten capabilities match the source exactly.
-- No invented feature lists, no arbitrary recommended package, no guarantee,
-  percentage or "best value" language anywhere in the section.
+- Every card's feature list draws only on those ten, in source order, with no
+  duplicates; the lists are cumulative (5 ⊂ 8 ⊂ 10).
+- No arbitrary recommended package, no guarantee, percentage or "best value"
+  language anywhere in the section.
 - Exactly one primary CTA in the section.
 - One `h2`, `h3` for the pipeline heading and each package, pipeline as a real
   `<ol>`, devices as `<figure>`/`<figcaption>`, all decorative SVG hidden,

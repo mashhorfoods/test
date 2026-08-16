@@ -623,6 +623,22 @@
     font-size: var(--text-body-sm);
   }
 
+  /* A flex row does not wrap, and a flex item will not shrink past its
+     min-content width — so an uppercase, letter-spaced caption clipped its
+     own box below ~360px. The page never scrolled (an ancestor clips), which
+     is exactly why this went unnoticed: the text was simply cut off.
+     Let the row wrap, and let the text wrap inside it. */
+  .c-device__label,
+  .c-modules__label {
+    flex-wrap: wrap;
+  }
+
+  .c-device__label > span,
+  .c-modules__label > span {
+    min-inline-size: 0;
+    overflow-wrap: break-word;
+  }
+
   .c-device__label::before {
     content: "";
     inline-size: 6px;
@@ -695,23 +711,11 @@
     color: var(--color-text-primary);
   }
 
-  /* =======================================================================
-     TIER — no-features variant (Stage 05)
-     The websites packages have approved prices and positioning but their
-     per-package inclusions are not in the source document, so the card omits
-     the feature block entirely rather than showing an invented one.
-     ======================================================================= */
-  .c-tier--brief {
-    gap: var(--space-16);
-  }
-
-  /* Only a leading rule. A closing one frames an empty region and reads as a
-     feature list that failed to load, rather than a card that has none. */
-  .c-tier--brief .c-tier__price-block {
-    margin-block-start: var(--space-8);
-    border-block-end: 0;
-    padding-block-end: 0;
-  }
+  /* The `--brief` variant (a tier card with no feature block, added in
+     Stage 05 for the packages whose inclusions were not supplied) was removed
+     once every service section adopted the Branding card in full. Nothing
+     used it, and keeping a "card with no features" variant on hand invites
+     shipping one again. */
 }
 
 @layer components {

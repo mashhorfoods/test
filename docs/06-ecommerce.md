@@ -16,18 +16,36 @@ Capabilities, verbatim and identical to the strings already shown in the
 Services index: Online Store Creation · Product Setup · Categories · Shipping
 Configuration · Payment Configuration · Required Service Integrations.
 
-**What was not supplied, and so is not shown:**
+**Per-package inclusions were not supplied.** As with Websites, the cards now
+carry a **draft split** of the approved capabilities, marked
+`data-draft-features`, drawn only from the six above and kept in source order:
 
-- **Per-package inclusions** — as with Websites.
+| Package | Price | Inclusions in the draft |
+| --- | --- | --- |
+| E-Commerce Starter | 650 SAR | Online Store Creation · Product Setup · Categories · Shipping Configuration · Payment Configuration (5) |
+| E-Commerce Professional | 1,100 SAR | those five · Required Service Integrations (6) |
+
+**This split is weak, and the reason is worth recording.** Six capabilities
+across two packages leaves Professional differing from Starter by a single line
+while costing 450 SAR more. Payment Configuration is deliberately in Starter: a
+store that cannot take payment is not a store, so withholding it to pad the gap
+would have described a product that does not exist. There is no honest way to
+make these two cards look different from data that does not distinguish them —
+this service needs its real inclusions more than any other on the page.
+
+**Still not supplied, and so still not shown:**
+
 - **Positioning statements** — Websites supplied one per package (§13 there);
-  this brief does not, so the cards carry name, price, billing and CTA only.
+  this brief does not, so these cards have no purpose line under the name. That
+  is the one remaining way they read differently from Branding.
 - **A recommended package.** §13 says not to invent one if the source does not
   define it. Branding's document designates *Most Requested*; this one does
   not, so no badge appears. The section's single primary CTA sits in the foot.
 
-A test asserts none of this section's cards shows a feature list or a
-recommendation badge, and that no guarantee, conversion, revenue, order or
-percentage language appears anywhere in it.
+A test asserts every feature string is one of the six approved capabilities,
+that the two lists are cumulative, that no recommendation badge appears, and
+that no guarantee, conversion, revenue, order or percentage language appears
+anywhere in the section.
 
 ---
 
