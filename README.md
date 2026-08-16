@@ -20,6 +20,7 @@ docs/10-pricing.md          Pricing architecture, documented
 docs/11-add-ons.md          Add-ons & extra services, documented
 docs/12-why-us.md           Why us / value proposition, documented
 docs/13-process.md          Process / how we work, documented
+docs/14-final-cta.md        Final CTA / conversion, documented
 index.html                  Homepage shell — header + placeholder sections
 scaffold.css                Temporary placeholder-section styles (not shipped)
 styleguide.html             Living specimen sheet for every token and component
@@ -36,7 +37,8 @@ src/styles/                 The product stylesheet
   components/               button · card · header · navigation · hero ·
                             orbit · services · service-detail ·
                             campaign · pricing · addons · value ·
-                            process · ecosystem · disclosure · field
+                            process · cta · ecosystem ·
+                            disclosure · field
 src/data/pricing.json       Generated package data (see tools/)
 tools/build-pricing.js      Regenerates the pricing section from the
                             service sections — run after any package change
@@ -68,6 +70,7 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 11 | Add-ons & extra services | Done |
 | 12 | Why us / value proposition | Done |
 | 13 | Process / how we work | Done — labels are placeholders, see below |
+| 14 | Final CTA / conversion | Done — needs a contact mechanism |
 | — | Contact, Footer | Placeholders |
 
 ## Single-file build
@@ -91,8 +94,8 @@ hero height, the ecosystem wiring, and the mobile menu.
 
 | | Requests | Size |
 | --- | --- | --- |
-| Modular source | 34 | — |
-| `dist/index.html` | **0** | 680KB (132KB of it fonts) |
+| Modular source | 35 | — |
+| `dist/index.html` | **0** | 688KB (132KB of it fonts) |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:
@@ -155,6 +158,11 @@ Each stage's doc ends with its own open items. Across the project:
   its data. Additional Services arrived in Stage 11 and is now section 08.
 - **E-Commerce has no positioning statements**, so those two cards have no
   purpose line.
+- **A contact mechanism — the single biggest gap.** No email address, phone
+  number, WhatsApp number or form endpoint exists anywhere in the supplied
+  data, so `#contact` is still a placeholder and every CTA on the site scrolls
+  to it. One approved contact detail turns twenty-plus buttons into a working
+  conversion.
 - **The real working process.** Stage 13's six stage names (Discover, Plan,
   Create, Build, Launch, Grow) come from the brief, not from the agency — no
   workflow exists in the source. Every description under them is anchored to a

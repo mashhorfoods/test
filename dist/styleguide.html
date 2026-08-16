@@ -5468,6 +5468,163 @@
 }
 
 
+/* ---- src/styles/components/cta.css ---- */
+/* =============================================================================
+   FINAL CTA — STAGE 14
+   The last content section before the footer.
+
+   NOT A CENTRED CARD IN A ROUNDED BOX (rule 17). The composition is the
+   page's own editorial language pushed to its largest setting: display type
+   at the full measure, one rule, and the actions sitting on the trailing side
+   with the whole leading column left empty. Nothing here is a new device —
+   it is the type scale, the grid and the accent rule the site already uses,
+   given more room than any other section gets.
+
+   TWO MARKERS CARRY THE JOURNEY (rules 18/19). An accent segment sits on the
+   rule the section ARRIVES on, at the leading edge, echoing the fold marker
+   in Process. A second sits on the rule it DEPARTS on, at the trailing edge,
+   pointing into the footer. They are the only decoration, and both mean
+   something.
+   ============================================================================= */
+
+@layer components {
+  /* This block owns the section's vertical space — the wrapper deliberately
+     does NOT carry .l-section, because that would stack a second section
+     padding on top of this one (136px + 160px at each end, which is what the
+     first version shipped). Owning it here also puts the arrival rule at the
+     true top of the section rather than 136px inside it.
+
+     Asymmetric on purpose: loose above, tight below, so the departure rule
+     sits close to the footer it is leading into (rule 19). */
+  .c-final {
+    position: relative;
+    padding-block: var(--section-space-loose) var(--section-space-tight);
+    border-block-start: var(--border-hairline);
+  }
+
+  /* Arrival: continues the rule Process ends on. */
+  .c-final::before {
+    content: "";
+    position: absolute;
+    inset-block-start: -1px;
+    inset-inline-start: 0;
+    inline-size: var(--space-64);
+    block-size: 2px;
+    background-color: var(--color-accent);
+  }
+
+  .c-final__headline {
+    font-family: var(--font-display);
+    font-size: var(--text-display-l);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+    max-inline-size: 20ch;
+  }
+
+  [dir="rtl"] .c-final__headline {
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-normal);
+  }
+
+  .c-final__accent {
+    color: var(--color-accent);
+  }
+
+  /* --- The action row ----------------------------------------------------
+     Copy on the leading side, actions on the trailing side, separated by a
+     rule. Stacks below 64em, where side-by-side would squeeze both. */
+  .c-final__row {
+    display: grid;
+    gap: var(--space-32);
+    margin-block-start: var(--section-space-tight);
+    padding-block-start: var(--space-32);
+    border-block-start: var(--border-hairline);
+  }
+
+  @media (min-width: 64em) {
+    .c-final__row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--grid-gutter);
+      align-items: end;
+    }
+  }
+
+  .c-final__lead {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+    max-inline-size: 54ch;
+  }
+
+  .c-final__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-16);
+  }
+
+  @media (min-width: 30em) {
+    .c-final__actions {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-24);
+    }
+  }
+
+  @media (min-width: 64em) {
+    .c-final__actions {
+      justify-content: flex-end;
+    }
+  }
+
+  /* The primary action is the largest button on the page — this is the one
+     moment where that is correct. Full width below 30em (rule 23), where a
+     centred pill wastes the row and is harder to hit one-handed. */
+  .c-final__cta {
+    padding-block: var(--space-16);
+    padding-inline: var(--space-32);
+    font-size: var(--text-body-lg);
+    justify-content: center;
+  }
+
+  /* The secondary action is a text link, which at body size measured 26px
+     tall — under the 44px floor on touch. Padding would push it off the
+     baseline it shares with the button, so it gets a minimum height and
+     centres inside it, exactly as the pricing jump link does. */
+  .c-final__actions .c-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 44px;
+  }
+
+  /* Departure: the rule the footer picks up from. */
+  .c-final__depart {
+    position: relative;
+    margin-block-start: var(--section-space-tight);
+    block-size: 1px;
+    background-color: var(--color-border);
+  }
+
+  .c-final__depart::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    inline-size: var(--space-64);
+    block-size: 2px;
+    background-color: var(--color-accent);
+  }
+
+  /* The arrow's travel on hover is inherited from .c-btn — it is already
+     direction-aware and already respects reduced motion, so there is nothing
+     to add here. Restating it would be a second mechanism for one behaviour. */
+}
+
+
 /* ---- src/styles/components/ecosystem.css ---- */
 /* =============================================================================
    ECOSYSTEM — STAGE 09, INTEGRATED SOLUTIONS
