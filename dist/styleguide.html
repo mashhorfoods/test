@@ -3019,6 +3019,458 @@
 }
 
 
+/* ---- src/styles/components/services.css ---- */
+/* =============================================================================
+   COMPONENT — SERVICES
+   An interactive service index: large editorial rows on a connected rail, each
+   expanding in place to reveal its description, capabilities and a supporting
+   interface fragment.
+
+   ONE PATTERN AT EVERY BREAKPOINT. The rows are a disclosure set (the Stage 00
+   accordion) from 320px to 1920px — what changes per breakpoint is the row
+   scale and how the open panel lays out inside, not the interaction. A
+   tablist-on-desktop / accordion-on-mobile hybrid would mean the ARIA role of
+   a control changing with viewport width, which is fragile to implement and
+   worse to use; hover is never required (Stage 03 §10).
+
+   The rail and its nodes are the Hero's connector language continued, so the
+   two sections read as one system (§12).
+   ============================================================================= */
+
+@layer components {
+  /* -----------------------------------------------------------------------
+     SECTION HEAD
+     ----------------------------------------------------------------------- */
+  .c-services__head {
+    display: grid;
+    gap: var(--space-24);
+    margin-block-end: var(--section-space-tight);
+  }
+
+  @media (min-width: 64em) {
+    .c-services__head {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--grid-gutter);
+      align-items: end;
+    }
+
+    .c-services__intro {
+      grid-column: 1 / span 7;
+    }
+
+    /* Offset by a column so the supporting text sits against the trailing
+       edge rather than butting up to the headline. */
+    .c-services__lead {
+      grid-column: 9 / span 4;
+      padding-block-end: var(--space-8);
+    }
+  }
+
+  .c-services__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    color: var(--color-accent);
+    margin-block-end: var(--space-16);
+  }
+
+  .c-services__eyebrow::after {
+    content: "";
+    inline-size: var(--rule-width);
+    block-size: var(--border-width-strong);
+    background-color: currentcolor;
+    flex-shrink: 0;
+  }
+
+  .c-services__headline {
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-wrap: wrap;
+  }
+
+  .c-services__accent {
+    color: var(--color-accent);
+  }
+
+  /* -----------------------------------------------------------------------
+     THE RAIL
+     A single continuous thread down the index, with a node per service —
+     the same device the Hero uses to say "these are one system".
+     ----------------------------------------------------------------------- */
+  .c-service-list {
+    position: relative;
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-service-list::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 3px;
+    inline-size: var(--border-width);
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--color-border-strong) 8%,
+      var(--color-accent) 92%,
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  @media (min-width: 48em) {
+    .c-service-list::before {
+      inset-inline-start: 5px;
+    }
+  }
+
+  .c-service {
+    border-block-end: var(--border-hairline);
+  }
+
+  /* -----------------------------------------------------------------------
+     ROW TRIGGER
+     ----------------------------------------------------------------------- */
+  .c-service__trigger {
+    position: relative;
+    inline-size: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--space-16);
+    min-block-size: var(--touch-target-min);
+    padding-block: var(--space-24);
+    padding-inline: var(--space-32) 0;
+    text-align: start;
+    color: var(--color-text-primary);
+    transition: color var(--duration-fast) var(--ease-standard),
+      padding-inline-start var(--duration-base) var(--ease-out);
+  }
+
+  @media (min-width: 48em) {
+    .c-service__trigger {
+      grid-template-columns: auto 1fr auto;
+      gap: var(--space-32);
+      padding-block: var(--space-32);
+      padding-inline-start: var(--space-48);
+    }
+  }
+
+  /* The node on the rail. */
+  .c-service__trigger::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 50%;
+    inline-size: 7px;
+    block-size: 7px;
+    translate: 0 -50%;
+    border-radius: var(--radius-circle);
+    background-color: var(--color-bg);
+    box-shadow: 0 0 0 var(--border-width) var(--color-border-strong);
+    transition: background-color var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard),
+      scale var(--duration-fast) var(--ease-out);
+  }
+
+  @media (min-width: 48em) {
+    .c-service__trigger::before {
+      inline-size: 11px;
+      block-size: 11px;
+    }
+  }
+
+  .c-service__trigger:hover {
+    color: var(--color-accent);
+  }
+
+  .c-service__trigger:hover::before,
+  .c-service__trigger[aria-expanded="true"]::before {
+    background-color: var(--color-accent);
+    box-shadow: 0 0 0 var(--border-width) var(--color-accent),
+      0 0 0 5px var(--color-accent-subtle);
+    scale: 1.15;
+  }
+
+  .c-service__trigger[aria-expanded="true"] {
+    color: var(--color-accent);
+  }
+
+  /* --- Index numeral ---------------------------------------------------- */
+  .c-service__index {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    inline-size: 2.5ch;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  @media (min-width: 48em) {
+    .c-service__index {
+      font-size: var(--text-body-sm);
+    }
+  }
+
+  .c-service__trigger:hover .c-service__index,
+  .c-service__trigger[aria-expanded="true"] .c-service__index {
+    color: var(--color-accent);
+  }
+
+  /* Figures stay LTR inside an RTL row. */
+  [dir="rtl"] .c-service__index {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* --- Service name ----------------------------------------------------- */
+  .c-service__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 1rem + 1.7vw, 2.4rem);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-heading);
+    min-inline-size: 0;
+  }
+
+  /* --- Expand indicator: two rules, no icon font, no SVG ---------------- */
+  .c-service__indicator {
+    position: relative;
+    flex-shrink: 0;
+    inline-size: var(--touch-target-min);
+    block-size: var(--touch-target-min);
+    border: var(--border-hairline);
+    border-radius: var(--radius-circle);
+    transition: border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-service__trigger:hover .c-service__indicator,
+  .c-service__trigger[aria-expanded="true"] .c-service__indicator {
+    border-color: var(--color-border-accent);
+  }
+
+  .c-service__indicator::before,
+  .c-service__indicator::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: 14px;
+    block-size: var(--border-width-strong);
+    background-color: currentcolor;
+    translate: -50% -50%;
+    transition: rotate var(--duration-base) var(--ease-out),
+      opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-service__indicator::after {
+    rotate: 90deg;
+  }
+
+  /* Minus when open — a shape change, so state never rests on colour (§22). */
+  .c-service__trigger[aria-expanded="true"] .c-service__indicator::after {
+    rotate: 0deg;
+    opacity: 0;
+  }
+
+  /* -----------------------------------------------------------------------
+     EMPHASIS
+     While one service is open the others step back — enough to make the
+     selection obvious, never so far that they stop being readable (§10).
+     Colour is not carrying this alone: the open row also has the accent node,
+     the minus indicator and the panel itself.
+     ----------------------------------------------------------------------- */
+  @supports selector(:has(*)) {
+    .c-service-list:has([aria-expanded="true"])
+      .c-service:not(:has([aria-expanded="true"]))
+      .c-service__name {
+      color: var(--color-text-secondary);
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     PANEL
+     Animates on grid-template-rows, so no height is measured in JavaScript
+     and nothing is clipped from the accessibility tree.
+     ----------------------------------------------------------------------- */
+  .c-service__panel {
+    display: grid;
+    grid-template-rows: 1fr; /* open by default — the no-JS fallback */
+    transition: grid-template-rows var(--duration-base) var(--ease-out);
+  }
+
+  .c-service__panel[data-collapsed="true"] {
+    grid-template-rows: 0fr;
+  }
+
+  .c-service__panel-inner {
+    overflow: hidden;
+    min-block-size: 0;
+  }
+
+  .c-service__content {
+    display: grid;
+    gap: var(--space-32);
+    padding-block-end: var(--space-48);
+    padding-inline-start: var(--space-32);
+  }
+
+  @media (min-width: 48em) {
+    .c-service__content {
+      padding-inline-start: calc(var(--space-48) + 2.5ch + var(--space-32));
+      padding-inline-end: var(--space-64);
+    }
+  }
+
+  /* Desktop: copy and capabilities lead, the interface fragment trails. */
+  @media (min-width: 64em) {
+    .c-service__content {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.75fr);
+      gap: var(--space-64);
+      align-items: start;
+    }
+  }
+
+  .c-service__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    align-items: flex-start;
+    min-inline-size: 0;
+  }
+
+  .c-service__desc {
+    max-inline-size: 52ch;
+  }
+
+  /* --- Capability list --------------------------------------------------
+     A real <ul>: these are the service's contents, not decoration. */
+  .c-service__caps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+    gap: var(--space-8) var(--space-24);
+    inline-size: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-service__cap {
+    position: relative;
+    padding-inline-start: var(--space-16);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+  }
+
+  .c-service__cap::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0.55em;
+    inline-size: 5px;
+    block-size: 5px;
+    border-radius: var(--radius-circle);
+    background-color: var(--color-accent);
+  }
+
+  /* --- The integrated flow ---------------------------------------------
+     Not a capability list but an ordered chain, so it is rendered as one.
+     The arrow is a separate element that mirrors under RTL. */
+  .c-service__flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-8) var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: none;
+  }
+
+  .c-service__flow li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    font-family: var(--font-display);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+  }
+
+  .c-service__flow li:not(:last-child)::after {
+    content: "";
+    inline-size: 18px;
+    block-size: 8px;
+    background-color: var(--color-accent);
+    /* A chevron drawn with clip-path, mirrored for RTL below. */
+    clip-path: polygon(0 38%, 60% 38%, 60% 0, 100% 50%, 60% 100%, 60% 62%, 0 62%);
+    flex-shrink: 0;
+  }
+
+  [dir="rtl"] .c-service__flow li:not(:last-child)::after {
+    scale: -1 1;
+  }
+
+  /* --- Panel CTA -------------------------------------------------------- */
+  .c-service__cta {
+    margin-block-start: var(--space-8);
+  }
+
+  /* -----------------------------------------------------------------------
+     INTERFACE FRAGMENT
+     Abstract by design: it evokes the medium, it does not imitate any real
+     product's UI and states no result.
+     ----------------------------------------------------------------------- */
+  .c-service__visual {
+    display: none;
+  }
+
+  @media (min-width: 64em) {
+    .c-service__visual {
+      display: block;
+      aspect-ratio: 16 / 11;
+      padding: var(--space-24);
+      background-color: var(--color-bg-sunken);
+      border: var(--border-hairline);
+      border-radius: var(--radius-md);
+    }
+
+    .c-service__visual svg {
+      inline-size: 100%;
+      block-size: 100%;
+      max-block-size: 100%;
+      fill: none;
+      color: var(--color-text-primary);
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     SECTION FOOT — the hand-off into the detailed service stages.
+     ----------------------------------------------------------------------- */
+  .c-services__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-16) var(--space-32);
+    margin-block-start: var(--section-space-tight);
+    padding-block-start: var(--space-32);
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-services__foot p {
+    max-inline-size: 46ch;
+  }
+}
+
+
 /* ---- src/styles/components/disclosure.css ---- */
 /* =============================================================================
    COMPONENT — DISCLOSURE
@@ -4426,7 +4878,10 @@ const nextId = (prefix) => `${prefix}-${(uid += 1)}`;
 function initAccordion(root) {
   const single = root.hasAttribute('data-accordion-single');
   const items = [...root.querySelectorAll('[data-accordion-trigger]')].map((trigger) => {
-    const item = trigger.closest('.c-accordion__item') ?? trigger.parentElement;
+    // Keyed off the behaviour hook, not a style class: per the naming
+    // convention, data-* attributes are what JavaScript binds to, so
+    // restyling or renaming a component can never break its behaviour.
+    const item = trigger.closest('[data-accordion-item]') ?? trigger.parentElement;
     const panel = item?.querySelector('[data-accordion-panel]');
     return panel ? { trigger, panel, item } : null;
   });
@@ -5245,7 +5700,7 @@ if (document.readyState === 'loading') {
         <div class="sg-specimen">
           <p class="sg-caption">Accordion — arrow keys move between triggers</p>
           <div class="c-accordion" data-accordion data-accordion-single>
-            <div class="c-accordion__item" data-accordion-open>
+            <div class="c-accordion__item" data-accordion-item data-accordion-open>
               <h3>
                 <button class="c-accordion__trigger" data-accordion-trigger>
                   First disclosure
@@ -5263,7 +5718,7 @@ if (document.readyState === 'loading') {
                 </div>
               </div>
             </div>
-            <div class="c-accordion__item">
+            <div class="c-accordion__item" data-accordion-item>
               <h3>
                 <button class="c-accordion__trigger" data-accordion-trigger>
                   Second disclosure

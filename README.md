@@ -9,6 +9,7 @@ work around it.
 docs/00-design-system.md    The system, documented — read this first
 docs/01-header-navigation.md  Header & navigation, documented
 docs/02-hero.md             Hero section, documented
+docs/03-services.md         Services overview, documented
 index.html                  Homepage shell — header + placeholder sections
 scaffold.css                Temporary placeholder-section styles (not shipped)
 styleguide.html             Living specimen sheet for every token and component
@@ -23,7 +24,7 @@ src/styles/                 The product stylesheet
   05-motion.css             Scroll reveal and counter styles
   06-utilities.css          A deliberately small utility set
   components/               button · card · header · navigation · hero ·
-                            orbit · disclosure · field
+                            orbit · services · disclosure · field
 src/scripts/                Vanilla ES modules, no dependencies
   main.js                   Entry point
   navigation-map.js         Single source of section order and labels
@@ -41,7 +42,8 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 00 | Master global design system | Done |
 | 01 | Header & navigation | Done |
 | 02 | Hero | Done |
-| 03+ | Services, Pricing, Why Us, Process, Contact, Footer | Placeholders |
+| 03 | Services overview | Done |
+| 04+ | Pricing, Why Us, Process, Contact, Footer | Placeholders |
 
 ## Single-file build
 

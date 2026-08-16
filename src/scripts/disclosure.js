@@ -31,7 +31,10 @@ const nextId = (prefix) => `${prefix}-${(uid += 1)}`;
 function initAccordion(root) {
   const single = root.hasAttribute('data-accordion-single');
   const items = [...root.querySelectorAll('[data-accordion-trigger]')].map((trigger) => {
-    const item = trigger.closest('.c-accordion__item') ?? trigger.parentElement;
+    // Keyed off the behaviour hook, not a style class: per the naming
+    // convention, data-* attributes are what JavaScript binds to, so
+    // restyling or renaming a component can never break its behaviour.
+    const item = trigger.closest('[data-accordion-item]') ?? trigger.parentElement;
     const panel = item?.querySelector('[data-accordion-panel]');
     return panel ? { trigger, panel, item } : null;
   });

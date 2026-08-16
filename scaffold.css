@@ -19,11 +19,8 @@
     margin-block-end: var(--space-16);
   }
 
-  /* Services follows the hero directly. No rule between them — the hero's cue
-     line carries the eye across the boundary instead (Stage 02 §26). */
-  #services.s-placeholder {
-    border-block-start: 0;
-  }
+  /* Services is built, so the placeholder rules no longer apply to it.
+     Pricing now follows Services directly and takes the first divider. */
 
   .s-footer-scaffold {
     padding-block: var(--space-48);

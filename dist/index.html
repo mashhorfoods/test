@@ -3017,6 +3017,458 @@
 }
 
 
+/* ---- src/styles/components/services.css ---- */
+/* =============================================================================
+   COMPONENT — SERVICES
+   An interactive service index: large editorial rows on a connected rail, each
+   expanding in place to reveal its description, capabilities and a supporting
+   interface fragment.
+
+   ONE PATTERN AT EVERY BREAKPOINT. The rows are a disclosure set (the Stage 00
+   accordion) from 320px to 1920px — what changes per breakpoint is the row
+   scale and how the open panel lays out inside, not the interaction. A
+   tablist-on-desktop / accordion-on-mobile hybrid would mean the ARIA role of
+   a control changing with viewport width, which is fragile to implement and
+   worse to use; hover is never required (Stage 03 §10).
+
+   The rail and its nodes are the Hero's connector language continued, so the
+   two sections read as one system (§12).
+   ============================================================================= */
+
+@layer components {
+  /* -----------------------------------------------------------------------
+     SECTION HEAD
+     ----------------------------------------------------------------------- */
+  .c-services__head {
+    display: grid;
+    gap: var(--space-24);
+    margin-block-end: var(--section-space-tight);
+  }
+
+  @media (min-width: 64em) {
+    .c-services__head {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--grid-gutter);
+      align-items: end;
+    }
+
+    .c-services__intro {
+      grid-column: 1 / span 7;
+    }
+
+    /* Offset by a column so the supporting text sits against the trailing
+       edge rather than butting up to the headline. */
+    .c-services__lead {
+      grid-column: 9 / span 4;
+      padding-block-end: var(--space-8);
+    }
+  }
+
+  .c-services__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    color: var(--color-accent);
+    margin-block-end: var(--space-16);
+  }
+
+  .c-services__eyebrow::after {
+    content: "";
+    inline-size: var(--rule-width);
+    block-size: var(--border-width-strong);
+    background-color: currentcolor;
+    flex-shrink: 0;
+  }
+
+  .c-services__headline {
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-wrap: wrap;
+  }
+
+  .c-services__accent {
+    color: var(--color-accent);
+  }
+
+  /* -----------------------------------------------------------------------
+     THE RAIL
+     A single continuous thread down the index, with a node per service —
+     the same device the Hero uses to say "these are one system".
+     ----------------------------------------------------------------------- */
+  .c-service-list {
+    position: relative;
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-service-list::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 3px;
+    inline-size: var(--border-width);
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--color-border-strong) 8%,
+      var(--color-accent) 92%,
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  @media (min-width: 48em) {
+    .c-service-list::before {
+      inset-inline-start: 5px;
+    }
+  }
+
+  .c-service {
+    border-block-end: var(--border-hairline);
+  }
+
+  /* -----------------------------------------------------------------------
+     ROW TRIGGER
+     ----------------------------------------------------------------------- */
+  .c-service__trigger {
+    position: relative;
+    inline-size: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--space-16);
+    min-block-size: var(--touch-target-min);
+    padding-block: var(--space-24);
+    padding-inline: var(--space-32) 0;
+    text-align: start;
+    color: var(--color-text-primary);
+    transition: color var(--duration-fast) var(--ease-standard),
+      padding-inline-start var(--duration-base) var(--ease-out);
+  }
+
+  @media (min-width: 48em) {
+    .c-service__trigger {
+      grid-template-columns: auto 1fr auto;
+      gap: var(--space-32);
+      padding-block: var(--space-32);
+      padding-inline-start: var(--space-48);
+    }
+  }
+
+  /* The node on the rail. */
+  .c-service__trigger::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 50%;
+    inline-size: 7px;
+    block-size: 7px;
+    translate: 0 -50%;
+    border-radius: var(--radius-circle);
+    background-color: var(--color-bg);
+    box-shadow: 0 0 0 var(--border-width) var(--color-border-strong);
+    transition: background-color var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard),
+      scale var(--duration-fast) var(--ease-out);
+  }
+
+  @media (min-width: 48em) {
+    .c-service__trigger::before {
+      inline-size: 11px;
+      block-size: 11px;
+    }
+  }
+
+  .c-service__trigger:hover {
+    color: var(--color-accent);
+  }
+
+  .c-service__trigger:hover::before,
+  .c-service__trigger[aria-expanded="true"]::before {
+    background-color: var(--color-accent);
+    box-shadow: 0 0 0 var(--border-width) var(--color-accent),
+      0 0 0 5px var(--color-accent-subtle);
+    scale: 1.15;
+  }
+
+  .c-service__trigger[aria-expanded="true"] {
+    color: var(--color-accent);
+  }
+
+  /* --- Index numeral ---------------------------------------------------- */
+  .c-service__index {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    inline-size: 2.5ch;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  @media (min-width: 48em) {
+    .c-service__index {
+      font-size: var(--text-body-sm);
+    }
+  }
+
+  .c-service__trigger:hover .c-service__index,
+  .c-service__trigger[aria-expanded="true"] .c-service__index {
+    color: var(--color-accent);
+  }
+
+  /* Figures stay LTR inside an RTL row. */
+  [dir="rtl"] .c-service__index {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* --- Service name ----------------------------------------------------- */
+  .c-service__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 1rem + 1.7vw, 2.4rem);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-heading);
+    min-inline-size: 0;
+  }
+
+  /* --- Expand indicator: two rules, no icon font, no SVG ---------------- */
+  .c-service__indicator {
+    position: relative;
+    flex-shrink: 0;
+    inline-size: var(--touch-target-min);
+    block-size: var(--touch-target-min);
+    border: var(--border-hairline);
+    border-radius: var(--radius-circle);
+    transition: border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-service__trigger:hover .c-service__indicator,
+  .c-service__trigger[aria-expanded="true"] .c-service__indicator {
+    border-color: var(--color-border-accent);
+  }
+
+  .c-service__indicator::before,
+  .c-service__indicator::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: 14px;
+    block-size: var(--border-width-strong);
+    background-color: currentcolor;
+    translate: -50% -50%;
+    transition: rotate var(--duration-base) var(--ease-out),
+      opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-service__indicator::after {
+    rotate: 90deg;
+  }
+
+  /* Minus when open — a shape change, so state never rests on colour (§22). */
+  .c-service__trigger[aria-expanded="true"] .c-service__indicator::after {
+    rotate: 0deg;
+    opacity: 0;
+  }
+
+  /* -----------------------------------------------------------------------
+     EMPHASIS
+     While one service is open the others step back — enough to make the
+     selection obvious, never so far that they stop being readable (§10).
+     Colour is not carrying this alone: the open row also has the accent node,
+     the minus indicator and the panel itself.
+     ----------------------------------------------------------------------- */
+  @supports selector(:has(*)) {
+    .c-service-list:has([aria-expanded="true"])
+      .c-service:not(:has([aria-expanded="true"]))
+      .c-service__name {
+      color: var(--color-text-secondary);
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     PANEL
+     Animates on grid-template-rows, so no height is measured in JavaScript
+     and nothing is clipped from the accessibility tree.
+     ----------------------------------------------------------------------- */
+  .c-service__panel {
+    display: grid;
+    grid-template-rows: 1fr; /* open by default — the no-JS fallback */
+    transition: grid-template-rows var(--duration-base) var(--ease-out);
+  }
+
+  .c-service__panel[data-collapsed="true"] {
+    grid-template-rows: 0fr;
+  }
+
+  .c-service__panel-inner {
+    overflow: hidden;
+    min-block-size: 0;
+  }
+
+  .c-service__content {
+    display: grid;
+    gap: var(--space-32);
+    padding-block-end: var(--space-48);
+    padding-inline-start: var(--space-32);
+  }
+
+  @media (min-width: 48em) {
+    .c-service__content {
+      padding-inline-start: calc(var(--space-48) + 2.5ch + var(--space-32));
+      padding-inline-end: var(--space-64);
+    }
+  }
+
+  /* Desktop: copy and capabilities lead, the interface fragment trails. */
+  @media (min-width: 64em) {
+    .c-service__content {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.75fr);
+      gap: var(--space-64);
+      align-items: start;
+    }
+  }
+
+  .c-service__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    align-items: flex-start;
+    min-inline-size: 0;
+  }
+
+  .c-service__desc {
+    max-inline-size: 52ch;
+  }
+
+  /* --- Capability list --------------------------------------------------
+     A real <ul>: these are the service's contents, not decoration. */
+  .c-service__caps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+    gap: var(--space-8) var(--space-24);
+    inline-size: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-service__cap {
+    position: relative;
+    padding-inline-start: var(--space-16);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+  }
+
+  .c-service__cap::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0.55em;
+    inline-size: 5px;
+    block-size: 5px;
+    border-radius: var(--radius-circle);
+    background-color: var(--color-accent);
+  }
+
+  /* --- The integrated flow ---------------------------------------------
+     Not a capability list but an ordered chain, so it is rendered as one.
+     The arrow is a separate element that mirrors under RTL. */
+  .c-service__flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-8) var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: none;
+  }
+
+  .c-service__flow li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    font-family: var(--font-display);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+  }
+
+  .c-service__flow li:not(:last-child)::after {
+    content: "";
+    inline-size: 18px;
+    block-size: 8px;
+    background-color: var(--color-accent);
+    /* A chevron drawn with clip-path, mirrored for RTL below. */
+    clip-path: polygon(0 38%, 60% 38%, 60% 0, 100% 50%, 60% 100%, 60% 62%, 0 62%);
+    flex-shrink: 0;
+  }
+
+  [dir="rtl"] .c-service__flow li:not(:last-child)::after {
+    scale: -1 1;
+  }
+
+  /* --- Panel CTA -------------------------------------------------------- */
+  .c-service__cta {
+    margin-block-start: var(--space-8);
+  }
+
+  /* -----------------------------------------------------------------------
+     INTERFACE FRAGMENT
+     Abstract by design: it evokes the medium, it does not imitate any real
+     product's UI and states no result.
+     ----------------------------------------------------------------------- */
+  .c-service__visual {
+    display: none;
+  }
+
+  @media (min-width: 64em) {
+    .c-service__visual {
+      display: block;
+      aspect-ratio: 16 / 11;
+      padding: var(--space-24);
+      background-color: var(--color-bg-sunken);
+      border: var(--border-hairline);
+      border-radius: var(--radius-md);
+    }
+
+    .c-service__visual svg {
+      inline-size: 100%;
+      block-size: 100%;
+      max-block-size: 100%;
+      fill: none;
+      color: var(--color-text-primary);
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     SECTION FOOT — the hand-off into the detailed service stages.
+     ----------------------------------------------------------------------- */
+  .c-services__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-16) var(--space-32);
+    margin-block-start: var(--section-space-tight);
+    padding-block-start: var(--space-32);
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-services__foot p {
+    max-inline-size: 46ch;
+  }
+}
+
+
 /* ---- src/styles/components/disclosure.css ---- */
 /* =============================================================================
    COMPONENT — DISCLOSURE
@@ -3704,11 +4156,8 @@
     margin-block-end: var(--space-16);
   }
 
-  /* Services follows the hero directly. No rule between them — the hero's cue
-     line carries the eye across the boundary instead (Stage 02 §26). */
-  #services.s-placeholder {
-    border-block-start: 0;
-  }
+  /* Services is built, so the placeholder rules no longer apply to it.
+     Pricing now follows Services directly and takes the first divider. */
 
   .s-footer-scaffold {
     padding-block: var(--space-48);
@@ -4289,7 +4738,10 @@ const nextId = (prefix) => `${prefix}-${(uid += 1)}`;
 function initAccordion(root) {
   const single = root.hasAttribute('data-accordion-single');
   const items = [...root.querySelectorAll('[data-accordion-trigger]')].map((trigger) => {
-    const item = trigger.closest('.c-accordion__item') ?? trigger.parentElement;
+    // Keyed off the behaviour hook, not a style class: per the naming
+    // convention, data-* attributes are what JavaScript binds to, so
+    // restyling or renaming a component can never break its behaviour.
+    const item = trigger.closest('[data-accordion-item]') ?? trigger.parentElement;
     const panel = item?.querySelector('[data-accordion-panel]');
     return panel ? { trigger, panel, item } : null;
   });
@@ -5115,10 +5567,318 @@ if (document.readyState === 'loading') {
         </div>
       </section>
 
-      <section id="services" class="s-placeholder">
+      <!-- =============================================================
+           SERVICES OVERVIEW
+           Capability lists are verbatim from the Services & Pricing
+           document. The one-line descriptions summarise those lists and
+           add no capability, outcome or guarantee. No pricing here — the
+           per-service CTA hands off to the Pricing section.
+
+           One disclosure pattern at every breakpoint: hover is never
+           required, and the ARIA role of a control never changes with
+           viewport width. Row ids are the anchors the detailed service
+           stages will link to.
+           ============================================================= -->
+      <section id="services" class="l-section c-services" aria-labelledby="services-title">
         <div class="l-container">
-          <p class="t-label">Stage 03</p>
-          <h2 class="t-h1">Services</h2>
+          <div class="c-services__head" data-reveal-group>
+            <div class="c-services__intro">
+              <p class="t-label c-services__eyebrow" data-i18n-pending>What We Do</p>
+              <h2 class="c-services__headline" id="services-title" data-i18n-pending>
+                Everything Digital.<br />
+                <span class="c-services__accent">Built to Work Together.</span>
+              </h2>
+            </div>
+            <p class="t-body-lg c-services__lead" data-i18n-pending>
+              Everything your business needs to build, launch and grow its
+              digital presence — from one place.
+            </p>
+          </div>
+
+          <div class="c-service-list" data-accordion data-accordion-single data-reveal-group>
+          <div class="c-service" id="service-branding" data-accordion-item data-accordion-open style="--i: 0">
+            <h3>
+              <button class="c-service__trigger" type="button" data-accordion-trigger>
+                <span class="c-service__index" aria-hidden="true">01</span>
+                <span class="c-service__name">Branding &amp; Design</span>
+                <span class="c-service__indicator" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="c-service__panel" data-accordion-panel>
+              <div class="c-service__panel-inner">
+                <div class="c-service__content">
+                  <div class="c-service__body">
+                    <p class="t-body-lg c-service__desc" data-i18n-pending>Logo, identity and visual systems that give your business one consistent look across every channel.</p>
+                <ul class="c-service__caps">
+                  <li class="c-service__cap">Logo Design</li>
+                  <li class="c-service__cap">Brand Identity</li>
+                  <li class="c-service__cap">Visual Identity</li>
+                  <li class="c-service__cap">Social Media Design</li>
+                  <li class="c-service__cap">Advertising Design</li>
+                  <li class="c-service__cap">Visual Content</li>
+                </ul>
+                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#pricing">
+                      View packages
+                      <svg class="c-btn__icon c-service__chevron u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+                    </a>
+                  </div>
+                  <div class="c-service__visual" aria-hidden="true">
+                    <svg viewBox="0 0 200 138" focusable="false">
+        <g stroke="currentColor" stroke-width="1.4" opacity="0.45"><rect x="10" y="14" width="78" height="62" /><path d="M10 90h58M10 100h40" /></g>
+        <path d="M34 60 49 28 64 60 M41 50h16" stroke="currentColor" stroke-width="2.6" />
+        <rect x="106" y="14" width="38" height="28" fill="var(--color-accent)" />
+        <rect x="152" y="14" width="38" height="28" fill="currentColor" opacity="0.28" />
+        <rect x="106" y="48" width="38" height="28" fill="currentColor" opacity="0.14" />
+        <rect x="152" y="48" width="38" height="28" fill="currentColor" opacity="0.4" />
+        <path d="M106 90h84" stroke="var(--color-accent)" stroke-width="2.4" />
+        <path d="M106 102h52" stroke="currentColor" stroke-width="2" opacity="0.3" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="c-service" id="service-websites" data-accordion-item style="--i: 1">
+            <h3>
+              <button class="c-service__trigger" type="button" data-accordion-trigger>
+                <span class="c-service__index" aria-hidden="true">02</span>
+                <span class="c-service__name">Websites</span>
+                <span class="c-service__indicator" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="c-service__panel" data-accordion-panel>
+              <div class="c-service__panel-inner">
+                <div class="c-service__content">
+                  <div class="c-service__body">
+                    <p class="t-body-lg c-service__desc" data-i18n-pending>Design, build and deployment — handed over as a working website, with domain and hosting arranged.</p>
+                <ul class="c-service__caps">
+                  <li class="c-service__cap">Domain &amp; Hosting</li>
+                  <li class="c-service__cap">Website Design</li>
+                  <li class="c-service__cap">Website Development</li>
+                  <li class="c-service__cap">Website Setup</li>
+                  <li class="c-service__cap">Deployment</li>
+                  <li class="c-service__cap">Delivery Ready for Use</li>
+                </ul>
+                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#pricing">
+                      View packages
+                      <svg class="c-btn__icon c-service__chevron u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+                    </a>
+                  </div>
+                  <div class="c-service__visual" aria-hidden="true">
+                    <svg viewBox="0 0 200 138" focusable="false">
+        <rect x="10" y="12" width="180" height="114" stroke="currentColor" stroke-width="1.4" opacity="0.45" />
+        <path d="M10 34h180" stroke="currentColor" stroke-width="1.4" opacity="0.45" />
+        <g fill="currentColor" opacity="0.45"><circle cx="24" cy="23" r="2.6" /><circle cx="34" cy="23" r="2.6" /><circle cx="44" cy="23" r="2.6" /></g>
+        <rect x="24" y="48" width="76" height="34" fill="var(--color-accent)" opacity="0.9" />
+        <g stroke="currentColor" stroke-width="2.4" opacity="0.32"><path d="M114 54h62M114 66h44M114 78h56" /></g>
+        <g fill="currentColor" opacity="0.18"><rect x="24" y="94" width="48" height="18" /><rect x="80" y="94" width="48" height="18" /><rect x="136" y="94" width="48" height="18" /></g>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="c-service" id="service-ecommerce" data-accordion-item style="--i: 2">
+            <h3>
+              <button class="c-service__trigger" type="button" data-accordion-trigger>
+                <span class="c-service__index" aria-hidden="true">03</span>
+                <span class="c-service__name">E-Commerce</span>
+                <span class="c-service__indicator" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="c-service__panel" data-accordion-panel>
+              <div class="c-service__panel-inner">
+                <div class="c-service__content">
+                  <div class="c-service__body">
+                    <p class="t-body-lg c-service__desc" data-i18n-pending>An online store configured end to end: products, categories, shipping, payment and the integrations it needs.</p>
+                <ul class="c-service__caps">
+                  <li class="c-service__cap">Online Store Creation</li>
+                  <li class="c-service__cap">Product Setup</li>
+                  <li class="c-service__cap">Categories</li>
+                  <li class="c-service__cap">Shipping Configuration</li>
+                  <li class="c-service__cap">Payment Configuration</li>
+                  <li class="c-service__cap">Required Service Integrations</li>
+                </ul>
+                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#pricing">
+                      View packages
+                      <svg class="c-btn__icon c-service__chevron u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+                    </a>
+                  </div>
+                  <div class="c-service__visual" aria-hidden="true">
+                    <svg viewBox="0 0 200 138" focusable="false">
+        <g stroke="currentColor" stroke-width="1.4" opacity="0.4"><rect x="10" y="12" width="54" height="54" /><rect x="74" y="12" width="54" height="54" /></g>
+        <rect x="138" y="12" width="52" height="54" stroke="var(--color-accent)" stroke-width="2" />
+        <g fill="currentColor" opacity="0.22"><rect x="22" y="40" width="30" height="16" /><rect x="86" y="34" width="30" height="22" /></g>
+        <rect x="150" y="30" width="28" height="26" fill="var(--color-accent)" opacity="0.85" />
+        <g stroke="currentColor" stroke-width="2.4" opacity="0.28"><path d="M10 80h40M74 80h40" /></g>
+        <path d="M138 80h40" stroke="var(--color-accent)" stroke-width="2.4" />
+        <path d="M14 100h10l5.5 18h34l4.5-12" stroke="currentColor" stroke-width="2" opacity="0.5" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="36" cy="126" r="3.4" fill="currentColor" opacity="0.5" /><circle cx="60" cy="126" r="3.4" fill="currentColor" opacity="0.5" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="c-service" id="service-social" data-accordion-item style="--i: 3">
+            <h3>
+              <button class="c-service__trigger" type="button" data-accordion-trigger>
+                <span class="c-service__index" aria-hidden="true">04</span>
+                <span class="c-service__name">Social Media Management</span>
+                <span class="c-service__indicator" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="c-service__panel" data-accordion-panel>
+              <div class="c-service__panel-inner">
+                <div class="c-service__content">
+                  <div class="c-service__body">
+                    <p class="t-body-lg c-service__desc" data-i18n-pending>Strategy, content and publishing across your channels, with community monitoring and performance analysis.</p>
+                <ul class="c-service__caps">
+                  <li class="c-service__cap">Account Creation / Setup</li>
+                  <li class="c-service__cap">Content Strategy</li>
+                  <li class="c-service__cap">Copywriting</li>
+                  <li class="c-service__cap">Graphic Design</li>
+                  <li class="c-service__cap">Video Production</li>
+                  <li class="c-service__cap">Reels</li>
+                  <li class="c-service__cap">Publishing</li>
+                  <li class="c-service__cap">Community Monitoring</li>
+                  <li class="c-service__cap">Performance Analysis</li>
+                </ul>
+                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#pricing">
+                      View packages
+                      <svg class="c-btn__icon c-service__chevron u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+                    </a>
+                  </div>
+                  <div class="c-service__visual" aria-hidden="true">
+                    <svg viewBox="0 0 200 138" focusable="false">
+        <rect x="46" y="8" width="108" height="122" stroke="currentColor" stroke-width="1.4" opacity="0.45" />
+        <circle cx="66" cy="28" r="9" fill="var(--color-accent)" />
+        <g stroke="currentColor" stroke-width="2.4" opacity="0.32"><path d="M84 24h46M84 34h28" /></g>
+        <rect x="58" y="50" width="84" height="44" fill="currentColor" opacity="0.14" />
+        <path d="M78 84l14-16 10 11 12-15 18 20" stroke="currentColor" stroke-width="2.2" opacity="0.45" />
+        <g stroke="currentColor" stroke-width="2.4" opacity="0.35"><path d="M58 108h18M84 108h18" /></g>
+        <path d="M110 108h18" stroke="var(--color-accent)" stroke-width="2.4" />
+        <path d="M14 48c0 14 9 23 23 23" stroke="var(--color-accent)" stroke-width="1.5" opacity="0.55" />
+        <path d="M186 70c0 14-9 23-23 23" stroke="var(--color-accent)" stroke-width="1.5" opacity="0.55" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="c-service" id="service-marketing" data-accordion-item style="--i: 4">
+            <h3>
+              <button class="c-service__trigger" type="button" data-accordion-trigger>
+                <span class="c-service__index" aria-hidden="true">05</span>
+                <span class="c-service__name">Digital Marketing &amp; Advertising</span>
+                <span class="c-service__indicator" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="c-service__panel" data-accordion-panel>
+              <div class="c-service__panel-inner">
+                <div class="c-service__content">
+                  <div class="c-service__body">
+                    <p class="t-body-lg c-service__desc" data-i18n-pending>Paid campaigns across the major platforms, with audience targeting, campaign management, optimization and tracking.</p>
+                <ul class="c-service__caps">
+                  <li class="c-service__cap">Facebook Ads</li>
+                  <li class="c-service__cap">Instagram Ads</li>
+                  <li class="c-service__cap">TikTok Ads</li>
+                  <li class="c-service__cap">Snapchat Ads</li>
+                  <li class="c-service__cap">Google Ads</li>
+                  <li class="c-service__cap">Audience Targeting</li>
+                  <li class="c-service__cap">Campaign Management</li>
+                  <li class="c-service__cap">Optimization</li>
+                  <li class="c-service__cap">Performance Tracking</li>
+                </ul>
+                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#pricing">
+                      View packages
+                      <svg class="c-btn__icon c-service__chevron u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+                    </a>
+                  </div>
+                  <div class="c-service__visual" aria-hidden="true">
+                    <svg viewBox="0 0 200 138" focusable="false">
+        <g stroke="currentColor" stroke-width="1.3" opacity="0.24"><path d="M10 120h180M10 92h180M10 64h180M10 36h180" /></g>
+        <g fill="currentColor" opacity="0.26"><rect x="24" y="84" width="20" height="36" /><rect x="58" y="68" width="20" height="52" /><rect x="92" y="76" width="20" height="44" /></g>
+        <rect x="126" y="48" width="20" height="72" fill="var(--color-accent)" opacity="0.5" />
+        <rect x="160" y="28" width="20" height="92" fill="var(--color-accent)" />
+        <path d="M24 100 58 80 92 88 126 58 170 22" stroke="var(--color-accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="170" cy="22" r="4.4" fill="var(--color-accent)" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="c-service" id="service-integrated" data-accordion-item style="--i: 5">
+            <h3>
+              <button class="c-service__trigger" type="button" data-accordion-trigger>
+                <span class="c-service__index" aria-hidden="true">06</span>
+                <span class="c-service__name">Integrated Digital Solutions</span>
+                <span class="c-service__indicator" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="c-service__panel" data-accordion-panel>
+              <div class="c-service__panel-inner">
+                <div class="c-service__content">
+                  <div class="c-service__body">
+                    <p class="t-body-lg c-service__desc" data-i18n-pending>The complete connected offering, run as one system from brand through to growth rather than as separate projects.</p>
+                <ol class="c-service__flow" aria-label="How the connected offering runs">
+                  <li>Branding</li>
+                  <li>Website / Store</li>
+                  <li>Content</li>
+                  <li>Social Media</li>
+                  <li>Advertising</li>
+                  <li>Growth</li>
+                </ol>
+                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#pricing">
+                      View packages
+                      <svg class="c-btn__icon c-service__chevron u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+                    </a>
+                  </div>
+                  <div class="c-service__visual" aria-hidden="true">
+                    <svg viewBox="0 0 200 138" focusable="false">
+        <circle cx="100" cy="69" r="58" stroke="currentColor" stroke-width="1.2" opacity="0.2" />
+        <circle cx="100" cy="69" r="42" stroke="currentColor" stroke-width="1.2" stroke-dasharray="1.5 4" opacity="0.34" />
+        <circle cx="100" cy="69" r="20" stroke="var(--color-accent)" stroke-width="1.6" opacity="0.55" />
+        <g stroke="var(--color-accent)" stroke-width="1" stroke-dasharray="2 3" opacity="0.4"><path d="M100 69 100 27M100 69 140 48M100 69 140 92M100 69 100 111M100 69 60 92M100 69 60 48" /></g>
+        <g fill="var(--color-accent)"><circle cx="100" cy="27" r="4.5" /><circle cx="140" cy="48" r="4.5" /><circle cx="140" cy="92" r="4.5" /><circle cx="100" cy="111" r="4.5" /><circle cx="60" cy="92" r="4.5" /><circle cx="60" cy="48" r="4.5" /></g>
+        <circle cx="100" cy="69" r="7" fill="var(--color-accent)" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div class="c-services__foot" data-reveal>
+            <p class="t-body" data-i18n-pending>
+              Pricing and what each package includes comes next.
+            </p>
+            <a class="c-btn c-btn--primary" href="#contact" data-cta-link>
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </div>
         </div>
       </section>
 
