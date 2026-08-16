@@ -3511,11 +3511,13 @@
     }
 
     .c-detail__intro {
-      grid-column: 1 / span 6;
+      grid-column: 1 / span 7;
+      /* Sized against, so the headline can be capped to it below. */
+      container-type: inline-size;
     }
 
     .c-detail__lead {
-      grid-column: 8 / span 5;
+      grid-column: 9 / span 4;
       padding-block-end: var(--space-8);
     }
   }
@@ -3555,6 +3557,21 @@
     letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);
     text-wrap: wrap;
+  }
+
+  /* Authored <br> breaks only hold if each line fits. The longest line across
+     these sections measures 12.4em, which overruns a seven-column block at the
+     token maximum and re-wraps into orphans. Capping against the column (cqw)
+     keeps every authored break intact at any width, in any language, and keeps
+     section headings clearly below the hero's 76px.
+
+     This must come AFTER the base font-size above: same layer, same
+     specificity, so source order decides — declaring it earlier let the base
+     rule win and the cap silently did nothing. */
+  @media (min-width: 64em) {
+    .c-detail__headline {
+      font-size: max(2.25rem, min(var(--text-h1), 7.9cqw));
+    }
   }
 
   .c-detail__accent {
@@ -4181,6 +4198,148 @@
   .c-detail__subhead {
     margin-block-end: var(--space-8);
     color: var(--color-text-secondary);
+  }
+}
+
+/* =============================================================================
+   COMPONENT — COMMERCE SYSTEM  (Stage 06)
+   The connected pieces of an online store as an asymmetric module grid: the
+   storefront leads, with cart, payment, shipping and categories arranged
+   around it and joined by an accent rail.
+
+   Deliberately not the hero's radial orbit — same visual family (modules,
+   rails, accent markers, micro-labels) expressed as layers of one system
+   rather than bodies in one field.
+
+   Every fragment is abstract. No third-party platform is imitated, and no
+   figure appears anywhere: order counts, revenue and conversion rates would
+   all be business performance that was never supplied.
+   ============================================================================= */
+
+@layer components {
+  .c-commerce {
+    display: grid;
+    gap: var(--space-16);
+    margin-block-end: var(--section-space-tight);
+    list-style: none;
+    padding: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 64em) {
+    .c-commerce {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-24);
+    }
+  }
+
+  /* The storefront is the anchor: full width on mobile, half the field on
+     desktop, so the composition is asymmetric rather than four equal boxes. */
+  .c-commerce__item--lead {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 64em) {
+    .c-commerce__item--lead {
+      grid-column: 1 / span 2;
+      grid-row: 1 / span 2;
+    }
+  }
+
+  .c-commerce__module {
+    position: relative;
+    block-size: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--space-16);
+    background-color: var(--color-bg);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    transition: border-color var(--duration-base) var(--ease-standard),
+      background-color var(--duration-base) var(--ease-standard),
+      transform var(--duration-base) var(--ease-out);
+  }
+
+  @media (min-width: 48em) {
+    .c-commerce__module {
+      padding: var(--space-24);
+    }
+  }
+
+  /* Emphasis only. The label and its fragment are always readable, so nothing
+     is conveyed by hover alone. */
+  .c-commerce__module:hover {
+    border-color: var(--color-border-accent);
+    background-color: var(--color-bg-sunken);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .c-commerce__module:hover {
+      transform: translateY(-3px);
+    }
+  }
+
+  .c-commerce__label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  [dir="rtl"] .c-commerce__label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  .c-commerce__step {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
+    flex-shrink: 0;
+  }
+
+  .c-commerce__figure {
+    display: grid;
+    place-items: center;
+    flex: 1;
+    min-block-size: 0;
+    margin: 0;
+  }
+
+  .c-commerce__figure svg {
+    inline-size: 100%;
+    block-size: auto;
+    max-block-size: 100%;
+    fill: none;
+    color: var(--color-text-primary);
+    direction: ltr;
+  }
+}
+
+@layer components {
+  /* Two packages, not three: a pair should meet in the middle rather than
+     leave a gap where a third card would be. */
+  @media (min-width: 48em) {
+    .c-tiers--pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-inline-size: 46rem;
+      margin-inline: auto;
+    }
+
+    .c-tiers--pair > :last-child {
+      grid-column: auto;
+    }
   }
 }
 
@@ -6494,7 +6653,7 @@ if (document.readyState === 'loading') {
                   <li class="c-service__cap">Payment Configuration</li>
                   <li class="c-service__cap">Required Service Integrations</li>
                 </ul>
-                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#pricing">
+                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#ecommerce">
                       View packages
                       <svg class="c-btn__icon c-service__chevron u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
@@ -7165,6 +7324,242 @@ if (document.readyState === 'loading') {
           <div class="c-detail__foot" data-reveal>
             <p class="t-body" data-i18n-pending>
               Every website is a one-time project. Package inclusions are
+              confirmed with you before work starts.
+            </p>
+            <a class="c-btn c-btn--primary" href="#contact" data-cta-link>
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+            <a class="c-link" href="#services">
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false" style="transform: scaleX(-1)">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+              Back to all services
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           03 — E-COMMERCE
+           Package names, prices and the six capabilities are verbatim from
+           the Services & Pricing document.
+
+           As with Websites, the source supplies prices but NOT per-package
+           inclusions — and here not positioning statements either — so the
+           cards carry neither. No package is marked recommended: the source
+           designates one for Branding, and does not for this service.
+
+           No figure appears in any fragment. Order counts, revenue and
+           conversion rates would all be business performance that was never
+           supplied, and a decorative number still reads as a claim.
+           ============================================================= -->
+      <section id="ecommerce" class="l-section c-detail" aria-labelledby="ecommerce-title">
+        <div class="l-container">
+          <div class="c-detail__head" data-reveal-group>
+            <div class="c-detail__intro">
+              <p class="t-label c-detail__eyebrow">
+                <span class="c-detail__number">03</span>
+                <span data-i18n-pending>E-Commerce</span>
+              </p>
+              <h2 class="c-detail__headline" id="ecommerce-title" data-i18n-pending>
+                Turn your products into<br />
+                <span class="c-detail__accent">a complete online store.</span>
+              </h2>
+            </div>
+            <p class="t-body-lg c-detail__lead" data-i18n-pending>
+              Store creation, products and categories, payment and shipping
+              setup, and the service integrations your store needs.
+            </p>
+          </div>
+
+          <ul class="c-commerce" data-reveal-group>
+            <li class="c-commerce__item c-commerce__item--lead">
+              <div class="c-commerce__module">
+                <p class="c-commerce__label">
+                  <span class="c-commerce__step" aria-hidden="true">01</span>
+                  <span data-i18n-pending>Storefront</span>
+                </p>
+                <figure class="c-commerce__figure" aria-hidden="true">
+                  <svg viewBox="0 0 300 190" focusable="false">
+                <rect x="0.75" y="0.75" width="298.5" height="188.5" rx="4" stroke="currentColor" stroke-width="1.4" opacity="0.45" />
+                <path d="M0.75 26h298.5" stroke="currentColor" stroke-width="1.4" opacity="0.45" />
+                <g fill="currentColor" opacity="0.4"><circle cx="14" cy="13.5" r="2.6" /><circle cx="23" cy="13.5" r="2.6" /><circle cx="32" cy="13.5" r="2.6" /></g>
+                <g fill="currentColor" opacity="0.26"><rect x="196" y="10" width="30" height="7" /><rect x="232" y="10" width="30" height="7" /><rect x="268" y="10" width="20" height="7" /></g>
+                <g stroke="currentColor" stroke-width="1.2" opacity="0.4">
+                  <rect x="16" y="42" width="80" height="62" /><rect x="110" y="42" width="80" height="62" /><rect x="204" y="42" width="80" height="62" />
+                  <rect x="16" y="116" width="80" height="58" /><rect x="110" y="116" width="80" height="58" />
+                </g>
+                <rect x="204" y="116" width="80" height="58" stroke="var(--color-accent)" stroke-width="1.8" />
+                <g fill="currentColor" opacity="0.18">
+                  <rect x="26" y="52" width="60" height="34" /><rect x="120" y="52" width="60" height="34" /><rect x="214" y="52" width="60" height="34" />
+                  <rect x="26" y="126" width="60" height="30" /><rect x="120" y="126" width="60" height="30" />
+                </g>
+                <rect x="214" y="126" width="60" height="30" fill="var(--color-accent)" opacity="0.85" />
+                <g stroke="currentColor" stroke-width="2.6" opacity="0.3"><path d="M26 94h38M120 94h38M214 94h38M26 164h38M120 164h38" /></g>
+                <path d="M214 164h38" stroke="var(--color-accent)" stroke-width="2.6" />
+              </svg>
+                </figure>
+              </div>
+            </li>
+            <li class="c-commerce__item">
+              <div class="c-commerce__module">
+                <p class="c-commerce__label">
+                  <span class="c-commerce__step" aria-hidden="true">02</span>
+                  <span data-i18n-pending>Categories</span>
+                </p>
+                <figure class="c-commerce__figure" aria-hidden="true">
+                  <svg viewBox="0 0 160 110" focusable="false">
+                <g stroke="currentColor" stroke-width="1.3" opacity="0.4"><rect x="0.75" y="0.75" width="158.5" height="108.5" rx="3" /></g>
+                <g fill="currentColor" opacity="0.22"><rect x="14" y="16" width="60" height="9" /><rect x="14" y="34" width="82" height="9" /><rect x="14" y="70" width="70" height="9" /><rect x="14" y="88" width="54" height="9" /></g>
+                <rect x="14" y="52" width="92" height="9" fill="var(--color-accent)" />
+                <g stroke="currentColor" stroke-width="1.6" opacity="0.35"><path d="M120 20h26M120 38h26M120 74h26M120 92h26" /></g>
+                <path d="M120 56h26" stroke="var(--color-accent)" stroke-width="1.8" />
+              </svg>
+                </figure>
+              </div>
+            </li>
+            <li class="c-commerce__item">
+              <div class="c-commerce__module">
+                <p class="c-commerce__label">
+                  <span class="c-commerce__step" aria-hidden="true">03</span>
+                  <span data-i18n-pending>Cart</span>
+                </p>
+                <figure class="c-commerce__figure" aria-hidden="true">
+                  <svg viewBox="0 0 160 110" focusable="false">
+                <g stroke="currentColor" stroke-width="1.3" opacity="0.4"><rect x="0.75" y="0.75" width="158.5" height="108.5" rx="3" /></g>
+                <g stroke="currentColor" stroke-width="1.2" opacity="0.35"><rect x="14" y="14" width="24" height="20" /><rect x="14" y="42" width="24" height="20" /></g>
+                <g fill="currentColor" opacity="0.22"><rect x="46" y="18" width="60" height="6" /><rect x="46" y="28" width="38" height="6" /><rect x="46" y="46" width="52" height="6" /><rect x="46" y="56" width="30" height="6" /></g>
+                <path d="M14 76h132" stroke="currentColor" stroke-width="1.2" opacity="0.3" />
+                <g fill="currentColor" opacity="0.3"><rect x="14" y="86" width="46" height="8" /></g>
+                <rect x="102" y="82" width="44" height="16" fill="var(--color-accent)" />
+              </svg>
+                </figure>
+              </div>
+            </li>
+            <li class="c-commerce__item">
+              <div class="c-commerce__module">
+                <p class="c-commerce__label">
+                  <span class="c-commerce__step" aria-hidden="true">04</span>
+                  <span data-i18n-pending>Payment</span>
+                </p>
+                <figure class="c-commerce__figure" aria-hidden="true">
+                  <svg viewBox="0 0 160 110" focusable="false">
+                <rect x="14" y="18" width="132" height="76" rx="5" stroke="currentColor" stroke-width="1.4" opacity="0.45" />
+                <path d="M14 40h132" stroke="var(--color-accent)" stroke-width="6" />
+                <g fill="currentColor" opacity="0.28"><rect x="26" y="58" width="18" height="8" /><rect x="50" y="58" width="18" height="8" /><rect x="74" y="58" width="18" height="8" /><rect x="98" y="58" width="18" height="8" /></g>
+                <g fill="currentColor" opacity="0.2"><rect x="26" y="76" width="40" height="6" /></g>
+                <circle cx="122" cy="79" r="9" stroke="var(--color-accent)" stroke-width="1.6" />
+                <path d="M118 79l3 3 6-6" stroke="var(--color-accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+                </figure>
+              </div>
+            </li>
+            <li class="c-commerce__item">
+              <div class="c-commerce__module">
+                <p class="c-commerce__label">
+                  <span class="c-commerce__step" aria-hidden="true">05</span>
+                  <span data-i18n-pending>Shipping</span>
+                </p>
+                <figure class="c-commerce__figure" aria-hidden="true">
+                  <svg viewBox="0 0 160 110" focusable="false">
+                <path d="M14 74h132" stroke="currentColor" stroke-width="1.3" opacity="0.3" stroke-dasharray="3 5" />
+                <g fill="var(--color-accent)"><circle cx="20" cy="74" r="5" /></g>
+                <g stroke="currentColor" stroke-width="1.5" opacity="0.4"><circle cx="80" cy="74" r="5" /><circle cx="140" cy="74" r="5" /></g>
+                <path d="M20 74h40" stroke="var(--color-accent)" stroke-width="2.4" />
+                <g stroke="currentColor" stroke-width="1.4" opacity="0.45">
+                  <path d="M40 46h34v-18H40zM74 34h14l8 12v0H74z" stroke-linejoin="round" />
+                </g>
+                <path d="M40 34h34" stroke="var(--color-accent)" stroke-width="1.6" />
+                <g fill="currentColor" opacity="0.22"><rect x="14" y="90" width="34" height="6" /><rect x="66" y="90" width="28" height="6" /><rect x="120" y="90" width="26" height="6" /></g>
+              </svg>
+                </figure>
+              </div>
+            </li>
+          </ul>
+
+          <h3 class="t-label c-detail__subhead" data-i18n-pending>What the service covers</h3>
+          <ol class="c-pipeline" data-reveal-group>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">01</span>
+              <span class="c-pipeline__name" data-i18n-pending>Online Store Creation</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">02</span>
+              <span class="c-pipeline__name" data-i18n-pending>Product Setup</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">03</span>
+              <span class="c-pipeline__name" data-i18n-pending>Categories</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">04</span>
+              <span class="c-pipeline__name" data-i18n-pending>Shipping Configuration</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">05</span>
+              <span class="c-pipeline__name" data-i18n-pending>Payment Configuration</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">06</span>
+              <span class="c-pipeline__name" data-i18n-pending>Required Service Integrations</span>
+            </li>
+          </ol>
+
+          <div class="c-tiers c-tiers--pair" data-reveal-group>
+          <article class="c-tier c-tier--brief" style="--i: 0"
+            aria-labelledby="ecom-starter-name">
+            <div>
+              <h3 class="c-tier__name" id="ecom-starter-name" data-i18n-pending>E-Commerce Starter</h3>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">650</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="ecom-starter-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier c-tier--brief" style="--i: 1"
+            aria-labelledby="ecom-professional-name">
+            <div>
+              <h3 class="c-tier__name" id="ecom-professional-name" data-i18n-pending>E-Commerce Professional</h3>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">1,100</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="ecom-professional-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+          </div>
+
+          <div class="c-detail__foot" data-reveal>
+            <p class="t-body" data-i18n-pending>
+              Every store is a one-time project. Package inclusions are
               confirmed with you before work starts.
             </p>
             <a class="c-btn c-btn--primary" href="#contact" data-cta-link>

@@ -3513,11 +3513,13 @@
     }
 
     .c-detail__intro {
-      grid-column: 1 / span 6;
+      grid-column: 1 / span 7;
+      /* Sized against, so the headline can be capped to it below. */
+      container-type: inline-size;
     }
 
     .c-detail__lead {
-      grid-column: 8 / span 5;
+      grid-column: 9 / span 4;
       padding-block-end: var(--space-8);
     }
   }
@@ -3557,6 +3559,21 @@
     letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);
     text-wrap: wrap;
+  }
+
+  /* Authored <br> breaks only hold if each line fits. The longest line across
+     these sections measures 12.4em, which overruns a seven-column block at the
+     token maximum and re-wraps into orphans. Capping against the column (cqw)
+     keeps every authored break intact at any width, in any language, and keeps
+     section headings clearly below the hero's 76px.
+
+     This must come AFTER the base font-size above: same layer, same
+     specificity, so source order decides — declaring it earlier let the base
+     rule win and the cap silently did nothing. */
+  @media (min-width: 64em) {
+    .c-detail__headline {
+      font-size: max(2.25rem, min(var(--text-h1), 7.9cqw));
+    }
   }
 
   .c-detail__accent {
@@ -4183,6 +4200,148 @@
   .c-detail__subhead {
     margin-block-end: var(--space-8);
     color: var(--color-text-secondary);
+  }
+}
+
+/* =============================================================================
+   COMPONENT — COMMERCE SYSTEM  (Stage 06)
+   The connected pieces of an online store as an asymmetric module grid: the
+   storefront leads, with cart, payment, shipping and categories arranged
+   around it and joined by an accent rail.
+
+   Deliberately not the hero's radial orbit — same visual family (modules,
+   rails, accent markers, micro-labels) expressed as layers of one system
+   rather than bodies in one field.
+
+   Every fragment is abstract. No third-party platform is imitated, and no
+   figure appears anywhere: order counts, revenue and conversion rates would
+   all be business performance that was never supplied.
+   ============================================================================= */
+
+@layer components {
+  .c-commerce {
+    display: grid;
+    gap: var(--space-16);
+    margin-block-end: var(--section-space-tight);
+    list-style: none;
+    padding: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 64em) {
+    .c-commerce {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-24);
+    }
+  }
+
+  /* The storefront is the anchor: full width on mobile, half the field on
+     desktop, so the composition is asymmetric rather than four equal boxes. */
+  .c-commerce__item--lead {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 64em) {
+    .c-commerce__item--lead {
+      grid-column: 1 / span 2;
+      grid-row: 1 / span 2;
+    }
+  }
+
+  .c-commerce__module {
+    position: relative;
+    block-size: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--space-16);
+    background-color: var(--color-bg);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    transition: border-color var(--duration-base) var(--ease-standard),
+      background-color var(--duration-base) var(--ease-standard),
+      transform var(--duration-base) var(--ease-out);
+  }
+
+  @media (min-width: 48em) {
+    .c-commerce__module {
+      padding: var(--space-24);
+    }
+  }
+
+  /* Emphasis only. The label and its fragment are always readable, so nothing
+     is conveyed by hover alone. */
+  .c-commerce__module:hover {
+    border-color: var(--color-border-accent);
+    background-color: var(--color-bg-sunken);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .c-commerce__module:hover {
+      transform: translateY(-3px);
+    }
+  }
+
+  .c-commerce__label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  [dir="rtl"] .c-commerce__label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  .c-commerce__step {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
+    flex-shrink: 0;
+  }
+
+  .c-commerce__figure {
+    display: grid;
+    place-items: center;
+    flex: 1;
+    min-block-size: 0;
+    margin: 0;
+  }
+
+  .c-commerce__figure svg {
+    inline-size: 100%;
+    block-size: auto;
+    max-block-size: 100%;
+    fill: none;
+    color: var(--color-text-primary);
+    direction: ltr;
+  }
+}
+
+@layer components {
+  /* Two packages, not three: a pair should meet in the middle rather than
+     leave a gap where a third card would be. */
+  @media (min-width: 48em) {
+    .c-tiers--pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-inline-size: 46rem;
+      margin-inline: auto;
+    }
+
+    .c-tiers--pair > :last-child {
+      grid-column: auto;
+    }
   }
 }
 
