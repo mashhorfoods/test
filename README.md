@@ -14,6 +14,7 @@ docs/04-branding.md         Branding & Design, documented
 docs/05-websites.md         Websites, documented
 docs/06-ecommerce.md        E-Commerce, documented
 docs/07-social.md           Social Media Management, documented
+docs/08-marketing.md        Digital Marketing & Ads, documented
 docs/09-integrated.md       Integrated Solutions, documented
 index.html                  Homepage shell — header + placeholder sections
 scaffold.css                Temporary placeholder-section styles (not shipped)
@@ -30,7 +31,7 @@ src/styles/                 The product stylesheet
   06-utilities.css          A deliberately small utility set
   components/               button · card · header · navigation · hero ·
                             orbit · services · service-detail ·
-                            ecosystem · disclosure · field
+                            campaign · ecosystem · disclosure · field
 src/scripts/                Vanilla ES modules, no dependencies
   main.js                   Entry point
   navigation-map.js         Single source of section order and labels
@@ -53,9 +54,10 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 05 | Websites | Done |
 | 06 | E-Commerce | Done |
 | 07 | Social Media Management | Done |
-| 08 | Digital Marketing & Advertising | Not issued — no packages supplied |
+| 08 | Digital Marketing & Advertising | Done |
 | 09 | Integrated Solutions | Done |
-| — | Pricing, Why Us, Process, Contact, Footer | Placeholders |
+| 10 | Pricing architecture | Issued, blocked — see below |
+| — | Why Us, Process, Contact, Footer | Placeholders |
 
 ## Single-file build
 
@@ -78,8 +80,8 @@ hero height, the ecosystem wiring, and the mobile menu.
 
 | | Requests | Size |
 | --- | --- | --- |
-| Modular source | 29 | — |
-| `dist/index.html` | **0** | 516KB (132KB of it fonts) |
+| Modular source | 30 | — |
+| `dist/index.html` | **0** | 548KB (132KB of it fonts) |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:
@@ -136,7 +138,10 @@ Each stage's doc ends with its own open items. Across the project:
   on review. Every line is approved wording — only the assignment of a line to
   a package came later. `docs/05-websites.md` records the two lines worth
   re-checking.
-- **Remaining service data** — Digital Marketing has no packages, so its
-  Services row and its ecosystem node point at `#pricing`. E-Commerce has no
-  positioning statements, so those two cards have no purpose line.
+- **Stage 10 (Pricing) is blocked on data.** Its brief lists Integrated
+  Solutions packages (Business Launch, Digital Growth) and an Additional
+  Services price list; neither has been supplied. Every other category it
+  names is already built and can be assembled from the existing sections.
+- **E-Commerce has no positioning statements**, so those two cards have no
+  purpose line.
 - `apple-touch-icon.png`, `og-image.png`, and the page's OG/canonical values.

@@ -1,0 +1,199 @@
+/* =============================================================================
+   CAMPAIGN — STAGE 08, DIGITAL MARKETING & PAID ADVERTISING
+   Three pieces: the platform strip, the campaign flow, and the budget note.
+
+   The pricing cards are .c-tier, unchanged from Branding. The flow extends
+   .c-pipeline rather than replacing it — the delivery pipeline in Websites,
+   E-Commerce and Social already reads as "ordered stages of one service", and
+   this is the same idea with a line of context under each stage.
+   ============================================================================= */
+
+@layer components {
+  /* -----------------------------------------------------------------------
+     PLATFORM STRIP
+     Names set as type, not a wall of logos (rule 10). Nothing here is a
+     trademark reproduction, and nothing depends on an external asset.
+     ----------------------------------------------------------------------- */
+  .c-platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-platforms__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    padding: var(--space-8) var(--space-16);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg);
+    font-family: var(--font-display);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    /* Platform names are Latin proper nouns in both languages: isolate them
+       so an RTL line box cannot reorder "Google Ads". */
+    unicode-bidi: isolate;
+  }
+
+  .c-platforms__dot {
+    inline-size: 6px;
+    block-size: 6px;
+    flex-shrink: 0;
+    border-radius: var(--radius-circle);
+    background-color: var(--color-accent);
+  }
+
+  /* Scope caveat. Not decoration: the packages manage different platforms,
+     and a bare row of five names would imply all five, every time. */
+  .c-platforms__scope {
+    margin-block-start: var(--space-12);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    max-inline-size: 62ch;
+  }
+
+  /* -----------------------------------------------------------------------
+     CAMPAIGN FLOW
+     .c-pipeline with a second line per stage. Each stage taps the rule above
+     the row with an accent segment — the same "tapped bus" idea as the
+     Stage 09 armature, which is why the two sections read as one system.
+
+     NOT focusable. There is nothing to activate: every stage name and every
+     line of context is rendered at rest, and hover only emphasises. Making
+     inert text tab-stoppable would add six empty stops to the keyboard path
+     and promise an interaction that does not exist.
+     ----------------------------------------------------------------------- */
+  /* Six stages, so the column count is declared rather than left to auto-fit:
+     auto-fit resolved to five at 1440px and left "Measurement" alone on a
+     second row, which reads as an afterthought rather than as the last stage.
+     1 / 2 / 3 columns divides six evenly at every width. */
+  .c-pipeline--flow {
+    gap: var(--space-8);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 30em) {
+    .c-pipeline--flow {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 48em) {
+    .c-pipeline--flow {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--grid-gutter);
+      row-gap: var(--space-24);
+    }
+  }
+
+  .c-pipeline--flow .c-pipeline__step {
+    gap: var(--space-4);
+    padding-block-start: var(--space-24);
+  }
+
+  /* The tap onto the rule above the row. Grows and brightens on hover, so
+     the emphasis is a size change as well as a colour one. */
+  .c-pipeline--flow .c-pipeline__step::before {
+    content: "";
+    position: absolute;
+    inset-block-start: calc(-1 * var(--space-24) - 1px);
+    inset-inline-start: var(--space-12);
+    inline-size: var(--space-24);
+    block-size: 2px;
+    background-color: var(--color-border-strong);
+    transition: background-color var(--duration-fast) var(--ease-standard),
+      inline-size var(--duration-base) var(--ease-out);
+  }
+
+  .c-pipeline--flow .c-pipeline__step:hover::before {
+    background-color: var(--color-accent);
+    inline-size: var(--space-48);
+  }
+
+  .c-pipeline--flow .c-pipeline__name {
+    font-family: var(--font-display);
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .c-pipeline__detail {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+  }
+
+  .c-pipeline--flow .c-pipeline__step:hover .c-pipeline__detail {
+    color: var(--color-text-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-pipeline--flow .c-pipeline__step:hover::before {
+      inline-size: var(--space-24);
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     BUDGET NOTE
+     Commercially load-bearing: the management fee and the client's ad spend
+     are different money. Rule 14 says it must not be a footnote, so it is a
+     bordered block at body size with an accent edge — the only element in
+     the section that carries one, which is what makes it read as a caveat
+     rather than as more marketing copy.
+     ----------------------------------------------------------------------- */
+  .c-note {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-16);
+    align-items: start;
+    margin-block: var(--section-space-tight) 0;
+    padding: var(--space-24);
+    background-color: var(--color-surface);
+    border: var(--border-hairline);
+    border-inline-start: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+  }
+
+  .c-note__mark {
+    inline-size: var(--icon-lg);
+    block-size: var(--icon-lg);
+    flex-shrink: 0;
+    color: var(--color-accent);
+    fill: none;
+  }
+
+  .c-note__label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-block-end: var(--space-4);
+  }
+
+  [dir="rtl"] .c-note__label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  .c-note__body {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-text-primary);
+    max-inline-size: 62ch;
+  }
+
+  @media (min-width: 48em) {
+    .c-note {
+      padding: var(--space-32);
+    }
+  }
+}

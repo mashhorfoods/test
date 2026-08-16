@@ -4370,6 +4370,208 @@
 }
 
 
+/* ---- src/styles/components/campaign.css ---- */
+/* =============================================================================
+   CAMPAIGN — STAGE 08, DIGITAL MARKETING & PAID ADVERTISING
+   Three pieces: the platform strip, the campaign flow, and the budget note.
+
+   The pricing cards are .c-tier, unchanged from Branding. The flow extends
+   .c-pipeline rather than replacing it — the delivery pipeline in Websites,
+   E-Commerce and Social already reads as "ordered stages of one service", and
+   this is the same idea with a line of context under each stage.
+   ============================================================================= */
+
+@layer components {
+  /* -----------------------------------------------------------------------
+     PLATFORM STRIP
+     Names set as type, not a wall of logos (rule 10). Nothing here is a
+     trademark reproduction, and nothing depends on an external asset.
+     ----------------------------------------------------------------------- */
+  .c-platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-platforms__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    padding: var(--space-8) var(--space-16);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg);
+    font-family: var(--font-display);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    /* Platform names are Latin proper nouns in both languages: isolate them
+       so an RTL line box cannot reorder "Google Ads". */
+    unicode-bidi: isolate;
+  }
+
+  .c-platforms__dot {
+    inline-size: 6px;
+    block-size: 6px;
+    flex-shrink: 0;
+    border-radius: var(--radius-circle);
+    background-color: var(--color-accent);
+  }
+
+  /* Scope caveat. Not decoration: the packages manage different platforms,
+     and a bare row of five names would imply all five, every time. */
+  .c-platforms__scope {
+    margin-block-start: var(--space-12);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    max-inline-size: 62ch;
+  }
+
+  /* -----------------------------------------------------------------------
+     CAMPAIGN FLOW
+     .c-pipeline with a second line per stage. Each stage taps the rule above
+     the row with an accent segment — the same "tapped bus" idea as the
+     Stage 09 armature, which is why the two sections read as one system.
+
+     NOT focusable. There is nothing to activate: every stage name and every
+     line of context is rendered at rest, and hover only emphasises. Making
+     inert text tab-stoppable would add six empty stops to the keyboard path
+     and promise an interaction that does not exist.
+     ----------------------------------------------------------------------- */
+  /* Six stages, so the column count is declared rather than left to auto-fit:
+     auto-fit resolved to five at 1440px and left "Measurement" alone on a
+     second row, which reads as an afterthought rather than as the last stage.
+     1 / 2 / 3 columns divides six evenly at every width. */
+  .c-pipeline--flow {
+    gap: var(--space-8);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 30em) {
+    .c-pipeline--flow {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 48em) {
+    .c-pipeline--flow {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--grid-gutter);
+      row-gap: var(--space-24);
+    }
+  }
+
+  .c-pipeline--flow .c-pipeline__step {
+    gap: var(--space-4);
+    padding-block-start: var(--space-24);
+  }
+
+  /* The tap onto the rule above the row. Grows and brightens on hover, so
+     the emphasis is a size change as well as a colour one. */
+  .c-pipeline--flow .c-pipeline__step::before {
+    content: "";
+    position: absolute;
+    inset-block-start: calc(-1 * var(--space-24) - 1px);
+    inset-inline-start: var(--space-12);
+    inline-size: var(--space-24);
+    block-size: 2px;
+    background-color: var(--color-border-strong);
+    transition: background-color var(--duration-fast) var(--ease-standard),
+      inline-size var(--duration-base) var(--ease-out);
+  }
+
+  .c-pipeline--flow .c-pipeline__step:hover::before {
+    background-color: var(--color-accent);
+    inline-size: var(--space-48);
+  }
+
+  .c-pipeline--flow .c-pipeline__name {
+    font-family: var(--font-display);
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .c-pipeline__detail {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+  }
+
+  .c-pipeline--flow .c-pipeline__step:hover .c-pipeline__detail {
+    color: var(--color-text-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-pipeline--flow .c-pipeline__step:hover::before {
+      inline-size: var(--space-24);
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     BUDGET NOTE
+     Commercially load-bearing: the management fee and the client's ad spend
+     are different money. Rule 14 says it must not be a footnote, so it is a
+     bordered block at body size with an accent edge — the only element in
+     the section that carries one, which is what makes it read as a caveat
+     rather than as more marketing copy.
+     ----------------------------------------------------------------------- */
+  .c-note {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-16);
+    align-items: start;
+    margin-block: var(--section-space-tight) 0;
+    padding: var(--space-24);
+    background-color: var(--color-surface);
+    border: var(--border-hairline);
+    border-inline-start: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+  }
+
+  .c-note__mark {
+    inline-size: var(--icon-lg);
+    block-size: var(--icon-lg);
+    flex-shrink: 0;
+    color: var(--color-accent);
+    fill: none;
+  }
+
+  .c-note__label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-block-end: var(--space-4);
+  }
+
+  [dir="rtl"] .c-note__label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  .c-note__body {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-text-primary);
+    max-inline-size: 62ch;
+  }
+
+  @media (min-width: 48em) {
+    .c-note {
+      padding: var(--space-32);
+    }
+  }
+}
+
+
 /* ---- src/styles/components/ecosystem.css ---- */
 /* =============================================================================
    ECOSYSTEM — STAGE 09, INTEGRATED SOLUTIONS
@@ -7306,7 +7508,7 @@ if (document.readyState === 'loading') {
                   <li class="c-service__cap">Optimization</li>
                   <li class="c-service__cap">Performance Tracking</li>
                 </ul>
-                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#pricing">
+                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#marketing">
                       View packages
                       <svg class="c-btn__icon c-service__chevron u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
@@ -8606,6 +8808,318 @@ if (document.readyState === 'loading') {
       </section>
 
       <!-- =============================================================
+           05 — DIGITAL MARKETING & PAID ADVERTISING (Stage 08)
+           Package names, prices and every feature string come from the
+           Services & Pricing document. Arabic is reproduced character for
+           character; the English column translates the Arabic-only items with
+           every quantity carried across unchanged (2 ad designs, 4 campaigns,
+           one platform). Strings already English in the source are identical
+           in both columns.
+
+           NO PERFORMANCE FIGURE APPEARS ANYWHERE. No ROAS, reach, impression,
+           conversion rate or client count — real or decorative. The only
+           digits in the section are the section number, the stage indices,
+           the three prices, and the quantities the document itself states.
+
+           The campaign flow's context lines are built ONLY from approved
+           feature names, so the diagram cannot drift from the packages.
+
+           The five platforms are the service's supported platforms, not any
+           package's contents: Starter manages one unnamed platform, Growth
+           manages Meta, Performance Meta + Google. The strip says so rather
+           than implying all five are always included.
+
+           Positioning statements are NOT in the pricing document; the three
+           below are the brief's own characterisations of the tiers.
+           ============================================================= -->
+      <section id="marketing" class="l-section c-detail" aria-labelledby="marketing-title">
+        <div class="l-container">
+          <header class="c-detail__head" data-reveal-group>
+            <div class="c-detail__intro">
+              <p class="t-label c-detail__eyebrow">
+                <span class="c-detail__number">05</span>
+                <span data-i18n-pending>Digital Marketing &amp; Ads</span>
+              </p>
+              <h2 class="c-detail__headline" id="marketing-title" data-i18n-pending>
+                Reach the right people.<br />
+                <span class="c-detail__accent">At the right moment.</span>
+              </h2>
+            </div>
+            <p class="t-body-lg c-detail__lead" data-i18n-pending>
+              Campaign strategy, audience work, ad creative, optimisation and
+              monthly reporting — run as one ongoing service rather than as
+              boosted posts.
+            </p>
+          </header>
+
+          <h3 class="t-label c-detail__subhead" id="marketing-platforms" data-i18n-pending>
+            Platforms we advertise on
+          </h3>
+          <ul class="c-platforms" aria-labelledby="marketing-platforms" data-reveal>
+              <li class="c-platforms__item"><span class="c-platforms__dot" aria-hidden="true"></span>Facebook</li>
+              <li class="c-platforms__item"><span class="c-platforms__dot" aria-hidden="true"></span>Instagram</li>
+              <li class="c-platforms__item"><span class="c-platforms__dot" aria-hidden="true"></span>TikTok</li>
+              <li class="c-platforms__item"><span class="c-platforms__dot" aria-hidden="true"></span>Snapchat</li>
+              <li class="c-platforms__item"><span class="c-platforms__dot" aria-hidden="true"></span>Google Ads</li>
+          </ul>
+          <p class="c-platforms__scope" data-i18n-pending>
+            Which of these a package manages is set by that package — Ads
+            Starter covers one platform, Ads Growth covers Meta, Ads
+            Performance covers Meta and Google.
+          </p>
+
+          <h3 class="t-label c-detail__subhead" id="marketing-flow" data-i18n-pending>
+            How a campaign runs
+          </h3>
+          <ol class="c-pipeline c-pipeline--flow" aria-labelledby="marketing-flow" data-reveal-group>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">01</span>
+              <span class="c-pipeline__name" data-i18n-pending>Strategy</span>
+              <span class="c-pipeline__detail" data-i18n-pending>Campaign Strategy</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">02</span>
+              <span class="c-pipeline__name" data-i18n-pending>Audience</span>
+              <span class="c-pipeline__detail" data-i18n-pending>Audience Targeting, Research and Segmentation</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">03</span>
+              <span class="c-pipeline__name" data-i18n-pending>Creative</span>
+              <span class="c-pipeline__detail" data-i18n-pending>Ad Creative, Ad Copy and Copywriting</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">04</span>
+              <span class="c-pipeline__name" data-i18n-pending>Campaign</span>
+              <span class="c-pipeline__detail" data-i18n-pending>Campaign setup, Campaign Monitoring and Retargeting</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">05</span>
+              <span class="c-pipeline__name" data-i18n-pending>Optimization</span>
+              <span class="c-pipeline__detail" data-i18n-pending>Campaign, Creative and Budget Optimization</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">06</span>
+              <span class="c-pipeline__name" data-i18n-pending>Measurement</span>
+              <span class="c-pipeline__detail" data-i18n-pending>Conversion Tracking, A/B Testing and Performance Report</span>
+            </li>
+          </ol>
+
+          <div class="c-tiers" data-reveal-group>
+          <article class="c-tier" style="--i: 0"
+            aria-labelledby="ads-starter-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>Foundation</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="ads-starter-name" data-i18n-pending>Ads Starter</h3>
+              <p class="c-tier__purpose" data-i18n-pending>Entry-level solution.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">150</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">One advertising platform managed</span><span data-lang-copy="ar" lang="ar">إدارة منصة إعلانية واحدة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Campaign setup</span><span data-lang-copy="ar" lang="ar">إعداد الحملات</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Audience Targeting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Ad Copy</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Up to 2 ad designs</span><span data-lang-copy="ar" lang="ar">تصميم حتى 2 إعلان</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Campaign Monitoring</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Basic Optimization</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Monthly report</span><span data-lang-copy="ar" lang="ar">تقرير شهري</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 8 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="ads-starter-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier c-tier--featured" style="--i: 1"
+            aria-labelledby="ads-growth-name">
+            <span class="c-tier__ribbon"><span data-lang-copy="en">Recommended</span><span data-lang-copy="ar" lang="ar">موصى به</span></span>
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>System</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="ads-growth-name" data-i18n-pending>Ads Growth</h3>
+              <p class="c-tier__purpose" data-i18n-pending>Balanced solution.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">225</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Meta Ads management</span><span data-lang-copy="ar" lang="ar">إدارة Meta Ads</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Facebook + Instagram</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Up to 4 campaigns</span><span data-lang-copy="ar" lang="ar">حتى 4 حملات</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Audience Research</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Ad Creative</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Copywriting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Campaign Optimization</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Retargeting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Conversion Tracking</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Monthly performance report</span><span data-lang-copy="ar" lang="ar">تقرير أداء شهري</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 10 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--primary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="ads-growth-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier" style="--i: 2"
+            aria-labelledby="ads-performance-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 1.5 24 7.5 13 13.5 2 7.5 13 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /><path d="M2 12.5 13 18.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.6" /><path d="M2 17.5 13 23.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.32" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>Ecosystem</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="ads-performance-name" data-i18n-pending>Ads Performance</h3>
+              <p class="c-tier__purpose" data-i18n-pending>Advanced, performance-focused solution.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">400</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Meta + Google Ads</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Campaign Strategy</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Audience Segmentation</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Multiple Campaigns</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Retargeting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Conversion Tracking</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>A/B Testing</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Creative Optimization</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Budget Optimization</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Performance Report</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Monthly Strategy Meeting</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 11 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="ads-performance-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+          </div>
+
+          <aside class="c-note" data-reveal aria-labelledby="marketing-note-label">
+            <svg class="c-note__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.6" />
+              <path d="M12 7.4v5.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              <circle cx="12" cy="16.4" r="1.1" fill="currentColor" />
+            </svg>
+            <p>
+              <span class="c-note__label" id="marketing-note-label">
+                <span data-lang-copy="en">Note</span><span data-lang-copy="ar" lang="ar">ملاحظة</span>
+              </span>
+              <span class="c-note__body">
+                <span data-lang-copy="en">The advertising budget itself is not included in the
+                  management fee. The package price covers managing your campaigns; what you
+                  spend with the platforms is separate and paid by you.</span>
+                <span data-lang-copy="ar" lang="ar">ميزانية الإعلانات نفسها غير مشمولة في رسوم الإدارة.</span>
+              </span>
+            </p>
+          </aside>
+
+          <div class="c-detail__foot" data-reveal>
+            <p class="t-body">
+              <span data-lang-copy="en">Every package is billed monthly.</span>
+              <span data-lang-copy="ar" lang="ar">تُحتسب جميع الباقات شهريًا.</span>
+            </p>
+            <a class="c-link" href="#services">
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false" style="transform: scaleX(-1)">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+              <span data-lang-copy="en">Back to all services</span>
+              <span data-lang-copy="ar" lang="ar">العودة إلى الخدمات</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
            05 — INTEGRATED SOLUTIONS (Stage 09)
            The strategic close of the service ecosystem. Every earlier
            section answers "what do you do"; this one answers "why one
@@ -8634,7 +9148,7 @@ if (document.readyState === 'loading') {
           <header class="c-detail__head" data-reveal-group>
             <div class="c-detail__intro">
               <p class="t-label c-detail__eyebrow">
-                <span class="c-detail__number">05</span>
+                <span class="c-detail__number">06</span>
                 <span data-i18n-pending>One Digital Partner</span>
               </p>
               <h2 class="c-detail__headline" id="integrated-title" data-i18n-pending>
@@ -8708,7 +9222,7 @@ if (document.readyState === 'loading') {
               </li>
 
               <li class="c-eco__stop">
-                <a class="c-eco__node" href="#pricing">
+                <a class="c-eco__node" href="#marketing">
                   <span class="c-eco__marker" aria-hidden="true">05</span>
                   <span class="c-eco__text">
                     <span class="c-eco__name" data-i18n-pending>Digital Marketing</span>
