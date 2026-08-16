@@ -14,6 +14,7 @@ docs/04-branding.md         Branding & Design, documented
 docs/05-websites.md         Websites, documented
 docs/06-ecommerce.md        E-Commerce, documented
 docs/07-social.md           Social Media Management, documented
+docs/09-integrated.md       Integrated Solutions, documented
 index.html                  Homepage shell — header + placeholder sections
 scaffold.css                Temporary placeholder-section styles (not shipped)
 styleguide.html             Living specimen sheet for every token and component
@@ -29,7 +30,7 @@ src/styles/                 The product stylesheet
   06-utilities.css          A deliberately small utility set
   components/               button · card · header · navigation · hero ·
                             orbit · services · service-detail ·
-                            disclosure · field
+                            ecosystem · disclosure · field
 src/scripts/                Vanilla ES modules, no dependencies
   main.js                   Entry point
   navigation-map.js         Single source of section order and labels
@@ -52,7 +53,9 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 05 | Websites | Done |
 | 06 | E-Commerce | Done |
 | 07 | Social Media Management | Done |
-| 08+ | Marketing, Integrated, Pricing, Why Us, Process, Contact, Footer | Placeholders |
+| 08 | Digital Marketing & Advertising | Not issued — no packages supplied |
+| 09 | Integrated Solutions | Done |
+| — | Pricing, Why Us, Process, Contact, Footer | Placeholders |
 
 ## Single-file build
 
@@ -71,12 +74,12 @@ graph into one inline module. No dependencies, no toolchain.
 Verified with every other host blocked: **0 network requests**, no errors, and
 identical to the modular source on every measured property — fonts, headline
 size, brand, navigation counts, constellation geometry in both directions,
-hero height, and the mobile menu.
+hero height, the ecosystem wiring, and the mobile menu.
 
 | | Requests | Size |
 | --- | --- | --- |
-| Modular source | 27 | — |
-| `dist/index.html` | **0** | 475KB (132KB of it fonts) |
+| Modular source | 29 | — |
+| `dist/index.html` | **0** | 489KB (132KB of it fonts) |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:
@@ -127,13 +130,13 @@ Each stage's doc ends with its own open items. Across the project:
   correctly. Remove the attribute from an element as its translation lands.
   Where a string ships in both languages, it uses `data-lang-copy` instead and
   needs nothing further.
-- **Draft feature splits.** Websites and E-Commerce have approved prices but no
-  approved per-package inclusions. Their cards show a split of the service's own
-  capabilities that is an **inference awaiting sign-off** — every line is
-  approved wording, but which package each line sits in is not. Each such card
-  carries `data-draft-features`, so `[data-draft-features]` selects everything
-  still unconfirmed (five cards today) and the lists are plain markup to swap.
-- **Remaining service data** — Digital Marketing and Integrated Solutions have
-  no packages yet, so their Services rows point at `#pricing`. E-Commerce also
-  has no positioning statements, so those two cards have no purpose line.
+- **Websites and E-Commerce inclusions are a signed-off split, not source
+  data.** The original document gave prices but no per-package inclusions; the
+  split was drafted from each service's own approved capabilities and approved
+  on review. Every line is approved wording — only the assignment of a line to
+  a package came later. `docs/05-websites.md` records the two lines worth
+  re-checking.
+- **Remaining service data** — Digital Marketing has no packages, so its
+  Services row and its ecosystem node point at `#pricing`. E-Commerce has no
+  positioning statements, so those two cards have no purpose line.
 - `apple-touch-icon.png`, `og-image.png`, and the page's OG/canonical values.

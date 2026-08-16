@@ -4370,6 +4370,534 @@
 }
 
 
+/* ---- src/styles/components/ecosystem.css ---- */
+/* =============================================================================
+   ECOSYSTEM — STAGE 09, INTEGRATED SOLUTIONS
+   The connected-system composition: five service nodes wired to one hub.
+
+   THREE COMPOSITIONS, NOT ONE SCALED DOWN (rule 16)
+     >= 64em  two node columns flanking a central hub, joined by rails that
+              run through the gutters — a backbone with services tapped into it
+     48-64em  hub leads full width; nodes below on a spine that runs under it
+     < 48em   a vertical journey: one rail, five stops, the hub as terminus
+
+   NO SVG COORDINATE MATH. Every connection is a box positioned against the
+   grid it belongs to, so the wiring reflows with the layout instead of having
+   to be recomputed, and mirrors under RTL for free via logical properties.
+
+   Deliberately NOT the hero's orbit (loose bodies in a field) and NOT the
+   commerce module grid (pieces of one interface). This is an armature:
+   orthogonal, indexed, wired. Same family, different device — rule 24.
+   ============================================================================= */
+
+@layer components {
+  .c-eco {
+    --eco-rail: 1px;
+    --eco-gutter: var(--space-48);
+    /* Motion amounts live in custom properties so reduced-motion can zero
+       them on ONE selector. Overriding `translate` per state would mean
+       out-specifying `[dir=rtl] .c-eco__stop:nth-child(...) .c-eco__node:hover`
+       four times over, and the first attempt silently lost that fight. */
+    --eco-shift: var(--space-8);
+    --eco-pop: 1.08;
+    position: relative;
+    margin-block-start: var(--space-64);
+  }
+
+  /* -----------------------------------------------------------------------
+     MOBILE FIRST — the vertical journey.
+     A single rail on the inline-start edge with a stop at every node. The
+     rail is a pseudo-element on the list, so it cannot be tabbed to, read
+     out, or copied into a text selection.
+     ----------------------------------------------------------------------- */
+  .c-eco__flow {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-eco__flow::before {
+    content: "";
+    position: absolute;
+    inset-block: var(--space-24);
+    inset-inline-start: calc(var(--space-24) - (var(--eco-rail) / 2));
+    inline-size: var(--eco-rail);
+    background: linear-gradient(
+      to bottom,
+      var(--color-border) 0%,
+      var(--color-border-strong) 50%,
+      var(--color-border) 100%
+    );
+  }
+
+  .c-eco__stop {
+    position: relative;
+  }
+
+  /* --- The node itself ---------------------------------------------------
+     An anchor: it names a service AND takes you to that service's section,
+     so the composition is navigation rather than decoration. */
+  .c-eco__node {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--space-48) 1fr;
+    align-items: start;
+    gap: var(--space-16);
+    padding: var(--space-16) var(--space-24);
+    padding-inline-start: 0;
+    text-decoration: none;
+    color: inherit;
+    border-radius: var(--radius-md);
+    transition: opacity var(--duration-base) var(--ease-standard),
+      translate var(--duration-base) var(--ease-out),
+      background-color var(--duration-base) var(--ease-standard);
+  }
+
+  /* The stop marker sits on the rail. Filled ring at rest, accent when the
+     node is active — plus a size change, so the state is never colour alone
+     (rule 27). */
+  .c-eco__marker {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    inline-size: var(--space-48);
+    block-size: var(--space-48);
+    border-radius: var(--radius-circle);
+    background-color: var(--color-bg);
+    border: var(--border-hairline);
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    font-weight: var(--weight-semibold);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    /* The index is a Western numeral in both languages: keep it LTR so it is
+       not reordered inside an RTL line box. */
+    direction: ltr;
+    unicode-bidi: isolate;
+    transition: border-color var(--duration-base) var(--ease-standard),
+      color var(--duration-base) var(--ease-standard),
+      scale var(--duration-base) var(--ease-out);
+  }
+
+  /* A grid item will not shrink below its longest word, so at 1024px the
+     narrowest side column was 4px short of "Management" and the node quietly
+     overflowed its own card. Let the column shrink and the word break. */
+  .c-eco__text {
+    min-inline-size: 0;
+  }
+
+  .c-eco__name,
+  .c-eco__role {
+    overflow-wrap: break-word;
+  }
+
+  .c-eco__name {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-text-primary);
+  }
+
+  .c-eco__role {
+    display: block;
+    margin-block-start: var(--space-4);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  /* The link affordance. Hidden from assistive tech: the anchor already
+     announces itself, and "arrow" would be noise. */
+  .c-eco__go {
+    inline-size: var(--icon-sm);
+    block-size: var(--icon-sm);
+    margin-block-start: 0.35em;
+    color: var(--color-accent);
+    fill: none;
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-standard),
+      translate var(--duration-base) var(--ease-out);
+  }
+
+  /* --- The hub -----------------------------------------------------------
+     The sixth member of the approved list — Integrated Digital Solutions —
+     is not a sibling node. It is what the other five add up to, so it is the
+     thing they all point at. */
+  .c-eco__hub {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--space-32);
+    background-color: var(--color-surface);
+    border: var(--border-hairline);
+    border-color: var(--color-border-accent);
+    border-radius: var(--radius-md);
+  }
+
+  .c-eco__hub-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    flex-wrap: wrap;
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  [dir="rtl"] .c-eco__hub-label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  .c-eco__hub-label > span {
+    min-inline-size: 0;
+    overflow-wrap: break-word;
+  }
+
+  .c-eco__hub-mark {
+    inline-size: 22px;
+    block-size: 22px;
+    flex-shrink: 0;
+    fill: none;
+  }
+
+  .c-eco__hub-statement {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-heading);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .c-eco__hub-note {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    max-inline-size: 46ch;
+  }
+
+  /* Ties the hub back to the rail on mobile so it reads as the terminus of
+     the journey rather than a card that happens to follow it. */
+  .c-eco__hub::before {
+    content: "";
+    position: absolute;
+    inset-block-start: calc(-1 * var(--space-24));
+    inset-inline-start: var(--space-24);
+    inline-size: var(--eco-rail);
+    block-size: var(--space-24);
+    background-color: var(--color-border-strong);
+  }
+
+  .c-eco__terminus {
+    margin-block-start: var(--space-24);
+  }
+
+  /* =======================================================================
+     TABLET — 48em to 64em. The hub leads; the nodes sit beneath it on a
+     spine. Not the mobile list stretched, and not the desktop armature
+     squeezed (rule 18).
+     ======================================================================= */
+  @media (min-width: 48em) and (max-width: 63.999em) {
+    .c-eco {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Hub first in the visual order AND first in the DOM — see the markup
+       note. Order is never reassigned with CSS `order`, which would break
+       the reading sequence for keyboard and screen-reader users. */
+    .c-eco__terminus {
+      order: -1;
+      margin-block-start: 0;
+      margin-block-end: var(--space-48);
+    }
+
+    .c-eco__hub::before {
+      inset-block-start: auto;
+      inset-block-end: calc(-1 * var(--space-48));
+      inset-inline-start: 50%;
+      block-size: var(--space-48);
+    }
+
+    .c-eco__flow {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--grid-gutter);
+      row-gap: var(--space-32);
+      padding-block-start: var(--space-32);
+    }
+
+    /* The spine: one horizontal run below the hub, feeding a vertical rail
+       down each column. Replaces the single rail of the mobile view.
+
+       The run stops exactly where the two column rails are, rather than at a
+       round percentage — a bus that overshoots its last tap, or stops short
+       of it, reads as a broken diagram. Both ends are computed from the same
+       values the rails use. */
+    .c-eco__flow::before {
+      inset-block: 0 auto;
+      inset-inline: var(--space-24)
+        calc(50% - (var(--grid-gutter) / 2) - var(--space-24) - var(--eco-rail));
+      inline-size: auto;
+      block-size: var(--eco-rail);
+      background: var(--color-border-strong);
+    }
+
+    /* Each stop carries the rail past its own box and up through the row gap
+       above it, so consecutive stops in a column join into one line and the
+       topmost pair meet the run. */
+    .c-eco__stop::before {
+      content: "";
+      position: absolute;
+      inset-block: calc(-1 * var(--space-32)) 0;
+      inset-inline-start: var(--space-24);
+      inline-size: var(--eco-rail);
+      background-color: var(--color-border);
+      transition: background-color var(--duration-base) var(--ease-standard);
+    }
+
+    /* Five nodes into two columns: the last one runs the full width so the
+       row does not end on a hole. */
+    .c-eco__stop:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* =======================================================================
+     DESKTOP — 64em+. The armature.
+     Three columns: nodes, hub, nodes. Each side column carries a rail in the
+     gutter beside the hub, and every node taps into that rail with a short
+     stub. The hub is wired to both rails.
+     ======================================================================= */
+  @media (min-width: 64em) {
+    .c-eco {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(21rem, 1.35fr) minmax(0, 1fr);
+      /* Rows are declared even though their size is `auto`: `grid-row: 1 / -1`
+         on the hub counts explicit grid lines, and with an implicit grid -1
+         resolves back to line 1 — the hub silently stops spanning. */
+      grid-template-rows: repeat(3, auto);
+      column-gap: var(--eco-gutter);
+      row-gap: var(--space-32);
+      align-items: center;
+    }
+
+    .c-eco__flow {
+      display: contents;
+    }
+
+    .c-eco__flow::before {
+      content: none;
+    }
+
+    /* Nodes 01-03 fill the lead column, 04-05 the trail column. Explicit
+       placement, so DOM order stays the journey order 01..05 and the visual
+       order is a property of the grid rather than of `order`. */
+    .c-eco__stop:nth-child(1) { grid-column: 1; grid-row: 1; }
+    .c-eco__stop:nth-child(2) { grid-column: 1; grid-row: 2; }
+    .c-eco__stop:nth-child(3) { grid-column: 1; grid-row: 3; }
+    .c-eco__stop:nth-child(4) { grid-column: 3; grid-row: 1; }
+    .c-eco__stop:nth-child(5) { grid-column: 3; grid-row: 2; }
+
+    .c-eco__terminus {
+      grid-column: 2;
+      grid-row: 1 / -1;
+      margin-block-start: 0;
+      /* Stretch, not center: every stub has to land ON the hub, and the
+         nodes sit at three different heights. A centred hub is shorter than
+         the row stack, so the lower stubs ran into empty space. */
+      align-self: stretch;
+      display: flex;
+    }
+
+    .c-eco__hub {
+      inline-size: 100%;
+      padding: var(--space-48);
+      gap: var(--space-24);
+      justify-content: center;
+    }
+
+    .c-eco__hub::before {
+      content: none;
+    }
+
+    /* --- The wiring ------------------------------------------------------
+       One stub per node, running from the node's inner edge across the
+       gutter to the hub. Five lines converging on one box is the whole
+       argument of the section, drawn.
+
+       An earlier version also ran vertical rails down each gutter to join
+       the stubs into a bus. It was removed: the rails had to meet across
+       grid rows whose heights are set by their content, so any two nodes of
+       different heights left a visible break in the line. A connection
+       diagram with gaps in it argues the opposite of the point.
+
+       Logical insets throughout — under RTL the grid mirrors the columns and
+       the stubs follow, with no direction-specific rule. */
+    .c-eco__stop::before {
+      content: "";
+      position: absolute;
+      inset-block-start: calc(var(--space-24) + (var(--space-48) / 2));
+      block-size: var(--eco-rail);
+      inline-size: var(--eco-gutter);
+      background-color: var(--color-border);
+      transition: background-color var(--duration-base) var(--ease-standard);
+    }
+
+    /* Lead column: the stub leaves at the node's inline-end edge. */
+    .c-eco__stop:nth-child(-n + 3)::before {
+      inset-inline-end: calc(-1 * var(--eco-gutter));
+    }
+
+    /* Trail column: at the inline-start edge. */
+    .c-eco__stop:nth-child(n + 4)::before {
+      inset-inline-start: calc(-1 * var(--eco-gutter));
+    }
+
+    .c-eco__node {
+      /* Re-states padding on purpose: the base rule zeroes the inline-start
+         side so the mobile marker can sit on the rail. Same layer, same
+         specificity — this wins only because it comes later in the file. */
+      padding: var(--space-24);
+      background-color: var(--color-bg);
+      border: var(--border-hairline);
+      grid-template-columns: var(--space-48) 1fr auto;
+    }
+
+    /* Trail-column nodes read toward the hub: text at the trailing edge,
+       marker on the outside. Achieved by reversing the grid columns, which
+       mirrors correctly because the columns are logical. */
+    .c-eco__stop:nth-child(n + 4) .c-eco__node {
+      grid-template-columns: auto 1fr var(--space-48);
+      text-align: end;
+    }
+
+    .c-eco__stop:nth-child(n + 4) .c-eco__marker {
+      order: 3;
+    }
+
+    .c-eco__stop:nth-child(n + 4) .c-eco__go {
+      order: 1;
+      rotate: 180deg;
+    }
+  }
+
+  /* =======================================================================
+     INTERACTION — rule 11.
+     Hover or focus a node: it lifts, its wiring lights up, and the other
+     nodes step back. Every cue is doubled (colour + weight, colour + scale,
+     colour + motion) so none of it depends on seeing the accent.
+
+     :has() means this needs no JavaScript, so it survives a failed script
+     load — and rule 12 is satisfied structurally: at rest, everything is
+     already legible.
+     ======================================================================= */
+  .c-eco__node:hover,
+  .c-eco__node:focus-visible {
+    background-color: var(--color-surface);
+  }
+
+  .c-eco__node:hover .c-eco__marker,
+  .c-eco__node:focus-visible .c-eco__marker {
+    border-color: var(--color-border-accent);
+    color: var(--color-accent);
+    scale: var(--eco-pop);
+  }
+
+  .c-eco__node:hover .c-eco__name,
+  .c-eco__node:focus-visible .c-eco__name {
+    color: var(--color-accent);
+  }
+
+  .c-eco__node:hover .c-eco__role,
+  .c-eco__node:focus-visible .c-eco__role {
+    color: var(--color-text-primary);
+  }
+
+  .c-eco__node:hover .c-eco__go,
+  .c-eco__node:focus-visible .c-eco__go {
+    opacity: 1;
+  }
+
+  /* The connection lights up with the node it belongs to. */
+  .c-eco__stop:has(.c-eco__node:hover)::before,
+  .c-eco__stop:has(.c-eco__node:focus-visible)::before,
+  .c-eco__stop:has(.c-eco__node:hover)::after,
+  .c-eco__stop:has(.c-eco__node:focus-visible)::after {
+    background-color: var(--color-accent);
+  }
+
+  /* Everything else steps back — "reduce slightly in emphasis", not hide.
+     0.62 keeps secondary text above 4.5:1 on this background, so a dimmed
+     node is still readable for anyone who is not the one pointing at it. */
+  .c-eco:has(.c-eco__node:hover) .c-eco__stop:not(:has(.c-eco__node:hover)),
+  .c-eco:has(.c-eco__node:focus-visible) .c-eco__stop:not(:has(.c-eco__node:focus-visible)) {
+    opacity: 0.62;
+  }
+
+  @media (min-width: 64em) {
+    .c-eco__node:hover,
+    .c-eco__node:focus-visible {
+      border-color: var(--color-border-accent);
+    }
+
+    /* Movement toward the hub — the direction is logical, so under RTL each
+       node still travels inward rather than off to the same physical side. */
+    .c-eco__stop:nth-child(-n + 3) .c-eco__node:hover,
+    .c-eco__stop:nth-child(-n + 3) .c-eco__node:focus-visible {
+      translate: var(--eco-shift) 0;
+    }
+
+    .c-eco__stop:nth-child(n + 4) .c-eco__node:hover,
+    .c-eco__stop:nth-child(n + 4) .c-eco__node:focus-visible {
+      translate: calc(-1 * var(--eco-shift)) 0;
+    }
+
+    [dir="rtl"] .c-eco__stop:nth-child(-n + 3) .c-eco__node:hover,
+    [dir="rtl"] .c-eco__stop:nth-child(-n + 3) .c-eco__node:focus-visible {
+      translate: calc(-1 * var(--eco-shift)) 0;
+    }
+
+    [dir="rtl"] .c-eco__stop:nth-child(n + 4) .c-eco__node:hover,
+    [dir="rtl"] .c-eco__stop:nth-child(n + 4) .c-eco__node:focus-visible {
+      translate: var(--eco-shift) 0;
+    }
+  }
+
+  /* Motion is the only cue dropped outright — colour, weight and the link
+     affordance carry the state on their own. */
+  @media (prefers-reduced-motion: reduce) {
+    .c-eco {
+      --eco-shift: 0px;
+      --eco-pop: 1;
+    }
+  }
+
+  /* Coarse pointers have no hover: the arrow would never appear, and a
+     44px-tall row that reveals nothing on tap reads as broken. */
+  @media (hover: none) {
+    .c-eco__go {
+      opacity: 1;
+    }
+  }
+}
+
+
 /* ---- src/styles/components/disclosure.css ---- */
 /* =============================================================================
    COMPONENT — DISCLOSURE
@@ -6821,8 +7349,8 @@ if (document.readyState === 'loading') {
                   <li>Advertising</li>
                   <li>Growth</li>
                 </ol>
-                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#pricing">
-                      View packages
+                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#integrated">
+                      See how it connects
                       <svg class="c-btn__icon c-service__chevron u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
               </svg>
@@ -7143,14 +7671,13 @@ if (document.readyState === 'loading') {
            Package names, prices and the ten delivery capabilities are
            verbatim from the Services & Pricing document.
 
-           The source supplies prices and positioning but NOT per-package
-           inclusions. The per-package split below is therefore a DRAFT the
-           client approved for review, not source data: every line is one of
-           the ten approved capabilities, but which tier each lands in is an
-           inference. Cards carrying an inferred split are marked
-           [data-draft-features] so they can be found and replaced in one pass
-           when the real inclusions arrive. No capability, wording or quantity
-           outside the approved ten appears anywhere.
+           The original document supplied prices and positioning but NOT
+           per-package inclusions. The split below was drafted from the ten
+           approved capabilities and SIGNED OFF by the client on review, so it
+           is approved content — but it did not come from the original
+           document, and docs/05-websites.md records which two lines were
+           flagged as worth a second look. Every string is one of the ten,
+           spelled and ordered as the document spells and orders them.
 
            The device frames are one layout reflowing, not three screenshots:
            same nav bar, accent hero, content row and foot at each width.
@@ -7278,7 +7805,7 @@ if (document.readyState === 'loading') {
           </ol>
 
           <div class="c-tiers" data-reveal-group>
-          <article class="c-tier" style="--i: 0" data-draft-features
+          <article class="c-tier" style="--i: 0"
             aria-labelledby="web-landing-name">
             <p class="c-tier__level">
               <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
@@ -7315,7 +7842,7 @@ if (document.readyState === 'loading') {
             </a>
           </article>
 
-          <article class="c-tier" style="--i: 1" data-draft-features
+          <article class="c-tier" style="--i: 1"
             aria-labelledby="web-business-name">
             <p class="c-tier__level">
               <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
@@ -7372,7 +7899,7 @@ if (document.readyState === 'loading') {
             </a>
           </article>
 
-          <article class="c-tier" style="--i: 2" data-draft-features
+          <article class="c-tier" style="--i: 2"
             aria-labelledby="web-professional-name">
             <p class="c-tier__level">
               <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 1.5 24 7.5 13 13.5 2 7.5 13 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /><path d="M2 12.5 13 18.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.6" /><path d="M2 17.5 13 23.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.32" /></svg>
@@ -7459,13 +7986,13 @@ if (document.readyState === 'loading') {
            Package names, prices and the six capabilities are verbatim from
            the Services & Pricing document.
 
-           As with Websites, the source supplies prices but NOT per-package
-           inclusions, so the split below is a DRAFT for review drawn from the
-           six approved capabilities, marked [data-draft-features]. Positioning
-           statements were not supplied either and are NOT invented, so these
-           two cards have no purpose line. With only six capabilities to
-           divide, Professional gains a single line over Starter — the clearest
-           argument for supplying the real inclusions.
+           As with Websites, the document supplies prices but NOT per-package
+           inclusions; the split below was drawn from the six approved
+           capabilities and signed off by the client on review. Positioning
+           statements were not supplied and are NOT invented, so these two
+           cards have no purpose line. With only six capabilities to divide,
+           Professional gains a single line over Starter — still the clearest
+           argument for supplying real inclusions.
 
            No package is marked recommended: the source designates one for
            Branding, and does not for this service.
@@ -7627,7 +8154,7 @@ if (document.readyState === 'loading') {
           </ol>
 
           <div class="c-tiers c-tiers--pair" data-reveal-group>
-          <article class="c-tier" style="--i: 0" data-draft-features
+          <article class="c-tier" style="--i: 0"
             aria-labelledby="ecom-starter-name">
             <p class="c-tier__level">
               <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
@@ -7663,7 +8190,7 @@ if (document.readyState === 'loading') {
             </a>
           </article>
 
-          <article class="c-tier" style="--i: 1" data-draft-features
+          <article class="c-tier" style="--i: 1"
             aria-labelledby="ecom-professional-name">
             <p class="c-tier__level">
               <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
@@ -8073,6 +8600,166 @@ if (document.readyState === 'loading') {
               </svg>
               <span data-lang-copy="en">Back to all services</span>
               <span data-lang-copy="ar" lang="ar">العودة إلى الخدمات</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           05 — INTEGRATED SOLUTIONS (Stage 09)
+           The strategic close of the service ecosystem. Every earlier
+           section answers "what do you do"; this one answers "why one
+           partner".
+
+           CONTENT: the six members of the approved ecosystem, and nothing
+           else. Five are delivery services and become nodes; the sixth —
+           Integrated Digital Solutions — is not a sibling, it is what the
+           other five add up to, so it is the hub they point at. Each node
+           carries only a name and a one-line role: repeating the capability
+           lists would make this the Services section again (§24).
+
+           The nodes are ANCHORS, not decoration — each goes to that
+           service's own section, so the composition is also navigation.
+           Digital Marketing has no section yet and points at #pricing,
+           matching its Services row.
+
+           Digital Marketing names its platforms because the approved data
+           names them. Social Media Management still names none, because its
+           packages specify counts only. The asymmetry is the document's.
+
+           No figure, percentage, metric or result appears anywhere (§23).
+           ============================================================= -->
+      <section id="integrated" class="l-section c-detail" aria-labelledby="integrated-title">
+        <div class="l-container">
+          <header class="c-detail__head" data-reveal-group>
+            <div class="c-detail__intro">
+              <p class="t-label c-detail__eyebrow">
+                <span class="c-detail__number">05</span>
+                <span data-i18n-pending>One Digital Partner</span>
+              </p>
+              <h2 class="c-detail__headline" id="integrated-title" data-i18n-pending>
+                Everything your business needs.<br />
+                <span class="c-detail__accent">Connected in one system.</span>
+              </h2>
+            </div>
+            <p class="t-body-lg c-detail__lead" data-i18n-pending>
+              Identity, website or online store, content, social media and
+              advertising — handled in one place, as parts of a single digital
+              presence rather than five separate projects.
+            </p>
+          </header>
+
+          <!-- The hub is LAST in the DOM at every width. On tablet it is
+               displayed first, via flex `order` on the container — but the
+               reading sequence 01 → 05 → hub is the one that makes sense
+               read aloud, and it is the sequence the DOM keeps. -->
+          <div class="c-eco" data-reveal-group>
+            <ol class="c-eco__flow">
+              <li class="c-eco__stop">
+                <a class="c-eco__node" href="#branding">
+                  <span class="c-eco__marker" aria-hidden="true">01</span>
+                  <span class="c-eco__text">
+                    <span class="c-eco__name" data-i18n-pending>Identity &amp; Design</span>
+                    <span class="c-eco__role" data-i18n-pending>Build the foundation.</span>
+                  </span>
+                  <svg class="c-eco__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                  </svg>
+                </a>
+              </li>
+
+              <li class="c-eco__stop">
+                <a class="c-eco__node" href="#websites">
+                  <span class="c-eco__marker" aria-hidden="true">02</span>
+                  <span class="c-eco__text">
+                    <span class="c-eco__name" data-i18n-pending>Websites</span>
+                    <span class="c-eco__role" data-i18n-pending>Create the digital presence.</span>
+                  </span>
+                  <svg class="c-eco__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                  </svg>
+                </a>
+              </li>
+
+              <li class="c-eco__stop">
+                <a class="c-eco__node" href="#ecommerce">
+                  <span class="c-eco__marker" aria-hidden="true">03</span>
+                  <span class="c-eco__text">
+                    <span class="c-eco__name" data-i18n-pending>E-Commerce</span>
+                    <span class="c-eco__role" data-i18n-pending>Enable online transactions.</span>
+                  </span>
+                  <svg class="c-eco__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                  </svg>
+                </a>
+              </li>
+
+              <li class="c-eco__stop">
+                <a class="c-eco__node" href="#social">
+                  <span class="c-eco__marker" aria-hidden="true">04</span>
+                  <span class="c-eco__text">
+                    <span class="c-eco__name" data-i18n-pending>Social Media Management</span>
+                    <span class="c-eco__role" data-i18n-pending>Build ongoing engagement.</span>
+                  </span>
+                  <svg class="c-eco__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                  </svg>
+                </a>
+              </li>
+
+              <li class="c-eco__stop">
+                <a class="c-eco__node" href="#pricing">
+                  <span class="c-eco__marker" aria-hidden="true">05</span>
+                  <span class="c-eco__text">
+                    <span class="c-eco__name" data-i18n-pending>Digital Marketing</span>
+                    <span class="c-eco__role" data-i18n-pending>Reach the right audience.</span>
+                  </span>
+                  <svg class="c-eco__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                  </svg>
+                </a>
+              </li>
+            </ol>
+
+            <div class="c-eco__terminus">
+              <div class="c-eco__hub">
+                <p class="c-eco__hub-label">
+                  <svg class="c-eco__hub-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <circle cx="12" cy="12" r="3.4" stroke="currentColor" stroke-width="1.6" />
+                    <circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.2" opacity="0.5" />
+                    <g fill="currentColor"><circle cx="12" cy="2.8" r="1.5" /><circle cx="21.2" cy="12" r="1.5" /><circle cx="12" cy="21.2" r="1.5" /><circle cx="2.8" cy="12" r="1.5" /></g>
+                  </svg>
+                  <span data-i18n-pending>Integrated Digital Solutions</span>
+                </p>
+                <p class="c-eco__hub-statement" data-i18n-pending>
+                  One connected digital presence.
+                </p>
+                <p class="c-eco__hub-note" data-i18n-pending>
+                  Connecting these services into one complete digital presence —
+                  planned together, delivered together, and answerable to one
+                  team.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="c-detail__foot" data-reveal>
+            <p class="t-body" data-i18n-pending>
+              Start with one service or all of them — the system is the same
+              either way.
+            </p>
+            <a class="c-btn c-btn--primary" href="#contact" data-cta-link>
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+            <a class="c-link" href="#services">
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false" style="transform: scaleX(-1)">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+              Explore Services
             </a>
           </div>
         </div>
