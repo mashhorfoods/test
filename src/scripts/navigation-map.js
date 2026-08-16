@@ -58,6 +58,28 @@ export const PRIMARY_CTA = {
  */
 export const SOCIAL_LINKS = [];
 
+/**
+ * The six service categories, in the order the Services section lists them.
+ *
+ * Same principle as SECTIONS: the footer's services column renders from this
+ * array rather than being typed out a second time, so it cannot drift from the
+ * Services accordion. A test asserts the two agree — same names, same order,
+ * same anchors — in both languages.
+ *
+ * Every `id` is a real section on the homepage; there are no placeholder
+ * targets left in this list.
+ *
+ * @type {{id: string, label: string, labelAr?: string}[]}
+ */
+export const SERVICE_LINKS = [
+  { id: 'branding', label: 'Branding & Design' },
+  { id: 'websites', label: 'Websites' },
+  { id: 'ecommerce', label: 'E-Commerce' },
+  { id: 'social', label: 'Social Media Management' },
+  { id: 'marketing', label: 'Digital Marketing & Advertising' },
+  { id: 'integrated', label: 'Integrated Digital Solutions' },
+];
+
 /** Header chrome strings. Page content is translated when copy is finalised. */
 export const STRINGS = {
   en: {
@@ -70,6 +92,10 @@ export const STRINGS = {
     followUs: 'Follow us',
     language: 'Language',
     footerNav: 'Quick links',
+    footerServices: 'Services',
+    footerStart: 'Start',
+    backToTop: 'Back to top',
+    rights: 'All rights reserved.',
     // Currency SYMBOL only — the price figure itself is business data and is
     // authored in the markup, never here.
     currency: 'SAR',
@@ -91,6 +117,10 @@ export const STRINGS = {
     followUs: 'تابعنا',
     language: 'اللغة',
     footerNav: 'روابط سريعة',
+    footerServices: 'خدماتنا',
+    footerStart: 'ابدأ',
+    backToTop: 'العودة إلى الأعلى',
+    rights: 'جميع الحقوق محفوظة.',
     currency: 'ر.س',
     billingOnce: 'لمرة واحدة',
     billingMonthly: 'شهريًا',

@@ -1,0 +1,210 @@
+/* =============================================================================
+   FOOTER — STAGE 15
+   Brand, navigation, services, the final action, and the closure.
+
+   NO SECOND DISPLAY CTA. Rule 05 asks for a conversion moment before the
+   footer navigation; Stage 14 is that moment and it sits directly above this.
+   Repeating a display headline and a large button a hundred pixels below the
+   last one would be two climaxes in a row, which rule 05's own "do not
+   introduce multiple competing CTAs" forbids. The action is carried forward
+   as the primary button in the fourth column instead — prominent within the
+   footer, subordinate to the section above it.
+
+   NOTHING INVENTED. There is no approved email, phone, WhatsApp, social
+   profile or legal page anywhere in the source, so none appears. The layout
+   holds a fourth column and a bottom row that take those the moment they
+   exist, without moving anything else.
+   ============================================================================= */
+
+@layer components {
+  .c-footer {
+    background-color: var(--color-bg-deep);
+    padding-block: var(--section-space-tight);
+  }
+
+  /* -----------------------------------------------------------------------
+     TOP — brand, two navigation groups, the action
+     ----------------------------------------------------------------------- */
+  .c-footer__top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-48);
+  }
+
+  @media (min-width: 48em) {
+    .c-footer__top {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--section-space-tight) var(--grid-gutter);
+    }
+
+    /* Brand and action span the full width at tablet; the two link groups
+       share a row. Not the desktop four-up squeezed into half the space. */
+    .c-footer__brand,
+    .c-footer__action {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 64em) {
+    .c-footer__top {
+      grid-template-columns:
+        minmax(0, 1.5fr) minmax(0, 1fr)
+        minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: var(--grid-gutter);
+    }
+
+    .c-footer__brand,
+    .c-footer__action {
+      grid-column: auto;
+    }
+  }
+
+  .c-footer__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--space-16);
+  }
+
+  .c-footer__statement {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    max-inline-size: 34ch;
+  }
+
+  /* --- Link groups ------------------------------------------------------- */
+  .c-footer__heading {
+    margin-block-end: var(--space-16);
+    color: var(--color-text-muted);
+  }
+
+  .c-footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Every footer link is a real target, so every one is a comfortable one.
+     44px min-height rather than padding, so the column keeps its rhythm. */
+  .c-footer__list .c-link,
+  .c-footer__top-link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 44px;
+  }
+
+  /* .c-link is accent by default, which is right for one link in a section
+     foot and wrong for twelve in a column — the first version rendered the
+     whole footer yellow. Rule 25 wants the hover to move TOWARD the accent,
+     so rest is secondary text and the accent is the response. The underline
+     .c-link already draws on hover carries the state alongside the colour,
+     so it never depends on hue alone. */
+  .c-footer__list .c-link,
+  .c-footer__top-link {
+    color: var(--color-text-secondary);
+  }
+
+  .c-footer__list .c-link:hover,
+  .c-footer__list .c-link:focus-visible,
+  .c-footer__top-link:hover,
+  .c-footer__top-link:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .c-footer__action {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--space-16);
+  }
+
+  .c-footer__action .c-btn {
+    inline-size: 100%;
+    justify-content: center;
+  }
+
+  @media (min-width: 48em) and (max-width: 63.999em) {
+    .c-footer__action .c-btn {
+      inline-size: auto;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     CLOSURE
+     An oversized wordmark, set in the border colour rather than the accent
+     so it closes the page without competing with the button above it. It is
+     the brand, not a claim — and it is aria-hidden because the linked
+     wordmark in the brand block already names the agency; hearing it twice
+     would be noise.
+     ----------------------------------------------------------------------- */
+  .c-footer__mark {
+    margin-block-start: var(--section-space-tight);
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 1rem + 12vw, 11rem);
+    font-weight: var(--weight-bold);
+    line-height: 0.9;
+    letter-spacing: var(--tracking-display);
+    color: var(--color-border-strong);
+    /* Isolated but NOT pinned to ltr. "PIXORA" is all-Latin so its glyph
+       order is never at risk, and pinning the direction made `text-align:
+       start` resolve against the element's own ltr — parking the wordmark on
+       the left of an Arabic page while every other leading-edge element sat
+       on the right. */
+    unicode-bidi: isolate;
+    text-align: start;
+    user-select: none;
+  }
+
+  /* -----------------------------------------------------------------------
+     BOTTOM ROW
+     ----------------------------------------------------------------------- */
+  .c-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16) var(--space-32);
+    margin-block-start: var(--space-32);
+    padding-block-start: var(--space-24);
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-footer__copyright {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .c-footer__year {
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* --- Back to top -------------------------------------------------------
+     An anchor, not a button: it works with JavaScript disabled, it is
+     keyboard-reachable for free, and the smooth scroll comes from the
+     document's own scroll-behavior — which 01-reset.css already switches off
+     under prefers-reduced-motion. No script, and no second mechanism.
+
+     The chevron points UP, which is not an inline direction, so it must NOT
+     mirror under RTL (rule 23) — it carries no u-flip-rtl. */
+  .c-footer__top-link {
+    gap: var(--space-8);
+  }
+
+  .c-footer__top-link svg {
+    inline-size: var(--icon-sm);
+    block-size: var(--icon-sm);
+    fill: none;
+    transition: translate var(--duration-fast) var(--ease-out);
+  }
+
+  .c-footer__top-link:hover svg,
+  .c-footer__top-link:focus-visible svg {
+    translate: 0 -3px;
+  }
+}

@@ -5623,6 +5623,219 @@
 }
 
 
+/* ---- src/styles/components/footer.css ---- */
+/* =============================================================================
+   FOOTER — STAGE 15
+   Brand, navigation, services, the final action, and the closure.
+
+   NO SECOND DISPLAY CTA. Rule 05 asks for a conversion moment before the
+   footer navigation; Stage 14 is that moment and it sits directly above this.
+   Repeating a display headline and a large button a hundred pixels below the
+   last one would be two climaxes in a row, which rule 05's own "do not
+   introduce multiple competing CTAs" forbids. The action is carried forward
+   as the primary button in the fourth column instead — prominent within the
+   footer, subordinate to the section above it.
+
+   NOTHING INVENTED. There is no approved email, phone, WhatsApp, social
+   profile or legal page anywhere in the source, so none appears. The layout
+   holds a fourth column and a bottom row that take those the moment they
+   exist, without moving anything else.
+   ============================================================================= */
+
+@layer components {
+  .c-footer {
+    background-color: var(--color-bg-deep);
+    padding-block: var(--section-space-tight);
+  }
+
+  /* -----------------------------------------------------------------------
+     TOP — brand, two navigation groups, the action
+     ----------------------------------------------------------------------- */
+  .c-footer__top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-48);
+  }
+
+  @media (min-width: 48em) {
+    .c-footer__top {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--section-space-tight) var(--grid-gutter);
+    }
+
+    /* Brand and action span the full width at tablet; the two link groups
+       share a row. Not the desktop four-up squeezed into half the space. */
+    .c-footer__brand,
+    .c-footer__action {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 64em) {
+    .c-footer__top {
+      grid-template-columns:
+        minmax(0, 1.5fr) minmax(0, 1fr)
+        minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: var(--grid-gutter);
+    }
+
+    .c-footer__brand,
+    .c-footer__action {
+      grid-column: auto;
+    }
+  }
+
+  .c-footer__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--space-16);
+  }
+
+  .c-footer__statement {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    max-inline-size: 34ch;
+  }
+
+  /* --- Link groups ------------------------------------------------------- */
+  .c-footer__heading {
+    margin-block-end: var(--space-16);
+    color: var(--color-text-muted);
+  }
+
+  .c-footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Every footer link is a real target, so every one is a comfortable one.
+     44px min-height rather than padding, so the column keeps its rhythm. */
+  .c-footer__list .c-link,
+  .c-footer__top-link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 44px;
+  }
+
+  /* .c-link is accent by default, which is right for one link in a section
+     foot and wrong for twelve in a column — the first version rendered the
+     whole footer yellow. Rule 25 wants the hover to move TOWARD the accent,
+     so rest is secondary text and the accent is the response. The underline
+     .c-link already draws on hover carries the state alongside the colour,
+     so it never depends on hue alone. */
+  .c-footer__list .c-link,
+  .c-footer__top-link {
+    color: var(--color-text-secondary);
+  }
+
+  .c-footer__list .c-link:hover,
+  .c-footer__list .c-link:focus-visible,
+  .c-footer__top-link:hover,
+  .c-footer__top-link:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .c-footer__action {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--space-16);
+  }
+
+  .c-footer__action .c-btn {
+    inline-size: 100%;
+    justify-content: center;
+  }
+
+  @media (min-width: 48em) and (max-width: 63.999em) {
+    .c-footer__action .c-btn {
+      inline-size: auto;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     CLOSURE
+     An oversized wordmark, set in the border colour rather than the accent
+     so it closes the page without competing with the button above it. It is
+     the brand, not a claim — and it is aria-hidden because the linked
+     wordmark in the brand block already names the agency; hearing it twice
+     would be noise.
+     ----------------------------------------------------------------------- */
+  .c-footer__mark {
+    margin-block-start: var(--section-space-tight);
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 1rem + 12vw, 11rem);
+    font-weight: var(--weight-bold);
+    line-height: 0.9;
+    letter-spacing: var(--tracking-display);
+    color: var(--color-border-strong);
+    /* Isolated but NOT pinned to ltr. "PIXORA" is all-Latin so its glyph
+       order is never at risk, and pinning the direction made `text-align:
+       start` resolve against the element's own ltr — parking the wordmark on
+       the left of an Arabic page while every other leading-edge element sat
+       on the right. */
+    unicode-bidi: isolate;
+    text-align: start;
+    user-select: none;
+  }
+
+  /* -----------------------------------------------------------------------
+     BOTTOM ROW
+     ----------------------------------------------------------------------- */
+  .c-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16) var(--space-32);
+    margin-block-start: var(--space-32);
+    padding-block-start: var(--space-24);
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-footer__copyright {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .c-footer__year {
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* --- Back to top -------------------------------------------------------
+     An anchor, not a button: it works with JavaScript disabled, it is
+     keyboard-reachable for free, and the smooth scroll comes from the
+     document's own scroll-behavior — which 01-reset.css already switches off
+     under prefers-reduced-motion. No script, and no second mechanism.
+
+     The chevron points UP, which is not an inline direction, so it must NOT
+     mirror under RTL (rule 23) — it carries no u-flip-rtl. */
+  .c-footer__top-link {
+    gap: var(--space-8);
+  }
+
+  .c-footer__top-link svg {
+    inline-size: var(--icon-sm);
+    block-size: var(--icon-sm);
+    fill: none;
+    transition: translate var(--duration-fast) var(--ease-out);
+  }
+
+  .c-footer__top-link:hover svg,
+  .c-footer__top-link:focus-visible svg {
+    translate: 0 -3px;
+  }
+}
+
+
 /* ---- src/styles/components/ecosystem.css ---- */
 /* =============================================================================
    ECOSYSTEM — STAGE 09, INTEGRATED SOLUTIONS
@@ -6929,6 +7142,28 @@ const PRIMARY_CTA = {
  */
 const SOCIAL_LINKS = [];
 
+/**
+ * The six service categories, in the order the Services section lists them.
+ *
+ * Same principle as SECTIONS: the footer's services column renders from this
+ * array rather than being typed out a second time, so it cannot drift from the
+ * Services accordion. A test asserts the two agree — same names, same order,
+ * same anchors — in both languages.
+ *
+ * Every `id` is a real section on the homepage; there are no placeholder
+ * targets left in this list.
+ *
+ * @type {{id: string, label: string, labelAr?: string}[]}
+ */
+const SERVICE_LINKS = [
+  { id: 'branding', label: 'Branding & Design' },
+  { id: 'websites', label: 'Websites' },
+  { id: 'ecommerce', label: 'E-Commerce' },
+  { id: 'social', label: 'Social Media Management' },
+  { id: 'marketing', label: 'Digital Marketing & Advertising' },
+  { id: 'integrated', label: 'Integrated Digital Solutions' },
+];
+
 /** Header chrome strings. Page content is translated when copy is finalised. */
 const STRINGS = {
   en: {
@@ -6941,6 +7176,10 @@ const STRINGS = {
     followUs: 'Follow us',
     language: 'Language',
     footerNav: 'Quick links',
+    footerServices: 'Services',
+    footerStart: 'Start',
+    backToTop: 'Back to top',
+    rights: 'All rights reserved.',
     // Currency SYMBOL only — the price figure itself is business data and is
     // authored in the markup, never here.
     currency: 'SAR',
@@ -6962,6 +7201,10 @@ const STRINGS = {
     followUs: 'تابعنا',
     language: 'اللغة',
     footerNav: 'روابط سريعة',
+    footerServices: 'خدماتنا',
+    footerStart: 'ابدأ',
+    backToTop: 'العودة إلى الأعلى',
+    rights: 'جميع الحقوق محفوظة.',
     currency: 'ر.س',
     billingOnce: 'لمرة واحدة',
     billingMonthly: 'شهريًا',
@@ -7086,7 +7329,24 @@ function buildFooterLink(section) {
  */
 function renderSurfaces() {
   document.querySelectorAll('[data-nav-render]').forEach((container) => {
-    const surface = container.dataset.navRender === 'footer' ? 'footer' : 'nav';
+    const kind = container.dataset.navRender;
+
+    // The services column renders from its own array rather than from
+    // SECTIONS — the six categories are not page-level navigation, but they
+    // are still a single source, so the footer cannot drift from the Services
+    // section.
+    if (kind === 'services') {
+      container.replaceChildren(
+        ...SERVICE_LINKS.map((service) => {
+          const item = document.createElement('li');
+          item.append(buildFooterLink(service));
+          return item;
+        })
+      );
+      return;
+    }
+
+    const surface = kind === 'footer' ? 'footer' : 'nav';
     const style = container.dataset.navStyle ?? surface;
     const sections = sectionsFor(surface);
 
@@ -7390,9 +7650,25 @@ function initLanguage(onChange) {
 }
 
 /* ------------------------------------------------------------------------- */
+
+/**
+ * Keep the copyright year current.
+ *
+ * The markup ships the correct year, so this changes nothing today and the
+ * footer is right with JavaScript disabled. It exists so the year does not
+ * quietly go stale on 1 January — the one piece of the footer that has an
+ * expiry date.
+ */
+function initYear() {
+  const year = String(new Date().getFullYear());
+  document.querySelectorAll('[data-year]').forEach((el) => {
+    if (el.textContent.trim() !== year) el.textContent = year;
+  });
+}
 function initNavigation() {
   renderSurfaces();
   renderStrings();
+  initYear();
 
   const header = initHeader();
   const drawer = initDrawer(header);
@@ -7918,7 +8194,17 @@ if (document.readyState === 'loading') {
 
         <!-- CENTRE — primary navigation, rendered from navigation-map.js -->
         <nav class="c-nav" aria-label="Primary" data-i18n-label="primaryNav">
-          <ul class="c-nav__list" data-nav-render="nav"></ul>
+          <!-- Seeded so navigation exists with JavaScript disabled; the
+               script replaces these with identical content from
+               navigation-map.js on boot and on language change. A test
+               asserts the seed and the map agree. -->
+          <ul class="c-nav__list" data-nav-render="nav">
+            <li><a class="c-nav__link" href="#home" data-nav-link>Home</a></li>
+            <li><a class="c-nav__link" href="#services" data-nav-link>Services</a></li>
+            <li><a class="c-nav__link" href="#pricing" data-nav-link>Pricing</a></li>
+            <li><a class="c-nav__link" href="#why-us" data-nav-link>Why Us</a></li>
+            <li><a class="c-nav__link" href="#process" data-nav-link>Process</a></li>
+          </ul>
         </nav>
 
         <!-- RIGHT — language, CTA, menu trigger -->
@@ -11859,11 +12145,99 @@ if (document.readyState === 'loading') {
 
     <!-- Quick links render from the same array as the header (§25). The
          footer itself is designed in a later stage. -->
-    <footer class="s-footer-scaffold">
+    <!-- =============================================================
+         FOOTER (Stage 15)
+         The last navigation system, the last action, and the closure.
+
+         NO SECOND DISPLAY CTA. Stage 14 sits directly above this and is the
+         conversion moment §05 asks for; repeating a display headline and a
+         large button a hundred pixels below it would be two climaxes in a
+         row. The action is carried forward as the primary button in the
+         fourth column instead.
+
+         NOTHING INVENTED. There is no approved email, phone, WhatsApp,
+         social profile or legal page anywhere in the source, so none
+         appears — §14/§15/§17 all say not to create them. The fourth column
+         and the bottom row take them the moment they exist.
+
+         SEEDED, NOT JUST RENDERED. Both link lists are written out in the
+         markup as well as carrying [data-nav-render]. The script replaces
+         them with identical content on boot and on language change; without
+         it they still work. The header and drawer are seeded the same way
+         for the same reason — see the note there.
+         ============================================================= -->
+    <footer class="c-footer">
       <div class="l-container">
-        <nav aria-label="Quick links" data-i18n-label="footerNav">
-          <ul class="s-footer-scaffold__list" data-nav-render="footer"></ul>
-        </nav>
+        <div class="c-footer__top" data-reveal-group>
+          <div class="c-footer__brand">
+            <a class="c-header__brand" href="#home"
+              aria-label="Pixora, Digital Agency — home" data-i18n-label="brandHome">
+              <span class="c-brand" aria-hidden="true">
+                <span class="c-brand__word">PI<span class="c-brand__accent">X</span>ORA</span>
+                <span class="c-brand__tagline">Digital Agency</span>
+              </span>
+            </a>
+            <p class="c-footer__statement" data-i18n-pending>
+              Brands, websites, online stores and digital experiences —
+              connected with content, social media and marketing, from one
+              partner.
+            </p>
+          </div>
+
+          <nav class="c-footer__group" aria-label="Quick links" data-i18n-label="footerNav">
+            <h2 class="t-label c-footer__heading" data-i18n="footerNav">Quick links</h2>
+            <ul class="c-footer__list" data-nav-render="footer">
+              <li><a class="c-link" href="#home" data-nav-link>Home</a></li>
+              <li><a class="c-link" href="#services" data-nav-link>Services</a></li>
+              <li><a class="c-link" href="#pricing" data-nav-link>Pricing</a></li>
+              <li><a class="c-link" href="#why-us" data-nav-link>Why Us</a></li>
+              <li><a class="c-link" href="#process" data-nav-link>Process</a></li>
+              <li><a class="c-link" href="#contact" data-nav-link>Contact</a></li>
+            </ul>
+          </nav>
+
+          <nav class="c-footer__group" aria-label="Services" data-i18n-label="footerServices">
+            <h2 class="t-label c-footer__heading" data-i18n="footerServices">Services</h2>
+            <ul class="c-footer__list" data-nav-render="services">
+              <li><a class="c-link" href="#branding" data-nav-link>Branding &amp; Design</a></li>
+              <li><a class="c-link" href="#websites" data-nav-link>Websites</a></li>
+              <li><a class="c-link" href="#ecommerce" data-nav-link>E-Commerce</a></li>
+              <li><a class="c-link" href="#social" data-nav-link>Social Media Management</a></li>
+              <li><a class="c-link" href="#marketing" data-nav-link>Digital Marketing &amp; Advertising</a></li>
+              <li><a class="c-link" href="#integrated" data-nav-link>Integrated Digital Solutions</a></li>
+            </ul>
+          </nav>
+
+          <div class="c-footer__action">
+            <h2 class="t-label c-footer__heading" data-i18n="footerStart">Start</h2>
+            <a class="c-btn c-btn--primary" href="#contact" data-cta-link>
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <p class="c-footer__mark" aria-hidden="true">PIXORA</p>
+
+        <div class="c-footer__bottom">
+          <p class="c-footer__copyright">
+            © <span class="c-footer__year" data-year>2026</span> Pixora.
+            <span data-i18n="rights">All rights reserved.</span>
+          </p>
+          <!-- An anchor, not a button: it works without JavaScript, is
+               keyboard-reachable for free, and the smooth scroll is the
+               document's own (already disabled under reduced motion).
+               The chevron points UP — not an inline direction — so it
+               deliberately carries no u-flip-rtl. -->
+          <a class="c-link c-footer__top-link" href="#home">
+            <span data-i18n="backToTop">Back to top</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+            </svg>
+          </a>
+        </div>
       </div>
     </footer>
   </body>

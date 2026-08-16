@@ -88,7 +88,17 @@
 
         <!-- CENTRE — primary navigation, rendered from navigation-map.js -->
         <nav class="c-nav" aria-label="Primary" data-i18n-label="primaryNav">
-          <ul class="c-nav__list" data-nav-render="nav"></ul>
+          <!-- Seeded so navigation exists with JavaScript disabled; the
+               script replaces these with identical content from
+               navigation-map.js on boot and on language change. A test
+               asserts the seed and the map agree. -->
+          <ul class="c-nav__list" data-nav-render="nav">
+            <li><a class="c-nav__link" href="#home" data-nav-link>Home</a></li>
+            <li><a class="c-nav__link" href="#services" data-nav-link>Services</a></li>
+            <li><a class="c-nav__link" href="#pricing" data-nav-link>Pricing</a></li>
+            <li><a class="c-nav__link" href="#why-us" data-nav-link>Why Us</a></li>
+            <li><a class="c-nav__link" href="#process" data-nav-link>Process</a></li>
+          </ul>
         </nav>
 
         <!-- RIGHT — language, CTA, menu trigger -->
@@ -4029,11 +4039,99 @@
 
     <!-- Quick links render from the same array as the header (§25). The
          footer itself is designed in a later stage. -->
-    <footer class="s-footer-scaffold">
+    <!-- =============================================================
+         FOOTER (Stage 15)
+         The last navigation system, the last action, and the closure.
+
+         NO SECOND DISPLAY CTA. Stage 14 sits directly above this and is the
+         conversion moment §05 asks for; repeating a display headline and a
+         large button a hundred pixels below it would be two climaxes in a
+         row. The action is carried forward as the primary button in the
+         fourth column instead.
+
+         NOTHING INVENTED. There is no approved email, phone, WhatsApp,
+         social profile or legal page anywhere in the source, so none
+         appears — §14/§15/§17 all say not to create them. The fourth column
+         and the bottom row take them the moment they exist.
+
+         SEEDED, NOT JUST RENDERED. Both link lists are written out in the
+         markup as well as carrying [data-nav-render]. The script replaces
+         them with identical content on boot and on language change; without
+         it they still work. The header and drawer are seeded the same way
+         for the same reason — see the note there.
+         ============================================================= -->
+    <footer class="c-footer">
       <div class="l-container">
-        <nav aria-label="Quick links" data-i18n-label="footerNav">
-          <ul class="s-footer-scaffold__list" data-nav-render="footer"></ul>
-        </nav>
+        <div class="c-footer__top" data-reveal-group>
+          <div class="c-footer__brand">
+            <a class="c-header__brand" href="#home"
+              aria-label="Pixora, Digital Agency — home" data-i18n-label="brandHome">
+              <span class="c-brand" aria-hidden="true">
+                <span class="c-brand__word">PI<span class="c-brand__accent">X</span>ORA</span>
+                <span class="c-brand__tagline">Digital Agency</span>
+              </span>
+            </a>
+            <p class="c-footer__statement" data-i18n-pending>
+              Brands, websites, online stores and digital experiences —
+              connected with content, social media and marketing, from one
+              partner.
+            </p>
+          </div>
+
+          <nav class="c-footer__group" aria-label="Quick links" data-i18n-label="footerNav">
+            <h2 class="t-label c-footer__heading" data-i18n="footerNav">Quick links</h2>
+            <ul class="c-footer__list" data-nav-render="footer">
+              <li><a class="c-link" href="#home" data-nav-link>Home</a></li>
+              <li><a class="c-link" href="#services" data-nav-link>Services</a></li>
+              <li><a class="c-link" href="#pricing" data-nav-link>Pricing</a></li>
+              <li><a class="c-link" href="#why-us" data-nav-link>Why Us</a></li>
+              <li><a class="c-link" href="#process" data-nav-link>Process</a></li>
+              <li><a class="c-link" href="#contact" data-nav-link>Contact</a></li>
+            </ul>
+          </nav>
+
+          <nav class="c-footer__group" aria-label="Services" data-i18n-label="footerServices">
+            <h2 class="t-label c-footer__heading" data-i18n="footerServices">Services</h2>
+            <ul class="c-footer__list" data-nav-render="services">
+              <li><a class="c-link" href="#branding" data-nav-link>Branding &amp; Design</a></li>
+              <li><a class="c-link" href="#websites" data-nav-link>Websites</a></li>
+              <li><a class="c-link" href="#ecommerce" data-nav-link>E-Commerce</a></li>
+              <li><a class="c-link" href="#social" data-nav-link>Social Media Management</a></li>
+              <li><a class="c-link" href="#marketing" data-nav-link>Digital Marketing &amp; Advertising</a></li>
+              <li><a class="c-link" href="#integrated" data-nav-link>Integrated Digital Solutions</a></li>
+            </ul>
+          </nav>
+
+          <div class="c-footer__action">
+            <h2 class="t-label c-footer__heading" data-i18n="footerStart">Start</h2>
+            <a class="c-btn c-btn--primary" href="#contact" data-cta-link>
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <p class="c-footer__mark" aria-hidden="true">PIXORA</p>
+
+        <div class="c-footer__bottom">
+          <p class="c-footer__copyright">
+            © <span class="c-footer__year" data-year>2026</span> Pixora.
+            <span data-i18n="rights">All rights reserved.</span>
+          </p>
+          <!-- An anchor, not a button: it works without JavaScript, is
+               keyboard-reachable for free, and the smooth scroll is the
+               document's own (already disabled under reduced motion).
+               The chevron points UP — not an inline direction — so it
+               deliberately carries no u-flip-rtl. -->
+          <a class="c-link c-footer__top-link" href="#home">
+            <span data-i18n="backToTop">Back to top</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+            </svg>
+          </a>
+        </div>
       </div>
     </footer>
   </body>

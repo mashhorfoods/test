@@ -16,6 +16,7 @@
 
 import {
   SECTIONS,
+  SERVICE_LINKS,
   PRIMARY_CTA,
   SOCIAL_LINKS,
   sectionsFor,
@@ -91,7 +92,24 @@ function buildFooterLink(section) {
  */
 function renderSurfaces() {
   document.querySelectorAll('[data-nav-render]').forEach((container) => {
-    const surface = container.dataset.navRender === 'footer' ? 'footer' : 'nav';
+    const kind = container.dataset.navRender;
+
+    // The services column renders from its own array rather than from
+    // SECTIONS — the six categories are not page-level navigation, but they
+    // are still a single source, so the footer cannot drift from the Services
+    // section.
+    if (kind === 'services') {
+      container.replaceChildren(
+        ...SERVICE_LINKS.map((service) => {
+          const item = document.createElement('li');
+          item.append(buildFooterLink(service));
+          return item;
+        })
+      );
+      return;
+    }
+
+    const surface = kind === 'footer' ? 'footer' : 'nav';
     const style = container.dataset.navStyle ?? surface;
     const sections = sectionsFor(surface);
 
@@ -396,9 +414,25 @@ function initLanguage(onChange) {
 
 /* ------------------------------------------------------------------------- */
 
+/**
+ * Keep the copyright year current.
+ *
+ * The markup ships the correct year, so this changes nothing today and the
+ * footer is right with JavaScript disabled. It exists so the year does not
+ * quietly go stale on 1 January — the one piece of the footer that has an
+ * expiry date.
+ */
+function initYear() {
+  const year = String(new Date().getFullYear());
+  document.querySelectorAll('[data-year]').forEach((el) => {
+    if (el.textContent.trim() !== year) el.textContent = year;
+  });
+}
+
 export function initNavigation() {
   renderSurfaces();
   renderStrings();
+  initYear();
 
   const header = initHeader();
   const drawer = initDrawer(header);

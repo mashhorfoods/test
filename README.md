@@ -21,7 +21,8 @@ docs/11-add-ons.md          Add-ons & extra services, documented
 docs/12-why-us.md           Why us / value proposition, documented
 docs/13-process.md          Process / how we work, documented
 docs/14-final-cta.md        Final CTA / conversion, documented
-index.html                  Homepage shell — header + placeholder sections
+docs/15-footer.md           Footer, documented
+index.html                  The homepage — eleven sections, header and footer
 scaffold.css                Temporary placeholder-section styles (not shipped)
 styleguide.html             Living specimen sheet for every token and component
 styleguide.css              Chrome for the specimen page (documentation only)
@@ -37,7 +38,7 @@ src/styles/                 The product stylesheet
   components/               button · card · header · navigation · hero ·
                             orbit · services · service-detail ·
                             campaign · pricing · addons · value ·
-                            process · cta · ecosystem ·
+                            process · cta · footer · ecosystem ·
                             disclosure · field
 src/data/pricing.json       Generated package data (see tools/)
 tools/build-pricing.js      Regenerates the pricing section from the
@@ -71,7 +72,8 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 12 | Why us / value proposition | Done |
 | 13 | Process / how we work | Done — labels are placeholders, see below |
 | 14 | Final CTA / conversion | Done — needs a contact mechanism |
-| — | Contact, Footer | Placeholders |
+| 15 | Footer | Done |
+| — | Contact | Placeholder — awaiting contact details |
 
 ## Single-file build
 
@@ -94,8 +96,8 @@ hero height, the ecosystem wiring, and the mobile menu.
 
 | | Requests | Size |
 | --- | --- | --- |
-| Modular source | 35 | — |
-| `dist/index.html` | **0** | 688KB (132KB of it fonts) |
+| Modular source | 36 | — |
+| `dist/index.html` | **0** | 700KB (132KB of it fonts) |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:
@@ -126,8 +128,10 @@ framework and no CSS library — every dependency would have to earn its cost
 against the performance rules, and none does at this stage.
 
 Everything is a progressive enhancement over working markup. With JavaScript
-disabled the page remains readable, navigable and complete: accordion panels
-render open, tab panels render, counters show their final value.
+disabled the page remains readable, navigable and complete: the header nav and
+both footer link groups are seeded in the markup, accordion panels render open,
+tab panels render, and counters show their final value. A test loads the page
+with scripting off and asserts the navigation is there.
 
 ## Content rule
 
