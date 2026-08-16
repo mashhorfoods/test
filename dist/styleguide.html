@@ -4574,6 +4574,227 @@
 }
 
 
+/* ---- src/styles/components/pricing.css ---- */
+/* =============================================================================
+   PRICING — STAGE 10
+   The category selector, its panels, and the custom-quote block.
+
+   The cards themselves are .c-tier, unchanged. That is the point: a visitor
+   arriving from a service section meets the same card, so comparing across
+   categories costs them no re-learning, and the section cannot drift into a
+   different visual language from the rest of the site (rule 37).
+
+   The tabs are the existing WAI-ARIA tablist from disclosure.js — roving
+   tabindex, arrow keys swapped under RTL, panels hidden with [hidden] so all
+   fourteen packages stay in the document for crawlers and for a visitor with
+   JavaScript disabled (rule 33).
+   ============================================================================= */
+
+@layer components {
+  .c-pricing {
+    margin-block-start: var(--space-48);
+  }
+
+  /* -----------------------------------------------------------------------
+     CATEGORY SELECTOR
+     Wraps rather than scrolls. A horizontally scrolling strip hides
+     categories off the edge with no affordance at exactly the width where
+     the visitor can least afford to miss one; five wrapped chips fit two
+     rows at 320px and cost nothing.
+     ----------------------------------------------------------------------- */
+  .c-pricing__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin-block-end: var(--space-32);
+    padding-block-end: var(--space-24);
+    border-block-end: var(--border-hairline);
+  }
+
+  .c-pricing__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    /* Comfortably past 44px on every pointer, not only coarse ones — this is
+       the control the whole section turns on. */
+    min-block-size: 44px;
+    padding: var(--space-12) var(--space-16);
+    background-color: transparent;
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-display);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-pricing__tab:hover {
+    color: var(--color-text-primary);
+    border-color: var(--color-border-strong);
+  }
+
+  /* A marker that is ALWAYS in the layout and only becomes visible when the
+     tab is selected. Presence/absence of a shape is a cue that survives
+     greyscale and every form of colour blindness, which colour alone does
+     not (rule 29) — and because it holds its space either way, selecting a
+     tab never reflows the row under the pointer. */
+  .c-pricing__tab::before {
+    content: "";
+    inline-size: 3px;
+    block-size: 0.95em;
+    flex-shrink: 0;
+    border-radius: 2px;
+    background-color: transparent;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  /* aria-selected is the styling hook rather than a class: the attribute IS
+     the state, so the two cannot disagree. */
+  .c-pricing__tab[aria-selected="true"] {
+    color: var(--color-accent);
+    border-color: var(--color-border-accent);
+    background-color: var(--color-surface);
+  }
+
+  .c-pricing__tab[aria-selected="true"]::before {
+    background-color: var(--color-accent);
+  }
+
+  /* Weight is deliberately NOT part of the selected state: it would change
+     the chip's width and reflow the row mid-click. */
+
+  .c-pricing__tab-count {
+    display: grid;
+    place-items: center;
+    min-inline-size: 1.5rem;
+    padding-inline: var(--space-4);
+    border-radius: var(--radius-xs);
+    background-color: var(--color-bg-sunken);
+    font-size: var(--text-meta);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .c-pricing__tab[aria-selected="true"] .c-pricing__tab-count {
+    background-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+  }
+
+  /* -----------------------------------------------------------------------
+     PANELS
+     ----------------------------------------------------------------------- */
+  .c-pricing__panel:focus-visible {
+    box-shadow: var(--focus-ring);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .c-pricing__panel[data-entering="true"] {
+      animation: tab-in var(--duration-base) var(--ease-out) both;
+    }
+  }
+
+  /* A row above the cards: back to the service that explains them, and the
+     billing model for the whole category so it is not read off one card. */
+  .c-pricing__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-12) var(--space-24);
+    margin-block-end: var(--space-24);
+  }
+
+  /* The jump link is a real target on touch: at body-small size it measured
+     26px tall, well under the 44px floor. Padding would push it off the
+     baseline it shares with the billing note, so it gets a minimum height
+     and centres inside it instead. */
+  .c-pricing__jump {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 44px;
+  }
+
+  .c-pricing__billing-note {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  [dir="rtl"] .c-pricing__billing-note {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  /* -----------------------------------------------------------------------
+     CUSTOM QUOTE
+     The path for anything the packages do not cover — including the two
+     categories whose data has not been supplied. Deliberately NOT a card:
+     making it look like a fourteenth package would imply a price.
+     ----------------------------------------------------------------------- */
+  .c-quote {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-24);
+    margin-block-start: var(--section-space-tight);
+    padding: var(--space-32);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+  }
+
+  .c-quote__title {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-heading);
+    color: var(--color-text-primary);
+  }
+
+  /* .c-btn is nowrap, so "Request a Custom Quote" set a 300px min-content
+     floor and pushed the block past a 272px column at 320px. Let this one
+     label wrap; the button is the only place the phrase appears, and a
+     two-line button at 320px beats a clipped one. */
+  .c-quote .c-btn {
+    max-inline-size: 100%;
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  .c-quote__body {
+    margin-block-start: var(--space-8);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    max-inline-size: 62ch;
+  }
+
+  @media (min-width: 48em) {
+    .c-quote {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-48);
+      padding: var(--space-48);
+    }
+
+    .c-quote > :last-child {
+      flex-shrink: 0;
+    }
+  }
+}
+
+
 /* ---- src/styles/components/ecosystem.css ---- */
 /* =============================================================================
    ECOSYSTEM — STAGE 09, INTEGRATED SOLUTIONS
@@ -6035,6 +6256,9 @@ const STRINGS = {
     currency: 'SAR',
     billingOnce: 'One-time',
     billingMonthly: 'Monthly',
+    // Category-level billing summaries for the pricing tabs (Stage 10).
+    billingAllOnce: 'One-time projects',
+    billingAllMonthly: 'Billed monthly',
   },
   ar: {
     brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
@@ -6049,6 +6273,8 @@ const STRINGS = {
     currency: 'ر.س',
     billingOnce: 'لمرة واحدة',
     billingMonthly: 'شهريًا',
+    billingAllOnce: 'مشاريع لمرة واحدة',
+    billingAllMonthly: 'تُحتسب شهريًا',
   },
 };
 

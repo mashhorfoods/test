@@ -16,6 +16,7 @@ docs/06-ecommerce.md        E-Commerce, documented
 docs/07-social.md           Social Media Management, documented
 docs/08-marketing.md        Digital Marketing & Ads, documented
 docs/09-integrated.md       Integrated Solutions, documented
+docs/10-pricing.md          Pricing architecture, documented
 index.html                  Homepage shell — header + placeholder sections
 scaffold.css                Temporary placeholder-section styles (not shipped)
 styleguide.html             Living specimen sheet for every token and component
@@ -31,7 +32,11 @@ src/styles/                 The product stylesheet
   06-utilities.css          A deliberately small utility set
   components/               button · card · header · navigation · hero ·
                             orbit · services · service-detail ·
-                            campaign · ecosystem · disclosure · field
+                            campaign · pricing · ecosystem ·
+                            disclosure · field
+src/data/pricing.json       Generated package data (see tools/)
+tools/build-pricing.js      Regenerates the pricing section from the
+                            service sections — run after any package change
 src/scripts/                Vanilla ES modules, no dependencies
   main.js                   Entry point
   navigation-map.js         Single source of section order and labels
@@ -56,7 +61,7 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 07 | Social Media Management | Done |
 | 08 | Digital Marketing & Advertising | Done |
 | 09 | Integrated Solutions | Done |
-| 10 | Pricing architecture | Issued, blocked — see below |
+| 10 | Pricing architecture | Done — 5 of 7 categories |
 | — | Why Us, Process, Contact, Footer | Placeholders |
 
 ## Single-file build
@@ -80,8 +85,8 @@ hero height, the ecosystem wiring, and the mobile menu.
 
 | | Requests | Size |
 | --- | --- | --- |
-| Modular source | 30 | — |
-| `dist/index.html` | **0** | 548KB (132KB of it fonts) |
+| Modular source | 31 | — |
+| `dist/index.html` | **0** | 632KB (132KB of it fonts) |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:
@@ -138,10 +143,10 @@ Each stage's doc ends with its own open items. Across the project:
   on review. Every line is approved wording — only the assignment of a line to
   a package came later. `docs/05-websites.md` records the two lines worth
   re-checking.
-- **Stage 10 (Pricing) is blocked on data.** Its brief lists Integrated
-  Solutions packages (Business Launch, Digital Growth) and an Additional
-  Services price list; neither has been supplied. Every other category it
-  names is already built and can be assembled from the existing sections.
+- **Two pricing categories are unbuilt for want of data** — Integrated
+  Solutions (Business Launch, Digital Growth) and Additional Services. They are
+  omitted from the pricing selector rather than shown as empty tabs; send the
+  packages and each is one entry plus its data.
 - **E-Commerce has no positioning statements**, so those two cards have no
   purpose line.
 - `apple-touch-icon.png`, `og-image.png`, and the page's OG/canonical values.

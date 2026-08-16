@@ -4572,6 +4572,227 @@
 }
 
 
+/* ---- src/styles/components/pricing.css ---- */
+/* =============================================================================
+   PRICING — STAGE 10
+   The category selector, its panels, and the custom-quote block.
+
+   The cards themselves are .c-tier, unchanged. That is the point: a visitor
+   arriving from a service section meets the same card, so comparing across
+   categories costs them no re-learning, and the section cannot drift into a
+   different visual language from the rest of the site (rule 37).
+
+   The tabs are the existing WAI-ARIA tablist from disclosure.js — roving
+   tabindex, arrow keys swapped under RTL, panels hidden with [hidden] so all
+   fourteen packages stay in the document for crawlers and for a visitor with
+   JavaScript disabled (rule 33).
+   ============================================================================= */
+
+@layer components {
+  .c-pricing {
+    margin-block-start: var(--space-48);
+  }
+
+  /* -----------------------------------------------------------------------
+     CATEGORY SELECTOR
+     Wraps rather than scrolls. A horizontally scrolling strip hides
+     categories off the edge with no affordance at exactly the width where
+     the visitor can least afford to miss one; five wrapped chips fit two
+     rows at 320px and cost nothing.
+     ----------------------------------------------------------------------- */
+  .c-pricing__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin-block-end: var(--space-32);
+    padding-block-end: var(--space-24);
+    border-block-end: var(--border-hairline);
+  }
+
+  .c-pricing__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    /* Comfortably past 44px on every pointer, not only coarse ones — this is
+       the control the whole section turns on. */
+    min-block-size: 44px;
+    padding: var(--space-12) var(--space-16);
+    background-color: transparent;
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-display);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-pricing__tab:hover {
+    color: var(--color-text-primary);
+    border-color: var(--color-border-strong);
+  }
+
+  /* A marker that is ALWAYS in the layout and only becomes visible when the
+     tab is selected. Presence/absence of a shape is a cue that survives
+     greyscale and every form of colour blindness, which colour alone does
+     not (rule 29) — and because it holds its space either way, selecting a
+     tab never reflows the row under the pointer. */
+  .c-pricing__tab::before {
+    content: "";
+    inline-size: 3px;
+    block-size: 0.95em;
+    flex-shrink: 0;
+    border-radius: 2px;
+    background-color: transparent;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  /* aria-selected is the styling hook rather than a class: the attribute IS
+     the state, so the two cannot disagree. */
+  .c-pricing__tab[aria-selected="true"] {
+    color: var(--color-accent);
+    border-color: var(--color-border-accent);
+    background-color: var(--color-surface);
+  }
+
+  .c-pricing__tab[aria-selected="true"]::before {
+    background-color: var(--color-accent);
+  }
+
+  /* Weight is deliberately NOT part of the selected state: it would change
+     the chip's width and reflow the row mid-click. */
+
+  .c-pricing__tab-count {
+    display: grid;
+    place-items: center;
+    min-inline-size: 1.5rem;
+    padding-inline: var(--space-4);
+    border-radius: var(--radius-xs);
+    background-color: var(--color-bg-sunken);
+    font-size: var(--text-meta);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .c-pricing__tab[aria-selected="true"] .c-pricing__tab-count {
+    background-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+  }
+
+  /* -----------------------------------------------------------------------
+     PANELS
+     ----------------------------------------------------------------------- */
+  .c-pricing__panel:focus-visible {
+    box-shadow: var(--focus-ring);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .c-pricing__panel[data-entering="true"] {
+      animation: tab-in var(--duration-base) var(--ease-out) both;
+    }
+  }
+
+  /* A row above the cards: back to the service that explains them, and the
+     billing model for the whole category so it is not read off one card. */
+  .c-pricing__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-12) var(--space-24);
+    margin-block-end: var(--space-24);
+  }
+
+  /* The jump link is a real target on touch: at body-small size it measured
+     26px tall, well under the 44px floor. Padding would push it off the
+     baseline it shares with the billing note, so it gets a minimum height
+     and centres inside it instead. */
+  .c-pricing__jump {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 44px;
+  }
+
+  .c-pricing__billing-note {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  [dir="rtl"] .c-pricing__billing-note {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  /* -----------------------------------------------------------------------
+     CUSTOM QUOTE
+     The path for anything the packages do not cover — including the two
+     categories whose data has not been supplied. Deliberately NOT a card:
+     making it look like a fourteenth package would imply a price.
+     ----------------------------------------------------------------------- */
+  .c-quote {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-24);
+    margin-block-start: var(--section-space-tight);
+    padding: var(--space-32);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+  }
+
+  .c-quote__title {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-heading);
+    color: var(--color-text-primary);
+  }
+
+  /* .c-btn is nowrap, so "Request a Custom Quote" set a 300px min-content
+     floor and pushed the block past a 272px column at 320px. Let this one
+     label wrap; the button is the only place the phrase appears, and a
+     two-line button at 320px beats a clipped one. */
+  .c-quote .c-btn {
+    max-inline-size: 100%;
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  .c-quote__body {
+    margin-block-start: var(--space-8);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    max-inline-size: 62ch;
+  }
+
+  @media (min-width: 48em) {
+    .c-quote {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-48);
+      padding: var(--space-48);
+    }
+
+    .c-quote > :last-child {
+      flex-shrink: 0;
+    }
+  }
+}
+
+
 /* ---- src/styles/components/ecosystem.css ---- */
 /* =============================================================================
    ECOSYSTEM — STAGE 09, INTEGRATED SOLUTIONS
@@ -5895,6 +6116,9 @@ const STRINGS = {
     currency: 'SAR',
     billingOnce: 'One-time',
     billingMonthly: 'Monthly',
+    // Category-level billing summaries for the pricing tabs (Stage 10).
+    billingAllOnce: 'One-time projects',
+    billingAllMonthly: 'Billed monthly',
   },
   ar: {
     brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
@@ -5909,6 +6133,8 @@ const STRINGS = {
     currency: 'ر.س',
     billingOnce: 'لمرة واحدة',
     billingMonthly: 'شهريًا',
+    billingAllOnce: 'مشاريع لمرة واحدة',
+    billingAllMonthly: 'تُحتسب شهريًا',
   },
 };
 
@@ -9279,10 +9505,982 @@ if (document.readyState === 'loading') {
         </div>
       </section>
 
-      <section id="pricing" class="s-placeholder">
+      <!-- =============================================================
+           07 — PRICING (Stage 10)
+           The fourteen packages already published in sections 01-05,
+           regrouped for comparison. Nothing here is transcribed: the cards
+           are GENERATED from those sections by tools/build-pricing.js, which
+           also writes src/data/pricing.json. The detail sections stay the
+           single source; re-run the tool after changing any package, and a
+           test asserts the two renderings still agree.
+
+           The markup between the generated markers is machine-written — edit
+           the tool, not the output.
+
+           TWO CATEGORIES THE BRIEF NAMES ARE ABSENT: Integrated Solutions
+           (Business Launch, Digital Growth) and Additional Services. No
+           prices, features or billing model have been supplied for either, and
+           an empty tab claiming a category exists is worse than no tab. The
+           custom-quote block is the path for anything the five do not cover.
+
+           Only ONE pricing note exists in the source — the advertising-budget
+           exclusion — so only that one appears. No other commercial term is
+           stated because none was supplied.
+           ============================================================= -->
+      <section id="pricing" class="l-section c-detail" aria-labelledby="pricing-title">
         <div class="l-container">
-          <p class="t-label">Stage 04</p>
-          <h2 class="t-h1">Pricing</h2>
+          <header class="c-detail__head" data-reveal-group>
+            <div class="c-detail__intro">
+              <p class="t-label c-detail__eyebrow">
+                <span class="c-detail__number">07</span>
+                <span data-i18n-pending>Pricing</span>
+              </p>
+              <h2 class="c-detail__headline" id="pricing-title" data-i18n-pending>
+                Choose the right solution<br />
+                <span class="c-detail__accent">for your business.</span>
+              </h2>
+            </div>
+            <p class="t-body-lg c-detail__lead" data-i18n-pending>
+              Packages are grouped by service and sized to different stages of
+              a business. Pick a category to compare what each one includes.
+            </p>
+          </header>
+
+          <!-- PRICING:GENERATED:START -->
+          <div class="c-pricing" data-tabs>
+            <div class="c-pricing__tabs" role="tablist" aria-label="Pricing categories">
+            <button class="c-pricing__tab" data-tab="branding"
+              aria-selected="true">
+              <span class="c-pricing__tab-label" data-i18n-pending>Branding & Design</span>
+              <span class="c-pricing__tab-count" aria-hidden="true">3</span>
+              <span class="u-visually-hidden">3 packages</span>
+            </button>
+            <button class="c-pricing__tab" data-tab="websites"
+              aria-selected="false">
+              <span class="c-pricing__tab-label" data-i18n-pending>Websites</span>
+              <span class="c-pricing__tab-count" aria-hidden="true">3</span>
+              <span class="u-visually-hidden">3 packages</span>
+            </button>
+            <button class="c-pricing__tab" data-tab="ecommerce"
+              aria-selected="false">
+              <span class="c-pricing__tab-label" data-i18n-pending>E-Commerce</span>
+              <span class="c-pricing__tab-count" aria-hidden="true">2</span>
+              <span class="u-visually-hidden">2 packages</span>
+            </button>
+            <button class="c-pricing__tab" data-tab="social"
+              aria-selected="false">
+              <span class="c-pricing__tab-label" data-i18n-pending>Social Media</span>
+              <span class="c-pricing__tab-count" aria-hidden="true">3</span>
+              <span class="u-visually-hidden">3 packages</span>
+            </button>
+            <button class="c-pricing__tab" data-tab="marketing"
+              aria-selected="false">
+              <span class="c-pricing__tab-label" data-i18n-pending>Marketing & Ads</span>
+              <span class="c-pricing__tab-count" aria-hidden="true">3</span>
+              <span class="u-visually-hidden">3 packages</span>
+            </button>
+            </div>
+
+          <div class="c-pricing__panel" data-tab-panel="branding">
+            <p class="c-pricing__meta">
+              <a class="c-link c-pricing__jump" href="#branding">
+                <span data-i18n-pending>See what Branding & Design covers</span>
+                <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </a>
+              <span class="c-pricing__billing-note" data-i18n="billingAllOnce">One-time projects</span>
+            </p>
+
+            <div class="c-tiers">
+          <article class="c-tier" style="--i: 0"
+            aria-labelledby="price-branding-tier-starter-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>Foundation</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-branding-tier-starter-name" data-i18n-pending>Starter</h3>
+              <p class="c-tier__purpose" data-i18n-pending>A foundational identity for new or small projects.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">200</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Professional logo design</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Color selection</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Font selection</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Basic brand identity card</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Profile picture and cover design</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>3 social media designs</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Basic final files</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 7 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-branding-tier-starter-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier c-tier--featured" style="--i: 1"
+            aria-labelledby="price-branding-tier-professional-name">
+            <span class="c-tier__ribbon">Most Requested</span>
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>System</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-branding-tier-professional-name" data-i18n-pending>Professional</h3>
+              <p class="c-tier__purpose" data-i18n-pending>A more complete and structured visual identity.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">400</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Professional logo</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Complete color system</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Typography System</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Short Brand Guidelines</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Business card design</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Letterhead design</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Social media profile / cover design</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>6 social media designs</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Basic advertising templates</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Source and final files</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 10 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--primary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-branding-tier-professional-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier" style="--i: 2"
+            aria-labelledby="price-branding-tier-advanced-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 1.5 24 7.5 13 13.5 2 7.5 13 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /><path d="M2 12.5 13 18.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.6" /><path d="M2 17.5 13 23.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.32" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>Ecosystem</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-branding-tier-advanced-name" data-i18n-pending>Advanced</h3>
+              <p class="c-tier__purpose" data-i18n-pending>A complete visual identity and reusable brand ecosystem.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">650</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature c-tier__feature--carry"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Everything in Professional</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Complete Brand Guidelines</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Visual Language</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Social Media Design System</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Advertising Templates</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Presentation Template</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Business Profile Template</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>10 reusable content templates</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Complete Brand Assets</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 9 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-branding-tier-advanced-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+            </div>
+          </div>
+
+          <div class="c-pricing__panel" data-tab-panel="websites">
+            <p class="c-pricing__meta">
+              <a class="c-link c-pricing__jump" href="#websites">
+                <span data-i18n-pending>See what Websites covers</span>
+                <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </a>
+              <span class="c-pricing__billing-note" data-i18n="billingAllOnce">One-time projects</span>
+            </p>
+
+            <div class="c-tiers">
+          <article class="c-tier" style="--i: 0"
+            aria-labelledby="price-websites-web-landing-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>Foundation</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-websites-web-landing-name" data-i18n-pending>Landing Page</h3>
+              <p class="c-tier__purpose" data-i18n-pending>For focused campaigns, launches and simple digital presence.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">175</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Domain registration</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Hosting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website UI/UX design</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Responsive implementation</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Delivery ready for use</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 5 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-websites-web-landing-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier" style="--i: 1"
+            aria-labelledby="price-websites-web-business-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>System</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-websites-web-business-name" data-i18n-pending>Business Website</h3>
+              <p class="c-tier__purpose" data-i18n-pending>For companies and organizations requiring a professional multi-page website.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">450</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Domain registration</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Hosting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website UI/UX design</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website development</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Responsive implementation</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website setup</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Testing</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Delivery ready for use</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 8 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-websites-web-business-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier" style="--i: 2"
+            aria-labelledby="price-websites-web-professional-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 1.5 24 7.5 13 13.5 2 7.5 13 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /><path d="M2 12.5 13 18.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.6" /><path d="M2 17.5 13 23.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.32" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>Ecosystem</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-websites-web-professional-name" data-i18n-pending>Professional Website</h3>
+              <p class="c-tier__purpose" data-i18n-pending>For businesses requiring a more advanced digital presence, content architecture, integrations and enhanced functionality.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">700</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Domain registration</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Hosting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website UI/UX design</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website development</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Responsive implementation</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Website setup</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Required integrations</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Testing</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Deployment</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Delivery ready for use</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 10 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-websites-web-professional-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+            </div>
+          </div>
+
+          <div class="c-pricing__panel" data-tab-panel="ecommerce">
+            <p class="c-pricing__meta">
+              <a class="c-link c-pricing__jump" href="#ecommerce">
+                <span data-i18n-pending>See what E-Commerce covers</span>
+                <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </a>
+              <span class="c-pricing__billing-note" data-i18n="billingAllOnce">One-time projects</span>
+            </p>
+
+            <div class="c-tiers c-tiers--pair">
+          <article class="c-tier" style="--i: 0"
+            aria-labelledby="price-ecommerce-ecom-starter-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>Foundation</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-ecommerce-ecom-starter-name" data-i18n-pending>E-Commerce Starter</h3>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">650</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Online Store Creation</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Product Setup</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Categories</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Shipping Configuration</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Payment Configuration</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 5 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-ecommerce-ecom-starter-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier" style="--i: 1"
+            aria-labelledby="price-ecommerce-ecom-professional-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>System</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-ecommerce-ecom-professional-name" data-i18n-pending>E-Commerce Professional</h3>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">1,100</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Online Store Creation</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Product Setup</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Categories</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Shipping Configuration</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Payment Configuration</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Required Service Integrations</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 6 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-ecommerce-ecom-professional-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+            </div>
+          </div>
+
+          <div class="c-pricing__panel" data-tab-panel="social">
+            <p class="c-pricing__meta">
+              <a class="c-link c-pricing__jump" href="#social">
+                <span data-i18n-pending>See what Social Media covers</span>
+                <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </a>
+              <span class="c-pricing__billing-note" data-i18n="billingAllMonthly">Billed monthly</span>
+            </p>
+
+            <div class="c-tiers">
+          <article class="c-tier" style="--i: 0"
+            aria-labelledby="price-social-soc-starter-name">
+            <div>
+              <h3 class="c-tier__name" id="price-social-soc-starter-name" data-i18n-pending>Social Starter</h3>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">150</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Management of 2 platforms</span><span data-lang-copy="ar" lang="ar">إدارة منصتين</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Content Calendar</span><span data-lang-copy="ar" lang="ar">Content Calendar</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">8 posts per month</span><span data-lang-copy="ar" lang="ar">8 منشورات شهريًا</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Content writing</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى</span></span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Post design</span><span data-lang-copy="ar" lang="ar">تصميم المنشورات</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Publishing and scheduling</span><span data-lang-copy="ar" lang="ar">النشر والجدولة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Hashtag Research</span><span data-lang-copy="ar" lang="ar">Hashtag Research</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Brief monthly report</span><span data-lang-copy="ar" lang="ar">تقرير شهري مختصر</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 8 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-social-soc-starter-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier c-tier--featured" style="--i: 1"
+            aria-labelledby="price-social-soc-growth-name">
+            <span class="c-tier__ribbon"><span data-lang-copy="en">Most Popular</span><span data-lang-copy="ar" lang="ar">الأكثر طلبًا</span></span>
+            <div>
+              <h3 class="c-tier__name" id="price-social-soc-growth-name" data-i18n-pending>Social Growth</h3>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">250</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Management of up to 3 platforms</span><span data-lang-copy="ar" lang="ar">إدارة حتى 3 منصات</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Content Strategy</span><span data-lang-copy="ar" lang="ar">Content Strategy</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">12 posts per month</span><span data-lang-copy="ar" lang="ar">12 منشورًا شهريًا</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">4 Reels per month</span><span data-lang-copy="ar" lang="ar">4 Reels شهريًا</span></span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Content writing</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Design</span><span data-lang-copy="ar" lang="ar">التصميم</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Publishing and scheduling</span><span data-lang-copy="ar" lang="ar">النشر والجدولة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Stories</span><span data-lang-copy="ar" lang="ar">Stories</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Community Monitoring</span><span data-lang-copy="ar" lang="ar">Community Monitoring</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Hashtag &amp; Keyword Research</span><span data-lang-copy="ar" lang="ar">Hashtag &amp; Keyword Research</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Monthly performance report</span><span data-lang-copy="ar" lang="ar">تقرير أداء شهري</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 11 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--primary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-social-soc-growth-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier" style="--i: 2"
+            aria-labelledby="price-social-soc-pro-name">
+            <div>
+              <h3 class="c-tier__name" id="price-social-soc-pro-name" data-i18n-pending>Social Pro</h3>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">450</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Management of up to 5 platforms</span><span data-lang-copy="ar" lang="ar">إدارة حتى 5 منصات</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Complete content strategy</span><span data-lang-copy="ar" lang="ar">استراتيجية محتوى كاملة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">16 posts per month</span><span data-lang-copy="ar" lang="ar">16 منشورًا شهريًا</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">8 Reels per month</span><span data-lang-copy="ar" lang="ar">8 Reels شهريًا</span></span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Stories</span><span data-lang-copy="ar" lang="ar">Stories</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Copywriting</span><span data-lang-copy="ar" lang="ar">Copywriting</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Graphic Design</span><span data-lang-copy="ar" lang="ar">Graphic Design</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Video Editing</span><span data-lang-copy="ar" lang="ar">Video Editing</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Publishing &amp; Scheduling</span><span data-lang-copy="ar" lang="ar">Publishing &amp; Scheduling</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Community Management</span><span data-lang-copy="ar" lang="ar">Community Management</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Monthly Performance Report</span><span data-lang-copy="ar" lang="ar">Monthly Performance Report</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Monthly Strategy Review</span><span data-lang-copy="ar" lang="ar">Monthly Strategy Review</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 12 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-social-soc-pro-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+            </div>
+          </div>
+
+          <div class="c-pricing__panel" data-tab-panel="marketing">
+            <p class="c-pricing__meta">
+              <a class="c-link c-pricing__jump" href="#marketing">
+                <span data-i18n-pending>See what Marketing & Ads covers</span>
+                <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </a>
+              <span class="c-pricing__billing-note" data-i18n="billingAllMonthly">Billed monthly</span>
+            </p>
+
+            <div class="c-tiers">
+          <article class="c-tier" style="--i: 0"
+            aria-labelledby="price-marketing-ads-starter-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>Foundation</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-marketing-ads-starter-name" data-i18n-pending>Ads Starter</h3>
+              <p class="c-tier__purpose" data-i18n-pending>Entry-level solution.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">150</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">One advertising platform managed</span><span data-lang-copy="ar" lang="ar">إدارة منصة إعلانية واحدة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Campaign setup</span><span data-lang-copy="ar" lang="ar">إعداد الحملات</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Audience Targeting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Ad Copy</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Up to 2 ad designs</span><span data-lang-copy="ar" lang="ar">تصميم حتى 2 إعلان</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Campaign Monitoring</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Basic Optimization</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Monthly report</span><span data-lang-copy="ar" lang="ar">تقرير شهري</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 8 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-marketing-ads-starter-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier c-tier--featured" style="--i: 1"
+            aria-labelledby="price-marketing-ads-growth-name">
+            <span class="c-tier__ribbon"><span data-lang-copy="en">Recommended</span><span data-lang-copy="ar" lang="ar">موصى به</span></span>
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>System</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-marketing-ads-growth-name" data-i18n-pending>Ads Growth</h3>
+              <p class="c-tier__purpose" data-i18n-pending>Balanced solution.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">225</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Meta Ads management</span><span data-lang-copy="ar" lang="ar">إدارة Meta Ads</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Facebook + Instagram</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Up to 4 campaigns</span><span data-lang-copy="ar" lang="ar">حتى 4 حملات</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Audience Research</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Ad Creative</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Copywriting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Campaign Optimization</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Retargeting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Conversion Tracking</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Monthly performance report</span><span data-lang-copy="ar" lang="ar">تقرير أداء شهري</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 10 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--primary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-marketing-ads-growth-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier" style="--i: 2"
+            aria-labelledby="price-marketing-ads-performance-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 1.5 24 7.5 13 13.5 2 7.5 13 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /><path d="M2 12.5 13 18.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.6" /><path d="M2 17.5 13 23.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.32" /></svg>
+              <span class="c-tier__level-name" data-i18n-pending>Ecosystem</span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-marketing-ads-performance-name" data-i18n-pending>Ads Performance</h3>
+              <p class="c-tier__purpose" data-i18n-pending>Advanced, performance-focused solution.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">400</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Meta + Google Ads</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Campaign Strategy</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Audience Segmentation</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Multiple Campaigns</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Retargeting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Conversion Tracking</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>A/B Testing</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Creative Optimization</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Budget Optimization</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Performance Report</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Monthly Strategy Meeting</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed">Show all 11 features</span>
+                <span data-when="expanded">Show fewer features</span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="price-marketing-ads-performance-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+            </div>
+          </div>
+          </div>
+          <!-- PRICING:GENERATED:END -->
+
+          <aside class="c-note" data-reveal aria-labelledby="pricing-note-label">
+            <svg class="c-note__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.6" />
+              <path d="M12 7.4v5.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              <circle cx="12" cy="16.4" r="1.1" fill="currentColor" />
+            </svg>
+            <p>
+              <span class="c-note__label" id="pricing-note-label">
+                <span data-lang-copy="en">Note</span><span data-lang-copy="ar" lang="ar">ملاحظة</span>
+              </span>
+              <span class="c-note__body">
+                <span data-lang-copy="en">On Marketing &amp; Ads packages, the advertising budget
+                  itself is not included in the management fee. The package price covers managing
+                  your campaigns; what you spend with the platforms is separate and paid by you.</span>
+                <span data-lang-copy="ar" lang="ar">في باقات التسويق والإعلانات: ميزانية الإعلانات نفسها غير مشمولة في رسوم الإدارة.</span>
+              </span>
+            </p>
+          </aside>
+
+          <div class="c-quote" data-reveal>
+            <div>
+              <h3 class="c-quote__title" data-i18n-pending>Something more specific?</h3>
+              <p class="c-quote__body" data-i18n-pending>
+                These packages cover the most common needs. If yours does not
+                fit one of them, tell us what you are trying to do and we will
+                put together a scope for it.
+              </p>
+            </div>
+            <!-- Deliberately NOT data-cta-link: that attribute syncs a button to
+                 the site-wide primary CTA label, which overwrote this one. The
+                 action here is a different one, so it keeps its own words and
+                 the established button style. -->
+            <a class="c-btn c-btn--primary" href="#contact">
+              <span data-i18n-pending>Request a Custom Quote</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </div>
         </div>
       </section>
 

@@ -1,0 +1,733 @@
+{
+  "categories": [
+    {
+      "id": "branding",
+      "section": "branding",
+      "label": "Branding & Design",
+      "packages": [
+        {
+          "id": "tier-starter",
+          "level": "Foundation",
+          "name": "Starter",
+          "purpose": "A foundational identity for new or small projects.",
+          "price": "200",
+          "billing": "billingOnce",
+          "featured": false,
+          "ribbon": null,
+          "features": [
+            {
+              "carry": false,
+              "en": "Professional logo design"
+            },
+            {
+              "carry": false,
+              "en": "Color selection"
+            },
+            {
+              "carry": false,
+              "en": "Font selection"
+            },
+            {
+              "carry": false,
+              "en": "Basic brand identity card"
+            },
+            {
+              "carry": false,
+              "en": "Profile picture and cover design"
+            },
+            {
+              "carry": false,
+              "en": "3 social media designs"
+            },
+            {
+              "carry": false,
+              "en": "Basic final files"
+            }
+          ]
+        },
+        {
+          "id": "tier-professional",
+          "level": "System",
+          "name": "Professional",
+          "purpose": "A more complete and structured visual identity.",
+          "price": "400",
+          "billing": "billingOnce",
+          "featured": true,
+          "ribbon": {
+            "en": "Most Requested"
+          },
+          "features": [
+            {
+              "carry": false,
+              "en": "Professional logo"
+            },
+            {
+              "carry": false,
+              "en": "Complete color system"
+            },
+            {
+              "carry": false,
+              "en": "Typography System"
+            },
+            {
+              "carry": false,
+              "en": "Short Brand Guidelines"
+            },
+            {
+              "carry": false,
+              "en": "Business card design"
+            },
+            {
+              "carry": false,
+              "en": "Letterhead design"
+            },
+            {
+              "carry": false,
+              "en": "Social media profile / cover design"
+            },
+            {
+              "carry": false,
+              "en": "6 social media designs"
+            },
+            {
+              "carry": false,
+              "en": "Basic advertising templates"
+            },
+            {
+              "carry": false,
+              "en": "Source and final files"
+            }
+          ]
+        },
+        {
+          "id": "tier-advanced",
+          "level": "Ecosystem",
+          "name": "Advanced",
+          "purpose": "A complete visual identity and reusable brand ecosystem.",
+          "price": "650",
+          "billing": "billingOnce",
+          "featured": false,
+          "ribbon": null,
+          "features": [
+            {
+              "carry": true,
+              "en": "Everything in Professional"
+            },
+            {
+              "carry": false,
+              "en": "Complete Brand Guidelines"
+            },
+            {
+              "carry": false,
+              "en": "Visual Language"
+            },
+            {
+              "carry": false,
+              "en": "Social Media Design System"
+            },
+            {
+              "carry": false,
+              "en": "Advertising Templates"
+            },
+            {
+              "carry": false,
+              "en": "Presentation Template"
+            },
+            {
+              "carry": false,
+              "en": "Business Profile Template"
+            },
+            {
+              "carry": false,
+              "en": "10 reusable content templates"
+            },
+            {
+              "carry": false,
+              "en": "Complete Brand Assets"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "websites",
+      "section": "websites",
+      "label": "Websites",
+      "packages": [
+        {
+          "id": "web-landing",
+          "level": "Foundation",
+          "name": "Landing Page",
+          "purpose": "For focused campaigns, launches and simple digital presence.",
+          "price": "175",
+          "billing": "billingOnce",
+          "featured": false,
+          "ribbon": null,
+          "features": [
+            {
+              "carry": false,
+              "en": "Domain registration"
+            },
+            {
+              "carry": false,
+              "en": "Hosting"
+            },
+            {
+              "carry": false,
+              "en": "Website UI/UX design"
+            },
+            {
+              "carry": false,
+              "en": "Responsive implementation"
+            },
+            {
+              "carry": false,
+              "en": "Delivery ready for use"
+            }
+          ]
+        },
+        {
+          "id": "web-business",
+          "level": "System",
+          "name": "Business Website",
+          "purpose": "For companies and organizations requiring a professional multi-page website.",
+          "price": "450",
+          "billing": "billingOnce",
+          "featured": false,
+          "ribbon": null,
+          "features": [
+            {
+              "carry": false,
+              "en": "Domain registration"
+            },
+            {
+              "carry": false,
+              "en": "Hosting"
+            },
+            {
+              "carry": false,
+              "en": "Website UI/UX design"
+            },
+            {
+              "carry": false,
+              "en": "Website development"
+            },
+            {
+              "carry": false,
+              "en": "Responsive implementation"
+            },
+            {
+              "carry": false,
+              "en": "Website setup"
+            },
+            {
+              "carry": false,
+              "en": "Testing"
+            },
+            {
+              "carry": false,
+              "en": "Delivery ready for use"
+            }
+          ]
+        },
+        {
+          "id": "web-professional",
+          "level": "Ecosystem",
+          "name": "Professional Website",
+          "purpose": "For businesses requiring a more advanced digital presence, content architecture, integrations and enhanced functionality.",
+          "price": "700",
+          "billing": "billingOnce",
+          "featured": false,
+          "ribbon": null,
+          "features": [
+            {
+              "carry": false,
+              "en": "Domain registration"
+            },
+            {
+              "carry": false,
+              "en": "Hosting"
+            },
+            {
+              "carry": false,
+              "en": "Website UI/UX design"
+            },
+            {
+              "carry": false,
+              "en": "Website development"
+            },
+            {
+              "carry": false,
+              "en": "Responsive implementation"
+            },
+            {
+              "carry": false,
+              "en": "Website setup"
+            },
+            {
+              "carry": false,
+              "en": "Required integrations"
+            },
+            {
+              "carry": false,
+              "en": "Testing"
+            },
+            {
+              "carry": false,
+              "en": "Deployment"
+            },
+            {
+              "carry": false,
+              "en": "Delivery ready for use"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ecommerce",
+      "section": "ecommerce",
+      "label": "E-Commerce",
+      "packages": [
+        {
+          "id": "ecom-starter",
+          "level": "Foundation",
+          "name": "E-Commerce Starter",
+          "purpose": null,
+          "price": "650",
+          "billing": "billingOnce",
+          "featured": false,
+          "ribbon": null,
+          "features": [
+            {
+              "carry": false,
+              "en": "Online Store Creation"
+            },
+            {
+              "carry": false,
+              "en": "Product Setup"
+            },
+            {
+              "carry": false,
+              "en": "Categories"
+            },
+            {
+              "carry": false,
+              "en": "Shipping Configuration"
+            },
+            {
+              "carry": false,
+              "en": "Payment Configuration"
+            }
+          ]
+        },
+        {
+          "id": "ecom-professional",
+          "level": "System",
+          "name": "E-Commerce Professional",
+          "purpose": null,
+          "price": "1,100",
+          "billing": "billingOnce",
+          "featured": false,
+          "ribbon": null,
+          "features": [
+            {
+              "carry": false,
+              "en": "Online Store Creation"
+            },
+            {
+              "carry": false,
+              "en": "Product Setup"
+            },
+            {
+              "carry": false,
+              "en": "Categories"
+            },
+            {
+              "carry": false,
+              "en": "Shipping Configuration"
+            },
+            {
+              "carry": false,
+              "en": "Payment Configuration"
+            },
+            {
+              "carry": false,
+              "en": "Required Service Integrations"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "social",
+      "section": "social",
+      "label": "Social Media",
+      "packages": [
+        {
+          "id": "soc-starter",
+          "level": null,
+          "name": "Social Starter",
+          "purpose": null,
+          "price": "150",
+          "billing": "billingMonthly",
+          "featured": false,
+          "ribbon": null,
+          "features": [
+            {
+              "carry": false,
+              "en": "Management of 2 platforms",
+              "ar": "إدارة منصتين"
+            },
+            {
+              "carry": false,
+              "en": "Content Calendar",
+              "ar": "Content Calendar"
+            },
+            {
+              "carry": false,
+              "en": "8 posts per month",
+              "ar": "8 منشورات شهريًا"
+            },
+            {
+              "carry": false,
+              "en": "Content writing",
+              "ar": "كتابة المحتوى"
+            },
+            {
+              "carry": false,
+              "en": "Post design",
+              "ar": "تصميم المنشورات"
+            },
+            {
+              "carry": false,
+              "en": "Publishing and scheduling",
+              "ar": "النشر والجدولة"
+            },
+            {
+              "carry": false,
+              "en": "Hashtag Research",
+              "ar": "Hashtag Research"
+            },
+            {
+              "carry": false,
+              "en": "Brief monthly report",
+              "ar": "تقرير شهري مختصر"
+            }
+          ]
+        },
+        {
+          "id": "soc-growth",
+          "level": null,
+          "name": "Social Growth",
+          "purpose": null,
+          "price": "250",
+          "billing": "billingMonthly",
+          "featured": true,
+          "ribbon": {
+            "en": "Most Popular",
+            "ar": "الأكثر طلبًا"
+          },
+          "features": [
+            {
+              "carry": false,
+              "en": "Management of up to 3 platforms",
+              "ar": "إدارة حتى 3 منصات"
+            },
+            {
+              "carry": false,
+              "en": "Content Strategy",
+              "ar": "Content Strategy"
+            },
+            {
+              "carry": false,
+              "en": "12 posts per month",
+              "ar": "12 منشورًا شهريًا"
+            },
+            {
+              "carry": false,
+              "en": "4 Reels per month",
+              "ar": "4 Reels شهريًا"
+            },
+            {
+              "carry": false,
+              "en": "Content writing",
+              "ar": "كتابة المحتوى"
+            },
+            {
+              "carry": false,
+              "en": "Design",
+              "ar": "التصميم"
+            },
+            {
+              "carry": false,
+              "en": "Publishing and scheduling",
+              "ar": "النشر والجدولة"
+            },
+            {
+              "carry": false,
+              "en": "Stories",
+              "ar": "Stories"
+            },
+            {
+              "carry": false,
+              "en": "Community Monitoring",
+              "ar": "Community Monitoring"
+            },
+            {
+              "carry": false,
+              "en": "Hashtag &amp; Keyword Research",
+              "ar": "Hashtag &amp; Keyword Research"
+            },
+            {
+              "carry": false,
+              "en": "Monthly performance report",
+              "ar": "تقرير أداء شهري"
+            }
+          ]
+        },
+        {
+          "id": "soc-pro",
+          "level": null,
+          "name": "Social Pro",
+          "purpose": null,
+          "price": "450",
+          "billing": "billingMonthly",
+          "featured": false,
+          "ribbon": null,
+          "features": [
+            {
+              "carry": false,
+              "en": "Management of up to 5 platforms",
+              "ar": "إدارة حتى 5 منصات"
+            },
+            {
+              "carry": false,
+              "en": "Complete content strategy",
+              "ar": "استراتيجية محتوى كاملة"
+            },
+            {
+              "carry": false,
+              "en": "16 posts per month",
+              "ar": "16 منشورًا شهريًا"
+            },
+            {
+              "carry": false,
+              "en": "8 Reels per month",
+              "ar": "8 Reels شهريًا"
+            },
+            {
+              "carry": false,
+              "en": "Stories",
+              "ar": "Stories"
+            },
+            {
+              "carry": false,
+              "en": "Copywriting",
+              "ar": "Copywriting"
+            },
+            {
+              "carry": false,
+              "en": "Graphic Design",
+              "ar": "Graphic Design"
+            },
+            {
+              "carry": false,
+              "en": "Video Editing",
+              "ar": "Video Editing"
+            },
+            {
+              "carry": false,
+              "en": "Publishing &amp; Scheduling",
+              "ar": "Publishing &amp; Scheduling"
+            },
+            {
+              "carry": false,
+              "en": "Community Management",
+              "ar": "Community Management"
+            },
+            {
+              "carry": false,
+              "en": "Monthly Performance Report",
+              "ar": "Monthly Performance Report"
+            },
+            {
+              "carry": false,
+              "en": "Monthly Strategy Review",
+              "ar": "Monthly Strategy Review"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "marketing",
+      "section": "marketing",
+      "label": "Marketing & Ads",
+      "packages": [
+        {
+          "id": "ads-starter",
+          "level": "Foundation",
+          "name": "Ads Starter",
+          "purpose": "Entry-level solution.",
+          "price": "150",
+          "billing": "billingMonthly",
+          "featured": false,
+          "ribbon": null,
+          "features": [
+            {
+              "carry": false,
+              "en": "One advertising platform managed",
+              "ar": "إدارة منصة إعلانية واحدة"
+            },
+            {
+              "carry": false,
+              "en": "Campaign setup",
+              "ar": "إعداد الحملات"
+            },
+            {
+              "carry": false,
+              "en": "Audience Targeting"
+            },
+            {
+              "carry": false,
+              "en": "Ad Copy"
+            },
+            {
+              "carry": false,
+              "en": "Up to 2 ad designs",
+              "ar": "تصميم حتى 2 إعلان"
+            },
+            {
+              "carry": false,
+              "en": "Campaign Monitoring"
+            },
+            {
+              "carry": false,
+              "en": "Basic Optimization"
+            },
+            {
+              "carry": false,
+              "en": "Monthly report",
+              "ar": "تقرير شهري"
+            }
+          ]
+        },
+        {
+          "id": "ads-growth",
+          "level": "System",
+          "name": "Ads Growth",
+          "purpose": "Balanced solution.",
+          "price": "225",
+          "billing": "billingMonthly",
+          "featured": true,
+          "ribbon": {
+            "en": "Recommended",
+            "ar": "موصى به"
+          },
+          "features": [
+            {
+              "carry": false,
+              "en": "Meta Ads management",
+              "ar": "إدارة Meta Ads"
+            },
+            {
+              "carry": false,
+              "en": "Facebook + Instagram"
+            },
+            {
+              "carry": false,
+              "en": "Up to 4 campaigns",
+              "ar": "حتى 4 حملات"
+            },
+            {
+              "carry": false,
+              "en": "Audience Research"
+            },
+            {
+              "carry": false,
+              "en": "Ad Creative"
+            },
+            {
+              "carry": false,
+              "en": "Copywriting"
+            },
+            {
+              "carry": false,
+              "en": "Campaign Optimization"
+            },
+            {
+              "carry": false,
+              "en": "Retargeting"
+            },
+            {
+              "carry": false,
+              "en": "Conversion Tracking"
+            },
+            {
+              "carry": false,
+              "en": "Monthly performance report",
+              "ar": "تقرير أداء شهري"
+            }
+          ]
+        },
+        {
+          "id": "ads-performance",
+          "level": "Ecosystem",
+          "name": "Ads Performance",
+          "purpose": "Advanced, performance-focused solution.",
+          "price": "400",
+          "billing": "billingMonthly",
+          "featured": false,
+          "ribbon": null,
+          "features": [
+            {
+              "carry": false,
+              "en": "Meta + Google Ads"
+            },
+            {
+              "carry": false,
+              "en": "Campaign Strategy"
+            },
+            {
+              "carry": false,
+              "en": "Audience Segmentation"
+            },
+            {
+              "carry": false,
+              "en": "Multiple Campaigns"
+            },
+            {
+              "carry": false,
+              "en": "Retargeting"
+            },
+            {
+              "carry": false,
+              "en": "Conversion Tracking"
+            },
+            {
+              "carry": false,
+              "en": "A/B Testing"
+            },
+            {
+              "carry": false,
+              "en": "Creative Optimization"
+            },
+            {
+              "carry": false,
+              "en": "Budget Optimization"
+            },
+            {
+              "carry": false,
+              "en": "Performance Report"
+            },
+            {
+              "carry": false,
+              "en": "Monthly Strategy Meeting"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -75,6 +75,9 @@ export const STRINGS = {
     currency: 'SAR',
     billingOnce: 'One-time',
     billingMonthly: 'Monthly',
+    // Category-level billing summaries for the pricing tabs (Stage 10).
+    billingAllOnce: 'One-time projects',
+    billingAllMonthly: 'Billed monthly',
   },
   ar: {
     brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
@@ -89,6 +92,8 @@ export const STRINGS = {
     currency: 'ر.س',
     billingOnce: 'لمرة واحدة',
     billingMonthly: 'شهريًا',
+    billingAllOnce: 'مشاريع لمرة واحدة',
+    billingAllMonthly: 'تُحتسب شهريًا',
   },
 };
 
