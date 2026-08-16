@@ -18,6 +18,7 @@ docs/08-marketing.md        Digital Marketing & Ads, documented
 docs/09-integrated.md       Integrated Solutions, documented
 docs/10-pricing.md          Pricing architecture, documented
 docs/11-add-ons.md          Add-ons & extra services, documented
+docs/12-why-us.md           Why us / value proposition, documented
 index.html                  Homepage shell — header + placeholder sections
 scaffold.css                Temporary placeholder-section styles (not shipped)
 styleguide.html             Living specimen sheet for every token and component
@@ -33,7 +34,7 @@ src/styles/                 The product stylesheet
   06-utilities.css          A deliberately small utility set
   components/               button · card · header · navigation · hero ·
                             orbit · services · service-detail ·
-                            campaign · pricing · addons ·
+                            campaign · pricing · addons · value ·
                             ecosystem · disclosure · field
 src/data/pricing.json       Generated package data (see tools/)
 tools/build-pricing.js      Regenerates the pricing section from the
@@ -64,7 +65,8 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 09 | Integrated Solutions | Done |
 | 10 | Pricing architecture | Done — 5 of 6 package categories |
 | 11 | Add-ons & extra services | Done |
-| — | Why Us, Process, Contact, Footer | Placeholders |
+| 12 | Why us / value proposition | Done |
+| — | Process, Contact, Footer | Placeholders |
 
 ## Single-file build
 
@@ -87,8 +89,8 @@ hero height, the ecosystem wiring, and the mobile menu.
 
 | | Requests | Size |
 | --- | --- | --- |
-| Modular source | 32 | — |
-| `dist/index.html` | **0** | 652KB (132KB of it fonts) |
+| Modular source | 33 | — |
+| `dist/index.html` | **0** | 667KB (132KB of it fonts) |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:
@@ -151,4 +153,7 @@ Each stage's doc ends with its own open items. Across the project:
   its data. Additional Services arrived in Stage 11 and is now section 08.
 - **E-Commerce has no positioning statements**, so those two cards have no
   purpose line.
+- **Any substantiable proof** — a client count, a completed-project figure, a
+  named reference. Why Us argues entirely from the delivery model because no
+  such fact exists in the source; real proof would strengthen it considerably.
 - `apple-touch-icon.png`, `og-image.png`, and the page's OG/canonical values.

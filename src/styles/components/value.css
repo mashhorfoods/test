@@ -1,0 +1,265 @@
+/* =============================================================================
+   VALUE — STAGE 12, WHY US
+   Two pieces: the arrangement contrast, and the value pillars.
+
+   DELIBERATELY NOT ANOTHER ECOSYSTEM DIAGRAM. Stage 09 already draws the
+   services wired to a hub, and that answers "what connects to what". This
+   section has to answer a different question — "why does that matter to me" —
+   so repeating the armature here would be the same picture captioned twice
+   (rule 31: do not duplicate the services section unnecessarily).
+
+   The device instead is a CONTRAST OF ARRANGEMENTS: the same five services,
+   once as five detached boxes and once as five rows of one box. The argument
+   is made by structure, so it needs no arrows, no colour coding and no
+   claim about anybody's work — and it mirrors under RTL for free.
+   ============================================================================= */
+
+@layer components {
+  /* -----------------------------------------------------------------------
+     THE CONTRAST
+     ----------------------------------------------------------------------- */
+  .c-compare {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-32);
+    margin-block-start: var(--space-48);
+  }
+
+  @media (min-width: 64em) {
+    .c-compare {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--grid-gutter);
+      /* Stretch, not start: the panels hold different numbers of rows, and
+         letting them end at different heights reads as one being unfinished
+         rather than as a comparison. Stretching also bottom-aligns the two
+         fact lists against each other, which is where the comparison is
+         actually made. */
+      align-items: stretch;
+    }
+  }
+
+  .c-compare__side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    padding: var(--space-24);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+  }
+
+  @media (min-width: 48em) {
+    .c-compare__side {
+      padding: var(--space-32);
+    }
+  }
+
+  /* The second panel is the one being argued for, so it carries the accent
+     border and the raised surface — the same treatment a recommended package
+     gets, for the same reason and with the same restraint. */
+  .c-compare__side--one {
+    border-color: var(--color-border-accent);
+    background-color: var(--color-surface);
+  }
+
+  .c-compare__label {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-12);
+    color: var(--color-text-secondary);
+  }
+
+  .c-compare__side--one .c-compare__label {
+    color: var(--color-accent);
+  }
+
+  .c-compare__count {
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    margin-inline-start: auto;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* --- Five detached boxes ---------------------------------------------- */
+  .c-compare__scatter {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-compare__scatter > li {
+    padding: var(--space-12) var(--space-16);
+    border: var(--border-hairline);
+    border-radius: var(--radius-xs);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    /* Service names mix Arabic and Latin; isolate each so a run cannot
+       reorder against its neighbours in the grid. */
+    unicode-bidi: isolate;
+  }
+
+  /* The odd one out sits alone on the last row — five things do not divide
+     into two columns, and letting that show is the point. */
+  .c-compare__scatter > li:last-child {
+    grid-column: 1 / -1;
+  }
+
+  /* --- The same five, joined -------------------------------------------- */
+  .c-compare__stack {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: var(--border-hairline);
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+  }
+
+  /* ONE continuous edge running the whole height — the visual difference
+     between "five things" and "one thing with five parts". Drawn on the list,
+     not on each row: per-row segments were interrupted by the dividers and
+     rendered as five separate bars, which argued the opposite point. */
+  .c-compare__stack::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: 2px;
+    background-color: var(--color-accent);
+  }
+
+  .c-compare__stack > li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    padding: var(--space-12) var(--space-16);
+    padding-inline-start: calc(var(--space-16) + 2px);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-primary);
+    unicode-bidi: isolate;
+  }
+
+  .c-compare__stack > li + li {
+    border-block-start: var(--border-hairline);
+  }
+
+  /* --- The three facts under each panel ---------------------------------- */
+  .c-compare__facts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-block-start: auto;
+  }
+
+  .c-compare__facts > li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-12);
+    align-items: baseline;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+  }
+
+  .c-compare__facts > li::before {
+    content: "";
+    inline-size: var(--space-12);
+    block-size: 1px;
+    align-self: center;
+    background-color: var(--color-border-strong);
+  }
+
+  .c-compare__side--one .c-compare__facts > li {
+    color: var(--color-text-primary);
+  }
+
+  .c-compare__side--one .c-compare__facts > li::before {
+    background-color: var(--color-accent);
+  }
+
+  /* -----------------------------------------------------------------------
+     VALUE PILLARS
+     Rows, not cards (rule 10). A row lets the numeral run large, the rule
+     run the full measure and the text keep a readable line length; five
+     equal boxes would flatten a hierarchy the section depends on.
+     ----------------------------------------------------------------------- */
+  .c-pillars {
+    margin: var(--section-space-tight) 0 0;
+    padding: 0;
+    list-style: none;
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-pillar {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-8) var(--space-24);
+    padding-block: var(--space-32);
+    border-block-end: var(--border-hairline);
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  @media (min-width: 64em) {
+    .c-pillar {
+      grid-template-columns: auto minmax(0, 22rem) minmax(0, 1fr);
+      gap: var(--grid-gutter);
+      align-items: baseline;
+    }
+  }
+
+  /* The hover surface spans exactly the row box, which is also where the
+     rules run. An earlier version bled it 16px past each edge with negative
+     margins; that looked marginally better and made the list overflow its
+     container at every desktop width. */
+  .c-pillar:hover {
+    background-color: var(--color-surface);
+  }
+
+  .c-pillar__index {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-border-strong);
+    /* Western numerals in both languages — keep the pair from splitting or
+       jumping to the wrong end of an RTL line box. */
+    direction: ltr;
+    unicode-bidi: isolate;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-pillar:hover .c-pillar__index {
+    color: var(--color-accent);
+  }
+
+  .c-pillar__name {
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+  }
+
+  .c-pillar__body {
+    grid-column: 2 / -1;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    max-inline-size: 62ch;
+  }
+
+  @media (min-width: 64em) {
+    .c-pillar__body {
+      grid-column: auto;
+    }
+  }
+}

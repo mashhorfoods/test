@@ -4992,6 +4992,274 @@
 }
 
 
+/* ---- src/styles/components/value.css ---- */
+/* =============================================================================
+   VALUE — STAGE 12, WHY US
+   Two pieces: the arrangement contrast, and the value pillars.
+
+   DELIBERATELY NOT ANOTHER ECOSYSTEM DIAGRAM. Stage 09 already draws the
+   services wired to a hub, and that answers "what connects to what". This
+   section has to answer a different question — "why does that matter to me" —
+   so repeating the armature here would be the same picture captioned twice
+   (rule 31: do not duplicate the services section unnecessarily).
+
+   The device instead is a CONTRAST OF ARRANGEMENTS: the same five services,
+   once as five detached boxes and once as five rows of one box. The argument
+   is made by structure, so it needs no arrows, no colour coding and no
+   claim about anybody's work — and it mirrors under RTL for free.
+   ============================================================================= */
+
+@layer components {
+  /* -----------------------------------------------------------------------
+     THE CONTRAST
+     ----------------------------------------------------------------------- */
+  .c-compare {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-32);
+    margin-block-start: var(--space-48);
+  }
+
+  @media (min-width: 64em) {
+    .c-compare {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--grid-gutter);
+      /* Stretch, not start: the panels hold different numbers of rows, and
+         letting them end at different heights reads as one being unfinished
+         rather than as a comparison. Stretching also bottom-aligns the two
+         fact lists against each other, which is where the comparison is
+         actually made. */
+      align-items: stretch;
+    }
+  }
+
+  .c-compare__side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    padding: var(--space-24);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+  }
+
+  @media (min-width: 48em) {
+    .c-compare__side {
+      padding: var(--space-32);
+    }
+  }
+
+  /* The second panel is the one being argued for, so it carries the accent
+     border and the raised surface — the same treatment a recommended package
+     gets, for the same reason and with the same restraint. */
+  .c-compare__side--one {
+    border-color: var(--color-border-accent);
+    background-color: var(--color-surface);
+  }
+
+  .c-compare__label {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-12);
+    color: var(--color-text-secondary);
+  }
+
+  .c-compare__side--one .c-compare__label {
+    color: var(--color-accent);
+  }
+
+  .c-compare__count {
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    margin-inline-start: auto;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* --- Five detached boxes ---------------------------------------------- */
+  .c-compare__scatter {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-compare__scatter > li {
+    padding: var(--space-12) var(--space-16);
+    border: var(--border-hairline);
+    border-radius: var(--radius-xs);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    /* Service names mix Arabic and Latin; isolate each so a run cannot
+       reorder against its neighbours in the grid. */
+    unicode-bidi: isolate;
+  }
+
+  /* The odd one out sits alone on the last row — five things do not divide
+     into two columns, and letting that show is the point. */
+  .c-compare__scatter > li:last-child {
+    grid-column: 1 / -1;
+  }
+
+  /* --- The same five, joined -------------------------------------------- */
+  .c-compare__stack {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: var(--border-hairline);
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+  }
+
+  /* ONE continuous edge running the whole height — the visual difference
+     between "five things" and "one thing with five parts". Drawn on the list,
+     not on each row: per-row segments were interrupted by the dividers and
+     rendered as five separate bars, which argued the opposite point. */
+  .c-compare__stack::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: 2px;
+    background-color: var(--color-accent);
+  }
+
+  .c-compare__stack > li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    padding: var(--space-12) var(--space-16);
+    padding-inline-start: calc(var(--space-16) + 2px);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-primary);
+    unicode-bidi: isolate;
+  }
+
+  .c-compare__stack > li + li {
+    border-block-start: var(--border-hairline);
+  }
+
+  /* --- The three facts under each panel ---------------------------------- */
+  .c-compare__facts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-block-start: auto;
+  }
+
+  .c-compare__facts > li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-12);
+    align-items: baseline;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+  }
+
+  .c-compare__facts > li::before {
+    content: "";
+    inline-size: var(--space-12);
+    block-size: 1px;
+    align-self: center;
+    background-color: var(--color-border-strong);
+  }
+
+  .c-compare__side--one .c-compare__facts > li {
+    color: var(--color-text-primary);
+  }
+
+  .c-compare__side--one .c-compare__facts > li::before {
+    background-color: var(--color-accent);
+  }
+
+  /* -----------------------------------------------------------------------
+     VALUE PILLARS
+     Rows, not cards (rule 10). A row lets the numeral run large, the rule
+     run the full measure and the text keep a readable line length; five
+     equal boxes would flatten a hierarchy the section depends on.
+     ----------------------------------------------------------------------- */
+  .c-pillars {
+    margin: var(--section-space-tight) 0 0;
+    padding: 0;
+    list-style: none;
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-pillar {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-8) var(--space-24);
+    padding-block: var(--space-32);
+    border-block-end: var(--border-hairline);
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  @media (min-width: 64em) {
+    .c-pillar {
+      grid-template-columns: auto minmax(0, 22rem) minmax(0, 1fr);
+      gap: var(--grid-gutter);
+      align-items: baseline;
+    }
+  }
+
+  /* The hover surface spans exactly the row box, which is also where the
+     rules run. An earlier version bled it 16px past each edge with negative
+     margins; that looked marginally better and made the list overflow its
+     container at every desktop width. */
+  .c-pillar:hover {
+    background-color: var(--color-surface);
+  }
+
+  .c-pillar__index {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-border-strong);
+    /* Western numerals in both languages — keep the pair from splitting or
+       jumping to the wrong end of an RTL line box. */
+    direction: ltr;
+    unicode-bidi: isolate;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-pillar:hover .c-pillar__index {
+    color: var(--color-accent);
+  }
+
+  .c-pillar__name {
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+  }
+
+  .c-pillar__body {
+    grid-column: 2 / -1;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    max-inline-size: 62ch;
+  }
+
+  @media (min-width: 64em) {
+    .c-pillar__body {
+      grid-column: auto;
+    }
+  }
+}
+
+
 /* ---- src/styles/components/ecosystem.css ---- */
 /* =============================================================================
    ECOSYSTEM — STAGE 09, INTEGRATED SOLUTIONS
@@ -10913,10 +11181,135 @@ if (document.readyState === 'loading') {
         </div>
       </section>
 
-      <section id="why-us" class="s-placeholder">
+      <!-- =============================================================
+           09 — WHY US (Stage 12)
+           Answers "why this way", where Stage 09 answers "what connects to
+           what". Deliberately NOT another ecosystem diagram: repeating the
+           armature here would be the same picture captioned twice (§31).
+
+           The device is a CONTRAST OF ARRANGEMENTS — the same five approved
+           services, once as five detached boxes and once as five rows of one
+           box. Every line under each panel is a fact about the arrangement
+           ("five briefs to write"), never a claim about anybody's work or
+           results. Nothing here asserts experience, client counts, awards,
+           guarantees or performance, because none of that exists in the
+           source (§04).
+
+           Each pillar is traceable to something the site already shows: the
+           five services, the Branding identity, the packages, and the
+           add-ons that attach to them.
+           ============================================================= -->
+      <section id="why-us" class="l-section c-detail" aria-labelledby="why-title">
         <div class="l-container">
-          <p class="t-label">Stage 05</p>
-          <h2 class="t-h1">Why Us</h2>
+          <header class="c-detail__head" data-reveal-group>
+            <div class="c-detail__intro">
+              <p class="t-label c-detail__eyebrow">
+                <span class="c-detail__number">09</span>
+                <span data-i18n-pending>Why Us</span>
+              </p>
+              <h2 class="c-detail__headline" id="why-title" data-i18n-pending>
+                Everything your digital presence needs.<br />
+                <span class="c-detail__accent">Connected in one place.</span>
+              </h2>
+            </div>
+            <p class="t-body-lg c-detail__lead" data-i18n-pending>
+              The same five services, arranged two ways. The difference is not
+              what gets made — it is how much of the coordinating you have to
+              do yourself.
+            </p>
+          </header>
+
+          <div class="c-compare" data-reveal-group>
+            <section class="c-compare__side c-compare__side--split"
+              aria-labelledby="compare-split">
+              <h3 class="t-label c-compare__label" id="compare-split">
+                <span data-i18n-pending>Separate providers</span>
+                <span class="c-compare__count" aria-hidden="true">5</span>
+              </h3>
+              <ul class="c-compare__scatter">
+                  <li>Branding</li>
+                  <li>Websites</li>
+                  <li>E-Commerce</li>
+                  <li>Social Media</li>
+                  <li>Marketing &amp; Ads</li>
+              </ul>
+              <ul class="c-compare__facts">
+                  <li data-i18n-pending>Five briefs to write.</li>
+                  <li data-i18n-pending>Five schedules to align.</li>
+                  <li data-i18n-pending>Five sets of files to keep in sync.</li>
+              </ul>
+            </section>
+
+            <section class="c-compare__side c-compare__side--one"
+              aria-labelledby="compare-one">
+              <h3 class="t-label c-compare__label" id="compare-one">
+                <span data-i18n-pending>One partner</span>
+                <span class="c-compare__count" aria-hidden="true">1</span>
+              </h3>
+              <ul class="c-compare__stack">
+                  <li>Branding</li>
+                  <li>Websites</li>
+                  <li>E-Commerce</li>
+                  <li>Social Media</li>
+                  <li>Marketing &amp; Ads</li>
+              </ul>
+              <ul class="c-compare__facts">
+                  <li data-i18n-pending>One brief.</li>
+                  <li data-i18n-pending>One schedule.</li>
+                  <li data-i18n-pending>One set of files.</li>
+              </ul>
+            </section>
+          </div>
+
+          <ol class="c-pillars" data-reveal-group>
+            <li class="c-pillar">
+              <span class="c-pillar__index" aria-hidden="true">01</span>
+              <h3 class="c-pillar__name" data-i18n-pending>One partner</h3>
+              <p class="c-pillar__body" data-i18n-pending>The five services above come from one team, so there is one place to ask a question and one place to make a decision.</p>
+            </li>
+
+            <li class="c-pillar">
+              <span class="c-pillar__index" aria-hidden="true">02</span>
+              <h3 class="c-pillar__name" data-i18n-pending>Connected services</h3>
+              <p class="c-pillar__body" data-i18n-pending>Branding, websites, e-commerce, social media and advertising are built to work as one system rather than as five separate projects.</p>
+            </li>
+
+            <li class="c-pillar">
+              <span class="c-pillar__index" aria-hidden="true">03</span>
+              <h3 class="c-pillar__name" data-i18n-pending>Consistent brand</h3>
+              <p class="c-pillar__body" data-i18n-pending>The identity produced in Branding &amp; Design is the same one the website, the content and the campaigns are built from.</p>
+            </li>
+
+            <li class="c-pillar">
+              <span class="c-pillar__index" aria-hidden="true">04</span>
+              <h3 class="c-pillar__name" data-i18n-pending>Simpler management</h3>
+              <p class="c-pillar__body" data-i18n-pending>One brief, one schedule and one point of contact, instead of coordinating separate providers against each other.</p>
+            </li>
+
+            <li class="c-pillar">
+              <span class="c-pillar__index" aria-hidden="true">05</span>
+              <h3 class="c-pillar__name" data-i18n-pending>Built to grow</h3>
+              <p class="c-pillar__body" data-i18n-pending>Start with one service and add the others when the business needs them. Add-ons attach to any package, so nothing has to be rebuilt to extend it.</p>
+            </li>
+          </ol>
+
+          <div class="c-detail__foot" data-reveal>
+            <p class="t-body" data-i18n-pending>
+              That is what we offer. Next is how the work actually runs.
+            </p>
+            <a class="c-btn c-btn--primary" href="#contact" data-cta-link>
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+            <a class="c-link" href="#process">
+              <span data-i18n-pending>See how we work</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </div>
         </div>
       </section>
 
