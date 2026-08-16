@@ -1938,14 +1938,10 @@
     overflow: visible;
   }
 
-  /* -----------------------------------------------------------------------
-     PAGE OFFSET
-     Content starts below the fixed header. Sections that anchor-scroll use
-     scroll-margin so their heading clears it (see 01-reset.css).
-     ----------------------------------------------------------------------- */
-  .c-header-spacer {
-    block-size: var(--header-height);
-  }
+  /* A .c-header-spacer offset element lived here, from when the header was
+     going to be `fixed`. It ended up `sticky`, which reserves its own space,
+     so nothing ever used it. Anchor targets clear the header via
+     scroll-margin in 01-reset.css. Removed in Stage 16. */
 }
 
 
@@ -5226,7 +5222,12 @@
     font-weight: var(--weight-bold);
     line-height: 1;
     font-variant-numeric: tabular-nums;
-    color: var(--color-border-strong);
+    /* Was --color-border-strong (20% white), which measured 1.86:1 against
+       the section ground — far under the 3:1 large-text floor. These numerals
+       are the visual order cue, so they are information, not decoration.
+       --color-text-muted clears 3:1 and still reads a full step quieter than
+       the white name beside it. */
+    color: var(--color-text-muted);
     /* Western numerals in both languages — keep the pair from splitting or
        jumping to the wrong end of an RTL line box. */
     direction: ltr;
@@ -5323,7 +5324,12 @@
     font-weight: var(--weight-bold);
     line-height: 1;
     font-variant-numeric: tabular-nums;
-    color: var(--color-border-strong);
+    /* Was --color-border-strong (20% white), which measured 1.86:1 against
+       the section ground — far under the 3:1 large-text floor. These numerals
+       are the visual order cue, so they are information, not decoration.
+       --color-text-muted clears 3:1 and still reads a full step quieter than
+       the white name beside it. */
+    color: var(--color-text-muted);
     /* Western numerals in both languages — keep the pair from splitting or
        jumping to the wrong end of an RTL line box. */
     direction: ltr;
@@ -6599,28 +6605,10 @@
     color: var(--color-accent);
   }
 
-  /* -----------------------------------------------------------------------
-     HOVER REVEAL — supplementary content that appears on hover/focus but is
-     always present for screen readers and always visible on touch devices.
-     ----------------------------------------------------------------------- */
-  .c-reveal__extra {
-    opacity: 1;
-  }
+  /* A .c-reveal hover-disclosure component lived here and was never used:
+     every section that needed supplementary detail ended up rendering it at
+     rest instead, which is the better answer. Removed in Stage 16. */
 
-  @media (hover: hover) and (pointer: fine) {
-    .c-reveal__extra {
-      opacity: 0;
-      translate: 0 6px;
-      transition: opacity var(--duration-base) var(--ease-standard),
-        translate var(--duration-base) var(--ease-out);
-    }
-
-    .c-reveal:hover .c-reveal__extra,
-    .c-reveal:focus-within .c-reveal__extra {
-      opacity: 1;
-      translate: 0 0;
-    }
-  }
 }
 
 
@@ -6904,15 +6892,9 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* -----------------------------------------------------------------------
-     ACCENT RULE — the standard section divider flourish.
-     ----------------------------------------------------------------------- */
-  .c-rule {
-    inline-size: var(--rule-width);
-    block-size: var(--border-width-strong);
-    background-color: var(--color-accent);
-    border: 0;
-  }
+  /* A .c-rule divider flourish lived here and was never used — every section
+     draws its own rule with a border, which keeps it attached to the element
+     it divides. Removed in Stage 16. */
 }
 
 

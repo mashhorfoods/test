@@ -229,7 +229,12 @@
     font-weight: var(--weight-bold);
     line-height: 1;
     font-variant-numeric: tabular-nums;
-    color: var(--color-border-strong);
+    /* Was --color-border-strong (20% white), which measured 1.86:1 against
+       the section ground — far under the 3:1 large-text floor. These numerals
+       are the visual order cue, so they are information, not decoration.
+       --color-text-muted clears 3:1 and still reads a full step quieter than
+       the white name beside it. */
+    color: var(--color-text-muted);
     /* Western numerals in both languages — keep the pair from splitting or
        jumping to the wrong end of an RTL line box. */
     direction: ltr;

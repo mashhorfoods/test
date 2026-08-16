@@ -253,12 +253,8 @@
     overflow: visible;
   }
 
-  /* -----------------------------------------------------------------------
-     PAGE OFFSET
-     Content starts below the fixed header. Sections that anchor-scroll use
-     scroll-margin so their heading clears it (see 01-reset.css).
-     ----------------------------------------------------------------------- */
-  .c-header-spacer {
-    block-size: var(--header-height);
-  }
+  /* A .c-header-spacer offset element lived here, from when the header was
+     going to be `fixed`. It ended up `sticky`, which reserves its own space,
+     so nothing ever used it. Anchor targets clear the header via
+     scroll-margin in 01-reset.css. Removed in Stage 16. */
 }

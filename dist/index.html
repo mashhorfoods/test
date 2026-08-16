@@ -5,21 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- ===================================================================
-         SEO — the Stage 00 §21 template. Values marked TODO need the
-         approved business document before they can be filled in.
+         SEO — the Stage 00 §21 template.
+
+         The title and description shipped as Stage 01 scaffold text ("Homepage
+         shell… sections are built in later stages") right up to Stage 16.
+         They now describe the finished page, using only the six approved
+         services and the one-partner proposition — no claim the site does not
+         already make.
+
+         What is still TODO genuinely cannot be filled in yet: og:url and the
+         canonical need a domain, og:image and apple-touch-icon need raster
+         exports of the logo, and Organization JSON-LD needs a legal name and
+         address. None of those exist in the supplied data.
          =================================================================== -->
-    <title>Digital Agency — Homepage</title>
+    <title>Pixora — Digital Agency</title>
     <meta
       name="description"
-      content="Homepage shell. Header and navigation are complete; page sections are built in later stages."
+      content="Branding and design, websites, e-commerce, social media management and digital advertising — delivered together, by one partner."
     />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#202020" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Digital Agency — Homepage" />
-    <meta property="og:locale" content="en" />
-    <!-- TODO: og:url, og:image (1200x630), og:site_name, twitter:card,
-         canonical, hreflang alternates for ar/en, Organization JSON-LD. -->
+    <meta property="og:site_name" content="Pixora" />
+    <meta property="og:title" content="Pixora — Digital Agency" />
+    <meta
+      property="og:description"
+      content="Branding and design, websites, e-commerce, social media management and digital advertising — delivered together, by one partner."
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ar_SA" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- TODO: og:url, og:image (1200x630), canonical, hreflang alternates and
+         Organization JSON-LD — all blocked on a domain, raster logo exports
+         and the legal entity details. -->
 
     <!-- Browser tab. Same file as the header logo — one asset, every surface. -->
     <link rel="icon" href="data:image/svg+xml;base64,PCEtLQogIEZBVklDT04gTUFSSyDigJQgdGhlIGFjY2VudCBsZXR0ZXJmb3JtIGZyb20gdGhlIFBJWE9SQSB3b3JkbWFyay4KCiAgVGhlIGhlYWRlciB1c2VzIGEgdHlwZSBsb2NrdXAgKHNlZSBpbmRleC5odG1sIC8gLmMtYnJhbmQpLCBiZWNhdXNlIGEKICB3b3JkbWFyayBzZXQgaW4gUG9wcGlucyBzdGF5cyBjcmlzcCBhdCBhbnkgZGVuc2l0eSwgY29zdHMgbm8gcmVxdWVzdCwgYW5kCiAgY2FuIGJlIHJlc3R5bGVkIHBlciBicmVha3BvaW50LiBBIGZhdmljb24gY2Fubm90IGRvIHRoYXQ6IGF0IDE2cHggYSBmdWxsCiAgd29yZG1hcmsgaXMgdW5yZWFkYWJsZSwgYW5kIHRoZSBicm93c2VyIGhhcyBubyBhY2Nlc3MgdG8gdGhlIHBhZ2UncyBmb250cy4KICBTbyB0aGlzIGZpbGUgY2FycmllcyB0aGUgbWFyayBhbG9uZSDigJQgZHJhd24gYXMgcGF0aHMsIG5vdCB0ZXh0LCBzbyBpdAogIHJlbmRlcnMgaWRlbnRpY2FsbHkgZXZlcnl3aGVyZS4KCiAgVGhpcyBpcyBhIGRlcml2YXRpb24gb2YgdGhlIHdvcmRtYXJrLCBub3QgYSBzZWNvbmQgaWRlbnRpdHkuIElmIGEgZGVzaWduZWQKICBicmFuZCBtYXJrIGV4aXN0cywgcmVwbGFjZSB0aGlzIGZpbGUgd2l0aCBpdCAoa2VlcCB0aGUgZmlsZW5hbWUgYW5kIHRoZQogIHZpZXdCb3gpIGFuZCBldmVyeSBzdXJmYWNlIHRoYXQgcmVmZXJlbmNlcyBpdCBmb2xsb3dzLgoKICBSZWZlcmVuY2VkIGJ5OiBpbmRleC5odG1sLCBzdHlsZWd1aWRlLmh0bWwgIOKGkiAgPGxpbmsgcmVsPSJpY29uIj4KLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iUGl4b3JhIj4KICA8dGl0bGU+UGl4b3JhPC90aXRsZT4KICA8cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIGZpbGw9IiMyMDIwMjAiIC8+CiAgPHBhdGgKICAgIGQ9Ik04LjUgNy41IDIzLjUgMjQuNSBNMjMuNSA3LjUgOC41IDI0LjUiCiAgICBzdHJva2U9IiNGNEQxM0YiCiAgICBzdHJva2Utd2lkdGg9IjQuMiIKICAgIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiCiAgICBmaWxsPSJub25lIgogIC8+Cjwvc3ZnPgo=" type="image/svg+xml" />
@@ -1936,14 +1954,10 @@
     overflow: visible;
   }
 
-  /* -----------------------------------------------------------------------
-     PAGE OFFSET
-     Content starts below the fixed header. Sections that anchor-scroll use
-     scroll-margin so their heading clears it (see 01-reset.css).
-     ----------------------------------------------------------------------- */
-  .c-header-spacer {
-    block-size: var(--header-height);
-  }
+  /* A .c-header-spacer offset element lived here, from when the header was
+     going to be `fixed`. It ended up `sticky`, which reserves its own space,
+     so nothing ever used it. Anchor targets clear the header via
+     scroll-margin in 01-reset.css. Removed in Stage 16. */
 }
 
 
@@ -5224,7 +5238,12 @@
     font-weight: var(--weight-bold);
     line-height: 1;
     font-variant-numeric: tabular-nums;
-    color: var(--color-border-strong);
+    /* Was --color-border-strong (20% white), which measured 1.86:1 against
+       the section ground — far under the 3:1 large-text floor. These numerals
+       are the visual order cue, so they are information, not decoration.
+       --color-text-muted clears 3:1 and still reads a full step quieter than
+       the white name beside it. */
+    color: var(--color-text-muted);
     /* Western numerals in both languages — keep the pair from splitting or
        jumping to the wrong end of an RTL line box. */
     direction: ltr;
@@ -5321,7 +5340,12 @@
     font-weight: var(--weight-bold);
     line-height: 1;
     font-variant-numeric: tabular-nums;
-    color: var(--color-border-strong);
+    /* Was --color-border-strong (20% white), which measured 1.86:1 against
+       the section ground — far under the 3:1 large-text floor. These numerals
+       are the visual order cue, so they are information, not decoration.
+       --color-text-muted clears 3:1 and still reads a full step quieter than
+       the white name beside it. */
+    color: var(--color-text-muted);
     /* Western numerals in both languages — keep the pair from splitting or
        jumping to the wrong end of an RTL line box. */
     direction: ltr;
@@ -6597,28 +6621,10 @@
     color: var(--color-accent);
   }
 
-  /* -----------------------------------------------------------------------
-     HOVER REVEAL — supplementary content that appears on hover/focus but is
-     always present for screen readers and always visible on touch devices.
-     ----------------------------------------------------------------------- */
-  .c-reveal__extra {
-    opacity: 1;
-  }
+  /* A .c-reveal hover-disclosure component lived here and was never used:
+     every section that needed supplementary detail ended up rendering it at
+     rest instead, which is the better answer. Removed in Stage 16. */
 
-  @media (hover: hover) and (pointer: fine) {
-    .c-reveal__extra {
-      opacity: 0;
-      translate: 0 6px;
-      transition: opacity var(--duration-base) var(--ease-standard),
-        translate var(--duration-base) var(--ease-out);
-    }
-
-    .c-reveal:hover .c-reveal__extra,
-    .c-reveal:focus-within .c-reveal__extra {
-      opacity: 1;
-      translate: 0 0;
-    }
-  }
 }
 
 
@@ -6902,15 +6908,9 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* -----------------------------------------------------------------------
-     ACCENT RULE — the standard section divider flourish.
-     ----------------------------------------------------------------------- */
-  .c-rule {
-    inline-size: var(--rule-width);
-    block-size: var(--border-width-strong);
-    background-color: var(--color-accent);
-    border: 0;
-  }
+  /* A .c-rule divider flourish lived here and was never used — every section
+     draws its own rule with a border, which keeps it attached to the element
+     it divides. Removed in Stage 16. */
 }
 
 

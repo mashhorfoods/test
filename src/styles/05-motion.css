@@ -77,13 +77,7 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* -----------------------------------------------------------------------
-     ACCENT RULE — the standard section divider flourish.
-     ----------------------------------------------------------------------- */
-  .c-rule {
-    inline-size: var(--rule-width);
-    block-size: var(--border-width-strong);
-    background-color: var(--color-accent);
-    border: 0;
-  }
+  /* A .c-rule divider flourish lived here and was never used — every section
+     draws its own rule with a border, which keeps it attached to the element
+     it divides. Removed in Stage 16. */
 }

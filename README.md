@@ -22,6 +22,7 @@ docs/12-why-us.md           Why us / value proposition, documented
 docs/13-process.md          Process / how we work, documented
 docs/14-final-cta.md        Final CTA / conversion, documented
 docs/15-footer.md           Footer, documented
+docs/16-qa.md               Global QA & production readiness
 index.html                  The homepage — eleven sections, header and footer
 scaffold.css                Temporary placeholder-section styles (not shipped)
 styleguide.html             Living specimen sheet for every token and component
@@ -73,6 +74,7 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 13 | Process / how we work | Done — labels are placeholders, see below |
 | 14 | Final CTA / conversion | Done — needs a contact mechanism |
 | 15 | Footer | Done |
+| 16 | Global QA & production readiness | Done — one blocker, see below |
 | — | Contact | Placeholder — awaiting contact details |
 
 ## Single-file build
@@ -96,8 +98,8 @@ hero height, the ecosystem wiring, and the mobile menu.
 
 | | Requests | Size |
 | --- | --- | --- |
-| Modular source | 36 | — |
-| `dist/index.html` | **0** | 700KB (132KB of it fonts) |
+| Modular source | 37 | 321KB |
+| `dist/index.html` | **1** | 701KB (132KB of it fonts) |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:
@@ -140,6 +142,20 @@ package, price, statistic, client, testimonial or achievement is invented
 anywhere in this repository. The placeholders in `styleguide.html`
 (`Package name`, `0,000`, `Included item`) are structural specimens and are
 replaced from that document in Stage 01.
+
+## Production readiness
+
+Audited end to end in Stage 16 — see `docs/16-qa.md`. Measured, in both
+directions: no horizontal overflow at twelve widths, 95 links with zero dead
+anchors, every text colour at AA, every interactive target ≥ 44px, a keyboard
+walk that paints a ring at every stop, all 28 package figures unchanged, one
+currency per language, no console errors, and the whole page readable with
+JavaScript disabled. First contentful paint 260ms; 3,416 DOM nodes; no
+framework and no library.
+
+**One blocker remains before launch: there is no contact mechanism.** Every
+CTA points at `#contact`, which is still a placeholder because no email, phone
+number, WhatsApp number or form endpoint exists in the supplied data.
 
 ## Outstanding
 

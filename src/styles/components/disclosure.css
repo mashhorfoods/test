@@ -230,26 +230,8 @@
     color: var(--color-accent);
   }
 
-  /* -----------------------------------------------------------------------
-     HOVER REVEAL — supplementary content that appears on hover/focus but is
-     always present for screen readers and always visible on touch devices.
-     ----------------------------------------------------------------------- */
-  .c-reveal__extra {
-    opacity: 1;
-  }
+  /* A .c-reveal hover-disclosure component lived here and was never used:
+     every section that needed supplementary detail ended up rendering it at
+     rest instead, which is the better answer. Removed in Stage 16. */
 
-  @media (hover: hover) and (pointer: fine) {
-    .c-reveal__extra {
-      opacity: 0;
-      translate: 0 6px;
-      transition: opacity var(--duration-base) var(--ease-standard),
-        translate var(--duration-base) var(--ease-out);
-    }
-
-    .c-reveal:hover .c-reveal__extra,
-    .c-reveal:focus-within .c-reveal__extra {
-      opacity: 1;
-      translate: 0 0;
-    }
-  }
 }
