@@ -11,6 +11,7 @@ docs/01-header-navigation.md  Header & navigation, documented
 docs/02-hero.md             Hero section, documented
 docs/03-services.md         Services overview, documented
 docs/04-branding.md         Branding & Design, documented
+docs/05-websites.md         Websites, documented
 index.html                  Homepage shell — header + placeholder sections
 scaffold.css                Temporary placeholder-section styles (not shipped)
 styleguide.html             Living specimen sheet for every token and component
@@ -46,7 +47,8 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 02 | Hero | Done |
 | 03 | Services overview | Done |
 | 04 | Branding & Design | Done |
-| 05+ | Remaining services, Pricing, Why Us, Process, Contact, Footer | Placeholders |
+| 05 | Websites | Done |
+| 06+ | E-Commerce, Social, Marketing, Integrated, Pricing, Why Us, Process, Contact, Footer | Placeholders |
 
 ## Single-file build
 

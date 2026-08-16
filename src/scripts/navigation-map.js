@@ -70,6 +70,10 @@ export const STRINGS = {
     followUs: 'Follow us',
     language: 'Language',
     footerNav: 'Quick links',
+    // Currency SYMBOL only — the price figure itself is business data and is
+    // authored in the markup, never here.
+    currency: 'SAR',
+    billingOnce: 'One-time',
   },
   ar: {
     brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
@@ -81,6 +85,8 @@ export const STRINGS = {
     followUs: 'تابعنا',
     language: 'اللغة',
     footerNav: 'روابط سريعة',
+    currency: 'ر.س',
+    billingOnce: 'لمرة واحدة',
   },
 };
 

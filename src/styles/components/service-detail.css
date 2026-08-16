@@ -296,13 +296,14 @@
     letter-spacing: var(--tracking-display);
     font-variant-numeric: tabular-nums;
     color: var(--color-text-primary);
-    /* Figures and currency read left-to-right inside Arabic. */
-    direction: ltr;
+    /* The group is isolated from surrounding text but keeps the document's
+       direction, because figure-then-currency is the reading order in BOTH
+       scripts: "175 SAR" in English, and in Arabic the figure comes first —
+       which, read right-to-left, puts it on the right with ر.س to its left.
+       Forcing this group to LTR reverses that and yields "ر.س 175".
+       Western digits are strong LTR characters, so 175 renders correctly
+       either way without being pinned. */
     unicode-bidi: isolate;
-  }
-
-  [dir="rtl"] .c-tier__price {
-    justify-content: flex-end;
   }
 
   .c-tier__amount {
@@ -502,5 +503,205 @@
     .js [data-reveal-group].c-tiers > * {
       transition-delay: calc(90ms * var(--i, 0));
     }
+  }
+}
+
+/* =============================================================================
+   COMPONENT — RESPONSIVE DEVICE COMPOSITION  (Stage 05)
+   One layout reflowing across three viewports, not three unrelated screens:
+   every frame carries the same nav bar, accent hero block, content row and
+   foot — only the column count changes. That is what makes it read as
+   responsive capability rather than a gallery of mockups.
+
+   Abstract by design. Nothing here is presented as a real client project.
+   ============================================================================= */
+
+@layer components {
+  .c-devices {
+    display: grid;
+    gap: var(--space-16);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block-end: var(--section-space-tight);
+  }
+
+  /* The desktop frame leads on every width; below tablet it spans the row and
+     the two smaller frames sit beneath it. */
+  .c-device--desktop {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 48em) {
+    .c-devices {
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: auto auto;
+      gap: var(--space-24);
+    }
+
+    .c-device--desktop {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+    }
+  }
+
+  .c-device {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin: 0;
+    padding: var(--space-16);
+    background-color: var(--color-bg);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    transition: border-color var(--duration-base) var(--ease-standard),
+      transform var(--duration-base) var(--ease-out);
+  }
+
+  @media (min-width: 48em) {
+    .c-device {
+      padding: var(--space-24);
+    }
+  }
+
+  /* Emphasis only — nothing is conveyed by hover alone. */
+  .c-device:hover {
+    border-color: var(--color-border-accent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .c-device:hover {
+      transform: translateY(-3px);
+    }
+  }
+
+  .c-device__frame {
+    display: grid;
+    place-items: center;
+    min-block-size: 0;
+  }
+
+  .c-device__frame svg {
+    inline-size: 100%;
+    block-size: auto;
+    max-block-size: 100%;
+    fill: none;
+    color: var(--color-text-primary);
+    direction: ltr;
+  }
+
+  .c-device__label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  [dir="rtl"] .c-device__label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  .c-device__label::before {
+    content: "";
+    inline-size: 6px;
+    block-size: 6px;
+    border-radius: var(--radius-circle);
+    background-color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .c-device__width {
+    margin-inline-start: auto;
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--tracking-normal);
+    text-transform: none;
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* =======================================================================
+     DELIVERY PIPELINE
+     The service's capabilities as an ordered sequence. The numbering is the
+     progression cue — it stays legible in both directions, where a row of
+     chevrons across ten wrapping items would not.
+     ======================================================================= */
+  .c-pipeline {
+    position: relative;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(9.5rem, 100%), 1fr));
+    margin-block-end: var(--section-space-tight);
+    padding-block-start: var(--space-24);
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-pipeline__step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-16) var(--space-12);
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-pipeline__step:hover {
+    background-color: var(--color-bg);
+  }
+
+  .c-pipeline__index {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  [dir="rtl"] .c-pipeline__index {
+    text-align: end;
+  }
+
+  .c-pipeline__name {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+  }
+
+  /* =======================================================================
+     TIER — no-features variant (Stage 05)
+     The websites packages have approved prices and positioning but their
+     per-package inclusions are not in the source document, so the card omits
+     the feature block entirely rather than showing an invented one.
+     ======================================================================= */
+  .c-tier--brief {
+    gap: var(--space-16);
+  }
+
+  /* Only a leading rule. A closing one frames an empty region and reads as a
+     feature list that failed to load, rather than a card that has none. */
+  .c-tier--brief .c-tier__price-block {
+    margin-block-start: var(--space-8);
+    border-block-end: 0;
+    padding-block-end: 0;
+  }
+}
+
+@layer components {
+  /* Sub-heading above the pipeline. A real h3 for the document outline, set
+     at label scale so it does not compete with the package names. */
+  .c-detail__subhead {
+    margin-block-end: var(--space-8);
+    color: var(--color-text-secondary);
   }
 }

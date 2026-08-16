@@ -3774,13 +3774,14 @@
     letter-spacing: var(--tracking-display);
     font-variant-numeric: tabular-nums;
     color: var(--color-text-primary);
-    /* Figures and currency read left-to-right inside Arabic. */
-    direction: ltr;
+    /* The group is isolated from surrounding text but keeps the document's
+       direction, because figure-then-currency is the reading order in BOTH
+       scripts: "175 SAR" in English, and in Arabic the figure comes first —
+       which, read right-to-left, puts it on the right with ر.س to its left.
+       Forcing this group to LTR reverses that and yields "ر.س 175".
+       Western digits are strong LTR characters, so 175 renders correctly
+       either way without being pinned. */
     unicode-bidi: isolate;
-  }
-
-  [dir="rtl"] .c-tier__price {
-    justify-content: flex-end;
   }
 
   .c-tier__amount {
@@ -3980,6 +3981,206 @@
     .js [data-reveal-group].c-tiers > * {
       transition-delay: calc(90ms * var(--i, 0));
     }
+  }
+}
+
+/* =============================================================================
+   COMPONENT — RESPONSIVE DEVICE COMPOSITION  (Stage 05)
+   One layout reflowing across three viewports, not three unrelated screens:
+   every frame carries the same nav bar, accent hero block, content row and
+   foot — only the column count changes. That is what makes it read as
+   responsive capability rather than a gallery of mockups.
+
+   Abstract by design. Nothing here is presented as a real client project.
+   ============================================================================= */
+
+@layer components {
+  .c-devices {
+    display: grid;
+    gap: var(--space-16);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block-end: var(--section-space-tight);
+  }
+
+  /* The desktop frame leads on every width; below tablet it spans the row and
+     the two smaller frames sit beneath it. */
+  .c-device--desktop {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 48em) {
+    .c-devices {
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: auto auto;
+      gap: var(--space-24);
+    }
+
+    .c-device--desktop {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+    }
+  }
+
+  .c-device {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin: 0;
+    padding: var(--space-16);
+    background-color: var(--color-bg);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    transition: border-color var(--duration-base) var(--ease-standard),
+      transform var(--duration-base) var(--ease-out);
+  }
+
+  @media (min-width: 48em) {
+    .c-device {
+      padding: var(--space-24);
+    }
+  }
+
+  /* Emphasis only — nothing is conveyed by hover alone. */
+  .c-device:hover {
+    border-color: var(--color-border-accent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .c-device:hover {
+      transform: translateY(-3px);
+    }
+  }
+
+  .c-device__frame {
+    display: grid;
+    place-items: center;
+    min-block-size: 0;
+  }
+
+  .c-device__frame svg {
+    inline-size: 100%;
+    block-size: auto;
+    max-block-size: 100%;
+    fill: none;
+    color: var(--color-text-primary);
+    direction: ltr;
+  }
+
+  .c-device__label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  [dir="rtl"] .c-device__label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  .c-device__label::before {
+    content: "";
+    inline-size: 6px;
+    block-size: 6px;
+    border-radius: var(--radius-circle);
+    background-color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .c-device__width {
+    margin-inline-start: auto;
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--tracking-normal);
+    text-transform: none;
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* =======================================================================
+     DELIVERY PIPELINE
+     The service's capabilities as an ordered sequence. The numbering is the
+     progression cue — it stays legible in both directions, where a row of
+     chevrons across ten wrapping items would not.
+     ======================================================================= */
+  .c-pipeline {
+    position: relative;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(9.5rem, 100%), 1fr));
+    margin-block-end: var(--section-space-tight);
+    padding-block-start: var(--space-24);
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-pipeline__step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-16) var(--space-12);
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-pipeline__step:hover {
+    background-color: var(--color-bg);
+  }
+
+  .c-pipeline__index {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  [dir="rtl"] .c-pipeline__index {
+    text-align: end;
+  }
+
+  .c-pipeline__name {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+  }
+
+  /* =======================================================================
+     TIER — no-features variant (Stage 05)
+     The websites packages have approved prices and positioning but their
+     per-package inclusions are not in the source document, so the card omits
+     the feature block entirely rather than showing an invented one.
+     ======================================================================= */
+  .c-tier--brief {
+    gap: var(--space-16);
+  }
+
+  /* Only a leading rule. A closing one frames an empty region and reads as a
+     feature list that failed to load, rather than a card that has none. */
+  .c-tier--brief .c-tier__price-block {
+    margin-block-start: var(--space-8);
+    border-block-end: 0;
+    padding-block-end: 0;
+  }
+}
+
+@layer components {
+  /* Sub-heading above the pipeline. A real h3 for the document outline, set
+     at label scale so it does not compete with the package names. */
+  .c-detail__subhead {
+    margin-block-end: var(--space-8);
+    color: var(--color-text-secondary);
   }
 }
 
@@ -4774,6 +4975,10 @@ const STRINGS = {
     followUs: 'Follow us',
     language: 'Language',
     footerNav: 'Quick links',
+    // Currency SYMBOL only — the price figure itself is business data and is
+    // authored in the markup, never here.
+    currency: 'SAR',
+    billingOnce: 'One-time',
   },
   ar: {
     brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
@@ -4785,6 +4990,8 @@ const STRINGS = {
     followUs: 'تابعنا',
     language: 'اللغة',
     footerNav: 'روابط سريعة',
+    currency: 'ر.س',
+    billingOnce: 'لمرة واحدة',
   },
 };
 
@@ -6244,7 +6451,7 @@ if (document.readyState === 'loading') {
                   <li class="c-service__cap">Deployment</li>
                   <li class="c-service__cap">Delivery Ready for Use</li>
                 </ul>
-                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#pricing">
+                    <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#websites">
                       View packages
                       <svg class="c-btn__icon c-service__chevron u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
@@ -6568,9 +6775,9 @@ if (document.readyState === 'loading') {
             <p class="c-tier__price-block">
               <span class="c-tier__price">
                 <span class="c-tier__amount">200</span>
-                <span class="c-tier__currency">SAR</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
               </span>
-              <span class="c-tier__billing" data-i18n-pending>One-time</span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
             </p>
 
             <div data-expand data-expand-static-above="64em">
@@ -6625,9 +6832,9 @@ if (document.readyState === 'loading') {
             <p class="c-tier__price-block">
               <span class="c-tier__price">
                 <span class="c-tier__amount">400</span>
-                <span class="c-tier__currency">SAR</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
               </span>
-              <span class="c-tier__billing" data-i18n-pending>One-time</span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
             </p>
 
             <div data-expand data-expand-static-above="64em">
@@ -6684,9 +6891,9 @@ if (document.readyState === 'loading') {
             <p class="c-tier__price-block">
               <span class="c-tier__price">
                 <span class="c-tier__amount">650</span>
-                <span class="c-tier__currency">SAR</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
               </span>
-              <span class="c-tier__billing" data-i18n-pending>One-time</span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
             </p>
 
             <div data-expand data-expand-static-above="64em">
@@ -6733,6 +6940,239 @@ if (document.readyState === 'loading') {
               Every package is a one-time project. Tell us about your business
               and we will point you to the right level.
             </p>
+            <a class="c-link" href="#services">
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false" style="transform: scaleX(-1)">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+              Back to all services
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           02 — WEBSITES
+           Package names, prices and the ten delivery capabilities are
+           verbatim from the Services & Pricing document.
+
+           The source supplies prices and positioning but NOT per-package
+           inclusions, so these cards carry no feature list. The capability
+           strip describes the SERVICE, not any one package — claiming all
+           ten apply to every tier would be an assumption. The tier component
+           already renders features (see Branding); the block returns as soon
+           as the data does.
+
+           The device frames are one layout reflowing, not three screenshots:
+           same nav bar, accent hero, content row and foot at each width.
+           Nothing is presented as a real client project.
+           ============================================================= -->
+      <section id="websites" class="l-section c-detail" aria-labelledby="websites-title">
+        <div class="l-container">
+          <div class="c-detail__head" data-reveal-group>
+            <div class="c-detail__intro">
+              <p class="t-label c-detail__eyebrow">
+                <span class="c-detail__number">02</span>
+                <span data-i18n-pending>Websites</span>
+              </p>
+              <h2 class="c-detail__headline" id="websites-title" data-i18n-pending>
+                Build a digital experience<br />
+                <span class="c-detail__accent">that works.</span>
+              </h2>
+            </div>
+            <p class="t-body-lg c-detail__lead" data-i18n-pending>
+              From domain and hosting to design, development and launch — we
+              build websites ready for real business use.
+            </p>
+          </div>
+
+          <div class="c-devices" data-reveal-group>
+          <figure class="c-device c-device--desktop">
+            <figcaption class="c-device__label">
+              <span data-i18n-pending>Desktop</span>
+              <span class="c-device__width">1440px</span>
+            </figcaption>
+            <div class="c-device__frame" aria-hidden="true">
+              <svg viewBox="0 0 320 200" focusable="false">
+                <rect x="0.75" y="0.75" width="318.5" height="198.5" rx="4" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+                <path d="M0.75 22h318.5" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+                <g fill="currentColor" opacity="0.45"><circle cx="12" cy="11.5" r="2.6" /><circle cx="21" cy="11.5" r="2.6" /><circle cx="30" cy="11.5" r="2.6" /></g>
+                <g fill="currentColor" opacity="0.28"><rect x="212" y="8" width="26" height="7" /><rect x="244" y="8" width="26" height="7" /><rect x="276" y="8" width="26" height="7" /></g>
+                <rect x="16" y="38" width="176" height="72" fill="var(--color-accent)" opacity="0.9" />
+                <g stroke="currentColor" stroke-width="4" opacity="0.3"><path d="M208 48h96M208 62h64M208 76h80" /></g>
+                <rect x="208" y="92" width="52" height="16" stroke="var(--color-accent)" stroke-width="1.6" />
+                <g fill="currentColor" opacity="0.18"><rect x="16" y="126" width="88" height="42" /><rect x="116" y="126" width="88" height="42" /><rect x="216" y="126" width="88" height="42" /></g>
+                <path d="M16 184h288" stroke="currentColor" stroke-width="3" opacity="0.22" />
+              </svg>
+            </div>
+          </figure>
+          <figure class="c-device c-device--tablet">
+            <figcaption class="c-device__label">
+              <span data-i18n-pending>Tablet</span>
+              <span class="c-device__width">768px</span>
+            </figcaption>
+            <div class="c-device__frame" aria-hidden="true">
+              <svg viewBox="0 0 180 200" focusable="false">
+                <rect x="0.75" y="0.75" width="178.5" height="198.5" rx="6" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+                <path d="M0.75 22h178.5" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+                <g fill="currentColor" opacity="0.45"><circle cx="12" cy="11.5" r="2.4" /><circle cx="20" cy="11.5" r="2.4" /></g>
+                <g fill="currentColor" opacity="0.28"><rect x="132" y="8" width="16" height="7" /><rect x="153" y="8" width="16" height="7" /></g>
+                <rect x="14" y="36" width="152" height="60" fill="var(--color-accent)" opacity="0.9" />
+                <g stroke="currentColor" stroke-width="4" opacity="0.3"><path d="M14 110h120M14 124h84" /></g>
+                <rect x="14" y="136" width="48" height="15" stroke="var(--color-accent)" stroke-width="1.6" />
+                <g fill="currentColor" opacity="0.18"><rect x="14" y="162" width="74" height="24" /><rect x="92" y="162" width="74" height="24" /></g>
+              </svg>
+            </div>
+          </figure>
+          <figure class="c-device c-device--mobile">
+            <figcaption class="c-device__label">
+              <span data-i18n-pending>Mobile</span>
+              <span class="c-device__width">375px</span>
+            </figcaption>
+            <div class="c-device__frame" aria-hidden="true">
+              <svg viewBox="0 0 100 200" focusable="false">
+                <rect x="0.75" y="0.75" width="98.5" height="198.5" rx="10" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+                <path d="M0.75 20h98.5" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+                <g fill="currentColor" opacity="0.45"><circle cx="10" cy="10.5" r="2.2" /></g>
+                <g fill="currentColor" opacity="0.3"><rect x="80" y="7" width="12" height="6" /></g>
+                <rect x="10" y="32" width="80" height="44" fill="var(--color-accent)" opacity="0.9" />
+                <g stroke="currentColor" stroke-width="4" opacity="0.3"><path d="M10 88h66M10 100h44" /></g>
+                <rect x="10" y="110" width="42" height="14" stroke="var(--color-accent)" stroke-width="1.6" />
+                <g fill="currentColor" opacity="0.18"><rect x="10" y="134" width="80" height="20" /><rect x="10" y="160" width="80" height="20" /></g>
+              </svg>
+            </div>
+          </figure>
+          </div>
+
+          <h3 class="t-label c-detail__subhead" data-i18n-pending>What the service covers</h3>
+          <ol class="c-pipeline" data-reveal-group>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">01</span>
+              <span class="c-pipeline__name" data-i18n-pending>Domain registration</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">02</span>
+              <span class="c-pipeline__name" data-i18n-pending>Hosting</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">03</span>
+              <span class="c-pipeline__name" data-i18n-pending>Website UI/UX design</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">04</span>
+              <span class="c-pipeline__name" data-i18n-pending>Website development</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">05</span>
+              <span class="c-pipeline__name" data-i18n-pending>Responsive implementation</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">06</span>
+              <span class="c-pipeline__name" data-i18n-pending>Website setup</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">07</span>
+              <span class="c-pipeline__name" data-i18n-pending>Required integrations</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">08</span>
+              <span class="c-pipeline__name" data-i18n-pending>Testing</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">09</span>
+              <span class="c-pipeline__name" data-i18n-pending>Deployment</span>
+            </li>
+            <li class="c-pipeline__step">
+              <span class="c-pipeline__index" aria-hidden="true">10</span>
+              <span class="c-pipeline__name" data-i18n-pending>Delivery ready for use</span>
+            </li>
+          </ol>
+
+          <div class="c-tiers" data-reveal-group>
+          <article class="c-tier c-tier--brief" style="--i: 0"
+            aria-labelledby="web-landing-name">
+            <div>
+              <h3 class="c-tier__name" id="web-landing-name" data-i18n-pending>Landing Page</h3>
+              <p class="c-tier__purpose" data-i18n-pending>For focused campaigns, launches and simple digital presence.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">175</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="web-landing-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier c-tier--brief" style="--i: 1"
+            aria-labelledby="web-business-name">
+            <div>
+              <h3 class="c-tier__name" id="web-business-name" data-i18n-pending>Business Website</h3>
+              <p class="c-tier__purpose" data-i18n-pending>For companies and organizations requiring a professional multi-page website.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">450</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="web-business-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier c-tier--brief" style="--i: 2"
+            aria-labelledby="web-professional-name">
+            <div>
+              <h3 class="c-tier__name" id="web-professional-name" data-i18n-pending>Professional Website</h3>
+              <p class="c-tier__purpose" data-i18n-pending>For businesses requiring a more advanced digital presence, content architecture, integrations and enhanced functionality.</p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">700</span>
+                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <a class="c-btn c-btn--secondary c-tier__cta" href="#contact" data-cta-link
+              aria-describedby="web-professional-name">
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+          </div>
+
+          <div class="c-detail__foot" data-reveal>
+            <p class="t-body" data-i18n-pending>
+              Every website is a one-time project. Package inclusions are
+              confirmed with you before work starts.
+            </p>
+            <a class="c-btn c-btn--primary" href="#contact" data-cta-link>
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
             <a class="c-link" href="#services">
               <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true"
                 focusable="false" style="transform: scaleX(-1)">
