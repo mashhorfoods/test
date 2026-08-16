@@ -1,7 +1,7 @@
-# Digital Agency Website — Stage 00
+# Pixora — Digital Agency Website
 
-The master global design system. Every later stage builds on this and does not
-work around it.
+Built in stages on a token-driven design system. Every stage builds on the
+system rather than working around it.
 
 ## What is here
 
@@ -10,6 +10,7 @@ docs/00-design-system.md    The system, documented — read this first
 docs/01-header-navigation.md  Header & navigation, documented
 docs/02-hero.md             Hero section, documented
 docs/03-services.md         Services overview, documented
+docs/04-branding.md         Branding & Design, documented
 index.html                  Homepage shell — header + placeholder sections
 scaffold.css                Temporary placeholder-section styles (not shipped)
 styleguide.html             Living specimen sheet for every token and component
@@ -24,12 +25,13 @@ src/styles/                 The product stylesheet
   05-motion.css             Scroll reveal and counter styles
   06-utilities.css          A deliberately small utility set
   components/               button · card · header · navigation · hero ·
-                            orbit · services · disclosure · field
+                            orbit · services · service-detail ·
+                            disclosure · field
 src/scripts/                Vanilla ES modules, no dependencies
   main.js                   Entry point
   navigation-map.js         Single source of section order and labels
   navigation.js             Sticky header, mobile menu, scroll spy, language
-  disclosure.js             Accordion, tabs, tooltip
+  disclosure.js             Accordion, tabs, tooltip, responsive disclosure
   motion.js                 Scroll reveal, animated counters
 src/assets/brand/           Favicon mark + brand documentation
 src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
@@ -43,7 +45,8 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 01 | Header & navigation | Done |
 | 02 | Hero | Done |
 | 03 | Services overview | Done |
-| 04+ | Pricing, Why Us, Process, Contact, Footer | Placeholders |
+| 04 | Branding & Design | Done |
+| 05+ | Remaining services, Pricing, Why Us, Process, Contact, Footer | Placeholders |
 
 ## Single-file build
 
@@ -66,8 +69,8 @@ hero height, and the mobile menu.
 
 | | Requests | Size |
 | --- | --- | --- |
-| Modular source | 26 | — |
-| `dist/index.html` | **0** | 337KB (132KB of it fonts) |
+| Modular source | 27 | — |
+| `dist/index.html` | **0** | 407KB (132KB of it fonts) |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:
@@ -109,8 +112,13 @@ anywhere in this repository. The placeholders in `styleguide.html`
 (`Package name`, `0,000`, `Included item`) are structural specimens and are
 replaced from that document in Stage 01.
 
-## Scope of this stage
+## Outstanding
 
-Tokens, primitives, components, motion, accessibility and RTL rules only. The
-header, hero, services, pricing and footer are **not** designed here — see the
-open items at the end of `docs/00-design-system.md`.
+Each stage's doc ends with its own open items. Across the project:
+
+- **Arabic copy.** Untranslated blocks carry `data-i18n-pending`, which
+  typesets them as LTR islands so their punctuation and numerals render
+  correctly. Remove the attribute from an element as its translation lands.
+- **Remaining service data** — Stages 05+ need the packages for Websites,
+  E-Commerce, Social Media, Digital Marketing and Integrated Solutions.
+- `apple-touch-icon.png`, `og-image.png`, and the page's OG/canonical values.

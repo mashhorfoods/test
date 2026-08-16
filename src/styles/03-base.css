@@ -237,14 +237,20 @@
   }
 
   /* INTERIM: copy that has not been translated yet.
-     English text left inside an RTL paragraph gets its trailing punctuation
-     reordered to the start of the line (".Your Brand"), because a full stop is
-     a direction-neutral character and adopts the paragraph direction. Marking
-     the block as an LTR island typesets it correctly as what it is — English.
+     English text left inside an RTL paragraph has its direction-neutral
+     characters reordered: a trailing full stop jumps to the start of the line
+     (".Your Brand") and a leading numeral jumps to the end ("designs 3").
+     Marking the block as an LTR island typesets it correctly as what it is.
+
+     Alignment stays at the trailing edge — right, in an RTL page — so an
+     untranslated block still lines up with the Arabic content around it.
+     Aligning it left would be more correct for English in isolation, but it
+     reads as broken inside a right-aligned card.
+
      Remove the attribute from an element the moment its Arabic copy lands. */
   [dir="rtl"] [data-i18n-pending] {
     direction: ltr;
-    text-align: start;
+    text-align: end;
   }
 
   /* Directional glyphs (arrows, chevrons) must mirror; brand marks must not. */

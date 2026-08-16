@@ -229,8 +229,75 @@ function initTooltip(root) {
   root.addEventListener('focusin', position);
 }
 
+/* -------------------------------------------------------------------------
+   RESPONSIVE EXPANDABLE
+
+   A disclosure that only *is* a disclosure below a given width. Above it the
+   panel is simply part of the page and the trigger disappears.
+
+   This exists because a package's feature list has to behave differently by
+   viewport: on desktop the whole comparison should be visible at once, while
+   on mobile three full lists bury the prices under a screen of scrolling.
+
+   CSS alone cannot do it. Forcing the panel open with a media query would
+   leave the `inert` attribute in place — visible text, hidden from assistive
+   tech — and `inert` can only be removed from script. So the breakpoint is
+   evaluated here, and re-evaluated whenever it changes.
+
+     <div data-expand data-expand-static-above="64em">
+       <button data-expand-trigger>…</button>
+       <div data-expand-panel>…</div>
+     </div>
+   ------------------------------------------------------------------------- */
+
+function initExpandable(root) {
+  const trigger = root.querySelector('[data-expand-trigger]');
+  const panel = root.querySelector('[data-expand-panel]');
+  if (!trigger || !panel) return;
+
+  if (!trigger.id) trigger.id = nextId('expand-trigger');
+  if (!panel.id) panel.id = nextId('expand-panel');
+  trigger.type = 'button';
+  trigger.setAttribute('aria-controls', panel.id);
+  panel.setAttribute('aria-labelledby', trigger.id);
+
+  const staticAbove = root.dataset.expandStaticAbove;
+  const mq = staticAbove ? window.matchMedia(`(min-width: ${staticAbove})`) : null;
+
+  const setExpanded = (expanded) => {
+    trigger.setAttribute('aria-expanded', String(expanded));
+    panel.dataset.collapsed = String(!expanded);
+    if (expanded) panel.removeAttribute('inert');
+    else panel.setAttribute('inert', '');
+  };
+
+  const apply = () => {
+    // Above the breakpoint the panel is static content: always open, never
+    // inert, and the trigger is out of the tree entirely rather than merely
+    // hidden — so it cannot be reached by keyboard or screen reader.
+    if (mq?.matches) {
+      root.dataset.expandStatic = 'true';
+      setExpanded(true);
+      trigger.hidden = true;
+    } else {
+      root.dataset.expandStatic = 'false';
+      trigger.hidden = false;
+      setExpanded(trigger.getAttribute('aria-expanded') === 'true');
+    }
+  };
+
+  trigger.addEventListener('click', () => {
+    setExpanded(trigger.getAttribute('aria-expanded') !== 'true');
+  });
+
+  setExpanded(false);
+  apply();
+  mq?.addEventListener('change', apply);
+}
+
 export function initDisclosure(scope = document) {
   scope.querySelectorAll('[data-accordion]').forEach(initAccordion);
   scope.querySelectorAll('[data-tabs]').forEach(initTabs);
   scope.querySelectorAll('[data-tooltip]').forEach(initTooltip);
+  scope.querySelectorAll('[data-expand]').forEach(initExpandable);
 }

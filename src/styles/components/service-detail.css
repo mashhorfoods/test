@@ -1,0 +1,506 @@
+/* =============================================================================
+   COMPONENT — SERVICE DETAIL
+   The shell every detailed service section shares (.c-detail), the package
+   tier card (.c-tier), and the Branding-specific identity board
+   (.c-brandboard).
+
+   .c-detail and .c-tier are written to be reused by the remaining service
+   stages; the board is specific to Branding & Design and each later service
+   gets its own showcase in the same slot.
+   ============================================================================= */
+
+@layer components {
+  /* -----------------------------------------------------------------------
+     SECTION SHELL
+     ----------------------------------------------------------------------- */
+  .c-detail {
+    /* A deeper ground than Services, so the eye registers a new chapter
+       without a hard rule between them. */
+    background-color: var(--color-bg-deep);
+  }
+
+  .c-detail__head {
+    display: grid;
+    gap: var(--space-24);
+    margin-block-end: var(--section-space-tight);
+  }
+
+  @media (min-width: 64em) {
+    .c-detail__head {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--grid-gutter);
+      align-items: end;
+    }
+
+    .c-detail__intro {
+      grid-column: 1 / span 6;
+    }
+
+    .c-detail__lead {
+      grid-column: 8 / span 5;
+      padding-block-end: var(--space-8);
+    }
+  }
+
+  /* The eyebrow carries the same numbering as the services index, which is
+     what ties "03 Services → 01 Branding & Design" together. */
+  .c-detail__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    color: var(--color-accent);
+    margin-block-end: var(--space-16);
+  }
+
+  .c-detail__eyebrow::after {
+    content: "";
+    inline-size: var(--rule-width);
+    block-size: var(--border-width-strong);
+    background-color: currentcolor;
+    flex-shrink: 0;
+  }
+
+  .c-detail__number {
+    font-variant-numeric: tabular-nums;
+  }
+
+  [dir="rtl"] .c-detail__number {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .c-detail__headline {
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-wrap: wrap;
+  }
+
+  .c-detail__accent {
+    color: var(--color-accent);
+  }
+
+  /* =======================================================================
+     IDENTITY BOARD
+     An abstract studio board: construction, type, palette, application.
+     Nothing here is presented as client work — these demonstrate the nature
+     of the craft rather than fabricate a portfolio.
+     ======================================================================= */
+  .c-brandboard {
+    display: grid;
+    gap: var(--space-16);
+    margin-block-end: var(--section-space-tight);
+    grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+  }
+
+  .c-brandboard__panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--space-24);
+    background-color: var(--color-bg);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    transition: border-color var(--duration-base) var(--ease-standard);
+  }
+
+  .c-brandboard__panel:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .c-brandboard__label {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  [dir="rtl"] .c-brandboard__label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-small);
+  }
+
+  .c-brandboard__figure {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    min-block-size: 0;
+    overflow: hidden;
+  }
+
+  .c-brandboard__figure svg {
+    inline-size: 100%;
+    block-size: 100%;
+    max-block-size: 100%;
+    /* The reset fills SVG with currentcolor and a CSS declaration beats a
+       presentation attribute, so outline artwork must be unfilled here. */
+    fill: none;
+    color: var(--color-text-primary);
+    /* SVG <text> honours `direction`, so under RTL an x-positioned label
+       treats its x as the run's *end* and runs off the viewBox. This artwork
+       is decorative and its specimen is Latin, so it is pinned to LTR. */
+    direction: ltr;
+  }
+
+  /* =======================================================================
+     TIER CARDS
+     ======================================================================= */
+  .c-tiers {
+    display: grid;
+    gap: var(--space-24);
+  }
+
+  @media (min-width: 48em) and (max-width: 63.99em) {
+    .c-tiers {
+      /* Two up on tablet, with the third spanning — compressing three cards
+         into a 768px row makes the feature lists unreadable. */
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .c-tiers > :last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 64em) {
+    .c-tiers {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--grid-gutter);
+      /* Equal height so the three CTAs land on one line — the packages are
+         meant to be compared, and a ragged bottom edge makes that harder. */
+      align-items: stretch;
+    }
+  }
+
+  .c-tier {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    padding: var(--space-32);
+    background-color: var(--color-bg);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    transition: border-color var(--duration-base) var(--ease-standard),
+      background-color var(--duration-base) var(--ease-standard);
+  }
+
+  .c-tier:hover {
+    border-color: var(--color-border-strong);
+    background-color: var(--color-surface);
+  }
+
+  /* --- Recommended -------------------------------------------------------
+     Marked four ways — a text label, an accent border, a raised surface and
+     a primary CTA — so the recommendation never rests on colour alone. */
+  .c-tier--featured {
+    border-color: var(--color-border-accent);
+    background-color: var(--color-surface);
+  }
+
+  .c-tier--featured:hover {
+    background-color: var(--color-surface-hover);
+  }
+
+  .c-tier__ribbon {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: var(--space-32);
+    translate: 0 -50%;
+    padding: var(--space-4) var(--space-12);
+    background-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    border-radius: var(--radius-xs);
+    white-space: nowrap;
+  }
+
+  [dir="rtl"] .c-tier__ribbon {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+  }
+
+  /* --- Tier mark: one plane, two, then three + nodes ---------------------
+     Visual density carrying the Foundation → System → Ecosystem progression
+     without touching the package contents. */
+  .c-tier__level {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+  }
+
+  .c-tier__mark {
+    inline-size: 26px;
+    block-size: 26px;
+    flex-shrink: 0;
+    color: var(--color-accent);
+    fill: none;
+  }
+
+  .c-tier__level-name {
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  [dir="rtl"] .c-tier__level-name {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-body-sm);
+  }
+
+  .c-tier__name {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-heading);
+    color: var(--color-text-primary);
+  }
+
+  .c-tier__purpose {
+    color: var(--color-text-secondary);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+  }
+
+  /* --- Price ------------------------------------------------------------- */
+  .c-tier__price-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block: var(--space-24);
+    border-block: var(--border-hairline);
+  }
+
+  .c-tier__price {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-8);
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+    letter-spacing: var(--tracking-display);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-primary);
+    /* Figures and currency read left-to-right inside Arabic. */
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  [dir="rtl"] .c-tier__price {
+    justify-content: flex-end;
+  }
+
+  .c-tier__amount {
+    font-size: var(--text-price-sm);
+  }
+
+  .c-tier__currency {
+    font-size: var(--text-h4);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-secondary);
+  }
+
+  /* Only the recommended package's figure takes the accent — pricing is not
+     turned into three yellow blocks. */
+  .c-tier--featured .c-tier__amount {
+    color: var(--color-accent);
+  }
+
+  .c-tier--featured .c-tier__currency {
+    color: var(--color-accent);
+  }
+
+  .c-tier__billing {
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  /* --- Features ---------------------------------------------------------- */
+  .c-tier__features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-tier__feature {
+    display: grid;
+    grid-template-columns: var(--icon-md) 1fr;
+    gap: var(--space-12);
+    align-items: start;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+  }
+
+  .c-tier__feature svg {
+    inline-size: var(--icon-md);
+    block-size: var(--icon-md);
+    margin-block-start: 0.12em;
+    color: var(--color-accent);
+    fill: none;
+  }
+
+  /* The first feature of Advanced restates the previous tier — worth
+     emphasising, since it is what makes the tiers cumulative. */
+  .c-tier__feature--carry {
+    color: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+
+  /* INTERIM: untranslated feature text. Several labels start with a numeral
+     ("3 social media designs"), and a leading digit in an LTR run inside an
+     RTL paragraph is pushed to the end of the line. Only the label is
+     isolated — the row itself stays RTL so the check mark keeps its leading
+     position, and the text stays at the trailing edge beside it. */
+  [dir="rtl"] .c-tier__feature > span {
+    direction: ltr;
+    text-align: end;
+  }
+
+  /* --- Progressive disclosure -------------------------------------------
+     Only a disclosure below 1024px; above it the panel is static content and
+     the trigger is removed from the tree (see disclosure.js). */
+  .c-tier__more {
+    display: grid;
+    grid-template-rows: 1fr; /* open by default — the no-JS fallback */
+    transition: grid-template-rows var(--duration-base) var(--ease-out);
+  }
+
+  .c-tier__more[data-collapsed="true"] {
+    grid-template-rows: 0fr;
+  }
+
+  .c-tier__more-inner {
+    overflow: hidden;
+    min-block-size: 0;
+  }
+
+  /* padding-inline-start must be zeroed explicitly: the reset only clears it
+     for ul[role="list"], so the UA's 40px list indent would otherwise offset
+     the disclosed features from the ones above them. */
+  .c-tier__more-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin: 0;
+    padding: var(--space-12) 0 0;
+    list-style: none;
+  }
+
+  .c-tier__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    min-block-size: var(--touch-target-min);
+    font-family: var(--font-display);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-accent);
+    text-align: start;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-tier__toggle:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .c-tier__toggle-icon {
+    inline-size: var(--icon-sm);
+    block-size: var(--icon-sm);
+    fill: none;
+    transition: rotate var(--duration-base) var(--ease-out);
+  }
+
+  .c-tier__toggle[aria-expanded="true"] .c-tier__toggle-icon {
+    rotate: 180deg;
+  }
+
+  /* Label swaps with state, so the control is never only an icon. */
+  .c-tier__toggle [data-when="collapsed"] {
+    display: inline;
+  }
+
+  .c-tier__toggle [data-when="expanded"] {
+    display: none;
+  }
+
+  .c-tier__toggle[aria-expanded="true"] [data-when="collapsed"] {
+    display: none;
+  }
+
+  .c-tier__toggle[aria-expanded="true"] [data-when="expanded"] {
+    display: inline;
+  }
+
+  /* --- CTA --------------------------------------------------------------- */
+  .c-tier__cta {
+    margin-block-start: auto;
+    inline-size: 100%;
+  }
+
+  /* On the narrowest phones the card cannot hold 32px of padding and a
+     nowrap CTA: the button's min-content width becomes the card's floor and
+     pushes it past the container. Both are tightened rather than letting the
+     label wrap, which would cost the CTA its shape. */
+  @media (max-width: 30em) {
+    .c-tier {
+      padding: var(--space-24);
+    }
+
+    .c-tier__cta {
+      padding-inline: var(--space-16);
+    }
+
+    .c-tier__ribbon {
+      inset-inline-start: var(--space-24);
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     SECTION FOOT
+     ----------------------------------------------------------------------- */
+  .c-detail__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-16) var(--space-32);
+    margin-block-start: var(--section-space-tight);
+    padding-block-start: var(--space-32);
+    border-block-start: var(--border-hairline);
+  }
+
+  .c-detail__foot p {
+    max-inline-size: 52ch;
+  }
+
+  /* A standalone link, not one inside prose, so it gets a real target rather
+     than relying on the inline exception. */
+  .c-detail__foot .c-link {
+    min-block-size: var(--touch-target-min);
+  }
+
+  /* Entrance: cards settle in sequence (§23). */
+  @media (prefers-reduced-motion: no-preference) {
+    .js [data-reveal-group].c-tiers > * {
+      transition-delay: calc(90ms * var(--i, 0));
+    }
+  }
+}
