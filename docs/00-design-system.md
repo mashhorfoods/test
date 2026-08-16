@@ -420,11 +420,10 @@ utility gets used more than twice, it becomes a component.
 
 These need the approved content before they can be finalised:
 
-- Final navigation labels and their Arabic equivalents in
-  `src/scripts/navigation-map.js` (the array already fixes the order for
-  header, drawer and footer).
-- Final CTA wording (§17 of the brief lists candidates; the system only fixes
-  the hierarchy, not the copy).
+- ~~Final navigation labels and their Arabic equivalents~~ — done in Stage 01;
+  see `docs/01-header-navigation.md`. The Arabic set still needs a native
+  speaker's review.
+- ~~Final CTA wording~~ — "Start Your Project", set in Stage 01.
 - Real services, packages, prices, billing models and inclusions — all from the
   supplied document, replacing every placeholder in `styleguide.html`.
 - `og:url`, `og:image`, `og:site_name`, canonical, `hreflang` alternates for

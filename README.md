@@ -7,6 +7,9 @@ work around it.
 
 ```
 docs/00-design-system.md    The system, documented — read this first
+docs/01-header-navigation.md  Header & navigation, documented
+index.html                  Homepage shell — header + placeholder sections
+scaffold.css                Temporary placeholder-section styles (not shipped)
 styleguide.html             Living specimen sheet for every token and component
 styleguide.css              Chrome for the specimen page (documentation only)
 src/styles/                 The product stylesheet
@@ -17,14 +20,23 @@ src/styles/                 The product stylesheet
   04-layout.css             Container, 12-column grid, section rhythm
   05-motion.css             Scroll reveal and counter styles
   06-utilities.css          A deliberately small utility set
-  components/               button · card · navigation · disclosure · field
+  components/               button · card · header · navigation · disclosure · field
 src/scripts/                Vanilla ES modules, no dependencies
   main.js                   Entry point
-  navigation-map.js         Single source of section order (rule 18)
-  navigation.js             Header, drawer, focus trap, scroll spy
+  navigation-map.js         Single source of section order and labels
+  navigation.js             Sticky header, mobile menu, scroll spy, language
   disclosure.js             Accordion, tabs, tooltip
   motion.js                 Scroll reveal, animated counters
+src/assets/                 Logo placeholder
 ```
+
+## Stages
+
+| Stage | Scope | State |
+| --- | --- | --- |
+| 00 | Master global design system | Done |
+| 01 | Header & navigation | Done |
+| 02+ | Hero, Services, Pricing, Why Us, Process, Contact, Footer | Placeholders |
 
 ## Viewing the styleguide
 
@@ -32,7 +44,8 @@ ES modules need a server; opening the file directly will not work.
 
 ```bash
 python3 -m http.server 8000
-# then open http://localhost:8000/styleguide.html
+# homepage shell:  http://localhost:8000/index.html
+# design system:   http://localhost:8000/styleguide.html
 ```
 
 ## Stack

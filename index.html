@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- ===================================================================
+         SEO — the Stage 00 §21 template. Values marked TODO need the
+         approved business document before they can be filled in.
+         =================================================================== -->
+    <title>Digital Agency — Homepage</title>
+    <meta
+      name="description"
+      content="Homepage shell. Header and navigation are complete; page sections are built in later stages."
+    />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#202020" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Digital Agency — Homepage" />
+    <meta property="og:locale" content="en" />
+    <!-- TODO Stage 02+: og:url, og:image (1200x630), og:site_name, twitter:card,
+         canonical, hreflang alternates for ar/en, Organization JSON-LD. -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="./src/styles/main.css" />
+    <!-- Scaffolding for the not-yet-built sections. Deleted as each stage
+         lands; it styles nothing that ships. -->
+    <link rel="stylesheet" href="./scaffold.css" />
+
+    <script>
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
+    </script>
+    <script type="module" src="./src/scripts/main.js"></script>
+  </head>
+
+  <body>
+    <a class="c-skip-link" href="#main">Skip to content</a>
+
+    <!-- =================================================================
+         HEADER — global component (§24). Identical markup serves every
+         page; nothing here is hero- or homepage-specific.
+         ================================================================= -->
+    <header class="c-header" data-header>
+      <div class="l-container c-header__inner">
+        <!-- LEFT — brand -->
+        <div class="c-header__zone">
+          <a
+            class="c-header__brand"
+            href="#home"
+            aria-label="Agency — home"
+            data-i18n-label="brandHome"
+          >
+            <!-- Temporary mark. Swap for the real asset without touching the
+                 lockup: keep a square viewBox and the fill/stroke hooks. -->
+            <svg
+              class="c-header__mark"
+              viewBox="0 0 32 32"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <rect
+                x="1.5"
+                y="1.5"
+                width="29"
+                height="29"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              />
+              <path
+                d="M10 24.5 L18.4 7.5 H23 L14.6 24.5 Z"
+                fill="var(--color-accent)"
+              />
+            </svg>
+            <span class="c-header__wordmark">AGENCY</span>
+          </a>
+        </div>
+
+        <!-- CENTRE — primary navigation, rendered from navigation-map.js -->
+        <nav class="c-nav" aria-label="Primary" data-i18n-label="primaryNav">
+          <ul class="c-nav__list" data-nav-render="nav"></ul>
+        </nav>
+
+        <!-- RIGHT — language, CTA, menu trigger -->
+        <div class="c-header__zone c-header__zone--end">
+          <div
+            class="c-lang"
+            role="group"
+            aria-label="Language"
+            data-i18n-label="language"
+          >
+            <button
+              class="c-lang__option"
+              type="button"
+              data-lang="en"
+              aria-pressed="true"
+            >
+              EN
+            </button>
+            <button
+              class="c-lang__option"
+              type="button"
+              data-lang="ar"
+              aria-pressed="false"
+            >
+              AR
+            </button>
+          </div>
+
+          <a class="c-btn c-btn--primary c-header__cta" href="#contact" data-cta-link>
+            <span data-cta-label>Start Your Project</span>
+            <svg
+              class="c-btn__icon u-flip-rtl"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M5 12h13M13 6l6 6-6 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="square"
+              />
+            </svg>
+          </a>
+
+          <button
+            class="c-menu-trigger"
+            type="button"
+            data-menu-trigger
+            aria-expanded="false"
+            aria-controls="site-menu"
+            aria-label="Open menu"
+          >
+            <span class="c-menu-trigger__bars" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- =================================================================
+         MOBILE MENU
+         Rendered from the same array as the header nav, so the two can
+         never present a different order (§25).
+         ================================================================= -->
+    <div class="c-drawer" id="site-menu" data-drawer inert>
+      <div class="l-container c-drawer__inner">
+        <nav aria-label="Menu" data-i18n-label="menuNav">
+          <p class="t-label c-drawer__eyebrow" data-i18n="menuEyebrow">Menu</p>
+          <ul
+            class="c-drawer__list"
+            data-nav-render="nav"
+            data-nav-style="drawer"
+          ></ul>
+        </nav>
+
+        <!-- Enters after the navigation rows (§16). -->
+        <div class="c-drawer__foot" style="--i: 5">
+          <a
+            class="c-btn c-btn--primary c-btn--lg c-btn--block"
+            href="#contact"
+            data-cta-link
+          >
+            <span data-cta-label>Start Your Project</span>
+            <svg
+              class="c-btn__icon u-flip-rtl"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M5 12h13M13 6l6 6-6 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="square"
+              />
+            </svg>
+          </a>
+
+          <!-- Hidden until real profiles exist in navigation-map.js. -->
+          <div data-social-block hidden>
+            <p class="t-label u-mbe-16" data-i18n="followUs">Follow us</p>
+            <ul class="c-drawer__social" data-social-render></ul>
+          </div>
+
+          <div class="c-drawer__utility">
+            <span class="t-label" id="menu-lang-label" data-i18n="language">
+              Language
+            </span>
+            <div class="c-lang" role="group" aria-labelledby="menu-lang-label">
+              <button
+                class="c-lang__option"
+                type="button"
+                data-lang="en"
+                aria-pressed="true"
+              >
+                EN
+              </button>
+              <button
+                class="c-lang__option"
+                type="button"
+                data-lang="ar"
+                aria-pressed="false"
+              >
+                AR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================
+         PAGE SECTIONS
+         Placeholders only — each is replaced by its own stage. They exist
+         so navigation, anchors and scroll spy are real and testable. No
+         business content appears here.
+         ================================================================= -->
+    <main id="main">
+      <section id="home" class="s-placeholder s-placeholder--hero">
+        <div class="l-container">
+          <p class="t-label">Stage 02</p>
+          <h1 class="t-display-l">Hero</h1>
+          <p class="t-body-lg t-measure">
+            Reserved for the hero. The header floats over this area with no
+            divider, so the two read as one layer (§20). Scroll to see the
+            header take on its separation and compact states.
+          </p>
+        </div>
+      </section>
+
+      <section id="services" class="s-placeholder">
+        <div class="l-container">
+          <p class="t-label">Stage 03</p>
+          <h2 class="t-h1">Services</h2>
+        </div>
+      </section>
+
+      <section id="pricing" class="s-placeholder">
+        <div class="l-container">
+          <p class="t-label">Stage 04</p>
+          <h2 class="t-h1">Pricing</h2>
+        </div>
+      </section>
+
+      <section id="why-us" class="s-placeholder">
+        <div class="l-container">
+          <p class="t-label">Stage 05</p>
+          <h2 class="t-h1">Why Us</h2>
+        </div>
+      </section>
+
+      <section id="process" class="s-placeholder">
+        <div class="l-container">
+          <p class="t-label">Stage 06</p>
+          <h2 class="t-h1">Process</h2>
+        </div>
+      </section>
+
+      <section id="contact" class="s-placeholder">
+        <div class="l-container">
+          <p class="t-label">Stage 07</p>
+          <h2 class="t-h1">Contact</h2>
+          <p class="t-body t-measure">
+            Every primary CTA in the header and the mobile menu resolves here,
+            so the conversion path is never more than one click away (§19).
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Quick links render from the same array as the header (§25). The
+         footer itself is designed in a later stage. -->
+    <footer class="s-footer-scaffold">
+      <div class="l-container">
+        <nav aria-label="Quick links" data-i18n-label="footerNav">
+          <ul class="s-footer-scaffold__list" data-nav-render="footer"></ul>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

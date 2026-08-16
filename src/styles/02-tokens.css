@@ -236,6 +236,11 @@
     --control-height: 48px;
     --control-height-lg: 56px;
     --header-height: 72px;
+    /* Scroll-down compact state (Stage 01 §08). One value at every breakpoint:
+       the reduction is largest on desktop, where the header is tallest. */
+    --header-height-compact: 60px;
+    /* Minimum clear space around the logo, measured from the mark. */
+    --logo-clear-space: var(--space-16);
     --icon-sm: 16px;
     --icon-md: 20px;
     --icon-lg: 24px;
@@ -247,9 +252,12 @@
     --z-base: 0;
     --z-raised: 10;
     --z-sticky: 100;
-    --z-header: 200;
-    --z-overlay: 300;
-    --z-drawer: 400;
+    --z-overlay: 200;
+    /* The drawer sits BELOW the header on purpose: the menu trigger doubles as
+       the close control, so it has to stay visible and clickable while the
+       menu is open (Stage 01 §14). */
+    --z-drawer: 300;
+    --z-header: 400;
     --z-tooltip: 500;
     --z-skip-link: 600;
   }

@@ -1,0 +1,46 @@
+/* =============================================================================
+   SCAFFOLDING — TEMPORARY
+   Styles the placeholder sections on index.html so the header's sticky,
+   compact, anchor and scroll-spy behaviour can be exercised against a real
+   page. Each block is deleted as its stage lands; nothing here ships.
+   ============================================================================= */
+
+@layer utilities {
+  .s-placeholder {
+    min-block-size: 88vh;
+    display: flex;
+    align-items: center;
+    padding-block: var(--section-space);
+    border-block-start: var(--border-hairline);
+    scroll-margin-block-start: var(--header-height);
+  }
+
+  .s-placeholder :is(.t-label, .t-h1, .t-display-l) {
+    margin-block-end: var(--space-16);
+  }
+
+  /* The hero band carries no top border — the header must read as the first
+     layer of the page, not a bar sitting on a separate block (§20). */
+  .s-placeholder--hero {
+    border-block-start: 0;
+    min-block-size: 100vh;
+    /* Clears the fixed header without a spacer element. */
+    padding-block-start: calc(var(--header-height) + var(--space-64));
+    background-color: var(--color-bg-deep);
+  }
+
+  .s-footer-scaffold {
+    padding-block: var(--space-48);
+    border-block-start: var(--border-hairline);
+    background-color: var(--color-bg-deep);
+  }
+
+  .s-footer-scaffold__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-16) var(--space-32);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}

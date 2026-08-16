@@ -610,13 +610,31 @@
         </p>
 
         <div class="sg-specimen">
-          <p class="sg-caption">Nav link states</p>
+          <p class="sg-caption">
+            Nav link states — the label is wrapped and mirrored in data-label so
+            the link always reserves its semibold width
+          </p>
           <ul class="c-nav__list" style="display: flex; flex-wrap: wrap">
             <li>
-              <a class="c-nav__link" href="#sg-nav" aria-current="true">Active</a>
+              <a
+                class="c-nav__link"
+                href="#sg-nav"
+                data-label="Active"
+                aria-current="true"
+              >
+                <span class="c-nav__label">Active</span>
+              </a>
             </li>
-            <li><a class="c-nav__link" href="#sg-nav">Default</a></li>
-            <li><a class="c-nav__link" href="#sg-nav">Hover me</a></li>
+            <li>
+              <a class="c-nav__link" href="#sg-nav" data-label="Default">
+                <span class="c-nav__label">Default</span>
+              </a>
+            </li>
+            <li>
+              <a class="c-nav__link" href="#sg-nav" data-label="Hover me">
+                <span class="c-nav__label">Hover me</span>
+              </a>
+            </li>
           </ul>
         </div>
 

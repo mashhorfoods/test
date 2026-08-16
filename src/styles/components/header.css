@@ -1,0 +1,225 @@
+/* =============================================================================
+   COMPONENT — HEADER
+   The global header shell: three zones (brand / nav / actions), the sticky and
+   compact scroll states, the logo lockup and the language control.
+
+   Stage 01 §24 — this is a global component. It carries no hero-specific or
+   page-specific styling, so the same markup serves the homepage, pricing,
+   service pages and contact without modification.
+   ============================================================================= */
+
+@layer components {
+  .c-header {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: var(--z-header);
+    block-size: var(--header-height);
+    display: flex;
+    align-items: center;
+
+    /* Transparent at the top so the header reads as the first layer of the
+       hero rather than a bar sitting on top of it (§20). */
+    background-color: transparent;
+    border-block-end: var(--border-width) solid transparent;
+
+    /* A dropdown or mega-menu added later (§17) must be able to escape the
+       header box without the shell being rebuilt. */
+    overflow: visible;
+
+    transition: block-size var(--duration-base) var(--ease-standard),
+      background-color var(--duration-base) var(--ease-standard),
+      border-color var(--duration-base) var(--ease-standard);
+  }
+
+  /* --- Scrolled: minimal separation, not a glass slab (§07) -------------- */
+  .c-header.is-scrolled {
+    background-color: rgba(32, 32, 32, 0.82);
+    backdrop-filter: blur(14px) saturate(1.1);
+    border-block-end-color: var(--color-border);
+  }
+
+  /* Opaque fallback keeps the contrast identical where blur is unsupported. */
+  @supports not (backdrop-filter: blur(1px)) {
+    .c-header.is-scrolled {
+      background-color: var(--color-bg);
+    }
+  }
+
+  /* --- Compact: set while scrolling down, cleared on any upward scroll --- */
+  .c-header.is-compact {
+    block-size: var(--header-height-compact);
+  }
+
+  /* --- Zones ------------------------------------------------------------
+     Below desktop there is no centre column (the nav is a menu), so a simple
+     two-end flex row pushes the trigger to the edge. From desktop up, an
+     explicit 1fr auto 1fr grid centres the nav against the viewport rather
+     than against whatever space the brand and actions happen to leave. */
+  .c-header__inner {
+    inline-size: 100%;
+    block-size: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16);
+  }
+
+  @media (min-width: 64em) {
+    .c-header__inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: var(--space-24);
+    }
+  }
+
+  .c-header__zone {
+    display: flex;
+    align-items: center;
+    min-inline-size: 0;
+  }
+
+  .c-header__zone--end {
+    justify-content: flex-end;
+    gap: var(--space-12);
+  }
+
+  /* -----------------------------------------------------------------------
+     BRAND / LOGO
+     The mark scales with the header so the lockup stays optically centred in
+     both the full and compact states. Clear space is enforced with padding so
+     no neighbouring element can crowd it.
+     ----------------------------------------------------------------------- */
+  .c-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-12);
+    padding-inline-end: var(--logo-clear-space);
+    min-block-size: var(--touch-target-min);
+    text-decoration: none;
+    color: var(--color-text-primary);
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-header__brand:hover {
+    color: var(--color-accent);
+  }
+
+  .c-header__mark {
+    inline-size: 32px;
+    block-size: 32px;
+    flex-shrink: 0;
+    /* Aspect ratio is fixed by the viewBox; only the box scales, so the mark
+       can never distort. */
+    transition: inline-size var(--duration-base) var(--ease-standard),
+      block-size var(--duration-base) var(--ease-standard);
+  }
+
+  .is-compact .c-header__mark {
+    inline-size: 26px;
+    block-size: 26px;
+  }
+
+  .c-header__wordmark {
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-heading);
+    line-height: 1;
+    white-space: nowrap;
+    transition: font-size var(--duration-base) var(--ease-standard);
+  }
+
+  /* The wordmark is the first thing to go when space is tight — the mark
+     alone still identifies the brand. */
+  @media (max-width: 22.5em) {
+    .c-header__wordmark {
+      display: none;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     HEADER CTA
+     Desktop only. Below 1024px the header is logo + menu trigger (§12) and
+     the CTA lives at the foot of the menu instead.
+     ----------------------------------------------------------------------- */
+  .c-header__cta {
+    display: none;
+  }
+
+  @media (min-width: 64em) {
+    .c-header__cta {
+      display: inline-flex;
+    }
+  }
+
+  /* The compact header keeps a comfortable target while shedding height. */
+  .is-compact .c-header__cta {
+    min-block-size: var(--control-height-sm);
+  }
+
+  /* -----------------------------------------------------------------------
+     LANGUAGE CONTROL
+     Two explicit options rather than a toggle: the user can see which language
+     is active and which is available without decoding an icon.
+     ----------------------------------------------------------------------- */
+  .c-lang {
+    display: none;
+    align-items: center;
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  @media (min-width: 64em) {
+    .c-lang {
+      display: inline-flex;
+    }
+  }
+
+  /* In the mobile menu it is always shown, whatever the viewport. */
+  .c-drawer .c-lang {
+    display: inline-flex;
+  }
+
+  .c-lang__option {
+    min-block-size: var(--touch-target-min);
+    min-inline-size: var(--touch-target-min);
+    padding-inline: var(--space-12);
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    transition: var(--transition-interactive);
+  }
+
+  .c-lang__option:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-surface);
+  }
+
+  /* Deliberately NOT accent-filled. The CTA sits directly beside this control,
+     and two yellow blocks in one zone would compete for the same attention
+     (Stage 00 §17). The selected option is carried by brightness, weight and
+     surface instead — plus aria-pressed for assistive tech. */
+  .c-lang__option[aria-pressed="true"] {
+    color: var(--color-text-primary);
+    background-color: var(--color-surface-active);
+    font-weight: var(--weight-bold);
+  }
+
+  /* Focus ring must not be clipped by the group's overflow: hidden. */
+  .c-lang:has(.c-lang__option:focus-visible) {
+    overflow: visible;
+  }
+
+  /* -----------------------------------------------------------------------
+     PAGE OFFSET
+     Content starts below the fixed header. Sections that anchor-scroll use
+     scroll-margin so their heading clears it (see 01-reset.css).
+     ----------------------------------------------------------------------- */
+  .c-header-spacer {
+    block-size: var(--header-height);
+  }
+}

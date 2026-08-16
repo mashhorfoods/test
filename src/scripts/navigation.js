@@ -1,18 +1,33 @@
 /**
  * NAVIGATION
  *
- * Three behaviours, all progressive enhancements over working markup:
- *   1. Header condenses once the page scrolls past the fold threshold.
- *   2. Mobile drawer: open/close, focus trap, Escape, background scroll lock.
- *   3. Scroll spy: marks the current section in every nav surface at once.
+ * Renders every navigation surface from the shared map, then adds four
+ * behaviours — all progressive enhancements over markup that already works:
  *
- * Rule 14 — the user must always know where they are, what is clickable and
- * how to get back.
+ *   1. Sticky header: separation on scroll, compact on scroll-down.
+ *   2. Mobile menu: open/close, focus trap, Escape, scroll lock.
+ *   3. Scroll spy: marks the current section in every surface at once.
+ *   4. Language control: switches lang/dir and re-renders the chrome.
+ *
+ * Performance (§23): one passive scroll listener for the whole header,
+ * rAF-throttled so no layout work happens in the listener itself. Section
+ * tracking uses IntersectionObserver rather than scroll maths.
  */
 
-import { sectionsFor, labelFor } from './navigation-map.js';
+import {
+  SECTIONS,
+  PRIMARY_CTA,
+  SOCIAL_LINKS,
+  sectionsFor,
+  labelFor,
+  currentLang,
+  t,
+} from './navigation-map.js';
 
-const SCROLL_THRESHOLD = 24;
+const SCROLL_THRESHOLD = 24; // separation appears
+const COMPACT_THRESHOLD = 200; // compacting may begin
+const SCROLL_DELTA = 6; // ignore sub-pixel jitter
+const LANG_KEY = 'site-lang';
 
 const FOCUSABLE = [
   'a[href]',
@@ -24,21 +39,150 @@ const FOCUSABLE = [
 ].join(',');
 
 /* -------------------------------------------------------------------------
-   HEADER
+   SURFACE RENDERING
+   ------------------------------------------------------------------------- */
+
+function buildNavLink(section) {
+  const link = document.createElement('a');
+  link.href = `#${section.id}`;
+  link.className = 'c-nav__link';
+  link.dataset.navLink = '';
+
+  const label = document.createElement('span');
+  label.className = 'c-nav__label';
+  label.textContent = labelFor(section);
+  link.append(label);
+
+  // Consumed by ::before to reserve the semibold width — see navigation.css.
+  link.dataset.label = label.textContent;
+  return link;
+}
+
+function buildDrawerLink(section, index) {
+  const link = document.createElement('a');
+  link.href = `#${section.id}`;
+  link.className = 'c-drawer__link';
+  link.dataset.navLink = '';
+
+  const idx = document.createElement('span');
+  idx.className = 'c-drawer__index';
+  idx.setAttribute('aria-hidden', 'true');
+  idx.textContent = String(index + 1).padStart(2, '0');
+
+  const label = document.createElement('span');
+  label.textContent = labelFor(section);
+
+  link.append(idx, label);
+  return link;
+}
+
+function buildFooterLink(section) {
+  const link = document.createElement('a');
+  link.href = `#${section.id}`;
+  link.className = 'c-link';
+  link.dataset.navLink = '';
+  link.textContent = labelFor(section);
+  return link;
+}
+
+/**
+ * Rebuild every [data-nav-render] container from the shared map. Called on
+ * boot and again whenever the language changes.
+ */
+function renderSurfaces() {
+  document.querySelectorAll('[data-nav-render]').forEach((container) => {
+    const surface = container.dataset.navRender === 'footer' ? 'footer' : 'nav';
+    const style = container.dataset.navStyle ?? surface;
+    const sections = sectionsFor(surface);
+
+    container.replaceChildren(
+      ...sections.map((section, index) => {
+        const item = document.createElement('li');
+        if (style === 'drawer') {
+          item.className = 'c-drawer__item';
+          item.style.setProperty('--i', String(index));
+          item.append(buildDrawerLink(section, index));
+        } else if (style === 'footer') {
+          item.append(buildFooterLink(section));
+        } else {
+          item.append(buildNavLink(section));
+        }
+        return item;
+      })
+    );
+  });
+
+  // Social links render only if real profiles exist — none are invented.
+  document.querySelectorAll('[data-social-render]').forEach((container) => {
+    const block = container.closest('[data-social-block]') ?? container;
+    block.hidden = SOCIAL_LINKS.length === 0;
+
+    container.replaceChildren(
+      ...SOCIAL_LINKS.map(({ label, href }) => {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = href;
+        link.textContent = label;
+        link.rel = 'noopener noreferrer';
+        item.append(link);
+        return item;
+      })
+    );
+  });
+}
+
+/** Apply chrome strings and CTA labels for the current language. */
+function renderStrings() {
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    el.textContent = t(el.dataset.i18n);
+  });
+
+  document.querySelectorAll('[data-i18n-label]').forEach((el) => {
+    el.setAttribute('aria-label', t(el.dataset.i18nLabel));
+  });
+
+  document.querySelectorAll('[data-cta-label]').forEach((el) => {
+    el.textContent = labelFor(PRIMARY_CTA);
+  });
+
+  document.querySelectorAll('[data-cta-link]').forEach((el) => {
+    el.setAttribute('href', `#${PRIMARY_CTA.target}`);
+  });
+}
+
+/* -------------------------------------------------------------------------
+   HEADER — sticky separation + compact on scroll-down
    ------------------------------------------------------------------------- */
 
 function initHeader() {
   const header = document.querySelector('[data-header]');
   if (!header) return;
 
+  let lastY = window.scrollY;
+  let compact = false;
   let ticking = false;
 
   const update = () => {
-    header.classList.toggle('is-scrolled', window.scrollY > SCROLL_THRESHOLD);
     ticking = false;
+    const y = window.scrollY;
+
+    header.classList.toggle('is-scrolled', y > SCROLL_THRESHOLD);
+
+    const delta = y - lastY;
+
+    if (Math.abs(delta) > SCROLL_DELTA) {
+      // Down past the threshold compacts; any upward movement restores the
+      // full header immediately, so navigation is never hunted for (§08).
+      if (delta > 0 && y > COMPACT_THRESHOLD) compact = true;
+      else if (delta < 0) compact = false;
+      lastY = y;
+    }
+
+    if (y <= COMPACT_THRESHOLD) compact = false;
+
+    header.classList.toggle('is-compact', compact);
   };
 
-  // rAF-throttled: the listener itself never does layout work.
   window.addEventListener(
     'scroll',
     () => {
@@ -50,13 +194,22 @@ function initHeader() {
   );
 
   update();
+
+  return {
+    /** Menu open/close must not leave the header stuck in a compact state. */
+    reset() {
+      compact = false;
+      lastY = window.scrollY;
+      header.classList.remove('is-compact');
+    },
+  };
 }
 
 /* -------------------------------------------------------------------------
-   MOBILE DRAWER
+   MOBILE MENU
    ------------------------------------------------------------------------- */
 
-function initDrawer() {
+function initDrawer(header) {
   const trigger = document.querySelector('[data-menu-trigger]');
   const drawer = document.querySelector('[data-drawer]');
   if (!trigger || !drawer) return;
@@ -65,17 +218,22 @@ function initDrawer() {
 
   const isOpen = () => trigger.getAttribute('aria-expanded') === 'true';
 
+  const setTriggerLabel = () => {
+    trigger.setAttribute('aria-label', t(isOpen() ? 'closeMenu' : 'openMenu'));
+  };
+
   const open = () => {
     lastFocused = document.activeElement;
     trigger.setAttribute('aria-expanded', 'true');
     drawer.classList.add('is-open');
     drawer.removeAttribute('inert');
     document.documentElement.classList.add('is-scroll-locked');
+    // The trigger doubles as the close control, so the full-height header
+    // must be showing while the menu is open.
+    header?.reset();
+    setTriggerLabel();
 
-    // Move focus into the drawer so keyboard and screen-reader users land
-    // where the visual focus went.
-    const first = drawer.querySelector(FOCUSABLE);
-    first?.focus();
+    drawer.querySelector(FOCUSABLE)?.focus();
   };
 
   const close = ({ restoreFocus = true } = {}) => {
@@ -83,12 +241,16 @@ function initDrawer() {
     drawer.classList.remove('is-open');
     drawer.setAttribute('inert', '');
     document.documentElement.classList.remove('is-scroll-locked');
-    if (restoreFocus) (lastFocused instanceof HTMLElement ? lastFocused : trigger).focus();
+    setTriggerLabel();
+    if (restoreFocus) {
+      (lastFocused instanceof HTMLElement ? lastFocused : trigger).focus();
+    }
   };
 
   trigger.addEventListener('click', () => (isOpen() ? close() : open()));
 
-  // Any in-drawer navigation closes it; focus follows the anchor target.
+  // Following a link closes the menu; focus goes to the section, not back to
+  // the trigger.
   drawer.addEventListener('click', (event) => {
     if (event.target.closest('a[href]')) close({ restoreFocus: false });
   });
@@ -104,10 +266,13 @@ function initDrawer() {
 
     if (event.key !== 'Tab') return;
 
-    // Focus trap — Tab cycles within the drawer while it owns the screen.
-    const focusable = [...drawer.querySelectorAll(FOCUSABLE)].filter(
-      (el) => el.offsetParent !== null
-    );
+    // The trigger sits outside the drawer but is part of the menu, so it is
+    // included in the cycle — otherwise the close control is untabbable.
+    const focusable = [
+      trigger,
+      ...drawer.querySelectorAll(FOCUSABLE),
+    ].filter((el) => el.offsetParent !== null || el === trigger);
+
     if (focusable.length === 0) return;
 
     const first = focusable[0];
@@ -122,36 +287,30 @@ function initDrawer() {
     }
   });
 
-  // Crossing into desktop must not leave a hidden drawer holding the scroll
-  // lock or the focus trap.
-  const desktop = window.matchMedia('(min-width: 64em)');
-  desktop.addEventListener('change', (event) => {
+  // Crossing to desktop must not strand the scroll lock or the focus trap.
+  window.matchMedia('(min-width: 64em)').addEventListener('change', (event) => {
     if (event.matches && isOpen()) close({ restoreFocus: false });
   });
 
   close({ restoreFocus: false });
+
+  return { close, refreshLabel: setTriggerLabel };
 }
 
 /* -------------------------------------------------------------------------
    SCROLL SPY
-   Marks the section currently occupying the reading position. Every nav
-   surface is updated together, so header, drawer and footer never disagree.
    ------------------------------------------------------------------------- */
 
 function initScrollSpy() {
-  const links = [...document.querySelectorAll('[data-nav-link]')];
-  if (links.length === 0) return;
-
-  const targets = sectionsFor('nav')
-    .map((section) => document.getElementById(section.id))
-    .filter(Boolean);
+  const targets = SECTIONS.map((section) =>
+    document.getElementById(section.id)
+  ).filter(Boolean);
 
   if (targets.length === 0) return;
 
   const setCurrent = (id) => {
-    links.forEach((link) => {
+    document.querySelectorAll('[data-nav-link]').forEach((link) => {
       const isCurrent = link.getAttribute('href') === `#${id}`;
-      link.classList.toggle('is-active', isCurrent);
       if (isCurrent) link.setAttribute('aria-current', 'true');
       else link.removeAttribute('aria-current');
     });
@@ -162,18 +321,21 @@ function initScrollSpy() {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) visible.set(entry.target.id, entry.intersectionRatio);
-        else visible.delete(entry.target.id);
+        if (entry.isIntersecting) {
+          visible.set(entry.target.id, entry.intersectionRatio);
+        } else {
+          visible.delete(entry.target.id);
+        }
       });
 
       if (visible.size === 0) return;
 
-      // The section occupying most of the reading band wins.
+      // Whichever section occupies most of the reading band wins.
       const [topId] = [...visible.entries()].sort((a, b) => b[1] - a[1])[0];
       setCurrent(topId);
     },
     {
-      // A band just under the header — the section being *read*, not merely
+      // A band beneath the header — the section being read, not merely the one
       // touching the viewport edge.
       rootMargin: '-20% 0px -60% 0px',
       threshold: [0, 0.25, 0.5, 0.75, 1],
@@ -184,50 +346,63 @@ function initScrollSpy() {
 }
 
 /* -------------------------------------------------------------------------
-   SURFACE RENDERING
-   Builds a nav surface from the shared SECTIONS array so header, drawer and
-   footer cannot drift apart. Containers opt in with [data-nav-render].
+   LANGUAGE
+   Switches document language and direction. Only header chrome and navigation
+   labels are translated at this stage; page copy follows when it is finalised.
    ------------------------------------------------------------------------- */
 
-function renderSurfaces() {
-  document.querySelectorAll('[data-nav-render]').forEach((container) => {
-    const surface = container.dataset.navRender === 'footer' ? 'footer' : 'nav';
-    const style = container.dataset.navStyle ?? surface;
-    const sections = sectionsFor(surface).filter((section) => !section.isCta);
+function initLanguage(onChange) {
+  const options = [...document.querySelectorAll('[data-lang]')];
+  if (options.length === 0) return;
 
-    container.replaceChildren(
-      ...sections.map((section, index) => {
-        const item = document.createElement('li');
-        if (style === 'drawer') {
-          item.className = 'c-drawer__item';
-          item.style.setProperty('--i', String(index));
-        }
+  const apply = (lang, { persist = true } = {}) => {
+    const root = document.documentElement;
+    root.lang = lang;
+    root.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
-        const link = document.createElement('a');
-        link.href = `#${section.id}`;
-        link.textContent = labelFor(section);
-        link.dataset.navLink = '';
-        link.className =
-          style === 'drawer' ? 'c-drawer__link' : style === 'footer' ? 'c-link' : 'c-nav__link';
+    options.forEach((option) => {
+      option.setAttribute('aria-pressed', String(option.dataset.lang === lang));
+    });
 
-        if (style === 'drawer') {
-          const idx = document.createElement('span');
-          idx.className = 'c-drawer__index';
-          idx.setAttribute('aria-hidden', 'true');
-          idx.textContent = String(index + 1).padStart(2, '0');
-          link.append(idx);
-        }
+    if (persist) {
+      try {
+        localStorage.setItem(LANG_KEY, lang);
+      } catch {
+        // Private browsing or storage disabled — the choice simply does not
+        // persist across page loads.
+      }
+    }
 
-        item.append(link);
-        return item;
-      })
-    );
+    renderSurfaces();
+    renderStrings();
+    onChange?.();
+  };
+
+  options.forEach((option) => {
+    option.addEventListener('click', () => apply(option.dataset.lang));
+  });
+
+  let stored = null;
+  try {
+    stored = localStorage.getItem(LANG_KEY);
+  } catch {
+    stored = null;
+  }
+
+  apply(stored === 'ar' || stored === 'en' ? stored : currentLang(), {
+    persist: false,
   });
 }
 
+/* ------------------------------------------------------------------------- */
+
 export function initNavigation() {
   renderSurfaces();
-  initHeader();
-  initDrawer();
+  renderStrings();
+
+  const header = initHeader();
+  const drawer = initDrawer(header);
+
+  initLanguage(() => drawer?.refreshLabel());
   initScrollSpy();
 }
