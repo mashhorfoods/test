@@ -43,9 +43,45 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 02 | Hero | Done |
 | 03+ | Services, Pricing, Why Us, Process, Contact, Footer | Placeholders |
 
-## Viewing the styleguide
+## Single-file build
 
-ES modules need a server; opening the file directly will not work.
+`dist/index.html` is the whole site in **one self-contained file** — no CSS,
+JavaScript, font or icon requests. Open it directly from disk, e-mail it, or
+drop it on any host.
+
+```bash
+node build.js
+```
+
+It resolves the `@import` chain (preserving the `@layer` order), embeds all
+eleven woff2 faces and the favicon as `data:` URIs, and flattens the ES module
+graph into one inline module. No dependencies, no toolchain.
+
+Verified with every other host blocked: **0 network requests**, no errors, and
+identical to the modular source on every measured property — fonts, headline
+size, brand, navigation counts, constellation geometry in both directions,
+hero height, and the mobile menu.
+
+| | Requests | Size |
+| --- | --- | --- |
+| Modular source | 26 | — |
+| `dist/index.html` | **0** | 337KB (132KB of it fonts) |
+
+**Trade-offs of one file**, worth knowing before choosing it over the modular
+source in production:
+
+- CSS, JS and fonts cannot be cached separately across pages — every page
+  re-sends everything.
+- `unicode-range` can no longer defer a subset: the Arabic faces are in the
+  document whether or not the visitor reads Arabic. (Five faces activate
+  instead of four.)
+- The source under `src/` stays the thing you edit. Re-run `node build.js`
+  after any change, or the built file goes stale.
+
+## Working on the source
+
+ES modules need a server; opening `index.html` directly will not work (the
+built file has no such restriction).
 
 ```bash
 python3 -m http.server 8000
