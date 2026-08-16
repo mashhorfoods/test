@@ -79,7 +79,7 @@ hero height, the ecosystem wiring, and the mobile menu.
 | | Requests | Size |
 | --- | --- | --- |
 | Modular source | 29 | — |
-| `dist/index.html` | **0** | 489KB (132KB of it fonts) |
+| `dist/index.html` | **0** | 516KB (132KB of it fonts) |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:
