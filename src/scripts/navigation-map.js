@@ -61,7 +61,7 @@ export const SOCIAL_LINKS = [];
 /** Header chrome strings. Page content is translated when copy is finalised. */
 export const STRINGS = {
   en: {
-    brandHome: 'Agency — home',
+    brandHome: 'Pixora, Digital Agency — home',
     primaryNav: 'Primary',
     menuNav: 'Menu',
     openMenu: 'Open menu',
@@ -72,7 +72,7 @@ export const STRINGS = {
     footerNav: 'Quick links',
   },
   ar: {
-    brandHome: 'الوكالة — الصفحة الرئيسية',
+    brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
     primaryNav: 'التنقل الرئيسي',
     menuNav: 'القائمة',
     openMenu: 'فتح القائمة',

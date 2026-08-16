@@ -70,24 +70,19 @@
           <a
             class="c-header__brand"
             href="#home"
-            aria-label="Agency — home"
+            aria-label="Pixora, Digital Agency — home"
             data-i18n-label="brandHome"
           >
-            <!-- The logo is referenced, never inlined, so one file serves the
-                 header, the favicon and every future page. Swap
-                 src/assets/brand/logo.svg and every surface follows.
-                 alt="" because the link itself carries the accessible name —
-                 inlining it here would announce the brand twice. -->
-            <img
-              class="c-header__mark"
-              src="./src/assets/brand/logo.svg"
-              alt=""
-              decoding="async"
-              fetchpriority="high"
-            />
-            <!-- Remove this span if the real logo already contains the
-                 wordmark. Nothing else needs to change. -->
-            <span class="c-header__wordmark">AGENCY</span>
+            <!-- Brand lockup. A type lockup rather than an image: crisp at
+                 any density, no request, restyleable per breakpoint. The
+                 accent letter is the only coloured element. Swap for a vector
+                 asset via src/assets/brand/README.md if one is supplied. -->
+            <span class="c-brand" aria-hidden="true">
+              <span class="c-brand__word"
+                >PI<span class="c-brand__accent">X</span>ORA</span
+              >
+              <span class="c-brand__tagline">Digital Agency</span>
+            </span>
           </a>
         </div>
 
@@ -238,17 +233,21 @@
     <main id="main">
       <!-- =============================================================
            HERO
-           Every fragment illustration below is abstract and decorative:
-           no statistics, no client marks, no third-party interfaces.
+           Composition follows the supplied reference. Every string is the
+           existing site copy, unchanged. The interface fragments carry NO
+           figures: there is no verified performance data, and inventing one
+           is forbidden. The slot for a real number is marked below.
            ============================================================= -->
       <section id="home" class="c-hero">
-        <div class="l-container c-hero__inner">
+        <div class="l-container l-container--wide c-hero__inner">
           <div class="c-hero__content" data-reveal-group>
-            <p class="t-label c-hero__eyebrow" data-i18n-pending>Creative Digital Partner</p>
+            <p class="t-label c-hero__eyebrow" data-i18n-pending>
+              Creative Digital Partner
+            </p>
 
             <h1 class="c-hero__headline" data-i18n-pending>
               Your Brand.<br />
-              Your Digital Presence.<br />
+              Your Digital <br class="c-hero__br" />Presence.<br />
               <span class="c-hero__accent">One Partner.</span>
             </h1>
 
@@ -258,21 +257,21 @@
               marketing to help your business grow.
             </p>
 
-            <div class="l-cluster c-hero__actions">
+            <div class="c-hero__actions">
               <a
-                class="c-btn c-btn--primary c-btn--lg"
+                class="c-btn c-btn--primary c-hero__action"
                 href="#contact"
                 data-cta-link
               >
                 <span data-cta-label>Start Your Project</span>
                 <svg
-                  class="c-btn__icon u-flip-rtl"
+                  class="c-btn__icon c-hero__action-arrow u-flip-rtl"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
                   focusable="false"
                 >
                   <path
-                    d="M5 12h13M13 6l6 6-6 6"
+                    d="M7 17 17 7M8 7h9v9"
                     fill="none"
                     stroke="currentColor"
                     stroke-width="2"
@@ -281,16 +280,16 @@
                 </svg>
               </a>
 
-              <a class="c-btn c-btn--secondary c-btn--lg" href="#services">
+              <a class="c-btn c-btn--secondary c-hero__action" href="#services">
                 Explore Our Services
                 <svg
-                  class="c-btn__icon"
+                  class="c-btn__icon c-hero__action-chevron u-flip-rtl"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
                   focusable="false"
                 >
                   <path
-                    d="M12 5v13M6 13l6 6 6-6"
+                    d="M9 5l7 7-7 7"
                     fill="none"
                     stroke="currentColor"
                     stroke-width="2"
@@ -303,248 +302,203 @@
 
           <!-- ===========================================================
                DIGITAL ECOSYSTEM
-               The stage illustration switches with the selected service.
-               Service names stay visible at all times — the interaction
-               enriches the story, it is never required to read it.
+               Five services orbiting a Growth core. Nodes are placed with
+               inset-inline-start, so the constellation mirrors under RTL.
+               Service names are always readable; nothing is behind hover.
                =========================================================== -->
-          <div
-            class="c-hero__visual"
-            data-reveal
-            style="--reveal-delay: 300ms"
-          >
-            <div class="c-ecosystem" data-tabs data-tabs-hover>
-              <p class="c-ecosystem__caption" data-i18n-pending>
-                All your digital needs. From one place.
+          <div class="c-hero__visual" data-reveal style="--reveal-delay: 260ms">
+            <div class="c-orbit">
+              <span class="c-orbit__grain c-orbit__grain--a" aria-hidden="true"></span>
+              <span class="c-orbit__grain c-orbit__grain--b" aria-hidden="true"></span>
+
+              <svg
+                class="c-orbit__rings"
+                viewBox="0 0 100 100"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <!-- Spokes: core to each node -->
+                <g stroke-width="0.22">
+                  <path class="c-orbit__spoke" d="M52 48 52 9" />
+                  <path class="c-orbit__spoke" d="M52 48 86 33" />
+                  <path class="c-orbit__spoke" d="M52 48 80 71" />
+                  <path class="c-orbit__spoke" d="M52 48 46 86" />
+                  <path class="c-orbit__spoke" d="M52 48 15 52" />
+                </g>
+
+                <!-- Rings. r=38 is the node orbit; every node sits on it. -->
+                <circle class="c-orbit__ring" cx="52" cy="48" r="46" stroke-width="0.3" />
+                <circle
+                  class="c-orbit__ring c-orbit__ring--dashed"
+                  cx="52" cy="48" r="38" stroke-width="0.4"
+                />
+                <circle
+                  class="c-orbit__ring c-orbit__ring--dashed"
+                  cx="52" cy="48" r="26" stroke-width="0.4"
+                />
+                <circle
+                  class="c-orbit__ring c-orbit__ring--accent"
+                  cx="52" cy="48" r="14" stroke-width="0.5"
+                />
+
+                <!-- Static waypoints on the orbits -->
+                <g class="c-orbit__dot">
+                  <circle cx="72" cy="16" r="0.7" />
+                  <circle cx="90" cy="55" r="0.7" />
+                  <circle cx="66" cy="83" r="0.7" />
+                  <circle cx="22" cy="76" r="0.7" />
+                  <circle cx="18" cy="26" r="0.7" />
+                  <circle cx="70" cy="34" r="0.55" />
+                  <circle cx="36" cy="68" r="0.55" />
+                  <circle cx="30" cy="34" r="0.55" />
+                </g>
+
+                <!-- Travelling sparks: the only sustained motion here -->
+                <circle class="c-orbit__spark" cx="90" cy="48" r="0.9" />
+                <circle class="c-orbit__spark c-orbit__spark--slow" cx="52" cy="22" r="0.7" />
+              </svg>
+
+              <ul class="c-orbit__field">
+                <li class="c-orbit__slot" style="--x: 52%; --y: 9%">
+                  <div class="c-orbit__node">
+                    <span class="c-orbit__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M8.4 15.6 15.6 8.4M13.8 7.2l3 3" stroke-linecap="round" />
+                      </svg>
+                    </span>
+                    <span class="c-orbit__label" data-i18n-pending>Branding <span>&amp; Design</span></span>
+                  </div>
+                </li>
+
+                <li class="c-orbit__slot" style="--x: 86%; --y: 33%">
+                  <div class="c-orbit__node">
+                    <span class="c-orbit__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="5" width="18" height="14" rx="1.5" />
+                        <path d="M3 9h18" />
+                        <circle cx="6" cy="7" r="0.7" fill="currentColor" stroke="none" />
+                        <circle cx="8.4" cy="7" r="0.7" fill="currentColor" stroke="none" />
+                        <path d="M6 12h5v4H6zM13.5 12H18M13.5 15H18" stroke-linecap="round" />
+                      </svg>
+                    </span>
+                    <span class="c-orbit__label" data-i18n-pending>Websites</span>
+                  </div>
+                </li>
+
+                <li class="c-orbit__slot" style="--x: 80%; --y: 71%">
+                  <div class="c-orbit__node">
+                    <span class="c-orbit__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M2.5 4h2.2l2.4 10.2h9.8L19.2 7H6.2" stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="9" cy="19" r="1.4" />
+                        <circle cx="16.5" cy="19" r="1.4" />
+                      </svg>
+                    </span>
+                    <span class="c-orbit__label" data-i18n-pending>E-Commerce</span>
+                  </div>
+                </li>
+
+                <li class="c-orbit__slot" style="--x: 46%; --y: 86%">
+                  <div class="c-orbit__node">
+                    <span class="c-orbit__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 4.5h16v11H9.5L4 19.5v-15z" stroke-linejoin="round" />
+                        <path
+                          d="M12 13.2 9.2 10.6a1.7 1.7 0 0 1 2.8-1.9 1.7 1.7 0 0 1 2.8 1.9L12 13.2z"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </span>
+                    <span class="c-orbit__label" data-i18n-pending>Social Media</span>
+                  </div>
+                </li>
+
+                <li class="c-orbit__slot" style="--x: 15%; --y: 52%">
+                  <div class="c-orbit__node">
+                    <span class="c-orbit__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M3.5 9.5v5h3l8 4.5v-14l-8 4.5h-3z" stroke-linejoin="round" />
+                        <path d="M18 9a4.2 4.2 0 0 1 0 6" stroke-linecap="round" />
+                        <path d="M7 15v4" stroke-linecap="round" />
+                      </svg>
+                    </span>
+                    <span class="c-orbit__label" data-i18n-pending>
+                      Digital Marketing <span>&amp; Ads</span>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+
+              <p class="c-orbit__core">
+                <svg
+                  class="c-orbit__core-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M4 20h16" stroke-linecap="round" />
+                  <path d="M6.5 20v-5M11 20V11M15.5 20v-7" stroke-linecap="round" />
+                  <path d="M5 11.5 9.5 7l3.5 2.8L19 4" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M15 4h4v4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span class="c-orbit__core-label">Growth</span>
               </p>
 
-              <div class="c-ecosystem__body">
-                <div class="c-ecosystem__stage">
-                  <!-- Branding & Design -->
-                  <div class="c-ecosystem__panel" data-tab-panel="branding">
-                    <svg viewBox="0 0 200 125" aria-hidden="true" focusable="false">
-                      <g fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5">
-                        <rect x="12" y="16" width="80" height="46" />
-                        <path d="M12 74h58M12 84h44" />
-                      </g>
-                      <path
-                        d="M38 52 52 24 66 52 M44 44h16"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                      />
-                      <g>
-                        <rect x="108" y="16" width="26" height="26" fill="var(--color-accent)" />
-                        <rect x="140" y="16" width="26" height="26" fill="currentColor" opacity="0.28" />
-                        <rect x="108" y="48" width="26" height="26" fill="currentColor" opacity="0.16" />
-                        <rect x="140" y="48" width="26" height="26" fill="currentColor" opacity="0.4" />
-                      </g>
-                      <path d="M108 88h58" stroke="var(--color-accent)" stroke-width="2" />
-                    </svg>
-                    <p class="u-visually-hidden">
-                      Abstract illustration representing branding and design.
-                    </p>
-                  </div>
+              <!-- Interface fragments. NOT claims: the reference shows figures
+                   here, but no verified performance data exists, so none is
+                   printed. Drop a verified value into the marked slot when the
+                   business supplies one. -->
+              <div class="c-orbit__card" style="--x: 9%; --y: 17%" aria-hidden="true">
+                <span class="c-orbit__card-label">Performance</span>
+                <!-- verified figure goes here -->
+                <svg viewBox="0 0 100 34" fill="none" focusable="false">
+                  <path d="M0 33h100" stroke="currentColor" stroke-width="0.6" opacity="0.25" />
+                  <path
+                    d="M2 27 20 21 38 24 56 12 74 15 98 3"
+                    stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round"
+                  />
+                  <circle cx="98" cy="3" r="2.4" fill="currentColor" />
+                </svg>
+              </div>
 
-                  <!-- Websites -->
-                  <div class="c-ecosystem__panel" data-tab-panel="websites">
-                    <svg viewBox="0 0 200 125" aria-hidden="true" focusable="false">
-                      <rect
-                        x="14" y="14" width="172" height="97"
-                        fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"
-                      />
-                      <path d="M14 32h172" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
-                      <g fill="currentColor" opacity="0.45">
-                        <circle cx="26" cy="23" r="2.5" />
-                        <circle cx="35" cy="23" r="2.5" />
-                        <circle cx="44" cy="23" r="2.5" />
-                      </g>
-                      <rect x="26" y="44" width="72" height="30" fill="var(--color-accent)" opacity="0.9" />
-                      <g stroke="currentColor" stroke-width="2" opacity="0.35">
-                        <path d="M110 48h64M110 58h48M110 68h56" />
-                      </g>
-                      <g fill="currentColor" opacity="0.2">
-                        <rect x="26" y="86" width="44" height="14" />
-                        <rect x="78" y="86" width="44" height="14" />
-                        <rect x="130" y="86" width="44" height="14" />
-                      </g>
-                    </svg>
-                    <p class="u-visually-hidden">
-                      Abstract illustration representing website design and build.
-                    </p>
-                  </div>
-
-                  <!-- E-Commerce -->
-                  <div class="c-ecosystem__panel" data-tab-panel="ecommerce">
-                    <svg viewBox="0 0 200 125" aria-hidden="true" focusable="false">
-                      <g fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.45">
-                        <rect x="14" y="14" width="52" height="52" />
-                        <rect x="74" y="14" width="52" height="52" />
-                      </g>
-                      <rect
-                        x="134" y="14" width="52" height="52"
-                        fill="none" stroke="var(--color-accent)" stroke-width="2"
-                      />
-                      <g fill="currentColor" opacity="0.25">
-                        <rect x="24" y="40" width="32" height="16" />
-                        <rect x="84" y="34" width="32" height="22" />
-                      </g>
-                      <rect x="144" y="30" width="32" height="26" fill="var(--color-accent)" opacity="0.85" />
-                      <g stroke="currentColor" stroke-width="2" opacity="0.3">
-                        <path d="M14 80h40M74 80h40" />
-                      </g>
-                      <path d="M134 80h40" stroke="var(--color-accent)" stroke-width="2" />
-                      <path
-                        d="M18 98h10l5 16h30l4-11"
-                        fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"
-                      />
-                      <circle cx="36" cy="119" r="3" fill="currentColor" opacity="0.5" />
-                      <circle cx="58" cy="119" r="3" fill="currentColor" opacity="0.5" />
-                    </svg>
-                    <p class="u-visually-hidden">
-                      Abstract illustration representing an online store.
-                    </p>
-                  </div>
-
-                  <!-- Social Media -->
-                  <div class="c-ecosystem__panel" data-tab-panel="social">
-                    <svg viewBox="0 0 200 125" aria-hidden="true" focusable="false">
-                      <rect
-                        x="40" y="10" width="120" height="105"
-                        fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"
-                      />
-                      <circle cx="58" cy="28" r="8" fill="var(--color-accent)" />
-                      <g stroke="currentColor" stroke-width="2" opacity="0.35">
-                        <path d="M74 24h44M74 33h28" />
-                      </g>
-                      <rect x="52" y="46" width="96" height="38" fill="currentColor" opacity="0.16" />
-                      <path
-                        d="M74 74l14-14 10 10 12-14 16 18"
-                        fill="none" stroke="currentColor" stroke-width="2" opacity="0.45"
-                      />
-                      <g fill="none" stroke="currentColor" stroke-width="2" opacity="0.4">
-                        <path d="M52 98h18M80 98h18" />
-                      </g>
-                      <path d="M108 98h18" stroke="var(--color-accent)" stroke-width="2" />
-                      <path
-                        d="M14 44c0 12 8 20 20 20"
-                        fill="none" stroke="var(--color-accent)" stroke-width="1.5" opacity="0.6"
-                      />
-                      <path
-                        d="M186 62c0 12-8 20-20 20"
-                        fill="none" stroke="var(--color-accent)" stroke-width="1.5" opacity="0.6"
-                      />
-                    </svg>
-                    <p class="u-visually-hidden">
-                      Abstract illustration representing social media content.
-                    </p>
-                  </div>
-
-                  <!-- Digital Marketing & Ads -->
-                  <div class="c-ecosystem__panel" data-tab-panel="marketing">
-                    <svg viewBox="0 0 200 125" aria-hidden="true" focusable="false">
-                      <g stroke="currentColor" stroke-width="1.5" opacity="0.28">
-                        <path d="M14 108h172M14 80h172M14 52h172M14 24h172" />
-                      </g>
-                      <g fill="currentColor" opacity="0.28">
-                        <rect x="26" y="76" width="20" height="32" />
-                        <rect x="58" y="62" width="20" height="46" />
-                        <rect x="90" y="68" width="20" height="40" />
-                      </g>
-                      <rect x="122" y="42" width="20" height="66" fill="var(--color-accent)" opacity="0.55" />
-                      <rect x="154" y="24" width="20" height="84" fill="var(--color-accent)" />
-                      <path
-                        d="M26 92 58 74 90 80 122 52 164 20"
-                        fill="none" stroke="var(--color-accent)" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round"
-                      />
-                      <circle cx="164" cy="20" r="4" fill="var(--color-accent)" />
-                    </svg>
-                    <p class="u-visually-hidden">
-                      Abstract illustration representing digital marketing and
-                      advertising.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="c-ecosystem__spine">
-                  <div
-                    role="tablist"
-                    aria-orientation="vertical"
-                    aria-label="Our digital ecosystem"
-                  >
-                    <button
-                      class="c-ecosystem__node"
-                      type="button"
-                      data-tab="branding"
-                      data-tab-selected
-                      style="--i: 0"
-                    >
-                      <span class="c-ecosystem__index" aria-hidden="true">01</span>
-                      Branding &amp; Design
-                    </button>
-                    <button
-                      class="c-ecosystem__node"
-                      type="button"
-                      data-tab="websites"
-                      style="--i: 1"
-                    >
-                      <span class="c-ecosystem__index" aria-hidden="true">02</span>
-                      Websites
-                    </button>
-                    <button
-                      class="c-ecosystem__node"
-                      type="button"
-                      data-tab="ecommerce"
-                      style="--i: 2"
-                    >
-                      <span class="c-ecosystem__index" aria-hidden="true">03</span>
-                      E-Commerce
-                    </button>
-                    <button
-                      class="c-ecosystem__node"
-                      type="button"
-                      data-tab="social"
-                      style="--i: 3"
-                    >
-                      <span class="c-ecosystem__index" aria-hidden="true">04</span>
-                      Social Media
-                    </button>
-                    <button
-                      class="c-ecosystem__node"
-                      type="button"
-                      data-tab="marketing"
-                      style="--i: 4"
-                    >
-                      <span class="c-ecosystem__index" aria-hidden="true">05</span>
-                      Digital Marketing &amp; Ads
-                    </button>
-                  </div>
-
-                  <p class="c-ecosystem__growth" style="--i: 5">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                      <path
-                        d="M4 18 10 11l4 4 6-8M15 7h5v5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="square"
-                      />
-                    </svg>
-                    Growth
-                  </p>
-                </div>
+              <div class="c-orbit__card" style="--x: 16%; --y: 84%" aria-hidden="true">
+                <span class="c-orbit__card-label">Traffic</span>
+                <!-- verified figure goes here -->
+                <svg viewBox="0 0 100 34" fill="none" focusable="false">
+                  <g fill="currentColor" opacity="0.4">
+                    <rect x="2" y="22" width="8" height="12" />
+                    <rect x="15" y="17" width="8" height="17" />
+                    <rect x="28" y="24" width="8" height="10" />
+                    <rect x="41" y="13" width="8" height="21" />
+                  </g>
+                  <g fill="currentColor">
+                    <rect x="54" y="16" width="8" height="18" />
+                    <rect x="67" y="8" width="8" height="26" />
+                    <rect x="80" y="2" width="8" height="32" />
+                  </g>
+                </svg>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Scroll cue doubles as the link into Services, so the transition is
-             a real affordance rather than decoration. -->
-        <div class="c-hero__cue-wrap l-container">
-          <a class="c-hero__cue" href="#services" data-scroll-cue>
-            <span class="t-label">Scroll to explore</span>
-            <span class="c-hero__cue-track" aria-hidden="true"></span>
-          </a>
+          <!-- Scroll cue doubles as the link into Services, so the transition
+               is a real affordance rather than decoration. It is a grid item,
+               not an overlay: it occupies its own row beneath the copy, which
+               is what makes a collision with the CTAs structurally impossible. -->
+          <div class="c-hero__cue-wrap">
+            <a class="c-hero__cue" href="#services" data-scroll-cue>
+              <span class="t-label">Scroll to explore</span>
+              <span class="c-hero__cue-mouse" aria-hidden="true">
+                <span class="c-hero__cue-wheel"></span>
+              </span>
+              <span class="c-hero__cue-dot" aria-hidden="true"></span>
+            </a>
+          </div>
         </div>
       </section>
 

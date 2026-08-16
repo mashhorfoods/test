@@ -1,0 +1,453 @@
+/* =============================================================================
+   COMPONENT — ORBIT
+   The connected digital ecosystem: five services orbiting a Growth core,
+   joined by concentric rings and radial connectors.
+
+   Two compositions from one DOM order (branding → websites → e-commerce →
+   social → marketing → growth):
+     desktop / tablet — radial: nodes absolutely placed around the core
+     mobile           — vertical: the same nodes as a connected list
+
+   DIRECTION-AWARENESS
+   Nodes are placed with `inset-inline-start`, so the whole constellation
+   mirrors under RTL for free. Each node sits in a zero-size anchor that
+   centres its content on the point — the one technique that centres
+   identically in both directions (a percentage `translate` would offset
+   rather than centre once the inline axis flips).
+   ============================================================================= */
+
+@layer components {
+  .c-orbit {
+    position: relative;
+    inline-size: 100%;
+    /* Container units let every node, icon and label scale with the
+       constellation instead of the viewport. */
+    container-type: inline-size;
+  }
+
+  /* -----------------------------------------------------------------------
+     MOBILE — a connected vertical list (reference, mobile column)
+     ----------------------------------------------------------------------- */
+  /* The indent lives on the list, not on each card: a card at 100% width plus
+     its own margin would overrun the column. */
+  .c-orbit__field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding-inline-start: 34px;
+  }
+
+  /* The thread the cards hang from. */
+  .c-orbit__field::before {
+    content: "";
+    position: absolute;
+    inset-block: var(--space-24);
+    inset-inline-start: 4px;
+    inline-size: var(--border-width);
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--color-border-accent) 12%,
+      var(--color-border-accent) 88%,
+      transparent
+    );
+  }
+
+  .c-orbit__slot {
+    position: relative;
+  }
+
+  .c-orbit__node {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    inline-size: 100%;
+    padding: var(--space-12) var(--space-16);
+    background-color: var(--color-bg-sunken);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    text-align: start;
+    transition: border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  /* The dot that pins each card to the thread. */
+  .c-orbit__node::before {
+    content: "";
+    position: absolute;
+    /* Back out of the list's indent to sit centred on the thread. */
+    inset-inline-start: -33px;
+    inset-block-start: 50%;
+    inline-size: 7px;
+    block-size: 7px;
+    translate: 0 -50%;
+    border-radius: var(--radius-circle);
+    background-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(244, 209, 63, 0.14);
+  }
+
+  .c-orbit__icon {
+    display: grid;
+    place-items: center;
+    inline-size: 26px;
+    block-size: 26px;
+    flex-shrink: 0;
+    color: var(--color-accent);
+  }
+
+  .c-orbit__icon svg {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  /* The reset sets `svg { fill: currentcolor }`, and a CSS declaration always
+     beats a presentation attribute — so `fill="none"` in the markup is
+     ignored and every outline icon fills solid. These line icons must be
+     unfilled, so it is re-declared here where CSS can win. Shapes that are
+     genuinely filled set `fill` on themselves and are unaffected. */
+  .c-orbit__icon svg,
+  .c-orbit__core-icon,
+  .c-orbit__card svg,
+  .c-orbit__rings {
+    fill: none;
+  }
+
+  .c-orbit__label {
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    font-weight: var(--weight-semibold);
+    line-height: 1.25;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+  }
+
+  .c-orbit__label span {
+    display: block;
+    font-weight: var(--weight-regular);
+    color: var(--color-text-secondary);
+  }
+
+  [dir="rtl"] .c-orbit__label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: 0.8125rem;
+  }
+
+  /* --- Core ------------------------------------------------------------- */
+  .c-orbit__core {
+    position: relative;
+    display: grid;
+    place-items: center;
+    gap: var(--space-4);
+    inline-size: 96px;
+    block-size: 96px;
+    margin-block-start: var(--space-24);
+    margin-inline: auto;
+    border-radius: var(--radius-circle);
+    border: var(--border-width) solid var(--color-border-accent);
+    background-color: var(--color-bg);
+  }
+
+  .c-orbit__core-icon {
+    inline-size: 28px;
+    block-size: 28px;
+    color: var(--color-accent);
+  }
+
+  .c-orbit__core-label {
+    font-family: var(--font-display);
+    font-size: 0.625rem;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  [dir="rtl"] .c-orbit__core-label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: 0.75rem;
+  }
+
+  /* Rings, radial connectors and the drifting orbit dots belong to the radial
+     composition only. */
+  .c-orbit__rings,
+  .c-orbit__spark {
+    display: none;
+  }
+
+  /* Statistic cards are desktop-only in the reference. */
+  .c-orbit__card {
+    display: none;
+  }
+
+  /* =======================================================================
+     TABLET AND DESKTOP — the radial constellation
+     ======================================================================= */
+  @media (min-width: 48em) {
+    .c-orbit {
+      aspect-ratio: 1 / 1;
+      max-inline-size: min(100%, 620px);
+      margin-inline: auto;
+    }
+
+    .c-orbit__field {
+      position: absolute;
+      inset: 0;
+      display: block;
+      gap: 0;
+      padding-inline-start: 0;
+    }
+
+    .c-orbit__field::before {
+      content: none;
+    }
+
+    /* Centring on a point, direction-safely. A known-width box pulled back by
+       exactly half its own width: `margin-inline-start` flips with the writing
+       mode, so the same declaration centres correctly in LTR and RTL. (A
+       zero-width box relying on `place-items: center` does not — the node ends
+       up leading-aligned on the point, which pulls it off its spoke.)
+       --x/--y are set per node in the markup. */
+    .c-orbit__slot {
+      position: absolute;
+      inset-inline-start: var(--x);
+      inset-block-start: var(--y);
+      inline-size: 28cqw;
+      margin-inline-start: -14cqw;
+      block-size: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .c-orbit__node {
+      inline-size: max-content;
+      max-inline-size: 100%;
+      flex-direction: column;
+      gap: var(--space-8);
+      margin-inline-start: 0;
+      padding: var(--space-12) var(--space-12);
+      text-align: center;
+      background-color: rgba(32, 32, 32, 0.92);
+    }
+
+    .c-orbit__node::before {
+      content: none;
+    }
+
+    .c-orbit__label {
+      font-size: clamp(0.5625rem, 1.9cqw, 0.6875rem);
+      text-align: center;
+    }
+
+    /* [data-i18n-pending] makes untranslated copy an LTR island, which fixes
+       the ampersand in "& Design" jumping to the end of the line. That rule
+       also sets text-align: start; these labels are centred, so the alignment
+       is restored here at higher specificity. */
+    [dir="rtl"] .c-orbit__label[data-i18n-pending] {
+      text-align: center;
+    }
+
+    .c-orbit__icon {
+      inline-size: clamp(20px, 4.6cqw, 28px);
+      block-size: clamp(20px, 4.6cqw, 28px);
+      color: var(--color-text-primary);
+      transition: color var(--duration-fast) var(--ease-standard);
+    }
+
+    .c-orbit__node:hover .c-orbit__icon,
+    .c-orbit__node:focus-visible .c-orbit__icon {
+      color: var(--color-accent);
+    }
+
+    .c-orbit__node:hover {
+      border-color: var(--color-border-accent);
+      background-color: var(--color-bg-sunken);
+    }
+
+    /* --- Core ----------------------------------------------------------- */
+    .c-orbit__core {
+      position: absolute;
+      inset-inline-start: 52%;
+      inset-block-start: 48%;
+      inline-size: 24cqw;
+      block-size: 24cqw;
+      max-inline-size: 150px;
+      max-block-size: 150px;
+      margin: 0;
+      /* Centring an element of known size on a point: half its own size back
+         along each axis. margin-inline-start flips with the writing mode,
+         so this centres correctly in both directions. */
+      margin-inline-start: min(-12cqw, -75px);
+      margin-block-start: min(-12cqw, -75px);
+      border-color: var(--color-accent);
+      background-color: rgba(32, 32, 32, 0.9);
+    }
+
+    .c-orbit__core-icon {
+      inline-size: clamp(24px, 6cqw, 38px);
+      block-size: clamp(24px, 6cqw, 38px);
+    }
+
+    .c-orbit__core-label {
+      font-size: clamp(0.5625rem, 1.9cqw, 0.75rem);
+    }
+
+    /* --- Rings and connectors ------------------------------------------- */
+    .c-orbit__rings {
+      display: block;
+      position: absolute;
+      inset: 0;
+      inline-size: 100%;
+      block-size: 100%;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    /* The geometry is drawn LTR; mirroring the whole drawing keeps every
+       connector aligned with its node once the nodes flip. Nothing inside is
+       text, so there is nothing to un-mirror. */
+    [dir="rtl"] .c-orbit__rings {
+      transform: scaleX(-1);
+    }
+
+    .c-orbit__ring {
+      fill: none;
+      stroke: currentColor;
+      opacity: 0.16;
+    }
+
+    .c-orbit__ring--dashed {
+      stroke-dasharray: 0.8 2.4;
+      stroke-linecap: round;
+      opacity: 0.3;
+    }
+
+    .c-orbit__ring--accent {
+      stroke: var(--color-accent);
+      opacity: 0.34;
+    }
+
+    .c-orbit__spoke {
+      stroke: var(--color-accent);
+      stroke-width: 0.22;
+      opacity: 0.3;
+      stroke-dasharray: 1 1.6;
+    }
+
+    .c-orbit__dot {
+      fill: var(--color-accent);
+    }
+
+    /* --- Drifting sparks ------------------------------------------------
+       Two small points travelling the orbit. This is the only sustained
+       motion in the section: it is what makes the system read as connected
+       rather than drawn, and it stops entirely under reduced motion. */
+    .c-orbit__spark {
+      display: block;
+      fill: var(--color-accent);
+      transform-box: view-box;
+      transform-origin: 52px 48px;
+      animation: orbit-travel 26s linear infinite;
+    }
+
+    .c-orbit__spark--slow {
+      animation-duration: 38s;
+      animation-direction: reverse;
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes orbit-travel {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-orbit__spark {
+      animation: none;
+    }
+  }
+
+  /* =======================================================================
+     STATISTIC CARDS — desktop only
+     Interface fragments, not claims. There is no verified performance data,
+     so these carry a label and an abstract chart and NO figure. The slot for
+     a real number is marked in index.html.
+     ======================================================================= */
+  @media (min-width: 64em) {
+    .c-orbit__card {
+      position: absolute;
+      inset-inline-start: var(--x);
+      inset-block-start: var(--y);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+      inline-size: 21cqw;
+      max-inline-size: 132px;
+      margin-inline-start: min(-10.5cqw, -66px);
+      padding: var(--space-12);
+      background-color: rgba(20, 20, 20, 0.94);
+      border: var(--border-hairline);
+      border-radius: var(--radius-sm);
+    }
+
+    .c-orbit__card-label {
+      font-family: var(--font-display);
+      font-size: 0.5rem;
+      font-weight: var(--weight-medium);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    [dir="rtl"] .c-orbit__card-label {
+      text-transform: none;
+      letter-spacing: var(--tracking-normal);
+      font-size: 0.625rem;
+    }
+
+    .c-orbit__card svg {
+      inline-size: 100%;
+      block-size: auto;
+      color: var(--color-accent);
+    }
+  }
+
+  /* =======================================================================
+     DECORATIVE DOT FIELD
+     Pure CSS — no elements, no requests. Hidden from assistive tech by
+     virtue of being a background.
+     ======================================================================= */
+  @media (min-width: 48em) {
+    .c-orbit__grain {
+      position: absolute;
+      inline-size: 92px;
+      block-size: 92px;
+      background-image: radial-gradient(
+        rgba(255, 255, 255, 0.22) 1px,
+        transparent 1px
+      );
+      background-size: 11px 11px;
+      pointer-events: none;
+    }
+
+    .c-orbit__grain--a {
+      inset-block-start: 4%;
+      inset-inline-end: 2%;
+    }
+
+    .c-orbit__grain--b {
+      inset-block-end: 6%;
+      inset-inline-end: 12%;
+    }
+  }
+}

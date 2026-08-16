@@ -1,215 +1,189 @@
 # Stage 02 — Hero
 
-The homepage's opening statement and its digital-ecosystem panel. Built from
-Stage 00 tokens; the header from Stage 01 is untouched.
+The homepage's opening statement and the digital-ecosystem constellation.
+Rebuilt to the supplied visual reference. Built from Stage 00 tokens; the
+header from Stage 01 is untouched apart from the brand lockup.
 
 | File | Role |
 | --- | --- |
-| `src/styles/components/hero.css` | Hero layout, ecosystem panel, scroll cue |
-| `index.html` | Hero markup and the five abstract fragment illustrations |
-| `src/scripts/disclosure.js` | Vertical tablist + opt-in hover activation |
-| `src/scripts/motion.js` | Entrance reveals, scroll-cue dismissal |
+| `src/styles/components/hero.css` | Hero layout, copy block, actions, scroll cue |
+| `src/styles/components/orbit.css` | The constellation: rings, nodes, core, fragments |
+| `index.html` | Hero markup, service icons, interface fragments |
+| `src/styles/components/header.css` | `.c-brand` — the PIXORA type lockup |
 
 ---
 
-## 1. Content
+## 1. Where the reference was followed, and where it was not
 
-Every string comes from the brief. Nothing is invented, and there are **no
-statistics, client marks, awards, testimonials or claimed results** anywhere in
-the section.
+The reference is the visual blueprint; the existing site is the content source
+of truth. Two places where those two disagreed, resolved in favour of content:
 
-| Slot | Content |
-| --- | --- |
-| Eyebrow | Creative Digital Partner |
-| H1 | Your Brand. / Your Digital Presence. / **One Partner.** |
-| Lead | We build brands, websites, online stores and digital experiences — then connect them with content, social media and performance marketing to help your business grow. |
-| Panel caption | All your digital needs. From one place. |
-| Primary CTA | Start Your Project → `#contact` |
-| Secondary CTA | Explore Our Services → `#services` |
-| Services | Branding & Design · Websites · E-Commerce · Social Media · Digital Marketing & Ads |
+**Fabricated statistics — omitted.** The reference's interface fragments read
+`+120%` and `+85%`. No verified performance data exists, and inventing figures
+is forbidden. The fragments are built — same position, scale, hierarchy and
+visual role — carrying a label and an abstract chart, with the slot for a real
+number marked in the markup:
 
-The core proposition ("All your digital needs. From one place.") sits on the
-ecosystem panel rather than in the H1, so it introduces the visual system
-instead of competing with the headline.
-
-`One Partner.` is the only accented phrase — the differentiator, not the whole
-headline.
-
----
-
-## 2. The ecosystem panel
-
-The brief's `BRAND → WEBSITE → CONTENT → SOCIAL → ADS → GROWTH` idea, built as
-a system rather than drawn as a flowchart:
-
-- A **stage** showing an abstract fragment for the selected service.
-- A **spine** of the five services, joined by one continuous connector line
-  that runs from neutral at the top to accent at the bottom, ending in a
-  **Growth** marker — the outcome the five add up to, not a sixth service.
-- Fragments are pure inline SVG: a swatch grid and letterform (branding),
-  browser chrome and wireframe blocks (websites), product tiles and a cart
-  row (e-commerce), a post card with engagement bars (social), and a bar
-  series with a rising trend line (marketing). **All abstract** — no numbers,
-  no labels, no imitation of any real product's interface.
-
-### Interaction
-
-The spine is a **vertical WAI-ARIA tablist**, reusing the tabs component from
-Stage 00 rather than inventing a bespoke widget. Selecting a service swaps only
-the illustration. Service names are always visible, so the interaction enriches
-the story and is never required to read it (§11).
-
-Two extensions were made to the shared component:
-
-- `aria-orientation="vertical"` switches arrow keys to Up/Down (horizontal
-  tablists keep Left/Right, still swapped under RTL).
-- `data-tabs-hover` opts a tablist into hover activation, gated to
-  `(hover: hover) and (pointer: fine)`. Focus is never moved, so a mouse
-  passing over the list cannot steal it from a keyboard user.
-
-No auto-cycling: Stage 00 forbids constant movement, and a hero that animates
-on a timer is exactly that.
-
----
-
-## 3. Composition
-
-Three deliberate compositions, not one that scales:
-
-| Breakpoint | Page | Ecosystem panel |
-| --- | --- | --- |
-| Mobile <768px | Single column: eyebrow → headline → lead → CTAs → visual → (cue hidden) | Stage over spine, 16:10 |
-| Tablet 768–1023px | Single column | **Two columns** — stage beside spine, so it stays wide and short instead of a tall block competing with the headline |
-| Desktop 1024px+ | **7 / 5 asymmetric** — text left, panel right | Stage over spine, height driven by viewport |
-
-DOM order is text-then-visual, which gives the required mobile order for free
-and still places the panel right on desktop.
-
----
-
-## 4. Height
-
-Desktop `min-block-size: min(90svh, 1000px)` — `svh`, so mobile browser chrome
-cannot push the CTAs out of the first screen. Never a forced `100vh`.
-
-The panel is what decides whether the hero fits one screen, so on desktop the
-stage height follows the viewport (`clamp(180px, 24svh, 280px)`) rather than
-its own aspect ratio. A short laptop window gets a shorter stage instead of a
-hero that runs past the fold.
-
-Measured:
-
-| Viewport | Hero | Below fold |
-| --- | --- | --- |
-| 1024×768 | 101vh | nothing |
-| 1280×800 | 92vh | nothing |
-| 1366×768 | 95vh | nothing |
-| 1440×900 | 90vh | nothing |
-| 1920×1080 | 90vh | nothing |
-
-1024×768 is the one outlier at 101vh, and the overflow is bottom padding — all
-content is inside the first screen. §15's actual requirement (header, headline,
-lead, both CTAs and the visual in the first viewport) holds everywhere.
-
----
-
-## 5. Headline sizing
-
-Poppins is wide: "Your Digital Presence." measures **10.6em**. At the token
-maximum that is 808px in a 682px column — it overflowed and was silently
-clipped by the page's `overflow-x: clip`.
-
-The headline is therefore sized against **its own column**, not the viewport:
-
-```css
-font-size: max(3.5rem, min(var(--text-hero), 9.2cqw));
+```html
+<span class="c-orbit__card-label">Performance</span>
+<!-- verified figure goes here -->
 ```
 
-with `container-type: inline-size` on the text column. It fits at any width, in
-any language, and `text-wrap: wrap` remains as a final safety net. Verified at
-ten viewports × two directions: the widest rendered line never exceeds its
-column.
+Drop a supplied, verified value in and the card is complete. A regression test
+asserts no `+NN%` string exists anywhere in the hero.
 
-Resulting sizes: 40px mobile, 59–62px tablet, 56–64px desktop — inside the
-ranges the brief asks for.
+**Eyebrow wording — kept.** The reference reads `DIGITAL AGENCY`; the site
+reads **"Creative Digital Partner"**. Existing copy wins, so the wording is
+unchanged and only the reference's *treatment* was adopted (accent colour, rule
+trailing the label rather than leading it).
+
+Everything else — composition, proportions, node placement, ring structure,
+button treatment, scroll cue, per-breakpoint recomposition — follows the
+reference.
+
+---
+
+## 2. Brand
+
+The reference supplies the identity: **PIXORA**, accent on the `X`, with a
+letterspaced `DIGITAL AGENCY` tagline beneath.
+
+It is built as a **type lockup** (`.c-brand`), not an image: a wordmark set in
+Poppins stays crisp at any pixel density, costs no request, and can be
+restyled per breakpoint — the tagline drops in the compact header and below
+360px, where the wordmark alone still identifies the brand.
+
+The favicon is the exception and the one place a file is needed: at 16px a
+wordmark is unreadable and the browser cannot use the page's fonts, so
+`src/assets/brand/logo.svg` carries the accent letterform drawn as paths. It is
+a derivation of the wordmark, not a second identity.
+
+---
+
+## 3. The constellation
+
+Five services orbiting a Growth core, joined by concentric rings and radial
+spokes — the reference's central device.
+
+Geometry is authored in one SVG coordinate space (`viewBox 0 0 100 100`,
+core at `52,48`). Every node sits on the `r=38` ring, which is why the ring
+passes cleanly through all five:
+
+| Node | Position | Distance from core |
+| --- | --- | --- |
+| Branding & Design | 52, 9 | 39 |
+| Websites | 86, 33 | 37.2 |
+| E-Commerce | 80, 71 | 36.2 |
+| Social Media | 46, 86 | 38.5 |
+| Digital Marketing & Ads | 15, 52 | 37.2 |
+
+Icons are inline SVG. The interface fragments are abstract — they imitate no
+real product's UI and state no result.
+
+### Centring on a point, direction-safely
+
+Each node is placed with `inset-inline-start`, so the whole constellation
+mirrors under RTL for free. Centring it on that point is the subtle part:
+
+```css
+inline-size: 28cqw;
+margin-inline-start: -14cqw;   /* exactly half, and it flips with the writing mode */
+```
+
+The first attempt used a zero-width anchor with `place-items: center`. It
+looked right but was not: nodes ended up leading-aligned on their point, up to
+7% off, pulling every node off its spoke. A known-width box pulled back by half
+its own width is deterministic in both directions. A test asserts each node
+centre matches its authored coordinate in LTR, is its exact mirror in RTL, and
+falls within its spoke's extent.
+
+The rings SVG is mirrored with `scaleX(-1)` under RTL so the spokes track the
+mirrored nodes. It contains no text, so there is nothing to un-mirror.
+
+---
+
+## 4. Three compositions
+
+| Breakpoint | Page | Ecosystem |
+| --- | --- | --- |
+| Mobile <768px | Single column; visual below the CTAs | **Vertical connected list** — cards on a thread, Growth as a circle at the end |
+| Tablet 768–1023px | Single column; full-width stacked CTAs | Radial, centred and reduced |
+| Desktop 1024px+ | **5 / 7 asymmetric**, wide container | Radial at full size, with the two interface fragments |
+
+The headline breaks match the reference at each size: four lines on desktop and
+mobile, three on tablet where the full page width lets "Your Digital Presence."
+set solid. One `<br>` is hidden at the tablet range; the space before it
+collapses at a line break and reappears when the break is removed, so the words
+never run together.
+
+---
+
+## 5. Layout details worth knowing
+
+**Scroll cue is a grid item, not an overlay.** It occupies its own row beneath
+the copy, with the constellation spanning both rows. Absolute positioning put
+it on top of the secondary CTA at common viewport heights; a real row makes
+that collision structurally impossible. It is hidden below 768px (the reference
+has none there) and on desktop windows under 800px tall.
+
+**Actions are default size, not `--lg`.** At `--lg` the pair needed 578px and
+wrapped to two rows inside a five-column text block. They are full-width and
+stacked below desktop, matching the reference, with the icon at the trailing
+edge.
+
+**The hero uses `l-container--wide`.** The reference's composition runs closer
+to the viewport edge than the standard 1320px container allows. `--container-max-wide`
+is an existing Stage 00 token, so this is the system being used, not extended.
+
+**Headline sizes against its column**, `max(3rem, min(var(--text-hero), 15cqw))`,
+so it fits its container at any width in any language. The coefficient is set
+by the longest authored line, measured in-browser.
 
 ---
 
 ## 6. Motion
 
-Load sequence (§10) uses the Stage 00 reveal system, no new machinery:
-eyebrow → headline → lead → CTAs stagger at 80ms via `[data-reveal-group]`;
-the panel follows at `--reveal-delay: 300ms`; its spine nodes then settle at
-70ms intervals.
+Load sequence uses the Stage 00 reveal system — eyebrow → headline → lead →
+CTAs stagger at 80ms, constellation follows at 260ms.
 
-The scroll cue's travelling accent is **the only looping animation in the
-system**. It is justified: the element exists solely to signal that more
-content follows, it is small, and it removes itself the moment the user acts
-on it. Under `prefers-reduced-motion` it becomes a static accent line.
+Two sustained animations, both justified and both stopped by
+`prefers-reduced-motion`:
 
-Everything else is entrance-only or interaction-driven.
-
----
-
-## 7. Scroll cue and the transition to Services
-
-The cue is a **link to `#services`**, so it is a real affordance rather than
-decoration. It is wrapped in `.l-container`, which aligns it to the same edge
-as the headline instead of the raw viewport.
-
-It appears only at `(min-width: 64em) and (min-height: 50em)` — on a short
-window the composition needs the room more than the page needs a hint that it
-scrolls. It fades out via an IntersectionObserver sentinel (no scroll listener)
-and drops to `tabindex="-1"` when hidden, so keyboard users are never sent to
-an invisible link.
-
-There is no rule between the hero and Services; the cue's line carries the eye
-across the boundary (§26).
+- **Two travelling sparks** on the orbits. This is what makes the system read
+  as connected rather than drawn.
+- **The scroll-cue wheel.** It exists solely to signal more content, and
+  removes itself once the user scrolls.
 
 ---
 
-## 8. RTL — interim state
-
-The composition mirrors correctly: text column right, panel left, CTAs and
-arrows flipped, spine and connector mirrored.
-
-Hero **copy is not yet translated** — only header chrome and navigation labels
-are. Left alone, English sentences inside an RTL page render their trailing
-full stop at the *start* of the line (".Your Brand"), because a full stop is a
-direction-neutral character that adopts the paragraph direction.
-
-Untranslated blocks are therefore marked `data-i18n-pending`, which typesets
-them as LTR islands — correct for what they currently are. **Remove the
-attribute from an element the moment its Arabic copy lands.**
-
----
-
-## 9. Verified
+## 7. Verified
 
 Headless Chromium, LTR and RTL:
 
-- No horizontal overflow at 320/360/375/414/768/900/1023/1024/1280/1440/1920px.
-- Headline never exceeds its column at ten viewports × two directions.
-- All five fragments stay inside the stage at five breakpoints.
-- Single `h1`, in the hero, heading order unbroken; every decorative SVG
-  `aria-hidden`; tablist labelled; each fragment carries a visually-hidden
-  description.
-- Stage height identical across all five services — switching never shifts the
-  layout.
-- Scroll cue dismisses on scroll, restores at top, leaves the tab order when
-  hidden.
-- Reduced motion: all content at full opacity, no transforms, cue loop off.
-- JavaScript disabled: headline, lead, both CTAs and all five service names
+- No page overflow **and no clipped hero element** at 320/360/375/414/600/768/
+  900/1023/1024/1280/1440/1920px × both directions.
+- Node centres match authored coordinates in LTR, are exact mirrors in RTL, and
+  every node sits on its spoke.
+- Single `h1`, heading order unbroken, all decorative SVG hidden from assistive
+  tech, services exposed as a real `<ul>`.
+- No `+NN%` string anywhere in the hero.
+- All hero targets ≥ 44px on a coarse pointer.
+- Reduced motion: sparks and cue animation off, all content at full opacity.
+- JavaScript disabled: headline, CTAs, all five service names and the brand
   render.
-- No console errors, no failed requests.
+- Header, mobile menu, IA synchronisation and styleguide suites all still pass.
 
 ---
 
 ## Open items
 
-- **Arabic hero copy.** Once supplied, drop `data-i18n-pending` from those
-  elements and add the strings to the navigation map's translation table.
-- **Confirm the service list against the Services & Pricing document.** The
-  five names here come from the brief itself; the source document is still
-  outstanding and is the authority.
-- Stage 03 replaces the `#services` placeholder. The hero needs no change.
+- **Arabic hero copy.** Untranslated blocks carry `data-i18n-pending`, which
+  typesets them as LTR islands — without it, English punctuation reorders in an
+  RTL page ("&nbsp;Design &" instead of "& Design"). Remove the attribute from
+  each element as its Arabic copy lands.
+- **Verified figures** for the two interface fragments, if the business has
+  them. The slots are marked.
+- **Confirm the service list** against the Services & Pricing document — the
+  five names come from the brief and the reference, and that document is still
+  outstanding.
+- `apple-touch-icon.png` (180×180) and `og-image.png` (1200×630).

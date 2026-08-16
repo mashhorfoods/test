@@ -124,38 +124,22 @@ visible.
 
 ---
 
-## 6. Logo (§03)
+## 6. Brand (§03)
 
-The logo is **single-sourced**: `src/assets/brand/logo.svg` is referenced by
-the header and by the favicon on both pages. It is referenced, never inlined —
-an inlined SVG becomes a copy per page that has to be kept in sync by hand,
-while a referenced file cannot drift. Swapping that one file updates every
-surface at once.
+The identity is **PIXORA**, accent on the `X`, with a `DIGITAL AGENCY` tagline,
+built as a **type lockup** (`.c-brand`) rather than an image: crisp at any
+density, no request, restyleable per breakpoint. The link carries the
+accessible name; the lockup itself is `aria-hidden`, so the brand is announced
+once rather than letter-fragmented by the accent span.
 
-In the header it is an `<img>` with `alt=""`, because the wrapping link already
-carries the accessible name; giving the image its own alt would announce the
-brand twice.
+Responsive behaviour: the tagline drops in the compact header and below 360px,
+where the wordmark alone still identifies the brand. Under RTL the tagline
+loses its uppercase and heavy tracking, neither of which suits Arabic.
 
-**Sizing.** Height drives and width follows the artwork's ratio
-(`block-size: 32px; inline-size: auto; aspect-ratio: var(--logo-aspect)`), so
-the logo can never be stretched whatever shape it is. `--logo-aspect` reserves
-the correct width *before* the file loads, which is what keeps the header from
-shifting as it arrives — an SVG with no intrinsic dimensions reports
-`naturalWidth: 0`, so without it the browser has nothing to reserve.
+The favicon is the one place a file is needed — see
+`src/assets/brand/README.md` for that and for swapping in a designed asset.
 
-Verified: the lockup holds a 1.000 ratio across both the full and compact
-header, and a simulated 3.2 wide lockup still clears the nav by 156px.
-
-Clear space is enforced by `--logo-clear-space` padding. The wordmark hides
-below 360px; the mark alone still identifies the brand.
-
-Swap procedure and file requirements: `src/assets/brand/README.md`. Note that
-the mark/wordmark order mirrors under RTL, which is correct for a two-part
-lockup but **wrong for a single fixed brand image** — if the real logo contains
-its own wordmark, drop the `.c-header__wordmark` span so there is nothing to
-mirror.
-
-**Current state: still a placeholder.** See the open items below.
+Clear space is enforced by `--logo-clear-space` padding.
 
 ---
 
@@ -208,12 +192,9 @@ Headless Chromium, LTR and RTL:
 
 ## Open items
 
-- **Real logo asset.** Still a placeholder. The file supplied via the ibb.co
-  link could not be retrieved — this environment's network policy blocks that
-  host (the gateway returns 403 for `i.ibb.co`; only GitHub domains are
-  reachable). Commit the file to the repository, or paste it somewhere on
-  github.com, and the swap is a one-file drop per
-  `src/assets/brand/README.md`.
+- **Designed logo artwork**, if any exists beyond the wordmark. The identity
+  now matches the supplied reference; a designed mark or lockup would replace
+  the favicon and/or the type lockup per `src/assets/brand/README.md`.
 - Final Arabic labels reviewed by a native speaker — the current set is a
   standard IA translation, not reviewed copy.
 - Social profiles: `SOCIAL_LINKS` is empty and the menu block stays hidden

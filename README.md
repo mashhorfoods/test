@@ -23,14 +23,14 @@ src/styles/                 The product stylesheet
   05-motion.css             Scroll reveal and counter styles
   06-utilities.css          A deliberately small utility set
   components/               button · card · header · navigation · hero ·
-                            disclosure · field
+                            orbit · disclosure · field
 src/scripts/                Vanilla ES modules, no dependencies
   main.js                   Entry point
   navigation-map.js         Single source of section order and labels
   navigation.js             Sticky header, mobile menu, scroll spy, language
   disclosure.js             Accordion, tabs, tooltip
   motion.js                 Scroll reveal, animated counters
-src/assets/brand/           Logo — single source for header + favicon
+src/assets/brand/           Favicon mark + brand documentation
 src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 ```
 

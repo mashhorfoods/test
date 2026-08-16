@@ -1,27 +1,27 @@
 <!--
-  THE LOGO — single source of truth.
+  FAVICON MARK — the accent letterform from the PIXORA wordmark.
 
-  Every surface that shows the logo references THIS file:
-    - the site header (index.html)
-    - the browser tab / favicon (index.html, styleguide.html)
-    - any future page, e-mail template or social card
+  The header uses a type lockup (see index.html / .c-brand), because a
+  wordmark set in Poppins stays crisp at any density, costs no request, and
+  can be restyled per breakpoint. A favicon cannot do that: at 16px a full
+  wordmark is unreadable, and the browser has no access to the page's fonts.
+  So this file carries the mark alone — drawn as paths, not text, so it
+  renders identically everywhere.
 
-  To swap in the real asset, replace this file's contents and change nothing
-  else. Keep the filename. Requirements:
-    - SVG, with a `viewBox` (that is what lets it scale without distorting)
-    - no fixed `width`/`height` attributes on the root element
-    - if the artwork is a fixed-colour brand mark, keep its own fill values;
-      do not use `currentColor` unless the logo is genuinely monochrome and
-      intended to follow the surrounding text colour
-    - if the real logo is NOT square, update --logo-aspect in
-      src/styles/components/header.css to match, so the header reserves the
-      right space before the file loads
+  This is a derivation of the wordmark, not a second identity. If a designed
+  brand mark exists, replace this file with it (keep the filename and the
+  viewBox) and every surface that references it follows.
 
-  PLACEHOLDER — generic by design. It identifies the slot without inventing a
-  brand identity, and must be replaced before launch.
+  Referenced by: index.html, styleguide.html  →  <link rel="icon">
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Agency logo placeholder">
-  <title>Agency logo placeholder</title>
-  <rect x="1.5" y="1.5" width="29" height="29" fill="none" stroke="#FFFFFF" stroke-width="2.5" />
-  <path d="M10 24.5 L18.4 7.5 H23 L14.6 24.5 Z" fill="#F4D13F" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Pixora">
+  <title>Pixora</title>
+  <rect width="32" height="32" fill="#202020" />
+  <path
+    d="M8.5 7.5 23.5 24.5 M23.5 7.5 8.5 24.5"
+    stroke="#F4D13F"
+    stroke-width="4.2"
+    stroke-linecap="square"
+    fill="none"
+  />
 </svg>
