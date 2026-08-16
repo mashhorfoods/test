@@ -18,8 +18,13 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Digital Agency — Homepage" />
     <meta property="og:locale" content="en" />
-    <!-- TODO Stage 02+: og:url, og:image (1200x630), og:site_name, twitter:card,
+    <!-- TODO: og:url, og:image (1200x630), og:site_name, twitter:card,
          canonical, hreflang alternates for ar/en, Organization JSON-LD. -->
+
+    <!-- Browser tab. Same file as the header logo — one asset, every surface. -->
+    <link rel="icon" href="./src/assets/brand/logo.svg" type="image/svg+xml" />
+    <!-- TODO: apple-touch-icon.png (180x180) and og-image.png (1200x630) need
+         raster exports of the final logo; see src/assets/brand/README.md. -->
 
     <!-- Fonts are self-hosted, so there is no third-party connection to open.
          The two faces the first screen needs are preloaded; the rest are
@@ -68,28 +73,20 @@
             aria-label="Agency — home"
             data-i18n-label="brandHome"
           >
-            <!-- Temporary mark. Swap for the real asset without touching the
-                 lockup: keep a square viewBox and the fill/stroke hooks. -->
-            <svg
+            <!-- The logo is referenced, never inlined, so one file serves the
+                 header, the favicon and every future page. Swap
+                 src/assets/brand/logo.svg and every surface follows.
+                 alt="" because the link itself carries the accessible name —
+                 inlining it here would announce the brand twice. -->
+            <img
               class="c-header__mark"
-              viewBox="0 0 32 32"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <rect
-                x="1.5"
-                y="1.5"
-                width="29"
-                height="29"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-              />
-              <path
-                d="M10 24.5 L18.4 7.5 H23 L14.6 24.5 Z"
-                fill="var(--color-accent)"
-              />
-            </svg>
+              src="./src/assets/brand/logo.svg"
+              alt=""
+              decoding="async"
+              fetchpriority="high"
+            />
+            <!-- Remove this span if the real logo already contains the
+                 wordmark. Nothing else needs to change. -->
             <span class="c-header__wordmark">AGENCY</span>
           </a>
         </div>

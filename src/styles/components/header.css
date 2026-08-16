@@ -105,18 +105,22 @@
     color: var(--color-accent);
   }
 
+  /* Height drives, width follows the artwork's own ratio — so the logo can
+     never be stretched, whatever shape the real asset turns out to be.
+     --logo-aspect reserves the correct width before the file loads, which is
+     what stops the header shifting as it arrives; set it to the real ratio
+     when the final logo lands (see src/assets/brand/README.md). */
   .c-header__mark {
-    inline-size: 32px;
+    --logo-aspect: 1;
     block-size: 32px;
+    inline-size: auto;
+    aspect-ratio: var(--logo-aspect);
+    object-fit: contain;
     flex-shrink: 0;
-    /* Aspect ratio is fixed by the viewBox; only the box scales, so the mark
-       can never distort. */
-    transition: inline-size var(--duration-base) var(--ease-standard),
-      block-size var(--duration-base) var(--ease-standard);
+    transition: block-size var(--duration-base) var(--ease-standard);
   }
 
   .is-compact .c-header__mark {
-    inline-size: 26px;
     block-size: 26px;
   }
 

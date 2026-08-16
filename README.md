@@ -30,7 +30,7 @@ src/scripts/                Vanilla ES modules, no dependencies
   navigation.js             Sticky header, mobile menu, scroll spy, language
   disclosure.js             Accordion, tabs, tooltip
   motion.js                 Scroll reveal, animated counters
-src/assets/                 Logo placeholder
+src/assets/brand/           Logo — single source for header + favicon
 src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 ```
 
