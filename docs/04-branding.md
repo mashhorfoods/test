@@ -4,15 +4,33 @@
 > labels (Construction / Typography / Palette / Application) were removed and
 > each panel is a single supplied image, edge to edge.
 >
-> - `object-fit: contain`, not `cover` — cover fills the box but **crops**, and
->   these are pieces of finished design work. Switch to `cover` per-panel if a
->   particular image should bleed instead.
-> - `aspect-ratio` sits on the image itself, so every panel reserves its space
->   before the file arrives and the grid never jumps as the four load.
-> - The fit was measured against local stand-ins at **four different aspect
->   ratios** (4:3, 16:9, 1:1, 3:4) across 13 widths in both directions, so the
->   layout holds whatever the real files measure. Matching ratios fill the
->   panel edge to edge; mismatched ones letterbox against the panel surface.
+>
+> **The panel takes its height from the image**, so the artwork fills its
+> container exactly — measured at 178px of image in a 180px panel, the 1px all
+> round being the hairline border.
+>
+> The first version imposed `aspect-ratio: 4/3` with `object-fit: contain`,
+> which put grey bands above and below artwork that is closer to 16/10.
+> `cover` would have removed the bands by **cropping** instead, which is worse
+> on finished design work. Matching the box to the image removes them without
+> taking anything away. The grid aligns to `start` for the same reason — a
+> stretched panel grows past its image and puts the gap back underneath it.
+>
+> Two consequences, both handled:
+>
+> - **A failed image would collapse the panel** to a hairline, since there is
+>   no intrinsic size to fall back on. `.c-brandboard__panel` carries a
+>   `min-block-size: 8rem` floor: it does nothing when the image loads (a board
+>   image at any column width on this grid is taller than that) and keeps a
+>   sane box when it does not. A live risk while these are hotlinked.
+> - **Nothing reserves the space before the file arrives**, so the grid reflows
+>   on load. Adding `width`/`height` attributes to each `<img>` — or
+>   self-hosting, which lets the build read the files — restores that without
+>   changing anything above.
+>
+> Four images of one ratio line up exactly, which is what a board set normally
+> is. If they ever differ, the panels differ in height rather than cropping or
+> letterboxing anything.
 > - They are **hotlinked from `i.ibb.co`**. That host is unreachable from the
 >   build environment, so the images could not be inlined, verified visually,
 >   or checked for what they actually contain. `node build.js` reports this on

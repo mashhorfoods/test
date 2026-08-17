@@ -108,12 +108,23 @@
      ======================================================================= */
   .c-brandboard {
     display: grid;
+    /* start, not stretch: a stretched panel grows past its image and puts the
+       gap back underneath it. */
+    align-items: start;
     gap: var(--space-16);
     margin-block-end: var(--section-space-tight);
     grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
   }
 
   .c-brandboard__panel {
+    /* A floor, not a height. The panel is sized by its image, and an image
+       with no intrinsic dimensions — one that failed to load, which is a live
+       risk while these are hotlinked from a third-party host — would collapse
+       it to a hairline. This keeps a sane box in that case and does nothing at
+       all when the image loads, because a board image at any column width on
+       this grid is comfortably taller than 8rem. */
+    min-block-size: 8rem;
+
     /* No padding. The artwork IS the panel now — the label and the inset that
        framed a line drawing are gone, so a border plus a bleed-to-edge image
        is the whole composition. overflow:hidden is what keeps the image inside
@@ -130,29 +141,29 @@
   }
 
   /* THE FIT.
-     `aspect-ratio` on the IMAGE, not on a wrapper: every panel then reserves
-     its space before the file arrives, so nothing reflows as the four load and
-     the grid never jumps. Four panels of equal ratio also line up whatever the
-     source files measure.
+     The panel takes its height FROM THE IMAGE — `block-size: auto` with no
+     imposed `aspect-ratio` — so the artwork fills its container exactly: no
+     letterbox bands, and nothing cropped.
 
-     `object-fit: contain` rather than `cover`, deliberately: cover fills the
-     box but CROPS, and these are pieces of finished design work — a cropped
-     palette or a clipped logo is worse than a little breathing room. If a
-     particular image should fill edge to edge instead, `cover` is a one-word
-     change.
+     The first version imposed 4/3 and used `object-fit: contain`, which is
+     what put grey bands above and below artwork that is closer to 16/10.
+     `cover` would have removed the bands by CROPPING instead, which is worse
+     on finished design work. Matching the box to the image removes them
+     without taking anything away.
 
-     `inline-size: 100%` with `block-size: 100%` keeps it locked to the panel
-     at every width, so there is nothing to go wrong responsively: the panel is
-     a grid track, the image is the whole panel. */
+     The grid aligns to `start` for the same reason: a stretched panel would
+     grow past its image and put the gap back at the bottom. Four images of
+     one ratio — which a board set normally is — therefore line up exactly.
+
+     TRADE-OFF, stated plainly: an imposed ratio also reserved the space
+     before the file arrived, so nothing reflowed on load. Without intrinsic
+     dimensions there is nothing to reserve. Adding `width`/`height`
+     attributes to each <img> (or self-hosting them, which lets the build read
+     the files) restores that without changing any of the above. */
   .c-brandboard__image {
     display: block;
     inline-size: 100%;
-    block-size: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: contain;
-    /* A backdrop for whatever transparency the PNGs carry, so a transparent
-       logo does not sit on the page ground and lose the panel edge. */
-    background-color: var(--color-surface);
+    block-size: auto;
   }
 
   /* =======================================================================
