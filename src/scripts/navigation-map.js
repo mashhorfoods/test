@@ -103,7 +103,7 @@ export const CONTACT_CHANNELS = [
 ];
 
 /**
- * The six service categories, in the order the Services section lists them.
+ * The five service categories, in the order the Services section lists them.
  *
  * Same principle as SECTIONS: the footer's services column renders from this
  * array rather than being typed out a second time, so it cannot drift from the
@@ -118,7 +118,6 @@ export const CONTACT_CHANNELS = [
 export const SERVICE_LINKS = [
   { id: 'branding', label: 'Branding & Design' },
   { id: 'websites', label: 'Websites' },
-  { id: 'ecommerce', label: 'E-Commerce' },
   { id: 'social', label: 'Social Media Management' },
   { id: 'marketing', label: 'Digital Marketing & Advertising' },
   { id: 'integrated', label: 'Integrated Digital Solutions' },

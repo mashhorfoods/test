@@ -12,7 +12,7 @@ docs/02-hero.md             Hero section, documented
 docs/03-services.md         Services overview, documented
 docs/04-branding.md         Branding & Design, documented
 docs/05-websites.md         Websites, documented
-docs/06-ecommerce.md        E-Commerce, documented
+docs/06-ecommerce.md        E-Commerce — superseded, service removed
 docs/07-social.md           Social Media Management, documented
 docs/08-marketing.md        Digital Marketing & Ads, documented
 docs/09-integrated.md       Integrated Solutions, documented
@@ -25,7 +25,8 @@ docs/15-footer.md           Footer, documented
 docs/16-qa.md               Global QA & production readiness
 docs/17-contact.md          Contact, documented
 docs/18-refinement.md       Clarity & repetition pass — read with 12/09
-index.html                  The homepage — ten sections, header and footer
+docs/19-remove-ecommerce.md E-Commerce removed — what it touched
+index.html                  The homepage — nine sections, header and footer
 styleguide.html             Living specimen sheet for every token and component
 styleguide.css              Chrome for the specimen page (documentation only)
 src/styles/                 The product stylesheet
@@ -68,7 +69,7 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 03 | Services overview | Done |
 | 04 | Branding & Design | Done |
 | 05 | Websites | Done |
-| 06 | E-Commerce | Done |
+| 06 | E-Commerce | **Removed** — see `docs/19-remove-ecommerce.md` |
 | 07 | Social Media Management | Done |
 | 08 | Digital Marketing & Advertising | Done |
 | 09 | Integrated Solutions | Done |
@@ -81,6 +82,7 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 16 | Global QA & production readiness | Done |
 | 17 | Contact | Done |
 | — | Clarity & repetition pass | Done — see `docs/18-refinement.md` |
+| — | E-Commerce removed | Done — see `docs/19-remove-ecommerce.md` |
 
 ## Single-file build
 
@@ -181,18 +183,16 @@ Each stage's doc ends with its own open items. Across the project:
   correctly. Remove the attribute from an element as its translation lands.
   Where a string ships in both languages, it uses `data-lang-copy` instead and
   needs nothing further.
-- **Websites and E-Commerce inclusions are a signed-off split, not source
-  data.** The original document gave prices but no per-package inclusions; the
-  split was drafted from each service's own approved capabilities and approved
-  on review. Every line is approved wording — only the assignment of a line to
+- **The Websites inclusions are a signed-off split, not source data.** The
+  original document gave prices but no per-package inclusions; the split was
+  drafted from the service's own approved capabilities and approved on review.
+  (It also covered E-Commerce, which has since been removed.) Every line is approved wording — only the assignment of a line to
   a package came later. `docs/05-websites.md` records the two lines worth
   re-checking.
 - **One pricing category is unbuilt for want of data** — Integrated Solutions
   (Business Launch, Digital Growth). It is omitted from the pricing selector
   rather than shown as an empty tab; send the packages and it is one entry plus
   its data. Additional Services arrived in Stage 11 and is now section 08.
-- **E-Commerce has no positioning statements**, so those two cards have no
-  purpose line.
 - **A form service.** The contact form posts to a `mailto:`, which depends on
   the visitor having a working mail client. Any endpoint replaces the `action`
   and one submit handler; nothing else moves.

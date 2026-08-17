@@ -2523,7 +2523,7 @@
    The connected digital ecosystem: five services orbiting a Growth core,
    joined by concentric rings and radial connectors.
 
-   Two compositions from one DOM order (branding → websites → e-commerce →
+   Two compositions from one DOM order (branding → websites →
    social → marketing → growth):
      desktop / tablet — radial: nodes absolutely placed around the core
      mobile           — vertical: the same nodes as a connected list
@@ -3986,23 +3986,6 @@
     letter-spacing: var(--tracking-normal);
   }
 
-  /* Pushed to the far end so the line reads "what it costs … how to compare",
-     and so the link is a predictable place at every width. */
-  .c-detail__packages-link {
-    margin-inline-start: auto;
-    min-block-size: var(--touch-target-min);
-  }
-
-  /* A single quiet fact, not a call to action — used where a section has one
-     more thing worth knowing and nothing to click. */
-  .c-detail__aside {
-    margin-block-start: var(--section-space-tight);
-    padding-block-start: var(--space-32);
-    border-block-start: var(--border-hairline);
-    max-inline-size: 52ch;
-    color: var(--color-text-secondary);
-  }
-
   /* Entrance: cards settle in sequence (§23). */
   @media (prefers-reduced-motion: no-preference) {
     .js [data-reveal-group].c-tiers > * {
@@ -4373,13 +4356,13 @@
 
 @layer components {
   /* Two packages, not three: a pair should meet in the middle rather than
-     leave a gap where a third card would be. */
+     leave a gap where a third card would be.
+
+     Currently unused — E-Commerce was the only two-package category and it was
+     removed. This is NOT dead code: build-pricing.js still emits the class for
+     any category with two packages, so deleting the rule would silently break
+     the next one. */
   @media (min-width: 48em) {
-    .c-tiers--pair {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-inline-size: 46rem;
-      margin-inline: auto;
-    }
 
     .c-tiers--pair > :last-child {
       grid-column: auto;
@@ -5067,7 +5050,7 @@
    A serpentine track: six steps that read left-to-right, fold, and read back.
 
    WHY A TRACK RATHER THAN A ROW OF CARDS (rule 04/08)
-   The page already has gapped card grids (add-ons, commerce modules) and
+   The page already has gapped card grids (add-ons, package tiers) and
    three ordered .c-pipeline strips. A seventh variation of either would read
    as the same component again. This is a gapless divided TRACK: one continuous
    rule runs across each row, the cells are separated by hairlines rather than
@@ -5915,7 +5898,7 @@
    to be recomputed, and mirrors under RTL for free via logical properties.
 
    Deliberately NOT the hero's orbit (loose bodies in a field) and NOT the
-   commerce module grid (pieces of one interface). This is an armature:
+   add-on module grid (pieces of one interface). This is an armature:
    orthogonal, indexed, wired. Same family, different device — rule 24.
    ============================================================================= */
 
@@ -6220,7 +6203,7 @@
       /* Rows are declared even though their size is `auto`: `grid-row: 1 / -1`
          on the hub counts explicit grid lines, and with an implicit grid -1
          resolves back to line 1 — the hub silently stops spanning. */
-      grid-template-rows: repeat(3, auto);
+      grid-template-rows: repeat(2, auto);
       column-gap: var(--eco-gutter);
       row-gap: var(--space-32);
       align-items: center;
@@ -6234,14 +6217,19 @@
       content: none;
     }
 
-    /* Nodes 01-03 fill the lead column, 04-05 the trail column. Explicit
-       placement, so DOM order stays the journey order 01..05 and the visual
-       order is a property of the grid rather than of `order`. */
+    /* Nodes 01-02 fill the lead column, 03-04 the trail column. Explicit
+       placement, so DOM order stays the journey order 01..04 and the visual
+       order is a property of the grid rather than of `order`.
+
+       This was 3 + 2 for five services. Removing E-Commerce left 3 + 1 —
+       three nodes down one side and a hole beside the fourth — so the split
+       rebalanced with it. The `-n + 2` / `n + 3` boundaries below follow the
+       same line: they decide which side a node's connector, arrow and hover
+       shift point towards. */
     .c-eco__stop:nth-child(1) { grid-column: 1; grid-row: 1; }
     .c-eco__stop:nth-child(2) { grid-column: 1; grid-row: 2; }
-    .c-eco__stop:nth-child(3) { grid-column: 1; grid-row: 3; }
-    .c-eco__stop:nth-child(4) { grid-column: 3; grid-row: 1; }
-    .c-eco__stop:nth-child(5) { grid-column: 3; grid-row: 2; }
+    .c-eco__stop:nth-child(3) { grid-column: 3; grid-row: 1; }
+    .c-eco__stop:nth-child(4) { grid-column: 3; grid-row: 2; }
 
     .c-eco__terminus {
       grid-column: 2;
@@ -6289,12 +6277,12 @@
     }
 
     /* Lead column: the stub leaves at the node's inline-end edge. */
-    .c-eco__stop:nth-child(-n + 3)::before {
+    .c-eco__stop:nth-child(-n + 2)::before {
       inset-inline-end: calc(-1 * var(--eco-gutter));
     }
 
     /* Trail column: at the inline-start edge. */
-    .c-eco__stop:nth-child(n + 4)::before {
+    .c-eco__stop:nth-child(n + 3)::before {
       inset-inline-start: calc(-1 * var(--eco-gutter));
     }
 
@@ -6311,16 +6299,16 @@
     /* Trail-column nodes read toward the hub: text at the trailing edge,
        marker on the outside. Achieved by reversing the grid columns, which
        mirrors correctly because the columns are logical. */
-    .c-eco__stop:nth-child(n + 4) .c-eco__node {
+    .c-eco__stop:nth-child(n + 3) .c-eco__node {
       grid-template-columns: auto 1fr var(--space-48);
       text-align: end;
     }
 
-    .c-eco__stop:nth-child(n + 4) .c-eco__marker {
+    .c-eco__stop:nth-child(n + 3) .c-eco__marker {
       order: 3;
     }
 
-    .c-eco__stop:nth-child(n + 4) .c-eco__go {
+    .c-eco__stop:nth-child(n + 3) .c-eco__go {
       order: 1;
       rotate: 180deg;
     }
@@ -6387,23 +6375,23 @@
 
     /* Movement toward the hub — the direction is logical, so under RTL each
        node still travels inward rather than off to the same physical side. */
-    .c-eco__stop:nth-child(-n + 3) .c-eco__node:hover,
-    .c-eco__stop:nth-child(-n + 3) .c-eco__node:focus-visible {
+    .c-eco__stop:nth-child(-n + 2) .c-eco__node:hover,
+    .c-eco__stop:nth-child(-n + 2) .c-eco__node:focus-visible {
       translate: var(--eco-shift) 0;
     }
 
-    .c-eco__stop:nth-child(n + 4) .c-eco__node:hover,
-    .c-eco__stop:nth-child(n + 4) .c-eco__node:focus-visible {
+    .c-eco__stop:nth-child(n + 3) .c-eco__node:hover,
+    .c-eco__stop:nth-child(n + 3) .c-eco__node:focus-visible {
       translate: calc(-1 * var(--eco-shift)) 0;
     }
 
-    [dir="rtl"] .c-eco__stop:nth-child(-n + 3) .c-eco__node:hover,
-    [dir="rtl"] .c-eco__stop:nth-child(-n + 3) .c-eco__node:focus-visible {
+    [dir="rtl"] .c-eco__stop:nth-child(-n + 2) .c-eco__node:hover,
+    [dir="rtl"] .c-eco__stop:nth-child(-n + 2) .c-eco__node:focus-visible {
       translate: calc(-1 * var(--eco-shift)) 0;
     }
 
-    [dir="rtl"] .c-eco__stop:nth-child(n + 4) .c-eco__node:hover,
-    [dir="rtl"] .c-eco__stop:nth-child(n + 4) .c-eco__node:focus-visible {
+    [dir="rtl"] .c-eco__stop:nth-child(n + 3) .c-eco__node:hover,
+    [dir="rtl"] .c-eco__stop:nth-child(n + 3) .c-eco__node:focus-visible {
       translate: var(--eco-shift) 0;
     }
   }
@@ -7364,7 +7352,7 @@ const CONTACT_CHANNELS = [
 ];
 
 /**
- * The six service categories, in the order the Services section lists them.
+ * The five service categories, in the order the Services section lists them.
  *
  * Same principle as SECTIONS: the footer's services column renders from this
  * array rather than being typed out a second time, so it cannot drift from the
@@ -7379,7 +7367,6 @@ const CONTACT_CHANNELS = [
 const SERVICE_LINKS = [
   { id: 'branding', label: 'Branding & Design' },
   { id: 'websites', label: 'Websites' },
-  { id: 'ecommerce', label: 'E-Commerce' },
   { id: 'social', label: 'Social Media Management' },
   { id: 'marketing', label: 'Digital Marketing & Advertising' },
   { id: 'integrated', label: 'Integrated Digital Solutions' },

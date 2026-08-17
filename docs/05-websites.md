@@ -1,5 +1,8 @@
 # Stage 05 — Websites
 
+> **Note.** The signed-off split described here now covers Websites only —
+> E-Commerce was removed as a service. See `docs/19-remove-ecommerce.md`.
+
 The second detailed service section: a responsive device composition, the
 ten-step delivery pipeline, and three packages. Reuses `.c-detail` and
 `.c-tier` from Stage 04 unchanged.

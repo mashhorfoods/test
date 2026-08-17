@@ -1,5 +1,12 @@
 # Stage 06 — E-Commerce
 
+> **Superseded — the service was removed.** E-Commerce is no longer offered on
+> the site: the section, its two packages, its accordion entry, its ecosystem
+> node, its hero constellation body, its footer link and the "Adding products
+> to the store" add-on were all removed. See `docs/19-remove-ecommerce.md`.
+> Everything below describes how the section was built, kept for the record and
+> in case the service returns.
+
 The third detailed service section: a connected commerce module grid, the six
 service capabilities, and two packages. Reuses `.c-detail` and `.c-tier`.
 

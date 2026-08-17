@@ -13,7 +13,7 @@
    to be recomputed, and mirrors under RTL for free via logical properties.
 
    Deliberately NOT the hero's orbit (loose bodies in a field) and NOT the
-   commerce module grid (pieces of one interface). This is an armature:
+   add-on module grid (pieces of one interface). This is an armature:
    orthogonal, indexed, wired. Same family, different device — rule 24.
    ============================================================================= */
 
@@ -318,7 +318,7 @@
       /* Rows are declared even though their size is `auto`: `grid-row: 1 / -1`
          on the hub counts explicit grid lines, and with an implicit grid -1
          resolves back to line 1 — the hub silently stops spanning. */
-      grid-template-rows: repeat(3, auto);
+      grid-template-rows: repeat(2, auto);
       column-gap: var(--eco-gutter);
       row-gap: var(--space-32);
       align-items: center;
@@ -332,14 +332,19 @@
       content: none;
     }
 
-    /* Nodes 01-03 fill the lead column, 04-05 the trail column. Explicit
-       placement, so DOM order stays the journey order 01..05 and the visual
-       order is a property of the grid rather than of `order`. */
+    /* Nodes 01-02 fill the lead column, 03-04 the trail column. Explicit
+       placement, so DOM order stays the journey order 01..04 and the visual
+       order is a property of the grid rather than of `order`.
+
+       This was 3 + 2 for five services. Removing E-Commerce left 3 + 1 —
+       three nodes down one side and a hole beside the fourth — so the split
+       rebalanced with it. The `-n + 2` / `n + 3` boundaries below follow the
+       same line: they decide which side a node's connector, arrow and hover
+       shift point towards. */
     .c-eco__stop:nth-child(1) { grid-column: 1; grid-row: 1; }
     .c-eco__stop:nth-child(2) { grid-column: 1; grid-row: 2; }
-    .c-eco__stop:nth-child(3) { grid-column: 1; grid-row: 3; }
-    .c-eco__stop:nth-child(4) { grid-column: 3; grid-row: 1; }
-    .c-eco__stop:nth-child(5) { grid-column: 3; grid-row: 2; }
+    .c-eco__stop:nth-child(3) { grid-column: 3; grid-row: 1; }
+    .c-eco__stop:nth-child(4) { grid-column: 3; grid-row: 2; }
 
     .c-eco__terminus {
       grid-column: 2;
@@ -387,12 +392,12 @@
     }
 
     /* Lead column: the stub leaves at the node's inline-end edge. */
-    .c-eco__stop:nth-child(-n + 3)::before {
+    .c-eco__stop:nth-child(-n + 2)::before {
       inset-inline-end: calc(-1 * var(--eco-gutter));
     }
 
     /* Trail column: at the inline-start edge. */
-    .c-eco__stop:nth-child(n + 4)::before {
+    .c-eco__stop:nth-child(n + 3)::before {
       inset-inline-start: calc(-1 * var(--eco-gutter));
     }
 
@@ -409,16 +414,16 @@
     /* Trail-column nodes read toward the hub: text at the trailing edge,
        marker on the outside. Achieved by reversing the grid columns, which
        mirrors correctly because the columns are logical. */
-    .c-eco__stop:nth-child(n + 4) .c-eco__node {
+    .c-eco__stop:nth-child(n + 3) .c-eco__node {
       grid-template-columns: auto 1fr var(--space-48);
       text-align: end;
     }
 
-    .c-eco__stop:nth-child(n + 4) .c-eco__marker {
+    .c-eco__stop:nth-child(n + 3) .c-eco__marker {
       order: 3;
     }
 
-    .c-eco__stop:nth-child(n + 4) .c-eco__go {
+    .c-eco__stop:nth-child(n + 3) .c-eco__go {
       order: 1;
       rotate: 180deg;
     }
@@ -485,23 +490,23 @@
 
     /* Movement toward the hub — the direction is logical, so under RTL each
        node still travels inward rather than off to the same physical side. */
-    .c-eco__stop:nth-child(-n + 3) .c-eco__node:hover,
-    .c-eco__stop:nth-child(-n + 3) .c-eco__node:focus-visible {
+    .c-eco__stop:nth-child(-n + 2) .c-eco__node:hover,
+    .c-eco__stop:nth-child(-n + 2) .c-eco__node:focus-visible {
       translate: var(--eco-shift) 0;
     }
 
-    .c-eco__stop:nth-child(n + 4) .c-eco__node:hover,
-    .c-eco__stop:nth-child(n + 4) .c-eco__node:focus-visible {
+    .c-eco__stop:nth-child(n + 3) .c-eco__node:hover,
+    .c-eco__stop:nth-child(n + 3) .c-eco__node:focus-visible {
       translate: calc(-1 * var(--eco-shift)) 0;
     }
 
-    [dir="rtl"] .c-eco__stop:nth-child(-n + 3) .c-eco__node:hover,
-    [dir="rtl"] .c-eco__stop:nth-child(-n + 3) .c-eco__node:focus-visible {
+    [dir="rtl"] .c-eco__stop:nth-child(-n + 2) .c-eco__node:hover,
+    [dir="rtl"] .c-eco__stop:nth-child(-n + 2) .c-eco__node:focus-visible {
       translate: calc(-1 * var(--eco-shift)) 0;
     }
 
-    [dir="rtl"] .c-eco__stop:nth-child(n + 4) .c-eco__node:hover,
-    [dir="rtl"] .c-eco__stop:nth-child(n + 4) .c-eco__node:focus-visible {
+    [dir="rtl"] .c-eco__stop:nth-child(n + 3) .c-eco__node:hover,
+    [dir="rtl"] .c-eco__stop:nth-child(n + 3) .c-eco__node:focus-visible {
       translate: var(--eco-shift) 0;
     }
   }

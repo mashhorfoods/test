@@ -558,23 +558,6 @@
     letter-spacing: var(--tracking-normal);
   }
 
-  /* Pushed to the far end so the line reads "what it costs … how to compare",
-     and so the link is a predictable place at every width. */
-  .c-detail__packages-link {
-    margin-inline-start: auto;
-    min-block-size: var(--touch-target-min);
-  }
-
-  /* A single quiet fact, not a call to action — used where a section has one
-     more thing worth knowing and nothing to click. */
-  .c-detail__aside {
-    margin-block-start: var(--section-space-tight);
-    padding-block-start: var(--space-32);
-    border-block-start: var(--border-hairline);
-    max-inline-size: 52ch;
-    color: var(--color-text-secondary);
-  }
-
   /* Entrance: cards settle in sequence (§23). */
   @media (prefers-reduced-motion: no-preference) {
     .js [data-reveal-group].c-tiers > * {
@@ -945,13 +928,13 @@
 
 @layer components {
   /* Two packages, not three: a pair should meet in the middle rather than
-     leave a gap where a third card would be. */
+     leave a gap where a third card would be.
+
+     Currently unused — E-Commerce was the only two-package category and it was
+     removed. This is NOT dead code: build-pricing.js still emits the class for
+     any category with two packages, so deleting the rule would silently break
+     the next one. */
   @media (min-width: 48em) {
-    .c-tiers--pair {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-inline-size: 46rem;
-      margin-inline: auto;
-    }
 
     .c-tiers--pair > :last-child {
       grid-column: auto;
