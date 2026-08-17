@@ -86,9 +86,14 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 
 ## Single-file build
 
-`dist/index.html` is the whole site in **one self-contained file** — no CSS,
-JavaScript, font or icon requests. Open it directly from disk, e-mail it, or
-drop it on any host.
+`dist/index.html` is the whole site in **one file** — no CSS, JavaScript, font
+or icon requests. Open it directly from disk, e-mail it, or drop it on any host.
+
+> **Currently four requests, not zero.** The Branding & Design panels hotlink
+> four PNGs from `i.ibb.co`, and the build cannot inline what it does not have
+> on disk. `node build.js` says so explicitly every run. Save those four files
+> under `src/assets/` and point `src="./…"` at them, and the build inlines them
+> like everything else — the zero-request property comes straight back.
 
 ```bash
 node build.js
@@ -105,8 +110,8 @@ hero height, the ecosystem wiring, and the mobile menu.
 
 | | Requests | Size |
 | --- | --- | --- |
-| Modular source | 37 | 321KB |
-| `dist/index.html` | **1** | 701KB (132KB of it fonts) |
+| Modular source | 41 | 321KB |
+| `dist/index.html` | **5** (1 + 4 hotlinked images) | 598KB (132KB of it fonts) |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:

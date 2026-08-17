@@ -3558,10 +3558,11 @@
   }
 
   .c-brandboard__panel {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-16);
-    padding: var(--space-24);
+    /* No padding. The artwork IS the panel now — the label and the inset that
+       framed a line drawing are gone, so a border plus a bleed-to-edge image
+       is the whole composition. overflow:hidden is what keeps the image inside
+       the rounded corner. */
+    overflow: hidden;
     background-color: var(--color-bg);
     border: var(--border-hairline);
     border-radius: var(--radius-md);
@@ -3572,41 +3573,30 @@
     border-color: var(--color-border-strong);
   }
 
-  .c-brandboard__label {
-    font-family: var(--font-display);
-    font-size: var(--text-label);
-    font-weight: var(--weight-medium);
-    letter-spacing: var(--tracking-label);
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-  }
+  /* THE FIT.
+     `aspect-ratio` on the IMAGE, not on a wrapper: every panel then reserves
+     its space before the file arrives, so nothing reflows as the four load and
+     the grid never jumps. Four panels of equal ratio also line up whatever the
+     source files measure.
 
-  [dir="rtl"] .c-brandboard__label {
-    text-transform: none;
-    letter-spacing: var(--tracking-normal);
-    font-size: var(--text-small);
-  }
+     `object-fit: contain` rather than `cover`, deliberately: cover fills the
+     box but CROPS, and these are pieces of finished design work — a cropped
+     palette or a clipped logo is worse than a little breathing room. If a
+     particular image should fill edge to edge instead, `cover` is a one-word
+     change.
 
-  .c-brandboard__figure {
-    display: grid;
-    place-items: center;
-    aspect-ratio: 4 / 3;
-    min-block-size: 0;
-    overflow: hidden;
-  }
-
-  .c-brandboard__figure svg {
+     `inline-size: 100%` with `block-size: 100%` keeps it locked to the panel
+     at every width, so there is nothing to go wrong responsively: the panel is
+     a grid track, the image is the whole panel. */
+  .c-brandboard__image {
+    display: block;
     inline-size: 100%;
     block-size: 100%;
-    max-block-size: 100%;
-    /* The reset fills SVG with currentcolor and a CSS declaration beats a
-       presentation attribute, so outline artwork must be unfilled here. */
-    fill: none;
-    color: var(--color-text-primary);
-    /* SVG <text> honours `direction`, so under RTL an x-positioned label
-       treats its x as the run's *end* and runs off the viewBox. This artwork
-       is decorative and its specimen is Latin, so it is pinned to LTR. */
-    direction: ltr;
+    aspect-ratio: 4 / 3;
+    object-fit: contain;
+    /* A backdrop for whatever transparency the PNGs carry, so a transparent
+       logo does not sit on the page ground and lose the panel edge. */
+    background-color: var(--color-surface);
   }
 
   /* =======================================================================
@@ -8935,63 +8925,43 @@ if (document.readyState === 'loading') {
 
           <div class="c-brandboard" data-reveal-group>
           <div class="c-brandboard__panel">
-            <p class="c-brandboard__label" data-i18n-pending>Construction</p>
-            <div class="c-brandboard__figure" aria-hidden="true">
-              <svg viewBox="0 0 200 150" focusable="false">
-              <g stroke="currentColor" stroke-width="0.8" opacity="0.22">
-                <path d="M20 15v120M60 15v120M100 15v120M140 15v120M180 15v120" />
-                <path d="M20 15h160M20 45h160M20 75h160M20 105h160M20 135h160" />
-              </g>
-              <circle cx="100" cy="75" r="46" stroke="currentColor" stroke-width="0.9" opacity="0.35" stroke-dasharray="3 4" />
-              <circle cx="100" cy="75" r="30" stroke="currentColor" stroke-width="0.9" opacity="0.35" stroke-dasharray="3 4" />
-              <path d="M78 100 100 44 122 100 M87 82h26" stroke="var(--color-accent)" stroke-width="3.4" stroke-linejoin="round" />
-            </svg>
-            </div>
+            <img
+              class="c-brandboard__image"
+              src="https://i.ibb.co/VYjsfJ4M/B1.png"
+              alt="Brand construction — grid and logo geometry"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
+
           <div class="c-brandboard__panel">
-            <p class="c-brandboard__label" data-i18n-pending>Typography</p>
-            <div class="c-brandboard__figure" aria-hidden="true">
-              <svg viewBox="0 0 200 150" focusable="false">
-              <path d="M14 118h172M14 40h172" stroke="currentColor" stroke-width="0.9" opacity="0.28" stroke-dasharray="3 4" />
-              <text x="16" y="112" font-family="Poppins, sans-serif" font-size="86" font-weight="700" fill="currentColor">Aa</text>
-              <g stroke="var(--color-accent)" stroke-width="2.6">
-                <path d="M138 112h48M138 96h36M138 82h26M138 70h18" />
-              </g>
-              <path d="M14 132h74" stroke="currentColor" stroke-width="2" opacity="0.3" />
-            </svg>
-            </div>
+            <img
+              class="c-brandboard__image"
+              src="https://i.ibb.co/HL794Djd/B2.png"
+              alt="Typography specimen"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
+
           <div class="c-brandboard__panel">
-            <p class="c-brandboard__label" data-i18n-pending>Palette</p>
-            <div class="c-brandboard__figure" aria-hidden="true">
-              <svg viewBox="0 0 200 150" focusable="false">
-              <rect x="14" y="18" width="80" height="80" fill="var(--color-accent)" />
-              <rect x="102" y="18" width="38" height="38" fill="currentColor" opacity="0.9" />
-              <rect x="148" y="18" width="38" height="38" fill="currentColor" opacity="0.42" />
-              <rect x="102" y="60" width="38" height="38" fill="currentColor" opacity="0.24" />
-              <rect x="148" y="60" width="38" height="38" fill="currentColor" opacity="0.12" />
-              <g stroke="currentColor" stroke-width="2" opacity="0.32">
-                <path d="M14 116h80M102 116h38M148 116h38" />
-              </g>
-              <path d="M14 130h44" stroke="var(--color-accent)" stroke-width="2.4" />
-            </svg>
-            </div>
+            <img
+              class="c-brandboard__image"
+              src="https://i.ibb.co/Z6Z7JcFf/B3.png"
+              alt="Colour palette"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
+
           <div class="c-brandboard__panel">
-            <p class="c-brandboard__label" data-i18n-pending>Application</p>
-            <div class="c-brandboard__figure" aria-hidden="true">
-              <svg viewBox="0 0 200 150" focusable="false">
-              <rect x="10" y="24" width="98" height="60" stroke="currentColor" stroke-width="1.2" opacity="0.5" />
-              <path d="M24 46 34 24 44 46 M28 39h12" stroke="var(--color-accent)" stroke-width="2.2" stroke-linejoin="round" />
-              <g stroke="currentColor" stroke-width="2" opacity="0.3"><path d="M24 62h50M24 71h34" /></g>
-              <rect x="120" y="14" width="70" height="70" stroke="currentColor" stroke-width="1.2" opacity="0.5" />
-              <circle cx="136" cy="30" r="7" fill="var(--color-accent)" />
-              <rect x="128" y="44" width="54" height="30" fill="currentColor" opacity="0.16" />
-              <rect x="10" y="98" width="60" height="38" fill="currentColor" opacity="0.12" />
-              <rect x="78" y="98" width="60" height="38" fill="currentColor" opacity="0.2" />
-              <rect x="146" y="98" width="44" height="38" stroke="var(--color-accent)" stroke-width="1.6" />
-            </svg>
-            </div>
+            <img
+              class="c-brandboard__image"
+              src="https://i.ibb.co/HT0n0L4B/B4.png"
+              alt="Identity applied across formats"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
           </div>
 

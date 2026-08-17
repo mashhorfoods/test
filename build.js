@@ -113,7 +113,8 @@ function bundleJs(entry, seen = new Set(), bindings = new Map()) {
 
 function buildPage(file) {
   let html = read(file);
-  const stats = { css: 0, fonts: 0, fontBytes: 0, js: 0 };
+  const stats = { css: 0, fonts: 0, fontBytes: 0, js: 0,
+    images: 0, imageBytes: 0, imagesMissing: [], imagesRemote: [] };
 
   // --- stylesheets -> one inline <style>, in document order ---------------
   const sheets = [...html.matchAll(/[ \t]*<link rel="stylesheet" href="\.\/([^"]+)"[^>]*>\n?/g)];
@@ -136,6 +137,26 @@ function buildPage(file) {
     const svg = read(p);
     return `href="data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}"`;
   });
+
+  // --- <img> -> data: URI, when the file is ours ---------------------------
+  // A LOCAL image becomes bytes in the document like everything else. A REMOTE
+  // one cannot: this build has no business fetching third-party hosts, and a
+  // hotlink would still be a hotlink after inlining. So it is left alone AND
+  // reported, because the whole promise of this file is that it opens from
+  // disk with no network — a silently remote <img> would break that promise
+  // without anyone noticing.
+  const MIME = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg',
+                 gif: 'image/gif', svg: 'image/svg+xml', webp: 'image/webp' };
+  html = html.replace(/src="(\.\/[^"]+\.(?:png|jpe?g|gif|svg|webp))"/gi, (m, rel) => {
+    const abs = path.join(ROOT, rel.slice(2));
+    if (!fs.existsSync(abs)) { stats.imagesMissing.push(rel); return m; }
+    const buf = fs.readFileSync(abs);
+    stats.images += 1;
+    stats.imageBytes += buf.length;
+    const ext = rel.split('.').pop().toLowerCase();
+    return `src="data:${MIME[ext] || 'application/octet-stream'};base64,${buf.toString('base64')}"`;
+  });
+  stats.imagesRemote = [...html.matchAll(/<img[^>]+src="(https?:\/\/[^"]+)"/gi)].map(m => m[1]);
 
   // --- module graph -> one inline module ----------------------------------
   html = html.replace(
@@ -161,14 +182,35 @@ fs.mkdirSync(DIST, { recursive: true });
 
 const kb = (n) => `${(n / 1024).toFixed(1)}KB`;
 
+let remote = [];
+let missing = [];
 for (const page of ['index.html', 'styleguide.html']) {
   const { html, stats } = buildPage(page);
   const out = path.join(DIST, page);
   fs.writeFileSync(out, html);
+  remote = remote.concat(stats.imagesRemote);
+  missing = missing.concat(stats.imagesMissing);
   console.log(
     `${page.padEnd(16)} -> dist/${page}  ${kb(Buffer.byteLength(html))}  ` +
-      `(css ${kb(stats.css)}, js ${kb(stats.js)}, ${stats.fonts} fonts ${kb(stats.fontBytes)})`
+      `(css ${kb(stats.css)}, js ${kb(stats.js)}, ${stats.fonts} fonts ${kb(stats.fontBytes)}` +
+      `${stats.images ? `, ${stats.images} images ${kb(stats.imageBytes)}` : ''})`
   );
 }
 
-console.log('\nEach file is self-contained: open it directly, or drop it on any host.');
+if (missing.length) {
+  console.log(`\n  ! ${missing.length} image(s) referenced but not on disk:`);
+  [...new Set(missing)].forEach((u) => console.log(`      ${u}`));
+}
+
+if (remote.length) {
+  const hosts = [...new Set(remote.map((u) => new URL(u).host))];
+  console.log(
+    `\n  ! ${remote.length} image(s) load from ${hosts.join(', ')} and CANNOT be inlined.` +
+    `\n    dist/index.html is no longer self-contained: it needs the network for` +
+    `\n    these, and it breaks if that host goes away or blocks hotlinking.` +
+    `\n    Save them under src/assets/ and point src="./…" at them to fix it.`
+  );
+  [...new Set(remote)].forEach((u) => console.log(`      ${u}`));
+} else {
+  console.log('\nEach file is self-contained: open it directly, or drop it on any host.');
+}

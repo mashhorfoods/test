@@ -1,5 +1,23 @@
 # Stage 04 — Branding & Design
 
+> **The four panels are now photographs of the work, not drawings of it.** The
+> labels (Construction / Typography / Palette / Application) were removed and
+> each panel is a single supplied image, edge to edge.
+>
+> - `object-fit: contain`, not `cover` — cover fills the box but **crops**, and
+>   these are pieces of finished design work. Switch to `cover` per-panel if a
+>   particular image should bleed instead.
+> - `aspect-ratio` sits on the image itself, so every panel reserves its space
+>   before the file arrives and the grid never jumps as the four load.
+> - The fit was measured against local stand-ins at **four different aspect
+>   ratios** (4:3, 16:9, 1:1, 3:4) across 13 widths in both directions, so the
+>   layout holds whatever the real files measure. Matching ratios fill the
+>   panel edge to edge; mismatched ones letterbox against the panel surface.
+> - They are **hotlinked from `i.ibb.co`**. That host is unreachable from the
+>   build environment, so the images could not be inlined, verified visually,
+>   or checked for what they actually contain. `node build.js` reports this on
+>   every run. Self-host them under `src/assets/` to close it.
+
 The first detailed service section: an identity board followed by three
 package tiers. Built from Stage 00 tokens; header, hero and services overview
 are untouched.
