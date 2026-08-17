@@ -7,16 +7,22 @@ many times it says it, and how many buttons it asks you to consider.
 Verified by `scratchpad/refine.js` — 8 groups, both directions, with and
 without JavaScript. Every figure below is measured.
 
+> **Followed by a placement change.** The packages were moved again after this
+> pass, into the service sections, and the standalone Pricing section was
+> removed — see §9 at the end. Everything §1 says about *removing the
+> duplication* still holds; where it says the packages live in Pricing, they
+> now live in the service section each one belongs to.
+
 | | Before | After |
 | --- | --- | --- |
-| Page height (1440px) | 25,253px | **18,482px** |
-| Buttons on the page | 46 | **27** |
+| Page height (1440px) | 25,253px | **18,482px** → 21,303px (see §9) |
+| Buttons on the page | 46 | **27** → 24 (see §9) |
 | …saying "Start Your Project" | 31 | **19** (14 of them one per package) |
 | Package cards | 28 | **14** |
 | Feature lines | 240 | **120** |
 | Sentences repeated across sections | 97 | **0** |
 | Section-level closing CTA blocks | 10 | **0** |
-| Sections | 14 | **13** |
+| Sections | 14 | **13** → 12 (see §9) |
 
 ---
 
@@ -116,9 +122,9 @@ inclusion list in front of them. Six that open a service. Nothing unclassified.
   section.
 
 What stayed is navigation that opens a specific destination — the six service
-links, and the packages band's link into a named pricing category. §04 permits
-exactly that, and both were relabelled to say where they go: *"View packages"*
-became **"See what it covers"**, because the packages had moved.
+links. §04 permits exactly that, and they were relabelled to say where they go:
+*"View packages"* became **"See what it covers"**, because the packages had
+moved. (The band's own link into Pricing went too, in §9.)
 
 ## 5. Six ways of saying the same sentence
 
@@ -199,3 +205,64 @@ resequenced 01–11 after the merge.
 - **`docs/12-why-us.md` describes a section that no longer exists** as its own
   entity. Its argument survives inside `docs/09-integrated.md`'s section.
 - Everything already listed in `README.md` under Outstanding.
+
+
+---
+
+## 9. Where the packages ended up
+
+After this pass shipped, the packages moved once more — into the service
+sections, with the standalone Pricing section removed entirely.
+
+So each service section now runs: what the service is → what it covers → **its
+package cards** → a summary line. The line is what §1 introduced, minus its
+link:
+
+```
+────────────────────────────────────────────────────────
+Three packages, from 200 SAR  ONE-TIME
+```
+
+**What this pass achieved is unchanged.** The fourteen packages still appear
+**once**, not twice — the duplication §1 removed has not come back. What
+changed is which of the two places they kept. `tools/build-pricing.js` still
+renders everything from `src/data/pricing.json`, and the parity test still
+compares the rendered markup against that file.
+
+What went with the Pricing section:
+
+- **The category tablist and its five panels.** With each service carrying its
+  own cards there is nothing to select between. `pricing.css` lost 4,802 bytes;
+  what remains is the custom-quote block, so the file is retitled.
+- **The `data-pricing-jump` deep link** and its handler in `disclosure.js`. It
+  existed to open the right tab; there are no tabs.
+- **"Compare what each includes"** — removed from all five summary lines, and
+  the `comparePackages` string with it. The cards are directly above the line
+  now, so there is nothing to compare *to*.
+- **"Pricing" in the navigation**, from `SECTIONS` and from the seeded header
+  and footer markup. It would have pointed at a section that no longer exists.
+- **`billingAllOnce` / `billingAllMonthly`**, the per-panel billing summaries.
+
+What was **kept** rather than deleted with it:
+
+- **The custom-quote block** (*"Something more specific?"* → Request a Custom
+  Quote) was the only thing in the Pricing section that was not pricing. It is
+  the path for work no package covers, so it moved to the end of **Add-Ons** —
+  the section about extra and unlisted work, exactly where a visitor who has
+  just failed to find what they need will be. The bare line the clarity pass
+  had put there (*"Anything not listed is scoped on request."*) was replaced by
+  it rather than kept alongside.
+- **The advertising-budget note** moved back to the Marketing section with the
+  packages it qualifies. Still exactly one copy.
+
+The sections renumbered again: Add-Ons 07, Process 08, Start 09, Contact 10.
+Twelve sections, three header links.
+
+### A measurement bug, not a page bug
+
+The five summary lines all read `opacity: 0` on first inspection. They were
+fine: the test helper jumped to the bottom of the page with `scrollTo`, and an
+IntersectionObserver never fires for an element you scroll straight past — so
+every reveal it was meant to trigger stayed hidden and every measurement taken
+afterwards was meaningless. The helpers now step down the page the way a reader
+does. Worth remembering: **a scroll jump is not a scroll.**

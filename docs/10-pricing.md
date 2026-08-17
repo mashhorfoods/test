@@ -1,10 +1,13 @@
 # Stage 10 — Pricing Architecture
 
-> **Changed by the clarity pass.** The fourteen packages were published here
-> AND in the service sections. They now appear only here, and the direction of
-> truth inverted: `src/data/pricing.json` is the source, and
-> `tools/build-pricing.js` renders both these cards and a one-line price band
-> in each service section from it. See `docs/18-refinement.md` §1.
+> **Superseded.** This section no longer exists. The fourteen packages were
+> published here AND in the service sections; the clarity pass removed the
+> duplication, and they now live in the service section each one belongs to,
+> with this section removed. `src/data/pricing.json` is the source and
+> `tools/build-pricing.js` renders the cards and each service's price summary
+> from it. The custom-quote block moved to Add-Ons. See
+> `docs/18-refinement.md` §1 and §9. Everything below describes how the
+> packages are structured and generated, which is still how it works.
 
 Fourteen packages from five services, regrouped for comparison. Section 07.
 

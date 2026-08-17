@@ -1,162 +1,21 @@
 /* =============================================================================
-   PRICING — STAGE 10
-   The category selector, its panels, and the custom-quote block.
+   QUOTE — the custom-scope block
+   What is left of Stage 10's pricing section. The category selector and its
+   tab panels went when the packages moved into the service sections: with each
+   service carrying its own cards there is nothing left to select between, so
+   the tablist, the panels and their billing notes are gone.
 
-   The cards themselves are .c-tier, unchanged. That is the point: a visitor
-   arriving from a service section meets the same card, so comparing across
-   categories costs them no re-learning, and the section cannot drift into a
-   different visual language from the rest of the site (rule 37).
+   This block survived the move because it is not pricing — it is the path for
+   work no package covers. It now sits at the end of Add-Ons, which is the
+   section about extra and unlisted work, directly where a visitor who has just
+   failed to find what they need will be.
 
-   The tabs are the existing WAI-ARIA tablist from disclosure.js — roving
-   tabindex, arrow keys swapped under RTL, panels hidden with [hidden] so all
-   fourteen packages stay in the document for crawlers and for a visitor with
-   JavaScript disabled (rule 33).
+   The cards themselves are .c-tier and live in service-detail.css, unchanged.
    ============================================================================= */
 
 @layer components {
-  .c-pricing {
-    margin-block-start: var(--space-48);
-  }
 
-  /* -----------------------------------------------------------------------
-     CATEGORY SELECTOR
-     Wraps rather than scrolls. A horizontally scrolling strip hides
-     categories off the edge with no affordance at exactly the width where
-     the visitor can least afford to miss one; five wrapped chips fit two
-     rows at 320px and cost nothing.
-     ----------------------------------------------------------------------- */
-  .c-pricing__tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-8);
-    margin-block-end: var(--space-32);
-    padding-block-end: var(--space-24);
-    border-block-end: var(--border-hairline);
-  }
-
-  .c-pricing__tab {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-8);
-    /* Comfortably past 44px on every pointer, not only coarse ones — this is
-       the control the whole section turns on. */
-    min-block-size: 44px;
-    padding: var(--space-12) var(--space-16);
-    background-color: transparent;
-    border: var(--border-hairline);
-    border-radius: var(--radius-sm);
-    font-family: var(--font-display);
-    font-size: var(--text-body-sm);
-    font-weight: var(--weight-medium);
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    transition: color var(--duration-fast) var(--ease-standard),
-      border-color var(--duration-fast) var(--ease-standard),
-      background-color var(--duration-fast) var(--ease-standard);
-  }
-
-  .c-pricing__tab:hover {
-    color: var(--color-text-primary);
-    border-color: var(--color-border-strong);
-  }
-
-  /* A marker that is ALWAYS in the layout and only becomes visible when the
-     tab is selected. Presence/absence of a shape is a cue that survives
-     greyscale and every form of colour blindness, which colour alone does
-     not (rule 29) — and because it holds its space either way, selecting a
-     tab never reflows the row under the pointer. */
-  .c-pricing__tab::before {
-    content: "";
-    inline-size: 3px;
-    block-size: 0.95em;
-    flex-shrink: 0;
-    border-radius: 2px;
-    background-color: transparent;
-    transition: background-color var(--duration-fast) var(--ease-standard);
-  }
-
-  /* aria-selected is the styling hook rather than a class: the attribute IS
-     the state, so the two cannot disagree. */
-  .c-pricing__tab[aria-selected="true"] {
-    color: var(--color-accent);
-    border-color: var(--color-border-accent);
-    background-color: var(--color-surface);
-  }
-
-  .c-pricing__tab[aria-selected="true"]::before {
-    background-color: var(--color-accent);
-  }
-
-  /* Weight is deliberately NOT part of the selected state: it would change
-     the chip's width and reflow the row mid-click. */
-
-  .c-pricing__tab-count {
-    display: grid;
-    place-items: center;
-    min-inline-size: 1.5rem;
-    padding-inline: var(--space-4);
-    border-radius: var(--radius-xs);
-    background-color: var(--color-bg-sunken);
-    font-size: var(--text-meta);
-    font-variant-numeric: tabular-nums;
-    color: var(--color-text-muted);
-    direction: ltr;
-    unicode-bidi: isolate;
-  }
-
-  .c-pricing__tab[aria-selected="true"] .c-pricing__tab-count {
-    background-color: var(--color-accent);
-    color: var(--color-text-on-accent);
-  }
-
-  /* -----------------------------------------------------------------------
-     PANELS
-     ----------------------------------------------------------------------- */
-  .c-pricing__panel:focus-visible {
-    box-shadow: var(--focus-ring);
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .c-pricing__panel[data-entering="true"] {
-      animation: tab-in var(--duration-base) var(--ease-out) both;
-    }
-  }
-
-  /* A row above the cards: back to the service that explains them, and the
-     billing model for the whole category so it is not read off one card. */
-  .c-pricing__meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-12) var(--space-24);
-    margin-block-end: var(--space-24);
-  }
-
-  /* The jump link is a real target on touch: at body-small size it measured
-     26px tall, well under the 44px floor. Padding would push it off the
-     baseline it shares with the billing note, so it gets a minimum height
-     and centres inside it instead. */
-  .c-pricing__jump {
-    display: inline-flex;
-    align-items: center;
-    min-block-size: 44px;
-  }
-
-  .c-pricing__billing-note {
-    font-family: var(--font-display);
-    font-size: var(--text-label);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-label);
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-  }
-
-  [dir="rtl"] .c-pricing__billing-note {
-    text-transform: none;
-    letter-spacing: var(--tracking-normal);
-    font-size: var(--text-body-sm);
-  }
+  
 
   /* -----------------------------------------------------------------------
      CUSTOM QUOTE

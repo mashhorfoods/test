@@ -1,22 +1,25 @@
 /* =============================================================================
    BUILD-PRICING
-   Renders every published package from ONE source: src/data/pricing.json.
+   Renders every published package from ONE source: src/data/pricing.json,
+   into the service section each package belongs to.
 
-   THE DIRECTION OF TRUTH INVERTED IN THE REFINEMENT PASS.
-   Stage 10 generated the pricing section BY SCRAPING the detail sections,
-   because the fourteen packages were published in both places and the detail
-   sections got there first. The refinement pass removed that duplication —
-   packages now live in Pricing only — so there is nothing left to scrape.
-   `src/data/pricing.json` is the source, and this tool renders from it:
+   WHERE THE PACKAGES LIVE, AND WHY IT MOVED TWICE.
+   Stage 10 published them in BOTH the service sections and a separate Pricing
+   section, generating the second from the first. The clarity pass removed that
+   duplication by keeping Pricing and cutting the service copies. They now live
+   in the service sections instead, and the standalone Pricing section is gone:
+   a visitor reading about Websites sees the Websites packages there, without a
+   separate section to navigate to and compare across.
 
-     1. the #pricing section, cards and all;
-     2. a one-line packages band in each service section — count, price floor
-        and billing model — so a visitor reading about a service still sees
-        what it costs without meeting the same fourteen cards twice.
+   So this tool renders ONE block per service, between that section's
+   PACKAGES markers:
 
-   Because both come from the same array, the "from 175 SAR" in a service
-   section cannot disagree with the cheapest card in Pricing. A test asserts
-   it, so a stale figure is caught rather than shipped.
+     1. the package cards for that service;
+     2. its pricing note, if the source states one (only Marketing does);
+     3. a summary line — count, price floor, billing model.
+
+   The summary is generated from the same array as the cards, so "from 175 SAR"
+   cannot disagree with the cheapest card above it. A test asserts it.
 
    The output is STATIC HTML committed to index.html, not built in the
    browser: pricing has to be crawlable and has to work with JavaScript off.
@@ -30,9 +33,6 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const HTML = path.join(ROOT, 'index.html');
 const DATA = path.join(ROOT, 'src/data/pricing.json');
-
-const START = '<!-- PRICING:GENERATED:START -->';
-const END = '<!-- PRICING:GENERATED:END -->';
 
 const data = JSON.parse(fs.readFileSync(DATA, 'utf8')).categories;
 const total = data.reduce((n, c) => n + c.packages.length, 0);
@@ -170,50 +170,23 @@ const renderNote = (c) => (c.note
 `
   : '');
 
-const tabs = data.map((c, i) => `            <button class="c-pricing__tab" data-tab="${c.id}"
-              aria-selected="${i === 0 ? 'true' : 'false'}">
-              <span class="c-pricing__tab-label" data-i18n-pending>${esc(c.label)}</span>
-              <span class="c-pricing__tab-count" aria-hidden="true">${c.packages.length}</span>
-              <span class="u-visually-hidden">${c.packages.length} packages</span>
-            </button>`).join('\n');
-
-const panels = data.map((c) => {
-  const monthly = c.packages[0].billing === 'billingMonthly';
-  const pair2 = c.packages.length === 2 ? ' c-tiers--pair' : '';
-  /* The jump link back to the service section is gone. It paired with a
-     "View packages" link pointing the other way, so the two sections linked
-     to each other in a loop; the service band now links here and here only. */
-  return `          <div class="c-pricing__panel" data-tab-panel="${c.id}">
-            <p class="c-pricing__meta">
-              <span class="c-pricing__billing-note" data-i18n="${monthly ? 'billingAllMonthly' : 'billingAllOnce'}">${monthly ? 'Billed monthly' : 'One-time projects'}</span>
-            </p>
-
-            <div class="c-tiers${pair2}">
-${c.packages.map((p, i) => renderCard(p, c.id, i)).join('\n\n')}
-            </div>
-${renderNote(c)}          </div>`;
-}).join('\n\n');
-
-const generated = `${START}
-          <div class="c-pricing" data-tabs>
-            <div class="c-pricing__tabs" role="tablist" aria-label="Pricing categories">
-${tabs}
-            </div>
-
-${panels}
-          </div>
-          ${END}`;
-
-/* --- The per-service packages band --------------------------------------- */
+/* --- The per-service block ------------------------------------------------
+   Cards, then the note, then the summary line. */
 
 const num = (s) => Number(String(s).replace(/,/g, ''));
 const COUNT_WORD = { 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five' };
 
-function renderBand(c) {
+function renderBlock(c) {
   const floor = c.packages.reduce((a, p) => (num(p.price) < num(a.price) ? p : a));
   const monthly = c.packages[0].billing === 'billingMonthly';
   const word = COUNT_WORD[c.packages.length] || String(c.packages.length);
+  const pairClass = c.packages.length === 2 ? ' c-tiers--pair' : '';
+
   return `<!-- PACKAGES:${c.id}:START -->
+          <div class="c-tiers${pairClass}" data-reveal-group>
+${c.packages.map((p, i) => renderCard(p, c.id, i)).join('\n\n')}
+          </div>
+${renderNote(c)}
           <p class="c-detail__packages" data-reveal>
             <span class="c-detail__packages-count" data-i18n-pending>${word} packages, from</span>
             <span class="c-detail__packages-price">
@@ -221,12 +194,6 @@ function renderBand(c) {
               <span class="c-detail__packages-currency" data-i18n="currency">SAR</span>
             </span>
             <span class="c-detail__packages-billing" data-i18n="${monthly ? 'billingMonthly' : 'billingOnce'}">${monthly ? 'Monthly' : 'One-time'}</span>
-            <a class="c-link c-detail__packages-link" href="#pricing" data-pricing-jump="${c.id}">
-              <span data-i18n="comparePackages">Compare what each includes</span>
-              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
-              </svg>
-            </a>
           </p>
           <!-- PACKAGES:${c.id}:END -->`;
 }
@@ -236,18 +203,13 @@ function renderBand(c) {
 let html = fs.readFileSync(HTML, 'utf8');
 const before = html;
 
-if (!html.includes(START) || !html.includes(END)) {
-  throw new Error('pricing markers not found in index.html');
-}
-html = html.replace(new RegExp(`${START}[\\s\\S]*?${END}`), () => generated);
-
 data.forEach((c) => {
   const a = `<!-- PACKAGES:${c.id}:START -->`;
   const b = `<!-- PACKAGES:${c.id}:END -->`;
   if (!html.includes(a) || !html.includes(b)) {
     throw new Error(`packages markers not found for #${c.section}`);
   }
-  html = html.replace(new RegExp(`${a}[\\s\\S]*?${b}`), () => renderBand(c));
+  html = html.replace(new RegExp(`${a}[\\s\\S]*?${b}`), () => renderBlock(c));
 });
 
 // An unchanged output is the SUCCESS case on a re-run, not a failure.
@@ -255,4 +217,4 @@ fs.writeFileSync(HTML, html);
 console.log(html === before ? 'markup already up to date' : 'markup updated');
 console.log(`pricing: ${data.length} categories, ${total} packages`);
 console.log(`  source -> src/data/pricing.json`);
-console.log(`  markup -> index.html (#pricing + ${data.length} service bands)`);
+console.log(`  markup -> index.html (${data.length} service sections)`);

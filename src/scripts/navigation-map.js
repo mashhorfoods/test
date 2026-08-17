@@ -7,11 +7,13 @@
  * surface follows; add a section here and it appears everywhere at once.
  *
  * Order matches the homepage section order exactly (Stage 01 §03/§04):
- *   Home → Services → Pricing → Process → Contact
+ *   Home → Services → Process → Contact
  *
- * "Why Us" left this list in the refinement pass: it argued the same point as
- * Integrated Solutions, so the two merged and the nav lost an entry rather
- * than pointing at a section that no longer exists.
+ * Two entries have left this list. "Why Us" merged into Integrated Solutions,
+ * which argued the same point. "Pricing" went when the packages moved into the
+ * service sections: each service now carries its own prices, so there is no
+ * separate section to navigate to. Both left rather than pointing at a section
+ * that no longer exists.
  *
  * @typedef {object} NavSection
  * @property {string} id        DOM id of the section element on the homepage.
@@ -32,7 +34,6 @@
 export const SECTIONS = [
   { id: 'home', label: 'Home', labelAr: 'الرئيسية' },
   { id: 'services', label: 'Services', labelAr: 'خدماتنا' },
-  { id: 'pricing', label: 'Pricing', labelAr: 'الأسعار' },
   { id: 'process', label: 'Process', labelAr: 'آلية العمل' },
   // Reached through the primary CTA rather than a sixth nav link, so the
   // header keeps one unambiguous conversion action (§11, §19). It still
@@ -137,7 +138,6 @@ export const STRINGS = {
     footerNav: 'Quick links',
     footerServices: 'Services',
     footerStart: 'Start',
-    comparePackages: 'Compare what each includes',
     footerElsewhere: 'Elsewhere',
     opensNewTab: '(opens in a new tab)',
     backToTop: 'Back to top',
@@ -147,9 +147,6 @@ export const STRINGS = {
     currency: 'SAR',
     billingOnce: 'One-time',
     billingMonthly: 'Monthly',
-    // Category-level billing summaries for the pricing tabs (Stage 10).
-    billingAllOnce: 'One-time projects',
-    billingAllMonthly: 'Billed monthly',
     // Add-ons are quoted as starting prices, never as a final figure.
     priceFrom: 'From',
     contactChannels: 'Direct channels',
@@ -172,7 +169,6 @@ export const STRINGS = {
     footerNav: 'روابط سريعة',
     footerServices: 'خدماتنا',
     footerStart: 'ابدأ',
-    comparePackages: 'قارن ما يشمله كل باقة',
     footerElsewhere: 'مواقع أخرى',
     opensNewTab: '(يفتح في نافذة جديدة)',
     backToTop: 'العودة إلى الأعلى',
@@ -180,8 +176,6 @@ export const STRINGS = {
     currency: 'ر.س',
     billingOnce: 'لمرة واحدة',
     billingMonthly: 'شهريًا',
-    billingAllOnce: 'مشاريع لمرة واحدة',
-    billingAllMonthly: 'تُحتسب شهريًا',
     priceFrom: 'يبدأ من',
     contactChannels: 'قنوات التواصل',
     contactElsewhere: 'روابط أخرى',
