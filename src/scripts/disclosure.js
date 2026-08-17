@@ -191,6 +191,22 @@ function initTabs(root) {
 
   const initial = tabs.find((tab) => tab.hasAttribute('data-tab-selected')) ?? tabs[0];
   select(initial, { moveFocus: false });
+
+  /* DEEP LINK FROM A SERVICE SECTION.
+     Each service now carries a one-line packages band whose link points here.
+     Landing on #pricing with the wrong category open would make the visitor
+     hunt for the packages they just asked to see, so the link names its
+     category and this opens it. Focus is NOT moved — the browser is already
+     scrolling to the section, and stealing focus mid-scroll fights it.
+
+     Progressive enhancement: with JavaScript off no panel is hidden, so the
+     same link lands on a page showing every category. Nothing is lost. */
+  document.querySelectorAll('[data-pricing-jump]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const tab = tabs.find((t) => t.dataset.tab === link.dataset.pricingJump);
+      if (tab) select(tab, { moveFocus: false });
+    });
+  });
 }
 
 /* -------------------------------------------------------------------------

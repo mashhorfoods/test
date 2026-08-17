@@ -66,11 +66,6 @@
       grid-row: 1 / span 2;
     }
 
-    .c-hero__cue-wrap {
-      grid-column: 1 / span 5;
-      grid-row: 2;
-      align-self: end;
-    }
   }
 
   /* -----------------------------------------------------------------------
@@ -197,93 +192,28 @@
     block-size: var(--icon-sm);
   }
 
-  /* -----------------------------------------------------------------------
-     SCROLL CUE / TRANSITION INTO SERVICES
-     Doubles as the link into the next section, so the cue is useful rather
-     than ornamental (§26 of Stage 02).
-     ----------------------------------------------------------------------- */
-  /* Hidden on mobile — the reference has no cue there, and the column is
-     already long. Centred on tablet, leading-aligned on desktop. */
-  .c-hero__cue-wrap {
-    display: none;
-    text-align: center;
-  }
 
   @media (min-width: 48em) {
-    .c-hero__cue-wrap {
-      display: block;
-    }
   }
 
   /* On a short desktop window the composition needs the room more than the
      page needs a hint that it scrolls. */
   @media (min-width: 64em) {
-    .c-hero__cue-wrap {
-      text-align: start;
-    }
   }
 
   @media (min-width: 64em) and (max-height: 49.99em) {
-    .c-hero__cue-wrap {
-      display: none;
-    }
   }
 
-  .c-hero__cue {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-12);
-    text-decoration: none;
-    color: var(--color-text-muted);
-    transition: color var(--duration-fast) var(--ease-standard),
-      opacity var(--duration-base) var(--ease-standard);
-  }
 
-  .c-hero__cue:hover {
-    color: var(--color-accent);
-  }
 
-  /* Fades out as soon as the user starts scrolling — the cue has done its job
-     and should not persist. */
-  .c-hero__cue.is-dismissed {
-    opacity: 0;
-    pointer-events: none;
-  }
 
-  .c-hero__cue-mouse {
-    position: relative;
-    inline-size: 20px;
-    block-size: 32px;
-    border: var(--border-width) solid currentcolor;
-    border-radius: var(--radius-pill);
-  }
 
-  .c-hero__cue-wheel {
-    position: absolute;
-    inset-inline-start: 50%;
-    inset-block-start: 6px;
-    inline-size: 3px;
-    block-size: 6px;
-    margin-inline-start: -1.5px;
-    border-radius: var(--radius-pill);
-    background-color: var(--color-accent);
-  }
 
-  .c-hero__cue-dot {
-    inline-size: 4px;
-    block-size: 4px;
-    border-radius: var(--radius-circle);
-    background-color: var(--color-accent);
-  }
 
   /* The one looping animation in the system. It is justified: this element
      exists solely to signal "there is more below", it is small, and it removes
      itself the moment the user acts on it. */
   @media (prefers-reduced-motion: no-preference) {
-    .c-hero__cue-wheel {
-      animation: cue-wheel 2s var(--ease-in-out) infinite;
-    }
   }
 
   @keyframes cue-wheel {

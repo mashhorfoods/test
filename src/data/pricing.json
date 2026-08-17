@@ -476,8 +476,8 @@
             },
             {
               "carry": false,
-              "en": "Hashtag &amp; Keyword Research",
-              "ar": "Hashtag &amp; Keyword Research"
+              "en": "Hashtag & Keyword Research",
+              "ar": "Hashtag & Keyword Research"
             },
             {
               "carry": false,
@@ -538,8 +538,8 @@
             },
             {
               "carry": false,
-              "en": "Publishing &amp; Scheduling",
-              "ar": "Publishing &amp; Scheduling"
+              "en": "Publishing & Scheduling",
+              "ar": "Publishing & Scheduling"
             },
             {
               "carry": false,
@@ -727,7 +727,11 @@
             }
           ]
         }
-      ]
+      ],
+      "note": {
+        "en": "The advertising budget itself is not included in the management fee. The package price covers managing your campaigns; what you spend with the platforms is separate and paid by you.",
+        "ar": "ميزانية الإعلانات نفسها غير مشمولة في رسوم الإدارة."
+      }
     }
   ]
 }

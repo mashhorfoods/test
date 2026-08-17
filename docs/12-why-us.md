@@ -1,6 +1,14 @@
 # Stage 12 — Why Us / Value Proposition
 
-Section 09, between Add-Ons and Process.
+> **Superseded.** This section no longer exists on its own. The clarity pass
+> found it arguing exactly what Integrated Solutions argues, under a
+> near-identical headline, and merged the two: the arrangement contrast
+> described below now sits inside section 06, after the ecosystem diagram. The
+> five value pillars were removed rather than reworded — see
+> `docs/18-refinement.md` §2. Everything below describes how the contrast was
+> built and why, which is still how it works.
+
+Originally section 09, between Add-Ons and Process.
 
 ---
 

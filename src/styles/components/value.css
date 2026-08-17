@@ -1,17 +1,19 @@
 /* =============================================================================
-   VALUE — STAGE 12, WHY US
-   Two pieces: the arrangement contrast, and the value pillars.
+   COMPARE — the arrangement contrast
+   Originally Stage 12's "Why Us". The refinement pass found that section
+   arguing exactly what Integrated Solutions already argues, so the two merged:
+   the ecosystem diagram shows HOW the five services connect, and this contrast
+   shows WHAT that arrangement saves you. They now sit in one section.
 
-   DELIBERATELY NOT ANOTHER ECOSYSTEM DIAGRAM. Stage 09 already draws the
-   services wired to a hub, and that answers "what connects to what". This
-   section has to answer a different question — "why does that matter to me" —
-   so repeating the armature here would be the same picture captioned twice
-   (rule 31: do not duplicate the services section unnecessarily).
+   Five value pillars used to follow this block, restating in prose what the
+   contrast already shows — "one brief, one schedule and one point of contact"
+   beneath a panel that reads "One brief. One schedule. One set of files."
+   They were removed rather than reworded.
 
-   The device instead is a CONTRAST OF ARRANGEMENTS: the same five services,
-   once as five detached boxes and once as five rows of one box. The argument
-   is made by structure, so it needs no arrows, no colour coding and no
-   claim about anybody's work — and it mirrors under RTL for free.
+   THE DEVICE IS A CONTRAST OF ARRANGEMENTS: the same five services, once as
+   five detached boxes and once as five rows of one box. The argument is made
+   by structure, so it needs no arrows, no colour coding and no claim about
+   anybody's work — and it mirrors under RTL for free.
    ============================================================================= */
 
 @layer components {
@@ -183,88 +185,5 @@
 
   .c-compare__side--one .c-compare__facts > li::before {
     background-color: var(--color-accent);
-  }
-
-  /* -----------------------------------------------------------------------
-     VALUE PILLARS
-     Rows, not cards (rule 10). A row lets the numeral run large, the rule
-     run the full measure and the text keep a readable line length; five
-     equal boxes would flatten a hierarchy the section depends on.
-     ----------------------------------------------------------------------- */
-  .c-pillars {
-    margin: var(--section-space-tight) 0 0;
-    padding: 0;
-    list-style: none;
-    border-block-start: var(--border-hairline);
-  }
-
-  .c-pillar {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: var(--space-8) var(--space-24);
-    padding-block: var(--space-32);
-    border-block-end: var(--border-hairline);
-    transition: background-color var(--duration-fast) var(--ease-standard);
-  }
-
-  @media (min-width: 64em) {
-    .c-pillar {
-      grid-template-columns: auto minmax(0, 22rem) minmax(0, 1fr);
-      gap: var(--grid-gutter);
-      align-items: baseline;
-    }
-  }
-
-  /* The hover surface spans exactly the row box, which is also where the
-     rules run. An earlier version bled it 16px past each edge with negative
-     margins; that looked marginally better and made the list overflow its
-     container at every desktop width. */
-  .c-pillar:hover {
-    background-color: var(--color-surface);
-  }
-
-  .c-pillar__index {
-    font-family: var(--font-display);
-    font-size: var(--text-h3);
-    font-weight: var(--weight-bold);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-    /* Was --color-border-strong (20% white), which measured 1.86:1 against
-       the section ground — far under the 3:1 large-text floor. These numerals
-       are the visual order cue, so they are information, not decoration.
-       --color-text-muted clears 3:1 and still reads a full step quieter than
-       the white name beside it. */
-    color: var(--color-text-muted);
-    /* Western numerals in both languages — keep the pair from splitting or
-       jumping to the wrong end of an RTL line box. */
-    direction: ltr;
-    unicode-bidi: isolate;
-    transition: color var(--duration-fast) var(--ease-standard);
-  }
-
-  .c-pillar:hover .c-pillar__index {
-    color: var(--color-accent);
-  }
-
-  .c-pillar__name {
-    font-family: var(--font-display);
-    font-size: var(--text-h4);
-    font-weight: var(--weight-semibold);
-    line-height: var(--leading-snug);
-    color: var(--color-text-primary);
-  }
-
-  .c-pillar__body {
-    grid-column: 2 / -1;
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
-    color: var(--color-text-secondary);
-    max-inline-size: 62ch;
-  }
-
-  @media (min-width: 64em) {
-    .c-pillar__body {
-      grid-column: auto;
-    }
   }
 }

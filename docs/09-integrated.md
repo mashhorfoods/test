@@ -1,5 +1,11 @@
 # Stage 09 — Integrated Solutions
 
+> **Extended by the clarity pass.** This section absorbed Stage 12's "Why Us":
+> the ecosystem below shows HOW the five services connect, and the arrangement
+> contrast that now follows it shows WHAT that connection saves you. The two
+> were arguing the same point under near-identical headlines three sections
+> apart. See `docs/18-refinement.md` §2.
+
 The strategic close of the service ecosystem. Every earlier section answers
 *what do you do*; this one answers *why one partner*.
 

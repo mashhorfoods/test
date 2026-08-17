@@ -7,7 +7,11 @@
  * surface follows; add a section here and it appears everywhere at once.
  *
  * Order matches the homepage section order exactly (Stage 01 §03/§04):
- *   Home → Services → Pricing → Why Us → Process → Contact
+ *   Home → Services → Pricing → Process → Contact
+ *
+ * "Why Us" left this list in the refinement pass: it argued the same point as
+ * Integrated Solutions, so the two merged and the nav lost an entry rather
+ * than pointing at a section that no longer exists.
  *
  * @typedef {object} NavSection
  * @property {string} id        DOM id of the section element on the homepage.
@@ -29,7 +33,6 @@ export const SECTIONS = [
   { id: 'home', label: 'Home', labelAr: 'الرئيسية' },
   { id: 'services', label: 'Services', labelAr: 'خدماتنا' },
   { id: 'pricing', label: 'Pricing', labelAr: 'الأسعار' },
-  { id: 'why-us', label: 'Why Us', labelAr: 'لماذا نحن' },
   { id: 'process', label: 'Process', labelAr: 'آلية العمل' },
   // Reached through the primary CTA rather than a sixth nav link, so the
   // header keeps one unambiguous conversion action (§11, §19). It still
@@ -134,6 +137,7 @@ export const STRINGS = {
     footerNav: 'Quick links',
     footerServices: 'Services',
     footerStart: 'Start',
+    comparePackages: 'Compare what each includes',
     footerElsewhere: 'Elsewhere',
     opensNewTab: '(opens in a new tab)',
     backToTop: 'Back to top',
@@ -168,6 +172,7 @@ export const STRINGS = {
     footerNav: 'روابط سريعة',
     footerServices: 'خدماتنا',
     footerStart: 'ابدأ',
+    comparePackages: 'قارن ما يشمله كل باقة',
     footerElsewhere: 'مواقع أخرى',
     opensNewTab: '(يفتح في نافذة جديدة)',
     backToTop: 'العودة إلى الأعلى',

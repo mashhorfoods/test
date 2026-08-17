@@ -24,7 +24,8 @@ docs/14-final-cta.md        Final CTA / conversion, documented
 docs/15-footer.md           Footer, documented
 docs/16-qa.md               Global QA & production readiness
 docs/17-contact.md          Contact, documented
-index.html                  The homepage — twelve sections, header and footer
+docs/18-refinement.md       Clarity & repetition pass — read with 12/09
+index.html                  The homepage — eleven sections, header and footer
 styleguide.html             Living specimen sheet for every token and component
 styleguide.css              Chrome for the specimen page (documentation only)
 src/styles/                 The product stylesheet
@@ -41,9 +42,10 @@ src/styles/                 The product stylesheet
                             campaign · pricing · addons · value ·
                             process · cta · contact · footer ·
                             ecosystem · disclosure · field
-src/data/pricing.json       Generated package data (see tools/)
-tools/build-pricing.js      Regenerates the pricing section from the
-                            service sections — run after any package change
+                            (value.css is now the arrangement contrast only)
+src/data/pricing.json       The package data — the source of truth
+tools/build-pricing.js      Renders #pricing AND the five service price
+                            bands from pricing.json — run after any change
 src/scripts/                Vanilla ES modules, no dependencies
   main.js                   Entry point
   navigation-map.js         Single source of section order and labels
@@ -71,12 +73,13 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 09 | Integrated Solutions | Done |
 | 10 | Pricing architecture | Done — 5 of 6 package categories |
 | 11 | Add-ons & extra services | Done |
-| 12 | Why us / value proposition | Done |
+| 12 | Why us / value proposition | Merged into 09 — see `docs/18-refinement.md` |
 | 13 | Process / how we work | Done — labels are placeholders, see below |
 | 14 | Final CTA / conversion | Done |
 | 15 | Footer | Done |
 | 16 | Global QA & production readiness | Done |
 | 17 | Contact | Done |
+| — | Clarity & repetition pass | Done — see `docs/18-refinement.md` |
 
 ## Single-file build
 
@@ -147,7 +150,7 @@ replaced from that document in Stage 01.
 ## Production readiness
 
 Audited end to end in Stage 16 — see `docs/16-qa.md`. Measured, in both
-directions: no horizontal overflow at twelve widths, 107 links with zero dead
+directions: no horizontal overflow at twelve widths, zero dead
 anchors, every off-site destination approved and opening safely, every text colour at AA, every interactive target ≥ 44px, a keyboard
 walk that paints a ring at every stop, all 28 package figures unchanged, one
 currency per language, no console errors, and the whole page readable with
@@ -159,6 +162,13 @@ section with WhatsApp, phone and email, three external profiles, and a form
 whose `action` is a `mailto:` to the approved address — so it submits with
 JavaScript disabled and claims no delivery it cannot verify. See
 `docs/17-contact.md`.
+
+A clarity pass then removed what the site was saying twice — see
+`docs/18-refinement.md`. The page went from 25,253px to **18,482px** and from
+46 buttons to 27, without losing a single service, package, price or feature
+line: the fourteen packages had been published in both the service sections and
+Pricing, and now appear once. Every button on the page is classified by job in
+the test, and nothing is unclassified.
 
 ## Outstanding
 

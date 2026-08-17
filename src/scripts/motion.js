@@ -110,40 +110,7 @@ function initCounters() {
   counters.forEach((counter) => observer.observe(counter));
 }
 
-/* -------------------------------------------------------------------------
-   SCROLL CUE
-   Dismisses the "scroll to explore" affordance once the user has started
-   scrolling. Uses a sentinel observed at the top of the document rather than a
-   scroll listener, so this costs nothing while the page is being read.
-   ------------------------------------------------------------------------- */
-
-function initScrollCue() {
-  const cue = document.querySelector('[data-scroll-cue]');
-  if (!cue || !('IntersectionObserver' in window)) return;
-
-  // A zero-height sentinel pinned to the top of the page. Once it leaves the
-  // viewport the user has scrolled, and the cue has served its purpose.
-  const sentinel = document.createElement('div');
-  sentinel.setAttribute('aria-hidden', 'true');
-  sentinel.style.cssText =
-    'position:absolute;top:0;left:0;width:1px;height:60px;pointer-events:none;';
-  document.body.prepend(sentinel);
-
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      cue.classList.toggle('is-dismissed', !entry.isIntersecting);
-      // Keep it out of the tab order once hidden, so keyboard users are not
-      // sent to an invisible link.
-      cue.tabIndex = entry.isIntersecting ? 0 : -1;
-    },
-    { threshold: 0 }
-  );
-
-  observer.observe(sentinel);
-}
-
 export function initMotion() {
   initReveal();
   initCounters();
-  initScrollCue();
 }
