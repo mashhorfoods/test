@@ -1,5 +1,37 @@
 # Stage 05 — Websites
 
+> **The three device frames are renders now, not drawings.** Each card holds a
+> supplied image; the captions (Desktop 1440px / Tablet 768px / Mobile 375px)
+> stay, because unlike the brand panels' labels they say *which viewport you
+> are looking at* — which is the whole point of the composition.
+>
+> **`object-fit: cover` from the top — the opposite of the brand panels' rule,
+> deliberately.** The brand panels take their height from the image, because a
+> board is a finished composition and cropping loses work. These cards cannot:
+> the desktop card **spans two grid rows** by design, so it is as tall as the
+> tablet and mobile cards stacked beside it. Sizing it to its own image left a
+> **622px void** underneath at 1440px. Filling instead, and taking the crop
+> from the bottom, is also just right for the content: a website render is a
+> scrolling page, and showing the masthead while the fold runs off is how a
+> device preview reads.
+>
+> **The rows are bounded** (`repeat(2, minmax(0, 15rem))` from 48em, plus a
+> `30rem` ceiling on the image for the single-column layout). Without that, one
+> full-length phone render — several times taller than a desktop one at the
+> same width — decided how tall the whole section was: the grid measured
+> 1,133px with a tall stand-in and 504px once bounded. It is now 504px at every
+> desktop width regardless of what the files measure.
+>
+> A `min-block-size` floor on the card stops a failed load collapsing it to its
+> caption. Measured at nine widths in both directions; images fill their cards
+> with only the card's own padding left over.
+>
+> **Desktop and Tablet point at the same file** (`t01.png`) — that is what was
+> supplied, used verbatim. Send a separate desktop render if that was a slip.
+>
+> Hotlinked from `i.ibb.co`, which the build environment cannot reach: the
+> images could not be inlined or looked at. `node build.js` reports it.
+
 > **Note.** The signed-off split described here now covers Websites only —
 > E-Commerce was removed as a service. See `docs/19-remove-ecommerce.md`.
 

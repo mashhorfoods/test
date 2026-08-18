@@ -594,7 +594,11 @@
   @media (min-width: 48em) {
     .c-devices {
       grid-template-columns: 2fr 1fr;
-      grid-template-rows: auto auto;
+      /* Bounded rows, not `auto`. The desktop card spans both, so its height
+         is the sum of these two — which keeps the composition in proportion
+         whatever the renders measure, instead of letting the tallest one
+         decide how tall the section is. */
+      grid-template-rows: repeat(2, minmax(0, 15rem));
       gap: var(--space-24);
     }
 
@@ -608,6 +612,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-12);
+    /* Floor only — see .c-device__image. Does nothing once the render loads. */
+    min-block-size: 7rem;
     margin: 0;
     padding: var(--space-16);
     background-color: var(--color-bg);
@@ -634,19 +640,37 @@
     }
   }
 
-  .c-device__frame {
-    display: grid;
-    place-items: center;
-    min-block-size: 0;
-  }
+  /* THE FIT — and why it is NOT the brand panels' rule.
+     The brand panels take their height from the image, because a brand board
+     is a finished composition and cropping it loses work. These cards cannot:
+     the desktop card SPANS TWO GRID ROWS by design, so it is as tall as the
+     tablet and mobile cards stacked beside it. Sizing it to its own image left
+     a 622px void underneath at 1440px.
 
-  .c-device__frame svg {
+     So the image fills the card instead — `block-size: 100%` with
+     `object-fit: cover` — and the crop is taken from the BOTTOM via
+     `object-position: top`. That is the right trade here and the opposite of
+     the brand panels' answer, for a reason: a website render is a scrolling
+     page, and showing the top of it while the fold runs off is exactly how a
+     device preview reads. Nothing is lost that a visitor expects to see.
+
+     `min-block-size` sits on the card, not the image: with no intrinsic size,
+     an image that fails to load would collapse the card to its caption. These
+     are hotlinked from a third-party host, so that is a live risk. */
+  .c-device__image {
+    display: block;
     inline-size: 100%;
-    block-size: auto;
-    max-block-size: 100%;
-    fill: none;
-    color: var(--color-text-primary);
-    direction: ltr;
+    /* flex:1 inside the column card — it takes whatever height the card has
+       left under the caption, which is what makes the fill exact. */
+    flex: 1;
+    min-block-size: 0;
+    /* A ceiling for the single-column layout, where nothing else bounds it: a
+       full-length phone render is several times taller than a desktop one at
+       the same width, and unbounded it would run the section to four screens. */
+    max-block-size: 30rem;
+    object-fit: cover;
+    object-position: top center;
+    border-radius: var(--radius-sm);
   }
 
   .c-device__label {

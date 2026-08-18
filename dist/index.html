@@ -4038,7 +4038,11 @@
   @media (min-width: 48em) {
     .c-devices {
       grid-template-columns: 2fr 1fr;
-      grid-template-rows: auto auto;
+      /* Bounded rows, not `auto`. The desktop card spans both, so its height
+         is the sum of these two — which keeps the composition in proportion
+         whatever the renders measure, instead of letting the tallest one
+         decide how tall the section is. */
+      grid-template-rows: repeat(2, minmax(0, 15rem));
       gap: var(--space-24);
     }
 
@@ -4052,6 +4056,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-12);
+    /* Floor only — see .c-device__image. Does nothing once the render loads. */
+    min-block-size: 7rem;
     margin: 0;
     padding: var(--space-16);
     background-color: var(--color-bg);
@@ -4078,19 +4084,37 @@
     }
   }
 
-  .c-device__frame {
-    display: grid;
-    place-items: center;
-    min-block-size: 0;
-  }
+  /* THE FIT — and why it is NOT the brand panels' rule.
+     The brand panels take their height from the image, because a brand board
+     is a finished composition and cropping it loses work. These cards cannot:
+     the desktop card SPANS TWO GRID ROWS by design, so it is as tall as the
+     tablet and mobile cards stacked beside it. Sizing it to its own image left
+     a 622px void underneath at 1440px.
 
-  .c-device__frame svg {
+     So the image fills the card instead — `block-size: 100%` with
+     `object-fit: cover` — and the crop is taken from the BOTTOM via
+     `object-position: top`. That is the right trade here and the opposite of
+     the brand panels' answer, for a reason: a website render is a scrolling
+     page, and showing the top of it while the fold runs off is exactly how a
+     device preview reads. Nothing is lost that a visitor expects to see.
+
+     `min-block-size` sits on the card, not the image: with no intrinsic size,
+     an image that fails to load would collapse the card to its caption. These
+     are hotlinked from a third-party host, so that is a live risk. */
+  .c-device__image {
+    display: block;
     inline-size: 100%;
-    block-size: auto;
-    max-block-size: 100%;
-    fill: none;
-    color: var(--color-text-primary);
-    direction: ltr;
+    /* flex:1 inside the column card — it takes whatever height the card has
+       left under the caption, which is what makes the fill exact. */
+    flex: 1;
+    min-block-size: 0;
+    /* A ceiling for the single-column layout, where nothing else bounds it: a
+       full-length phone render is several times taller than a desktop one at
+       the same width, and unbounded it would run the section to four screens. */
+    max-block-size: 30rem;
+    object-fit: cover;
+    object-position: top center;
+    border-radius: var(--radius-sm);
   }
 
   .c-device__label {
@@ -9207,55 +9231,41 @@ if (document.readyState === 'loading') {
               <span data-i18n-pending>Desktop</span>
               <span class="c-device__width">1440px</span>
             </figcaption>
-            <div class="c-device__frame" aria-hidden="true">
-              <svg viewBox="0 0 320 200" focusable="false">
-                <rect x="0.75" y="0.75" width="318.5" height="198.5" rx="4" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
-                <path d="M0.75 22h318.5" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
-                <g fill="currentColor" opacity="0.45"><circle cx="12" cy="11.5" r="2.6" /><circle cx="21" cy="11.5" r="2.6" /><circle cx="30" cy="11.5" r="2.6" /></g>
-                <g fill="currentColor" opacity="0.28"><rect x="212" y="8" width="26" height="7" /><rect x="244" y="8" width="26" height="7" /><rect x="276" y="8" width="26" height="7" /></g>
-                <rect x="16" y="38" width="176" height="72" fill="var(--color-accent)" opacity="0.9" />
-                <g stroke="currentColor" stroke-width="4" opacity="0.3"><path d="M208 48h96M208 62h64M208 76h80" /></g>
-                <rect x="208" y="92" width="52" height="16" stroke="var(--color-accent)" stroke-width="1.6" />
-                <g fill="currentColor" opacity="0.18"><rect x="16" y="126" width="88" height="42" /><rect x="116" y="126" width="88" height="42" /><rect x="216" y="126" width="88" height="42" /></g>
-                <path d="M16 184h288" stroke="currentColor" stroke-width="3" opacity="0.22" />
-              </svg>
-            </div>
+            <img
+              class="c-device__image"
+              src="https://i.ibb.co/MDds3jvH/t01.png"
+              alt="Website design shown at desktop width"
+              loading="lazy"
+              decoding="async"
+            />
           </figure>
+
           <figure class="c-device c-device--tablet">
             <figcaption class="c-device__label">
               <span data-i18n-pending>Tablet</span>
               <span class="c-device__width">768px</span>
             </figcaption>
-            <div class="c-device__frame" aria-hidden="true">
-              <svg viewBox="0 0 180 200" focusable="false">
-                <rect x="0.75" y="0.75" width="178.5" height="198.5" rx="6" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
-                <path d="M0.75 22h178.5" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
-                <g fill="currentColor" opacity="0.45"><circle cx="12" cy="11.5" r="2.4" /><circle cx="20" cy="11.5" r="2.4" /></g>
-                <g fill="currentColor" opacity="0.28"><rect x="132" y="8" width="16" height="7" /><rect x="153" y="8" width="16" height="7" /></g>
-                <rect x="14" y="36" width="152" height="60" fill="var(--color-accent)" opacity="0.9" />
-                <g stroke="currentColor" stroke-width="4" opacity="0.3"><path d="M14 110h120M14 124h84" /></g>
-                <rect x="14" y="136" width="48" height="15" stroke="var(--color-accent)" stroke-width="1.6" />
-                <g fill="currentColor" opacity="0.18"><rect x="14" y="162" width="74" height="24" /><rect x="92" y="162" width="74" height="24" /></g>
-              </svg>
-            </div>
+            <img
+              class="c-device__image"
+              src="https://i.ibb.co/MDds3jvH/t01.png"
+              alt="The same design at tablet width"
+              loading="lazy"
+              decoding="async"
+            />
           </figure>
+
           <figure class="c-device c-device--mobile">
             <figcaption class="c-device__label">
               <span data-i18n-pending>Mobile</span>
               <span class="c-device__width">375px</span>
             </figcaption>
-            <div class="c-device__frame" aria-hidden="true">
-              <svg viewBox="0 0 100 200" focusable="false">
-                <rect x="0.75" y="0.75" width="98.5" height="198.5" rx="10" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
-                <path d="M0.75 20h98.5" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
-                <g fill="currentColor" opacity="0.45"><circle cx="10" cy="10.5" r="2.2" /></g>
-                <g fill="currentColor" opacity="0.3"><rect x="80" y="7" width="12" height="6" /></g>
-                <rect x="10" y="32" width="80" height="44" fill="var(--color-accent)" opacity="0.9" />
-                <g stroke="currentColor" stroke-width="4" opacity="0.3"><path d="M10 88h66M10 100h44" /></g>
-                <rect x="10" y="110" width="42" height="14" stroke="var(--color-accent)" stroke-width="1.6" />
-                <g fill="currentColor" opacity="0.18"><rect x="10" y="134" width="80" height="20" /><rect x="10" y="160" width="80" height="20" /></g>
-              </svg>
-            </div>
+            <img
+              class="c-device__image"
+              src="https://i.ibb.co/x48qBGS/m01.png"
+              alt="The same design at mobile width"
+              loading="lazy"
+              decoding="async"
+            />
           </figure>
           </div>
 
