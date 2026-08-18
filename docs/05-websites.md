@@ -26,8 +26,10 @@
 > caption. Measured at nine widths in both directions; images fill their cards
 > with only the card's own padding left over.
 >
-> **Desktop and Tablet point at the same file** (`t01.png`) — that is what was
-> supplied, used verbatim. Send a separate desktop render if that was a slip.
+> **One render per device.** Desktop briefly shared the tablet's file
+> (`t01.png`); `01.png` replaced it, so the three cards are now `01` / `t01` /
+> `m01` — desktop, tablet, mobile. The suite asserts all three are distinct, so
+> a device silently borrowing another's file cannot come back.
 >
 > Hotlinked from `i.ibb.co`, which the build environment cannot reach: the
 > images could not be inlined or looked at. `node build.js` reports it.
