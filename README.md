@@ -27,6 +27,7 @@ docs/17-contact.md          Contact, documented
 docs/18-refinement.md       Clarity & repetition pass — read with 12/09
 docs/19-remove-ecommerce.md E-Commerce removed — what it touched
 docs/20-arabic.md           Full Arabic — every string, both languages
+docs/21-performance.md      Performance audit and what it was worth
 index.html                  The homepage — nine sections, header and footer
 styleguide.html             Living specimen sheet for every token and component
 styleguide.css              Chrome for the specimen page (documentation only)
@@ -87,6 +88,7 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | — | Clarity & repetition pass | Done — see `docs/18-refinement.md` |
 | — | E-Commerce removed | Done — see `docs/19-remove-ecommerce.md` |
 | — | Full Arabic | Done — see `docs/20-arabic.md` |
+| — | Performance audit | Done — see `docs/21-performance.md` |
 
 ## Single-file build
 
@@ -103,9 +105,15 @@ or icon requests. Open it directly from disk, e-mail it, or drop it on any host.
 node build.js
 ```
 
-It resolves the `@import` chain (preserving the `@layer` order), embeds all
-eleven woff2 faces and the favicon as `data:` URIs, and flattens the ES module
-graph into one inline module. No dependencies, no toolchain.
+It resolves the `@import` chain (preserving the `@layer` order), embeds the
+favicon and the woff2 faces as `data:` URIs, flattens the ES module graph into
+one inline module, and minifies both. No dependencies, no toolchain.
+
+It embeds only the font faces the page can **use**: each `unicode-range` is
+tested against the document's own characters, and a face covering nothing is
+dropped and reported. Five of eleven cover accented European characters that
+appear nowhere in either language — 37.8KB that rendered no glyph. See
+`docs/21-performance.md`.
 
 Verified with every other host blocked: **0 network requests**, no errors, and
 identical to the modular source on every measured property — fonts, headline
@@ -115,7 +123,7 @@ hero height, the ecosystem wiring, and the mobile menu.
 | | Requests | Size |
 | --- | --- | --- |
 | Modular source | 41 | 321KB |
-| `dist/index.html` | **13** (1 + 12 hotlinked images) | 622KB (132KB of it fonts) |
+| `dist/index.html` | **13** (1 + 12 hotlinked images) | 442KB raw, **146KB gzipped** |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:

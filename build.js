@@ -46,17 +46,102 @@ function inlineCss(entry, seen = new Set()) {
 }
 
 /** Replace url(../assets/fonts/x.woff2) with the file as a data: URI. */
-function embedFonts(css) {
+/* Parse a `unicode-range` value into [lo, hi] pairs. */
+function parseRange(value) {
+  return value.split(',').map((part) => {
+    const t = part.trim().replace(/^u\+/i, '');
+    if (t.includes('-')) {
+      const [a, b] = t.split('-');
+      return [parseInt(a, 16), parseInt(b, 16)];
+    }
+    if (t.includes('?')) {
+      return [parseInt(t.replace(/\?/g, '0'), 16), parseInt(t.replace(/\?/g, 'F'), 16)];
+    }
+    const n = parseInt(t, 16);
+    return [n, n];
+  });
+}
+
+/**
+ * Inline the font faces the document can actually use, and DROP the rest.
+ *
+ * In the modular source `unicode-range` does this for free: the browser
+ * fetches a subset only when a character in its range appears. Inlining
+ * defeats that — every face becomes bytes in the document whether or not a
+ * single glyph of it is ever drawn. This site ships five faces (four Poppins
+ * latin-ext, one Cairo latin-ext) covering accented European characters that
+ * appear NOWHERE in the copy, in either language: 37.9KB of woff2, and about
+ * 50KB once base64 has inflated it by a third.
+ *
+ * So the range is tested against the document's own character set and a face
+ * with zero coverage is removed entirely. This is self-correcting: write a
+ * word with an accent and the face comes back on the next build.
+ */
+function embedFonts(css, chars) {
   let count = 0;
   let bytes = 0;
-  const out = css.replace(/url\(\s*["']?([^"')]+\.woff2)["']?\s*\)/g, (_, href) => {
-    const file = path.join(ROOT, 'src/assets', href.replace(/^(\.\.\/)+assets\//, ''));
+  let dropped = 0;
+  let droppedBytes = 0;
+
+  // Split into @font-face blocks so a face can be removed whole.
+  const out = css.replace(/@font-face\s*\{[^}]*\}/g, (block) => {
+    const url = block.match(/url\(\s*["']?([^"')]+\.woff2)["']?\s*\)/);
+    if (!url) return block;
+    const file = path.join(ROOT, 'src/assets', url[1].replace(/^(\.\.\/)+assets\//, ''));
     const buf = fs.readFileSync(file);
+
+    const range = block.match(/unicode-range:\s*([^;}]+)/i);
+    if (range && chars) {
+      const spans = parseRange(range[1]);
+      const used = [...chars].some(cp => spans.some(([lo, hi]) => cp >= lo && cp <= hi));
+      if (!used) {
+        dropped += 1;
+        droppedBytes += buf.length;
+        return '';
+      }
+    }
+
     count += 1;
     bytes += buf.length;
-    return `url(data:font/woff2;base64,${buf.toString('base64')})`;
+    return block.replace(/url\(\s*["']?[^"')]+\.woff2["']?\s*\)/,
+      `url(data:font/woff2;base64,${buf.toString('base64')})`);
   });
-  return { css: out, count, bytes };
+
+  return { css: out, count, bytes, dropped, droppedBytes };
+}
+
+/* --------------------------------------------------------------- MINIFY -- */
+
+/**
+ * Comments are this project's documentation and they stay in the source. They
+ * have no business in the artifact a visitor downloads: 88KB of CSS comment
+ * and 14KB of JS comment were shipping to every reader.
+ *
+ * Conservative on purpose. CSS comment-stripping is done AFTER data: URIs are
+ * lifted out, because base64 uses `/` and `+` and can therefore contain a
+ * literal `/*` that would open a comment and eat the rest of the stylesheet.
+ * JS strips block comments only — `//` appears inside `https://` and inside
+ * regex literals, and a minifier that has to parse JS properly is a bigger
+ * dependency than this build is willing to take.
+ */
+function minifyCss(css) {
+  const blobs = [];
+  let s = css.replace(/url\(data:[^)]*\)/g, (m) => `url(__BLOB${blobs.push(m) - 1}__)`);
+  s = s.replace(/\/\*[\s\S]*?\*\//g, '');
+  s = s.replace(/\s*\n\s*/g, '\n').replace(/\n{2,}/g, '\n');
+  s = s.replace(/\s*([{};,>])\s*/g, '$1');
+  s = s.replace(/;\}/g, '}');
+  s = s.replace(/:\s+/g, ':');
+  s = s.replace(/__BLOB(\d+)__/g, (_, i) => blobs[Number(i)].slice(4, -1));
+  return s.trim();
+}
+
+function minifyJs(js) {
+  return js
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/^[ \t]*\n/gm, '')
+    .replace(/[ \t]+$/gm, '')
+    .trim();
 }
 
 /* ------------------------------------------------------------------- JS -- */
@@ -116,16 +201,30 @@ function buildPage(file) {
   const stats = { css: 0, fonts: 0, fontBytes: 0, js: 0,
     images: 0, imageBytes: 0, imagesMissing: [], imagesRemote: [] };
 
+  /* Every code point the document can render, in either language — the input
+     to the font-coverage test below. Script and style are excluded: a base64
+     blob is not text anyone reads. */
+  const chars = new Set(
+    [...html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<[^>]+>/g, ' ')]
+      .map(c => c.codePointAt(0))
+  );
+  // Strings the scripts inject are rendered too, so they count.
+  for (const c of read('src/scripts/navigation-map.js')) chars.add(c.codePointAt(0));
+
   // --- stylesheets -> one inline <style>, in document order ---------------
   const sheets = [...html.matchAll(/[ \t]*<link rel="stylesheet" href="\.\/([^"]+)"[^>]*>\n?/g)];
   if (sheets.length) {
     let css = '';
     for (const [, href] of sheets) css += `\n/* ===== ${href} ===== */\n` + inlineCss(href);
-    const embedded = embedFonts(css);
+    const embedded = embedFonts(css, chars);
     stats.fonts = embedded.count;
     stats.fontBytes = embedded.bytes;
-    stats.css = embedded.css.length;
-    html = html.replace(sheets[0][0], `    <style>\n${embedded.css}\n    </style>\n`);
+    stats.fontsDropped = embedded.dropped;
+    stats.fontBytesDropped = embedded.droppedBytes;
+    const min = minifyCss(embedded.css);
+    stats.cssRaw = embedded.css.length;
+    stats.css = min.length;
+    html = html.replace(sheets[0][0], `    <style>${min}</style>\n`);
     for (const [tag] of sheets.slice(1)) html = html.replace(tag, '');
   }
 
@@ -166,7 +265,7 @@ function buildPage(file) {
       // as main.js has in its usage note — ends the inline <script> element
       // as far as the HTML parser is concerned, silently truncating the
       // bundle. Escaping the slash keeps it inert while reading the same.
-      const js = bundleJs(src).replace(/<\/script/gi, '<\\/script');
+      const js = minifyJs(bundleJs(src)).replace(/<\/script/gi, '<\\/script');
       stats.js = js.length;
       // Wrapped so the flattened top-level bindings never touch globals.
       return `    <script type="module">\n(() => {\n${js}\n})();\n    </script>`;
@@ -193,7 +292,9 @@ for (const page of ['index.html', 'styleguide.html']) {
   console.log(
     `${page.padEnd(16)} -> dist/${page}  ${kb(Buffer.byteLength(html))}  ` +
       `(css ${kb(stats.css)}, js ${kb(stats.js)}, ${stats.fonts} fonts ${kb(stats.fontBytes)}` +
-      `${stats.images ? `, ${stats.images} images ${kb(stats.imageBytes)}` : ''})`
+      `${stats.images ? `, ${stats.images} images ${kb(stats.imageBytes)}` : ''})` +
+      `${stats.fontsDropped ? `\n${' '.repeat(18)}${stats.fontsDropped} font face(s) dropped — ` +
+        `${kb(stats.fontBytesDropped)} of glyphs this page never renders` : ''}`
   );
 }
 
