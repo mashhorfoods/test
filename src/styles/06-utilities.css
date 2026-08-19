@@ -109,4 +109,27 @@
       display: none !important;
     }
   }
+
+  /* -----------------------------------------------------------------------
+     LANGUAGE VISIBILITY
+     Both languages ship in the document; this hides the inactive one. It sits
+     in `utilities`, the LAST layer, deliberately — showing the wrong language
+     is never what a component meant to do, so nothing may override it.
+
+     It lived in `base` until the hero orbit's `.c-orbit__label span {
+     display: block }` quietly beat it on layer order and rendered both
+     languages at once. Specificity was never the problem: base loses to
+     components no matter how specific the selector is.
+
+     `lang` on the element tells a screen reader which voice to use; the data
+     attribute is the styling hook, kept separate so the two concerns cannot
+     collide, and so neither clashes with the toggle's own `data-lang`.
+     ----------------------------------------------------------------------- */
+  html:not([lang|="ar"]) [data-lang-copy="ar"] {
+    display: none;
+  }
+
+  html[lang|="ar"] [data-lang-copy="en"] {
+    display: none;
+  }
 }

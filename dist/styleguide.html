@@ -906,13 +906,11 @@
      use; the data attribute is the styling hook, kept separate so the two
      concerns cannot collide (and so it never clashes with the language
      toggle's own data-lang). */
-  html:not([lang|="ar"]) [data-lang-copy="ar"] {
-    display: none;
-  }
-
-  html[lang|="ar"] [data-lang-copy="en"] {
-    display: none;
-  }
+  /* THE TWO HIDING RULES MOVED TO 06-utilities.css. They belong in the last
+     layer, not this one: a component that styles its own child spans — the
+     hero orbit does, `.c-orbit__label span { display: block }` — beats
+     anything in `base` on layer order alone, whatever the specificity. The
+     English and Arabic labels both rendered until they moved. */
 
   /* INTERIM: copy that has not been translated yet.
      English text left inside an RTL paragraph has its direction-neutral
@@ -7078,6 +7076,29 @@
       display: none !important;
     }
   }
+
+  /* -----------------------------------------------------------------------
+     LANGUAGE VISIBILITY
+     Both languages ship in the document; this hides the inactive one. It sits
+     in `utilities`, the LAST layer, deliberately — showing the wrong language
+     is never what a component meant to do, so nothing may override it.
+
+     It lived in `base` until the hero orbit's `.c-orbit__label span {
+     display: block }` quietly beat it on layer order and rendered both
+     languages at once. Specificity was never the problem: base loses to
+     components no matter how specific the selector is.
+
+     `lang` on the element tells a screen reader which voice to use; the data
+     attribute is the styling hook, kept separate so the two concerns cannot
+     collide, and so neither clashes with the toggle's own `data-lang`.
+     ----------------------------------------------------------------------- */
+  html:not([lang|="ar"]) [data-lang-copy="ar"] {
+    display: none;
+  }
+
+  html[lang|="ar"] [data-lang-copy="en"] {
+    display: none;
+  }
 }
 
 
@@ -7390,11 +7411,11 @@ const CONTACT_CHANNELS = [
  * @type {{id: string, label: string, labelAr?: string}[]}
  */
 const SERVICE_LINKS = [
-  { id: 'branding', label: 'Branding & Design' },
-  { id: 'websites', label: 'Websites' },
-  { id: 'social', label: 'Social Media Management' },
-  { id: 'marketing', label: 'Digital Marketing & Advertising' },
-  { id: 'integrated', label: 'Integrated Digital Solutions' },
+  { id: 'branding', label: 'Branding & Design', labelAr: 'الهوية والتصميم' },
+  { id: 'websites', label: 'Websites', labelAr: 'المواقع الإلكترونية' },
+  { id: 'social', label: 'Social Media Management', labelAr: 'إدارة وسائل التواصل' },
+  { id: 'marketing', label: 'Digital Marketing & Advertising', labelAr: 'التسويق الرقمي والإعلانات' },
+  { id: 'integrated', label: 'Integrated Digital Solutions', labelAr: 'الحلول الرقمية المتكاملة' },
 ];
 
 /** Header chrome strings. Page content is translated when copy is finalised. */

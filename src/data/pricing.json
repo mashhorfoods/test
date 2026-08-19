@@ -17,33 +17,42 @@
           "features": [
             {
               "carry": false,
-              "en": "Professional logo design"
+              "en": "Professional logo design",
+              "ar": "تصميم شعار احترافي"
             },
             {
               "carry": false,
-              "en": "Color selection"
+              "en": "Color selection",
+              "ar": "اختيار الألوان"
             },
             {
               "carry": false,
-              "en": "Font selection"
+              "en": "Font selection",
+              "ar": "اختيار الخطوط"
             },
             {
               "carry": false,
-              "en": "Basic brand identity card"
+              "en": "Basic brand identity card",
+              "ar": "بطاقة هوية أساسية للعلامة"
             },
             {
               "carry": false,
-              "en": "Profile picture and cover design"
+              "en": "Profile picture and cover design",
+              "ar": "تصميم صورة الملف والغلاف"
             },
             {
               "carry": false,
-              "en": "3 social media designs"
+              "en": "3 social media designs",
+              "ar": "3 تصاميم لوسائل التواصل"
             },
             {
               "carry": false,
-              "en": "Basic final files"
+              "en": "Basic final files",
+              "ar": "ملفات نهائية أساسية"
             }
-          ]
+          ],
+          "levelAr": "الأساس",
+          "purposeAr": "هوية أساسية للمشاريع الجديدة أو الصغيرة."
         },
         {
           "id": "tier-professional",
@@ -54,50 +63,63 @@
           "billing": "billingOnce",
           "featured": true,
           "ribbon": {
-            "en": "Most Requested"
+            "en": "Most Requested",
+            "ar": "الأكثر طلبًا"
           },
           "features": [
             {
               "carry": false,
-              "en": "Professional logo"
+              "en": "Professional logo",
+              "ar": "شعار احترافي"
             },
             {
               "carry": false,
-              "en": "Complete color system"
+              "en": "Complete color system",
+              "ar": "نظام ألوان متكامل"
             },
             {
               "carry": false,
-              "en": "Typography System"
+              "en": "Typography System",
+              "ar": "Typography System"
             },
             {
               "carry": false,
-              "en": "Short Brand Guidelines"
+              "en": "Short Brand Guidelines",
+              "ar": "دليل علامة مختصر"
             },
             {
               "carry": false,
-              "en": "Business card design"
+              "en": "Business card design",
+              "ar": "تصميم بطاقة أعمال"
             },
             {
               "carry": false,
-              "en": "Letterhead design"
+              "en": "Letterhead design",
+              "ar": "تصميم ورق رسمي"
             },
             {
               "carry": false,
-              "en": "Social media profile / cover design"
+              "en": "Social media profile / cover design",
+              "ar": "تصميم ملف وغلاف لوسائل التواصل"
             },
             {
               "carry": false,
-              "en": "6 social media designs"
+              "en": "6 social media designs",
+              "ar": "6 تصاميم لوسائل التواصل"
             },
             {
               "carry": false,
-              "en": "Basic advertising templates"
+              "en": "Basic advertising templates",
+              "ar": "قوالب إعلانية أساسية"
             },
             {
               "carry": false,
-              "en": "Source and final files"
+              "en": "Source and final files",
+              "ar": "الملفات المصدرية والنهائية"
             }
-          ]
+          ],
+          "levelAr": "النظام",
+          "purposeAr": "هوية بصرية أكثر اكتمالًا وتنظيمًا."
         },
         {
           "id": "tier-advanced",
@@ -111,41 +133,52 @@
           "features": [
             {
               "carry": true,
-              "en": "Everything in Professional"
+              "en": "Everything in Professional",
+              "ar": "كل ما في باقة Professional"
             },
             {
               "carry": false,
-              "en": "Complete Brand Guidelines"
+              "en": "Complete Brand Guidelines",
+              "ar": "دليل علامة متكامل"
             },
             {
               "carry": false,
-              "en": "Visual Language"
+              "en": "Visual Language",
+              "ar": "لغة بصرية"
             },
             {
               "carry": false,
-              "en": "Social Media Design System"
+              "en": "Social Media Design System",
+              "ar": "نظام تصميم لوسائل التواصل"
             },
             {
               "carry": false,
-              "en": "Advertising Templates"
+              "en": "Advertising Templates",
+              "ar": "قوالب إعلانية"
             },
             {
               "carry": false,
-              "en": "Presentation Template"
+              "en": "Presentation Template",
+              "ar": "قالب Presentation"
             },
             {
               "carry": false,
-              "en": "Business Profile Template"
+              "en": "Business Profile Template",
+              "ar": "قالب ملف تعريفي"
             },
             {
               "carry": false,
-              "en": "10 reusable content templates"
+              "en": "10 reusable content templates",
+              "ar": "10 قوالب محتوى قابلة لإعادة الاستخدام"
             },
             {
               "carry": false,
-              "en": "Complete Brand Assets"
+              "en": "Complete Brand Assets",
+              "ar": "أصول العلامة كاملة"
             }
-          ]
+          ],
+          "levelAr": "المنظومة",
+          "purposeAr": "هوية بصرية متكاملة ومنظومة علامة قابلة لإعادة الاستخدام."
         }
       ]
     },
@@ -166,25 +199,32 @@
           "features": [
             {
               "carry": false,
-              "en": "Domain registration"
+              "en": "Domain registration",
+              "ar": "تسجيل النطاق"
             },
             {
               "carry": false,
-              "en": "Hosting"
+              "en": "Hosting",
+              "ar": "الاستضافة"
             },
             {
               "carry": false,
-              "en": "Website UI/UX design"
+              "en": "Website UI/UX design",
+              "ar": "تصميم واجهة وتجربة الموقع"
             },
             {
               "carry": false,
-              "en": "Responsive implementation"
+              "en": "Responsive implementation",
+              "ar": "تنفيذ متجاوب"
             },
             {
               "carry": false,
-              "en": "Delivery ready for use"
+              "en": "Delivery ready for use",
+              "ar": "تسليم جاهز للاستخدام"
             }
-          ]
+          ],
+          "levelAr": "الأساس",
+          "purposeAr": "لحملات محددة وعمليات الإطلاق والحضور الرقمي البسيط."
         },
         {
           "id": "web-business",
@@ -198,37 +238,47 @@
           "features": [
             {
               "carry": false,
-              "en": "Domain registration"
+              "en": "Domain registration",
+              "ar": "تسجيل النطاق"
             },
             {
               "carry": false,
-              "en": "Hosting"
+              "en": "Hosting",
+              "ar": "الاستضافة"
             },
             {
               "carry": false,
-              "en": "Website UI/UX design"
+              "en": "Website UI/UX design",
+              "ar": "تصميم واجهة وتجربة الموقع"
             },
             {
               "carry": false,
-              "en": "Website development"
+              "en": "Website development",
+              "ar": "تطوير الموقع"
             },
             {
               "carry": false,
-              "en": "Responsive implementation"
+              "en": "Responsive implementation",
+              "ar": "تنفيذ متجاوب"
             },
             {
               "carry": false,
-              "en": "Website setup"
+              "en": "Website setup",
+              "ar": "إعداد الموقع"
             },
             {
               "carry": false,
-              "en": "Testing"
+              "en": "Testing",
+              "ar": "الاختبار"
             },
             {
               "carry": false,
-              "en": "Delivery ready for use"
+              "en": "Delivery ready for use",
+              "ar": "تسليم جاهز للاستخدام"
             }
-          ]
+          ],
+          "levelAr": "النظام",
+          "purposeAr": "للشركات والمؤسسات التي تحتاج موقعًا احترافيًا متعدد الصفحات."
         },
         {
           "id": "web-professional",
@@ -242,45 +292,57 @@
           "features": [
             {
               "carry": false,
-              "en": "Domain registration"
+              "en": "Domain registration",
+              "ar": "تسجيل النطاق"
             },
             {
               "carry": false,
-              "en": "Hosting"
+              "en": "Hosting",
+              "ar": "الاستضافة"
             },
             {
               "carry": false,
-              "en": "Website UI/UX design"
+              "en": "Website UI/UX design",
+              "ar": "تصميم واجهة وتجربة الموقع"
             },
             {
               "carry": false,
-              "en": "Website development"
+              "en": "Website development",
+              "ar": "تطوير الموقع"
             },
             {
               "carry": false,
-              "en": "Responsive implementation"
+              "en": "Responsive implementation",
+              "ar": "تنفيذ متجاوب"
             },
             {
               "carry": false,
-              "en": "Website setup"
+              "en": "Website setup",
+              "ar": "إعداد الموقع"
             },
             {
               "carry": false,
-              "en": "Required integrations"
+              "en": "Required integrations",
+              "ar": "التكاملات المطلوبة"
             },
             {
               "carry": false,
-              "en": "Testing"
+              "en": "Testing",
+              "ar": "الاختبار"
             },
             {
               "carry": false,
-              "en": "Deployment"
+              "en": "Deployment",
+              "ar": "النشر"
             },
             {
               "carry": false,
-              "en": "Delivery ready for use"
+              "en": "Delivery ready for use",
+              "ar": "تسليم جاهز للاستخدام"
             }
-          ]
+          ],
+          "levelAr": "المنظومة",
+          "purposeAr": "للأعمال التي تحتاج حضورًا رقميًا أكثر تقدمًا، وبنية محتوى، وتكاملات، ووظائف موسّعة."
         }
       ]
     },
@@ -536,7 +598,9 @@
               "en": "Monthly report",
               "ar": "تقرير شهري"
             }
-          ]
+          ],
+          "levelAr": "الأساس",
+          "purposeAr": "حل تمهيدي."
         },
         {
           "id": "ads-growth",
@@ -594,7 +658,9 @@
               "en": "Monthly performance report",
               "ar": "تقرير أداء شهري"
             }
-          ]
+          ],
+          "levelAr": "النظام",
+          "purposeAr": "حل متوازن."
         },
         {
           "id": "ads-performance",
@@ -650,7 +716,9 @@
               "carry": false,
               "en": "Monthly Strategy Meeting"
             }
-          ]
+          ],
+          "levelAr": "المنظومة",
+          "purposeAr": "حل متقدم يركّز على الأداء."
         }
       ],
       "note": {

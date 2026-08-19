@@ -116,11 +116,11 @@ export const CONTACT_CHANNELS = [
  * @type {{id: string, label: string, labelAr?: string}[]}
  */
 export const SERVICE_LINKS = [
-  { id: 'branding', label: 'Branding & Design' },
-  { id: 'websites', label: 'Websites' },
-  { id: 'social', label: 'Social Media Management' },
-  { id: 'marketing', label: 'Digital Marketing & Advertising' },
-  { id: 'integrated', label: 'Integrated Digital Solutions' },
+  { id: 'branding', label: 'Branding & Design', labelAr: 'الهوية والتصميم' },
+  { id: 'websites', label: 'Websites', labelAr: 'المواقع الإلكترونية' },
+  { id: 'social', label: 'Social Media Management', labelAr: 'إدارة وسائل التواصل' },
+  { id: 'marketing', label: 'Digital Marketing & Advertising', labelAr: 'التسويق الرقمي والإعلانات' },
+  { id: 'integrated', label: 'Integrated Digital Solutions', labelAr: 'الحلول الرقمية المتكاملة' },
 ];
 
 /** Header chrome strings. Page content is translated when copy is finalised. */

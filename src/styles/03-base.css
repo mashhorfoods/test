@@ -250,13 +250,11 @@
      use; the data attribute is the styling hook, kept separate so the two
      concerns cannot collide (and so it never clashes with the language
      toggle's own data-lang). */
-  html:not([lang|="ar"]) [data-lang-copy="ar"] {
-    display: none;
-  }
-
-  html[lang|="ar"] [data-lang-copy="en"] {
-    display: none;
-  }
+  /* THE TWO HIDING RULES MOVED TO 06-utilities.css. They belong in the last
+     layer, not this one: a component that styles its own child spans — the
+     hero orbit does, `.c-orbit__label span { display: block }` — beats
+     anything in `base` on layer order alone, whatever the specificity. The
+     English and Arabic labels both rendered until they moved. */
 
   /* INTERIM: copy that has not been translated yet.
      English text left inside an RTL paragraph has its direction-neutral

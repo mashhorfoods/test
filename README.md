@@ -26,6 +26,7 @@ docs/16-qa.md               Global QA & production readiness
 docs/17-contact.md          Contact, documented
 docs/18-refinement.md       Clarity & repetition pass — read with 12/09
 docs/19-remove-ecommerce.md E-Commerce removed — what it touched
+docs/20-arabic.md           Full Arabic — every string, both languages
 index.html                  The homepage — nine sections, header and footer
 styleguide.html             Living specimen sheet for every token and component
 styleguide.css              Chrome for the specimen page (documentation only)
@@ -45,6 +46,8 @@ src/styles/                 The product stylesheet
                             ecosystem · disclosure · field
                             (value.css is now the arrangement contrast only)
 src/data/pricing.json       The package data — the source of truth
+src/data/i18n-ar.json       Arabic for every non-package string
+tools/build-i18n.js         Applies it — run after editing the JSON
 tools/build-pricing.js      Renders each service's package cards and its
                             price summary from pricing.json — run after
                             any package change
@@ -83,6 +86,7 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 17 | Contact | Done |
 | — | Clarity & repetition pass | Done — see `docs/18-refinement.md` |
 | — | E-Commerce removed | Done — see `docs/19-remove-ecommerce.md` |
+| — | Full Arabic | Done — see `docs/20-arabic.md` |
 
 ## Single-file build
 
@@ -183,11 +187,11 @@ on the page is classified by job in the test, and nothing is unclassified.
 
 Each stage's doc ends with its own open items. Across the project:
 
-- **Arabic copy.** Untranslated blocks carry `data-i18n-pending`, which
-  typesets them as LTR islands so their punctuation and numerals render
-  correctly. Remove the attribute from an element as its translation lands.
-  Where a string ships in both languages, it uses `data-lang-copy` instead and
-  needs nothing further.
+- **Arabic is complete** — every string on the page exists in both languages,
+  and `data-i18n-pending` no longer appears anywhere. See `docs/20-arabic.md`.
+  What remains is a **native-speaker review**: the Arabic is translated from the
+  English written across Stages 00–17, and marketing copy deserves a native ear
+  before launch.
 - **The Websites inclusions are a signed-off split, not source data.** The
   original document gave prices but no per-package inclusions; the split was
   drafted from the service's own approved capabilities and approved on review.

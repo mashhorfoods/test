@@ -76,16 +76,19 @@ function renderCard(pkg, catId, i) {
   const ribbon = pkg.ribbon
     ? `\n            <span class="c-tier__ribbon">${pair(pkg.ribbon, false)}</span>`
     : '';
+  /* Bilingual where the data carries both. `pair()` emits the two spans the
+     rest of the page uses, so the language toggle switches these with
+     everything else — and with no JavaScript the English still renders. */
   const level = pkg.level
     ? `
             <p class="c-tier__level">
               <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false">${MARKS[pkg.level] || MARKS.Foundation}</svg>
-              <span class="c-tier__level-name" data-i18n-pending>${esc(pkg.level)}</span>
+              <span class="c-tier__level-name">${pair({ en: pkg.level, ar: pkg.levelAr })}</span>
             </p>
 `
     : '';
   const purpose = pkg.purpose
-    ? `\n              <p class="c-tier__purpose" data-i18n-pending>${esc(pkg.purpose)}</p>`
+    ? `\n              <p class="c-tier__purpose">${pair({ en: pkg.purpose, ar: pkg.purposeAr })}</p>`
     : '';
   const disclosure = more.length
     ? `
@@ -103,8 +106,13 @@ ${more.map(featureItem).join('\n')}
               </div>
 
               <button class="c-tier__toggle" data-expand-trigger>
-                <span data-when="collapsed">Show all ${pkg.features.length} features</span>
-                <span data-when="expanded">Show fewer features</span>
+                <span data-when="collapsed">${pair({
+                  en: `Show all ${pkg.features.length} features`,
+                  ar: `عرض كل الميزات (${pkg.features.length})`,
+                })}</span>
+                <span data-when="expanded">${pair({
+                  en: 'Show fewer features', ar: 'عرض ميزات أقل',
+                })}</span>
                 <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
                 </svg>
@@ -125,7 +133,7 @@ ${pkg.features.map(featureItem).join('\n')}
   return `          <article class="c-tier${pkg.featured ? ' c-tier--featured' : ''}" style="--i: ${i}"
             aria-labelledby="${idBase}-name">${ribbon}${level}
             <div>
-              <h3 class="c-tier__name" id="${idBase}-name" data-i18n-pending>${esc(pkg.name)}</h3>${purpose}
+              <h3 class="c-tier__name" id="${idBase}-name" lang="en" dir="ltr">${esc(pkg.name)}</h3>${purpose}
             </div>
 
             <p class="c-tier__price-block">
@@ -175,6 +183,11 @@ const renderNote = (c) => (c.note
 
 const num = (s) => Number(String(s).replace(/,/g, ''));
 const COUNT_WORD = { 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five' };
+/* The WHOLE noun phrase, not a numeral to glue a plural onto: Arabic counts
+   1, 2 and 3-10 differently, so `${n} باقات` is wrong for one and for two.
+   Only 3 is in use today; the rest are correct for the day they are. */
+const COUNT_AR = { 1: 'باقة واحدة', 2: 'باقتان', 3: 'ثلاث باقات',
+                   4: 'أربع باقات', 5: 'خمس باقات' };
 
 function renderBlock(c) {
   const floor = c.packages.reduce((a, p) => (num(p.price) < num(a.price) ? p : a));
@@ -188,7 +201,7 @@ ${c.packages.map((p, i) => renderCard(p, c.id, i)).join('\n\n')}
           </div>
 ${renderNote(c)}
           <p class="c-detail__packages" data-reveal>
-            <span class="c-detail__packages-count" data-i18n-pending>${word} packages, from</span>
+            <span class="c-detail__packages-count">${pair({ en: `${word} packages, from`, ar: `${COUNT_AR[c.packages.length] || `${c.packages.length} باقة`}، تبدأ من` })}</span>
             <span class="c-detail__packages-price">
               <span class="c-detail__packages-amount">${esc(floor.price)}</span>
               <span class="c-detail__packages-currency" data-i18n="currency">SAR</span>
