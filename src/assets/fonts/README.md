@@ -28,7 +28,12 @@ included here and must stay with the font files:
 ## Regenerating
 
 Refetch from Google Fonts with `wght@400;500;600;700`, keep the `latin` and
-`latin-ext` subsets for Poppins and `arabic`/`latin`/`latin-ext` for Cairo,
-rewrite each `src:` URL to `../assets/fonts/<file>`, and preserve the
-`unicode-range` declarations. Deduplicate by URL — Cairo returns the same
-variable file for every requested weight.
+`latin-ext` subsets for Poppins and **only `arabic` for Cairo**, rewrite each
+`src:` URL to `../assets/fonts/<file>`, and preserve the `unicode-range`
+declarations. Deduplicate by URL — Cairo returns the same variable file for
+every requested weight.
+
+Cairo's `latin` and `latin-ext` subsets are deliberately not shipped. Poppins
+is the site's only Latin face; Latin runs inside Arabic copy fall through to it
+via `--font-arabic`. Re-adding them costs 50KB and puts a second Latin voice on
+the page. See the note at the top of `src/styles/00-fonts.css`.

@@ -68,10 +68,10 @@ function parseRange(value) {
  * In the modular source `unicode-range` does this for free: the browser
  * fetches a subset only when a character in its range appears. Inlining
  * defeats that — every face becomes bytes in the document whether or not a
- * single glyph of it is ever drawn. This site ships five faces (four Poppins
- * latin-ext, one Cairo latin-ext) covering accented European characters that
- * appear NOWHERE in the copy, in either language: 37.9KB of woff2, and about
- * 50KB once base64 has inflated it by a third.
+ * single glyph of it is ever drawn. This site ships four latin-ext Poppins
+ * faces covering accented European characters that appear NOWHERE in the copy,
+ * in either language: 21.3KB of woff2, and about 28KB once base64 has inflated
+ * it by a third.
  *
  * So the range is tested against the document's own character set and a face
  * with zero coverage is removed entirely. This is self-correcting: write a
