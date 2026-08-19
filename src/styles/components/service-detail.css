@@ -470,9 +470,43 @@
   }
 
   /* --- CTA --------------------------------------------------------------- */
+  /* THE CARD ACTION IS A DESKTOP AFFORDANCE.
+     Three buttons under three side-by-side cards are PARALLEL: they present a
+     choice, and the choice is the whole point of a package grid. Stacked into
+     one column they stop being parallel and become CONSECUTIVE — the same
+     label, to the same anchor, three times per service. Measured on a 390px
+     viewport before this rule: sixteen "Start Your Project" buttons down the
+     page, all identical, all going to #contact.
+
+     So on a phone the card action gives way to one action per service, below
+     the summary line (.c-detail__action). Nothing is lost: every one of these
+     buttons was the same button. Above 48em, where the cards are a row again,
+     they come back. */
   .c-tier__cta {
-    margin-block-start: auto;
+    display: none;
+  }
+
+  @media (min-width: 48em) {
+    .c-tier__cta {
+      display: inline-flex;
+      margin-block-start: auto;
+      inline-size: 100%;
+    }
+  }
+
+  /* Its phone counterpart — one per service block, and only while the cards
+     are stacked. Full width, because at this size a button that does not fill
+     the column reads as secondary. */
+  .c-detail__action {
     inline-size: 100%;
+    justify-content: center;
+    margin-block-start: var(--space-24);
+  }
+
+  @media (min-width: 48em) {
+    .c-detail__action {
+      display: none;
+    }
   }
 
   /* On the narrowest phones the card cannot hold 32px of padding and a
@@ -484,7 +518,8 @@
       padding: var(--space-24);
     }
 
-    .c-tier__cta {
+    .c-tier__cta,
+    .c-detail__action {
       padding-inline: var(--space-16);
     }
 

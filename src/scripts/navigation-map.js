@@ -22,18 +22,47 @@
  * @property {boolean} [inNav]     Show in header nav + mobile menu. Default true.
  * @property {boolean} [inFooter]  Show in footer quick links. Default true.
  * @property {NavSection[]} [children]
- *   Reserved extension point (Stage 01 §17). While every entry is a flat
- *   anchor this stays undefined and each item renders as a plain link. When
- *   the services architecture is finalised, populating `children` is what
- *   turns an item into a dropdown or mega-menu — the header shell, its
- *   spacing and its scroll behaviour do not change. See
- *   docs/01-header-navigation.md §"Extending the Services item".
+ *   Sub-destinations. The MOBILE DRAWER renders these as an indented list
+ *   under their parent; the header deliberately does not, and still renders a
+ *   flat link. That asymmetry is the point: the drawer is a phone's whole map
+ *   of the page, a desktop header is not. Extending this into a dropdown or
+ *   mega-menu remains possible without touching the header shell, its spacing
+ *   or its scroll behaviour. See docs/01-header-navigation.md
+ *   §"Extending the Services item".
  */
+
+/**
+ * The five service categories, in the order the Services section lists them.
+ *
+ * Same principle as SECTIONS: the footer's services column renders from this
+ * array rather than being typed out a second time, so it cannot drift from the
+ * Services accordion. A test asserts the two agree — same names, same order,
+ * same anchors — in both languages.
+ *
+ * Every `id` is a real section on the homepage; there are no placeholder
+ * targets left in this list.
+ *
+ * @type {{id: string, label: string, labelAr?: string}[]}
+ */
+export const SERVICE_LINKS = [
+  { id: 'branding', label: 'Branding & Design', labelAr: 'الهوية والتصميم' },
+  { id: 'websites', label: 'Websites', labelAr: 'المواقع الإلكترونية' },
+  { id: 'social', label: 'Social Media Management', labelAr: 'إدارة وسائل التواصل' },
+  { id: 'marketing', label: 'Digital Marketing & Advertising', labelAr: 'التسويق الرقمي والإعلانات' },
+  { id: 'integrated', label: 'Integrated Digital Solutions', labelAr: 'الحلول الرقمية المتكاملة' },
+];
 
 /** @type {NavSection[]} */
 export const SECTIONS = [
   { id: 'home', label: 'Home', labelAr: 'الرئيسية' },
-  { id: 'services', label: 'Services', labelAr: 'خدماتنا' },
+  /* The five services hang off this entry. On a phone the drawer is the
+     ONLY map of the page — the header nav collapses into it — and the page is
+     29 screens tall, so a menu that offered three destinations left a visitor
+     wanting "Social Media Management" to open Services, find it in the
+     accordion, and tap through. They are one tap from the menu now. The
+     header still renders this as a flat link: on a desktop the sections are
+     visible by scrolling and a dropdown would be chrome for its own sake. */
+  { id: 'services', label: 'Services', labelAr: 'خدماتنا', children: SERVICE_LINKS },
   { id: 'process', label: 'Process', labelAr: 'آلية العمل' },
   // Reached through the primary CTA rather than a sixth nav link, so the
   // header keeps one unambiguous conversion action (§11, §19). It still
@@ -102,26 +131,6 @@ export const CONTACT_CHANNELS = [
   },
 ];
 
-/**
- * The five service categories, in the order the Services section lists them.
- *
- * Same principle as SECTIONS: the footer's services column renders from this
- * array rather than being typed out a second time, so it cannot drift from the
- * Services accordion. A test asserts the two agree — same names, same order,
- * same anchors — in both languages.
- *
- * Every `id` is a real section on the homepage; there are no placeholder
- * targets left in this list.
- *
- * @type {{id: string, label: string, labelAr?: string}[]}
- */
-export const SERVICE_LINKS = [
-  { id: 'branding', label: 'Branding & Design', labelAr: 'الهوية والتصميم' },
-  { id: 'websites', label: 'Websites', labelAr: 'المواقع الإلكترونية' },
-  { id: 'social', label: 'Social Media Management', labelAr: 'إدارة وسائل التواصل' },
-  { id: 'marketing', label: 'Digital Marketing & Advertising', labelAr: 'التسويق الرقمي والإعلانات' },
-  { id: 'integrated', label: 'Integrated Digital Solutions', labelAr: 'الحلول الرقمية المتكاملة' },
-];
 
 /** Header chrome strings. Page content is translated when copy is finalised. */
 export const STRINGS = {

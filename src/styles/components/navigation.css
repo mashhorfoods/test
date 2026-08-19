@@ -251,6 +251,48 @@
     padding-inline-start: var(--space-12);
   }
 
+  /* -----------------------------------------------------------------------
+     SUB-DESTINATIONS
+     One level under a drawer row. Indented to the width the parent's numeral
+     reserves (2ch plus its gap), so the children hang off the label rather
+     than starting a second column.
+
+     Sized down from --text-h3 to --text-body-lg: they have to read as
+     children, not as five more top-level rows. They keep the 44px target
+     regardless — a smaller label is not a smaller tap.
+     ----------------------------------------------------------------------- */
+  .c-drawer__sub {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 var(--space-12);
+    padding-inline-start: calc(2ch + var(--space-16));
+  }
+
+  .c-drawer__sublink {
+    display: flex;
+    align-items: center;
+    min-block-size: 44px;
+    font-family: var(--font-display);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard),
+      padding-inline-start var(--duration-base) var(--ease-out);
+  }
+
+  .c-drawer__sublink:hover,
+  .c-drawer__sublink[aria-current="true"] {
+    color: var(--color-accent);
+  }
+
+  /* Position as well as colour, same rule as the parent row (§09). */
+  .c-drawer__sublink[aria-current="true"] {
+    padding-inline-start: var(--space-12);
+  }
+
   .c-drawer__index {
     font-family: var(--font-display);
     font-size: var(--text-label);

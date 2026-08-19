@@ -131,9 +131,15 @@
     color: var(--color-accent);
   }
 
+  /* 11px on a phone, 9px from tablet up. At 9px with 0.3em of tracking this
+     is texture beside the wordmark rather than a word anyone reads, which is
+     a fair choice on a desk display and the wrong one in a hand. It is the
+     only place on the page that names what the business IS, so on the screen
+     where the visitor is most likely to arrive it gets a readable size. It
+     still fits: measured at 360px there is room beside the wordmark. */
   .c-brand__tagline {
     font-family: var(--font-display);
-    font-size: 0.5625rem;
+    font-size: 0.6875rem;
     font-weight: var(--weight-medium);
     letter-spacing: 0.3em;
     text-transform: uppercase;
@@ -143,11 +149,23 @@
       opacity var(--duration-base) var(--ease-standard);
   }
 
+  @media (min-width: 48em) {
+    .c-brand__tagline {
+      font-size: 0.5625rem;
+    }
+  }
+
   /* Arabic has no letter case and its joins break under heavy tracking. */
   [dir="rtl"] .c-brand__tagline {
     text-transform: none;
     letter-spacing: var(--tracking-normal);
-    font-size: 0.625rem;
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: 48em) {
+    [dir="rtl"] .c-brand__tagline {
+      font-size: 0.625rem;
+    }
   }
 
   .c-header__brand:hover .c-brand__tagline {

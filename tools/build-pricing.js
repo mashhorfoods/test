@@ -129,7 +129,14 @@ ${pkg.features.map(featureItem).join('\n')}
      decision point — the visitor has a name, a price and an inclusion list in
      front of them — so it earns a button. The refinement pass removed the
      section-level "Start Your Project" that used to sit under every section
-     whether or not a decision was available there. */
+     whether or not a decision was available there.
+
+     ON A PHONE THIS BUTTON IS HIDDEN, and renderBlock's single action takes
+     over. Three buttons under three side-by-side cards read as "pick one":
+     they are parallel, and the choice is the point. Stacked in one column
+     they are not parallel, they are CONSECUTIVE — the same label, to the same
+     anchor, three times per service and sixteen times down the page. See the
+     .c-detail__action rule in components/service-detail.css. */
   return `          <article class="c-tier${pkg.featured ? ' c-tier--featured' : ''}" style="--i: ${i}"
             aria-labelledby="${idBase}-name">${ribbon}${level}
             <div>
@@ -200,7 +207,7 @@ function renderBlock(c) {
 ${c.packages.map((p, i) => renderCard(p, c.id, i)).join('\n\n')}
           </div>
 ${renderNote(c)}
-          <p class="c-detail__packages" data-reveal>
+          <p class="c-detail__packages" data-reveal id="${c.id}-packages">
             <span class="c-detail__packages-count">${pair({ en: `${word} packages, from`, ar: `${COUNT_AR[c.packages.length] || `${c.packages.length} باقة`}، تبدأ من` })}</span>
             <span class="c-detail__packages-price">
               <span class="c-detail__packages-amount">${esc(floor.price)}</span>
@@ -208,6 +215,13 @@ ${renderNote(c)}
             </span>
             <span class="c-detail__packages-billing" data-i18n="${monthly ? 'billingMonthly' : 'billingOnce'}">${monthly ? 'Monthly' : 'One-time'}</span>
           </p>
+          <a class="c-btn c-btn--primary c-detail__action" href="#contact" data-cta-link
+            data-reveal aria-describedby="${c.id}-packages">
+            <span data-cta-label>Start Your Project</span>
+            <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+            </svg>
+          </a>
           <!-- PACKAGES:${c.id}:END -->`;
 }
 

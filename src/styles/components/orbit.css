@@ -117,9 +117,14 @@
     fill: none;
   }
 
+  /* 12px on a phone, 11px from tablet up. These are the five SERVICE NAMES —
+     the first thing the page says it does — not diagram furniture, so on the
+     screen where they are hardest to read they get the larger size. The
+     stacked phone layout has the room; the circular layout above 48em does
+     not, and hands it back. */
   .c-orbit__label {
     font-family: var(--font-display);
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: var(--weight-semibold);
     line-height: 1.25;
     letter-spacing: 0.08em;
@@ -160,9 +165,11 @@
     color: var(--color-accent);
   }
 
+  /* Same reasoning as .c-orbit__label — 10px was the smallest text on the
+     page after the tagline, and it names the centre of the diagram. */
   .c-orbit__core-label {
     font-family: var(--font-display);
-    font-size: 0.625rem;
+    font-size: 0.75rem;
     font-weight: var(--weight-semibold);
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -245,6 +252,10 @@
     .c-orbit__label {
       font-size: clamp(0.5625rem, 1.9cqw, 0.6875rem);
       text-align: center;
+    }
+
+    .c-orbit__core-label {
+      font-size: 0.625rem;
     }
 
     /* [data-i18n-pending] makes untranslated copy an LTR island, which fixes

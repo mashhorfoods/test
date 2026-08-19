@@ -109,7 +109,16 @@
     --text-body: 1rem;
     --text-body-sm: 0.9375rem;
     --text-small: 0.875rem;
-    --text-label: 0.75rem;
+    /* 13px on a phone, 12px from tablet up — and yes, that is the larger
+       value on the SMALLER screen. Labels and index numerals are the page's
+       smallest type, and a phone is the worst place to read them: held in one
+       hand, often moving, often in daylight. A 12px eyebrow that is
+       comfortable on a desk display is the floor of legibility there. The
+       step costs nothing in layout — these are short strings that already sit
+       on their own line — so the phone gets the extra pixel and the desktop
+       keeps the tighter proportion the type scale was drawn for. Measured on
+       a 390px viewport: 60+ elements move from 12px to 13px. */
+    --text-label: 0.8125rem;
     --text-meta: 0.8125rem;
     --text-price: clamp(2.25rem, 1.6rem + 2.9vw, 4rem);
     --text-price-sm: clamp(1.75rem, 1.4rem + 1.55vw, 2.6rem);
@@ -283,6 +292,10 @@
       --grid-gutter: var(--space-24);
       --container-gutter: var(--space-32);
       --header-height: 80px;
+
+      /* Back to 12px once the screen is not a phone. See the note on the
+         base declaration — the phone gets the larger label, not the smaller. */
+      --text-label: 0.75rem;
     }
   }
 

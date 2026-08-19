@@ -77,6 +77,21 @@ function buildDrawerLink(section, index) {
   return link;
 }
 
+/**
+ * A child destination inside the drawer. Deliberately NOT a c-drawer__link:
+ * no numeral (the numbering belongs to the top-level sequence) and a quieter
+ * size, so the list still reads as one level under its parent rather than
+ * eight equal shouts.
+ */
+function buildDrawerSubLink(entry) {
+  const link = document.createElement('a');
+  link.href = `#${entry.id}`;
+  link.className = 'c-drawer__sublink';
+  link.dataset.navLink = '';
+  link.textContent = labelFor(entry);
+  return link;
+}
+
 function buildFooterLink(section) {
   const link = document.createElement('a');
   link.href = `#${section.id}`;
@@ -120,6 +135,20 @@ function renderSurfaces() {
           item.className = 'c-drawer__item';
           item.style.setProperty('--i', String(index));
           item.append(buildDrawerLink(section, index));
+
+          // Children render as an indented list under their parent. The
+          // parent link still works — tapping "Services" goes to the section,
+          // tapping a child goes straight to that service.
+          if (section.children?.length) {
+            const list = document.createElement('ul');
+            list.className = 'c-drawer__sub';
+            list.append(...section.children.map((child) => {
+              const row = document.createElement('li');
+              row.append(buildDrawerSubLink(child));
+              return row;
+            }));
+            item.append(list);
+          }
         } else if (style === 'footer') {
           item.append(buildFooterLink(section));
         } else {
@@ -328,9 +357,15 @@ function initDrawer(header) {
    ------------------------------------------------------------------------- */
 
 function initScrollSpy() {
-  const targets = SECTIONS.map((section) =>
-    document.getElementById(section.id)
-  ).filter(Boolean);
+  /* CHILDREN ARE OBSERVED TOO. The drawer now offers the five services as
+     destinations, and a destination the spy does not watch is a row that can
+     never say "you are here" — worse, its parent stays lit, so the menu
+     actively reports the wrong place. Flattened rather than special-cased:
+     anything reachable from the map is a target. */
+  const targets = SECTIONS
+    .flatMap((section) => [section, ...(section.children ?? [])])
+    .map((section) => document.getElementById(section.id))
+    .filter(Boolean);
 
   if (targets.length === 0) return;
 
