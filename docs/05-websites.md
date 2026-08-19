@@ -26,10 +26,15 @@
 > caption. Measured at nine widths in both directions; images fill their cards
 > with only the card's own padding left over.
 >
-> **One render per device.** Desktop briefly shared the tablet's file
-> (`t01.png`); `01.png` replaced it, so the three cards are now `01` / `t01` /
-> `m01` — desktop, tablet, mobile. The suite asserts all three are distinct, so
-> a device silently borrowing another's file cannot come back.
+> **One render per device**, now `d01` / `t01` / `mo1`. The suite asserts all
+> three are distinct, so a device silently borrowing another's file cannot come
+> back.
+>
+> **The captions are gone.** "Desktop 1440px / Tablet 768px / Mobile 375px" was
+> removed on request, along with its CSS — the accent dot, the width chip, the
+> RTL casing rules and the flex-wrap fix that stopped it clipping below 360px.
+> The card is the render and nothing else. The suite asserts their ABSENCE, so
+> they cannot creep back.
 >
 > Hotlinked from `i.ibb.co`, which the build environment cannot reach: the
 > images could not be inlined or looked at. `node build.js` reports it.

@@ -1,5 +1,26 @@
 # Stage 07 — Social Media Management
 
+> **The five modules are renders now, not drawings, and they carry no labels.**
+> Content calendar, Post, Reels, Stories and Insights are supplied images; the
+> step numerals (01–05) and the caption above each went with the drawings, on
+> request. The card is the artwork.
+>
+> **`object-fit: cover` from the top**, the same rule as the Websites device
+> cards and for the same reason: the lead module **spans two grid rows** by
+> design, so sizing it to its own image leaves a void beside the two stacked
+> next to it. `top` keeps the head of a post, a Reel or a Story — the part that
+> carries the design — and lets the tail run off.
+>
+> **The rows are bounded** — `grid-auto-rows: minmax(0, 11rem)`, and `13rem`
+> from 64em. With `auto` rows the lead took its height from its own image and
+> left a **507px void** beside it at 1024px and up. Measured at eight widths in
+> both directions: every image fills its card, the only space left is the 1px
+> border, and the grid is a steady 440px on desktop.
+>
+> A `min-block-size` floor stops a failed load collapsing a card — these are
+> hotlinked from `i.ibb.co`, which the build environment cannot reach, so the
+> images could not be inlined or looked at.
+
 Three packages with complete feature lists, a content-operations module grid
 and the service workflow. Reuses `.c-detail`, `.c-tier` and the module grid.
 
