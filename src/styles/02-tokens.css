@@ -160,6 +160,11 @@
     --space-16: 1rem;
     --space-24: 1.5rem;
     --space-32: 2rem;
+    /* The scale jumped 32 -> 48, which is a 50% step and too coarse for card
+       padding: 48px inside a 376px package card leaves the content narrower
+       than the frame around it. 40 is the missing rung on the same 8px grid
+       the rest of the scale is built on — a new value, not a new system. */
+    --space-40: 2.5rem;
     --space-48: 3rem;
     --space-64: 4rem;
     --space-80: 5rem;
@@ -168,6 +173,14 @@
     --space-160: 10rem;
 
     /* Section rhythm — fluid, derived from the scale's large end. */
+    /* The gap between a small uppercase label and the content group it
+       introduces. One value, one home: before this existed the same
+       relationship was set five different ways across five components (8, 16,
+       24, 32 and 40px), and the 8px one was genuinely cramped. Distinct from
+       an EYEBROW above a headline, which stays at --space-16 because those two
+       read as a single unit rather than a label and a separate group. */
+    --space-label-group: var(--space-24);
+
     --section-space: clamp(4rem, 2.4rem + 7vw, 8.5rem);
     --section-space-tight: clamp(3rem, 2rem + 4.4vw, 5.5rem);
     --section-space-loose: clamp(5.5rem, 3rem + 11vw, 10rem);

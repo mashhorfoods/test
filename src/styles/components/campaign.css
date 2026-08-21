@@ -184,11 +184,18 @@
     font-size: var(--text-body-sm);
   }
 
+  /* The paragraph, not the span. .c-note__body is inline — it sits on the
+     same line as the label — so a max-inline-size on it was inert and the
+     text ran to 136ch at 1440px. Capping the block that actually establishes
+     the line box is what the 62ch was always trying to say. */
+  .c-note > p {
+    max-inline-size: 66ch;
+  }
+
   .c-note__body {
     font-size: var(--text-body);
     line-height: var(--leading-body);
     color: var(--color-text-primary);
-    max-inline-size: 62ch;
   }
 
   @media (min-width: 48em) {

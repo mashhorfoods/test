@@ -35,7 +35,8 @@
      CHANNELS
      ----------------------------------------------------------------------- */
   .c-contact__heading {
-    margin-block-end: var(--space-16);
+    /* Same relationship as every other group label on the page — was 16. */
+    margin-block-end: var(--space-label-group);
     color: var(--color-text-muted);
   }
 
@@ -141,7 +142,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-12);
-    margin: var(--space-32) 0 0;
+    /* Was a 32px top margin, which collapsed against its label's 24 and won —
+       so this one group sat differently from every other label/group pair on
+       the page. The label's margin governs; separation from the block ABOVE
+       is the heading's job, not the list's. */
+    margin: 0;
     padding: 0;
     list-style: none;
   }
@@ -191,6 +196,12 @@
     border: var(--border-hairline);
     border-radius: var(--radius-md);
     background-color: var(--color-bg);
+  }
+
+  /* The flex gap already separates the heading from the first field — the
+     heading's own margin stacked on top of it. */
+  .c-contact__form .c-contact__heading {
+    margin-block-end: 0;
   }
 
   @media (min-width: 48em) {

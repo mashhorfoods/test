@@ -116,6 +116,15 @@
     grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
   }
 
+  /* Matches .c-devices and .c-modules, which both step up here. Three grids
+     of images in three consecutive sections should not each keep a different
+     rhythm. */
+  @media (min-width: 48em) {
+    .c-brandboard {
+      gap: var(--space-24);
+    }
+  }
+
   .c-brandboard__panel {
     /* A floor, not a height. The panel is sized by its image, and an image
        with no intrinsic dimensions — one that failed to load, which is a live
@@ -207,6 +216,16 @@
     border-radius: var(--radius-md);
     transition: border-color var(--duration-base) var(--ease-standard),
       background-color var(--duration-base) var(--ease-standard);
+  }
+
+  /* The card a visitor actually decides in. 32px reads as adequate on a 340px
+     phone card and as tight on a 376px desktop one carrying a level mark, a
+     name, a purpose line, a price block, a feature list and an action. The
+     frame grows with the viewport; nothing inside it changes. */
+  @media (min-width: 64em) {
+    .c-tier {
+      padding: var(--space-40);
+    }
   }
 
   .c-tier:hover {
@@ -302,6 +321,22 @@
     gap: var(--space-4);
     padding-block: var(--space-24);
     border-block: var(--border-hairline);
+  }
+
+  /* "From" before the figure, for packages the source quotes as a starting
+     price. Deliberately the SAME treatment the add-ons give it — small, muted,
+     nowrap — so it reads as a qualifier on the number and never competes with
+     the package name above it (§11: the price must not outrank the name). It
+     inherits the price block's bold display face, so the weight is reset here;
+     without that it would read as part of the figure. */
+  .c-tier__from {
+    align-self: baseline;
+    font-family: var(--font-body);
+    font-size: var(--text-small);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-text-muted);
+    white-space: nowrap;
   }
 
   .c-tier__price {
@@ -717,11 +752,21 @@
   .c-pipeline {
     position: relative;
     display: grid;
-    gap: var(--space-4);
+    /* Was --space-4 at every width. Four pixels between rows made a ten-step
+       list read as one block of text; these are discrete capabilities and the
+       gap is what says so. */
+    gap: var(--space-8);
     grid-template-columns: repeat(auto-fit, minmax(min(9.5rem, 100%), 1fr));
     margin-block-end: var(--section-space-tight);
     padding-block-start: var(--space-24);
     border-block-start: var(--border-hairline);
+  }
+
+  /* More room to separate rows once there is room to give. */
+  @media (min-width: 64em) {
+    .c-pipeline {
+      gap: var(--space-12);
+    }
   }
 
   /* NARROW SCREENS GET ONE LINE PER ITEM, NOT TWO.
@@ -799,7 +844,9 @@
   /* Sub-heading above the pipeline. A real h3 for the document outline, set
      at label scale so it does not compete with the package names. */
   .c-detail__subhead {
-    margin-block-end: var(--space-8);
+    /* Was --space-8. A label at 8px above a ten-item capability list read as
+       part of the list rather than its heading. */
+    margin-block-end: var(--space-label-group);
     color: var(--color-text-secondary);
   }
 }
@@ -834,11 +881,21 @@
     grid-auto-rows: minmax(0, 11rem);
   }
 
+  /* The gap steps up with .c-devices and .c-brandboard, at the same
+     breakpoint they do. The COLUMN COUNT still changes at 64em — that is a
+     layout decision and is left alone; only the rhythm is aligned, so three
+     grids of images in three consecutive sections stop each keeping their
+     own. */
+  @media (min-width: 48em) {
+    .c-modules {
+      gap: var(--space-24);
+    }
+  }
+
   @media (min-width: 64em) {
     .c-modules {
       grid-template-columns: repeat(4, minmax(0, 1fr));
       grid-auto-rows: minmax(0, 13rem);
-      gap: var(--space-24);
     }
   }
 

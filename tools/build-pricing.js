@@ -46,6 +46,12 @@ const esc = (s) => String(s)
   .replace(/</g, '&lt;')
   .replace(/>/g, '&gt;');
 
+/* A package carrying `priceFrom` is quoted as a STARTING figure, not a fixed
+   one, and renders the same "From" prefix the add-ons use — same class shape,
+   same STRINGS.priceFrom key, so it translates with everything else and needs
+   no new copy in either language. Only the packages the source states this
+   way carry the flag; the rest still quote a fixed price. */
+
 /* --- Rendering ----------------------------------------------------------- */
 
 const CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
@@ -144,7 +150,8 @@ ${pkg.features.map(featureItem).join('\n')}
             </div>
 
             <p class="c-tier__price-block">
-              <span class="c-tier__price">
+              <span class="c-tier__price">${pkg.priceFrom ? `
+                <span class="c-tier__from" data-i18n="priceFrom">From</span>` : ''}
                 <span class="c-tier__amount">${esc(pkg.price)}</span>
                 <span class="c-tier__currency" data-i18n="currency">SAR</span>
               </span>

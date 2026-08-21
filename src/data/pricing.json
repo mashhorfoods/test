@@ -10,7 +10,7 @@
           "level": "Foundation",
           "name": "Starter",
           "purpose": "A foundational identity for new or small projects.",
-          "price": "200",
+          "price": "580",
           "billing": "billingOnce",
           "featured": false,
           "ribbon": null,
@@ -52,14 +52,15 @@
             }
           ],
           "levelAr": "الأساس",
-          "purposeAr": "هوية أساسية للمشاريع الجديدة أو الصغيرة."
+          "purposeAr": "هوية أساسية للمشاريع الجديدة أو الصغيرة.",
+          "priceFrom": true
         },
         {
           "id": "tier-professional",
           "level": "System",
           "name": "Professional",
           "purpose": "A more complete and structured visual identity.",
-          "price": "400",
+          "price": "1180",
           "billing": "billingOnce",
           "featured": true,
           "ribbon": {
@@ -119,14 +120,15 @@
             }
           ],
           "levelAr": "النظام",
-          "purposeAr": "هوية بصرية أكثر اكتمالًا وتنظيمًا."
+          "purposeAr": "هوية بصرية أكثر اكتمالًا وتنظيمًا.",
+          "priceFrom": true
         },
         {
           "id": "tier-advanced",
           "level": "Ecosystem",
           "name": "Advanced",
           "purpose": "A complete visual identity and reusable brand ecosystem.",
-          "price": "650",
+          "price": "2580",
           "billing": "billingOnce",
           "featured": false,
           "ribbon": null,
@@ -178,7 +180,8 @@
             }
           ],
           "levelAr": "المنظومة",
-          "purposeAr": "هوية بصرية متكاملة ومنظومة علامة قابلة لإعادة الاستخدام."
+          "purposeAr": "هوية بصرية متكاملة ومنظومة علامة قابلة لإعادة الاستخدام.",
+          "priceFrom": true
         }
       ]
     },
