@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- ===================================================================
+         SEO — same template as the homepage (Stage 00 §21).
+
+         og:url, the canonical and og:image still need a domain and a raster
+         export, exactly as on index.html. Nothing is invented here to fill
+         them in.
+         =================================================================== -->
+    <title>Connecting ideas to impact — Pixora</title>
+    <meta
+      name="description"
+      content="One argument in five chapters: why four separate services cost more in coordination than in work, and how one connected system is planned, built and run instead."
+    />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#202020" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Connecting ideas to impact — Pixora" />
+    <meta
+      property="og:description"
+      content="Four services, four conversations — and what changes when they become one system."
+    />
+    <meta property="og:locale" content="en" />
+    <meta property="og:locale:alternate" content="ar" />
+
+    <link rel="icon" href="./src/assets/favicon.svg" type="image/svg+xml" />
+
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./src/assets/fonts/poppins-latin-400.woff2"
+      crossorigin
+    />
+
+    <link rel="stylesheet" href="./src/styles/main.css" />
+
+    <script>
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
+    </script>
+    <script type="module" src="./src/scripts/main.js"></script>
+  </head>
+
+  <body>
+    <!-- CHROME:TOP:START -->
+    <!-- HEADER + MOBILE DRAWER — COPIED FROM index.html by tools/build-chrome.js.
+         Do not edit here: edit index.html and re-run the tool, or this file
+         will be overwritten and the two pages will disagree. -->
+    <a class="c-skip-link" href="#main">Skip to content</a>
+
+    <!-- =================================================================
+         HEADER — global component (§24). Identical markup serves every
+         page; nothing here is hero- or homepage-specific.
+         ================================================================= -->
+    <header class="c-header" data-header>
+      <div class="l-container c-header__inner">
+        <!-- LEFT — brand -->
+        <div class="c-header__zone">
+          <a
+            class="c-header__brand"
+            href="#home"
+            aria-label="Pixora, Digital Agency — home"
+            data-i18n-label="brandHome"
+          >
+            <!-- Brand lockup. A type lockup rather than an image: crisp at
+                 any density, no request, restyleable per breakpoint. The
+                 accent letter is the only coloured element. Swap for a vector
+                 asset via src/assets/brand/README.md if one is supplied. -->
+            <span class="c-brand" aria-hidden="true">
+              <span class="c-brand__word"
+                >PI<span class="c-brand__accent">X</span>ORA</span
+              >
+              <span class="c-brand__tagline">Digital Agency</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- CENTRE — primary navigation, rendered from navigation-map.js -->
+        <nav class="c-nav" aria-label="Primary" data-i18n-label="primaryNav">
+          <!-- Seeded so navigation exists with JavaScript disabled; the
+               script replaces these with identical content from
+               navigation-map.js on boot and on language change. A test
+               asserts the seed and the map agree. -->
+          <ul class="c-nav__list" data-nav-render="nav">
+            <li><a class="c-nav__link" href="#home" data-nav-link>Home</a></li>
+            <li><a class="c-nav__link" href="#services" data-nav-link>Services</a></li>
+            <li><a class="c-nav__link" href="#process" data-nav-link>Process</a></li>
+          </ul>
+        </nav>
+
+        <!-- RIGHT — language, CTA, menu trigger -->
+        <div class="c-header__zone c-header__zone--end">
+          <div
+            class="c-lang"
+            role="group"
+            aria-label="Language"
+            data-i18n-label="language"
+          >
+            <button
+              class="c-lang__option"
+              type="button"
+              data-lang="en"
+              aria-pressed="true"
+            >
+              EN
+            </button>
+            <button
+              class="c-lang__option"
+              type="button"
+              data-lang="ar"
+              aria-pressed="false"
+            >
+              AR
+            </button>
+          </div>
+
+          <a class="c-btn c-btn--primary c-header__cta" href="#contact" data-cta-link>
+            <span data-cta-label>Start Your Project</span>
+            <svg
+              class="c-btn__icon u-flip-rtl"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M5 12h13M13 6l6 6-6 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="square"
+              />
+            </svg>
+          </a>
+
+          <button
+            class="c-menu-trigger"
+            type="button"
+            data-menu-trigger
+            aria-expanded="false"
+            aria-controls="site-menu"
+            aria-label="Open menu"
+          >
+            <span class="c-menu-trigger__bars" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- =================================================================
+         MOBILE MENU
+         Rendered from the same array as the header nav, so the two can
+         never present a different order (§25).
+         ================================================================= -->
+    <div class="c-drawer" id="site-menu" data-drawer inert>
+      <div class="l-container c-drawer__inner">
+        <nav aria-label="Menu" data-i18n-label="menuNav">
+          <p class="t-label c-drawer__eyebrow" data-i18n="menuEyebrow">Menu</p>
+          <ul
+            class="c-drawer__list"
+            data-nav-render="nav"
+            data-nav-style="drawer"
+          ></ul>
+        </nav>
+
+        <!-- Enters after the navigation rows (§16). -->
+        <div class="c-drawer__foot" style="--i: 5">
+          <a
+            class="c-btn c-btn--primary c-btn--lg c-btn--block"
+            href="#contact"
+            data-cta-link
+          >
+            <span data-cta-label>Start Your Project</span>
+            <svg
+              class="c-btn__icon u-flip-rtl"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M5 12h13M13 6l6 6-6 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="square"
+              />
+            </svg>
+          </a>
+
+          <!-- Hidden until real profiles exist in navigation-map.js. -->
+          <div data-social-block hidden>
+            <p class="t-label u-mbe-16" data-i18n="followUs">Follow us</p>
+            <ul class="c-drawer__social" data-social-render></ul>
+          </div>
+
+          <div class="c-drawer__utility">
+            <span class="t-label" id="menu-lang-label" data-i18n="language">
+              Language
+            </span>
+            <div class="c-lang" role="group" aria-labelledby="menu-lang-label">
+              <button
+                class="c-lang__option"
+                type="button"
+                data-lang="en"
+                aria-pressed="true"
+              >
+                EN
+              </button>
+              <button
+                class="c-lang__option"
+                type="button"
+                data-lang="ar"
+                aria-pressed="false"
+              >
+                AR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHROME:TOP:END -->
+
+    <main id="main" class="c-story">
+      <!-- STORY:START -->
+      <header class="c-story__head">
+        <p class="t-label c-story__eyebrow"><span data-lang-copy="en">Success Story</span><span data-lang-copy="ar" lang="ar">قصة نجاح</span></p>
+        <h1 class="c-story__title"><span data-lang-copy="en">Connecting ideas to impact</span><span data-lang-copy="ar" lang="ar">من الفكرة إلى الأثر</span></h1>
+        <p class="c-story__standfirst t-body-lg"><span data-lang-copy="en">One argument, in five parts — the one this studio makes on its own homepage, followed from the problem it names to the work it produces.</span><span data-lang-copy="ar" lang="ar">حجّة واحدة في خمسة فصول — الحجّة نفسها التي يقدّمها هذا الاستوديو على صفحته الرئيسية، متتبَّعة من المشكلة التي يسمّيها إلى العمل الذي ينتجه.</span></p>
+      </header>
+
+      <div class="c-story__chapters">
+        <article class="c-chapter" id="story-challenge"
+          aria-labelledby="ch-challenge-title" data-chapter="01">
+          <div class="c-chapter__text">
+            <p class="c-chapter__meta">
+              <span class="c-chapter__num" aria-hidden="true">01</span>
+              <span class="c-chapter__annotation"><span data-lang-copy="en">problem</span><span data-lang-copy="ar" lang="ar">المشكلة</span></span>
+            </p>
+            <h2 class="c-chapter__title" id="ch-challenge-title"><span data-lang-copy="en">Four services. Four conversations.</span><span data-lang-copy="ar" lang="ar">أربع خدمات. أربعة مسارات منفصلة.</span></h2>
+            <p class="c-chapter__lead"><span data-lang-copy="en">A business needs an identity, a website, a social presence and advertising. Bought separately, each one arrives from a different place, on its own schedule, answering a brief the others never saw.</span><span data-lang-copy="ar" lang="ar">يحتاج أي نشاط تجاري إلى هوية، وموقع إلكتروني، وحضور على وسائل التواصل، وإعلانات. وحين تُشترى كلٌّ منها على حدة، تصل كلٌّ من جهة مختلفة، وبجدولها الخاص، استجابةً لطلب لم تطّلع عليه البقية.</span></p>
+            <p class="c-chapter__aside"><span data-lang-copy="en">Nothing here is badly made. It is simply unrelated.</span><span data-lang-copy="ar" lang="ar">لا شيء هنا رديء الصنع. لكنه ببساطة غير مترابط.</span></p>
+          </div>
+
+          <figure class="c-chapter__figure">
+            <svg class="c-sketch" viewBox="0 0 400 300" fill="none"
+              role="img" aria-labelledby="ch-challenge-alt"
+              preserveAspectRatio="xMidYMid meet">
+              <title id="ch-challenge-alt">Four separate boxes, tilted at different angles with nothing joining them.</title>
+              <g transform="rotate(-6 76 75)"><path d="M28.9 39 L125.5 40.81" pathLength="1" style="--d:0" class="c-sketch__ink" stroke-width="1.6" /><path d="M124 40.81 L123.64 111.5" pathLength="1" style="--d:1" class="c-sketch__ink" stroke-width="1.6" /><path d="M125 110 L28.9 110.81" pathLength="1" style="--d:2" class="c-sketch__ink" stroke-width="1.6" /><path d="M28.9 111 L28 39.31" pathLength="1" style="--d:3" class="c-sketch__ink" stroke-width="1.6" /></g><g transform="rotate(5 235 51)"><path d="M195.46 21 L275.5 22.81" pathLength="1" style="--d:4" class="c-sketch__ink" stroke-width="1.6" /><path d="M274 22.81 L274.81 81.5" pathLength="1" style="--d:5" class="c-sketch__ink" stroke-width="1.6" /><path d="M275 80 L195.46 80.36" pathLength="1" style="--d:6" class="c-sketch__ink" stroke-width="1.6" /><path d="M195.46 81 L196 21.31" pathLength="1" style="--d:7" class="c-sketch__ink" stroke-width="1.6" /></g><g transform="rotate(7 106 199)"><path d="M64.54 167 L149.5 167.19" pathLength="1" style="--d:8" class="c-sketch__ink" stroke-width="1.6" /><path d="M148 167.19 L148.09 231.5" pathLength="1" style="--d:9" class="c-sketch__ink" stroke-width="1.6" /><path d="M149 230 L64.54 229.82" pathLength="1" style="--d:10" class="c-sketch__ink" stroke-width="1.6" /><path d="M64.54 231 L64 165.69" pathLength="1" style="--d:11" class="c-sketch__ink" stroke-width="1.6" /></g><g transform="rotate(-4 296 188)"><path d="M243.73 149 L349.5 149.55" pathLength="1" style="--d:12" class="c-sketch__ink" stroke-width="1.6" /><path d="M348 149.55 L348.54 227.5" pathLength="1" style="--d:13" class="c-sketch__ink" stroke-width="1.6" /><path d="M349 226 L243.73 225.19" pathLength="1" style="--d:14" class="c-sketch__ink" stroke-width="1.6" /><path d="M243.73 227 L244 148.05" pathLength="1" style="--d:15" class="c-sketch__ink" stroke-width="1.6" /></g><path d="M150 122 l14 -5" pathLength="1" style="--d:16" class="c-sketch__ink" stroke-width="1.6" /><path d="M188 108 l10 8" pathLength="1" style="--d:17" class="c-sketch__ink" stroke-width="1.6" /><path d="M120 250 l16 -6" pathLength="1" style="--d:18" class="c-sketch__ink" stroke-width="1.6" /><path d="M292 66 l8 12" pathLength="1" style="--d:19" class="c-sketch__ink" stroke-width="1.6" />
+            </svg>
+            <figcaption class="u-visually-hidden"><span data-lang-copy="en">Four separate boxes, tilted at different angles with nothing joining them.</span><span data-lang-copy="ar" lang="ar">أربعة مربعات منفصلة، مائلة بزوايا مختلفة ولا شيء يربط بينها.</span></figcaption>
+          </figure>
+        </article>
+
+        <div class="c-chapter__joint" aria-hidden="true">
+          <svg class="c-chapter__thread"
+        viewBox="0 0 60 136" fill="none" aria-hidden="true" focusable="false"
+        preserveAspectRatio="xMidYMid meet">
+        <path d="M30 0 C30 30 12 40 12 62 C12 88 44.4 96 30 126" pathLength="1" class="c-sketch__ink"
+          stroke-width="1.6" style="--d:0" />
+        <path d="M30 126 l-6 -9 M30 126 l7 -8" pathLength="1"
+          class="c-sketch__ink" stroke-width="1.6" style="--d:1" />
+      </svg>
+        </div>
+
+        <article class="c-chapter" id="story-insight"
+          aria-labelledby="ch-insight-title" data-chapter="02">
+          <div class="c-chapter__text">
+            <p class="c-chapter__meta">
+              <span class="c-chapter__num" aria-hidden="true">02</span>
+              <span class="c-chapter__annotation"><span data-lang-copy="en">insight</span><span data-lang-copy="ar" lang="ar">الملاحظة</span></span>
+            </p>
+            <h2 class="c-chapter__title" id="ch-insight-title"><span data-lang-copy="en">The work was never the problem.</span><span data-lang-copy="ar" lang="ar">لم يكن العمل نفسه هو المشكلة.</span></h2>
+            <p class="c-chapter__lead"><span data-lang-copy="en">The same four services, arranged two ways. The difference is not what gets made — it is how much of the coordinating you have to do yourself.</span><span data-lang-copy="ar" lang="ar">الخدمات الأربع نفسها، مرتّبة بطريقتين. الفرق ليس في ما يُنجَز — بل في مقدار التنسيق الذي يقع عليك أنت.</span></p>
+            <p class="c-chapter__aside"><span data-lang-copy="en">The cost is not in the work. It is in the gaps between it.</span><span data-lang-copy="ar" lang="ar">التكلفة ليست في العمل، بل في الفجوات بينه.</span></p>
+          </div>
+
+          <figure class="c-chapter__figure">
+            <svg class="c-sketch" viewBox="0 0 400 300" fill="none"
+              role="img" aria-labelledby="ch-insight-alt"
+              preserveAspectRatio="xMidYMid meet">
+              <title id="ch-insight-alt">The same four boxes, with dashed lines searching between them and one solid arrow connecting two of them.</title>
+              <g transform="rotate(-6 76 75)"><path d="M28.9 39 L125.5 40.81" pathLength="1" style="--d:0" class="c-sketch__ink" stroke-width="1.6" /><path d="M124 40.81 L123.64 111.5" pathLength="1" style="--d:1" class="c-sketch__ink" stroke-width="1.6" /><path d="M125 110 L28.9 110.81" pathLength="1" style="--d:2" class="c-sketch__ink" stroke-width="1.6" /><path d="M28.9 111 L28 39.31" pathLength="1" style="--d:3" class="c-sketch__ink" stroke-width="1.6" /></g><g transform="rotate(5 235 51)"><path d="M195.46 21 L275.5 22.81" pathLength="1" style="--d:4" class="c-sketch__ink" stroke-width="1.6" /><path d="M274 22.81 L274.81 81.5" pathLength="1" style="--d:5" class="c-sketch__ink" stroke-width="1.6" /><path d="M275 80 L195.46 80.36" pathLength="1" style="--d:6" class="c-sketch__ink" stroke-width="1.6" /><path d="M195.46 81 L196 21.31" pathLength="1" style="--d:7" class="c-sketch__ink" stroke-width="1.6" /></g><g transform="rotate(7 106 199)"><path d="M64.54 167 L149.5 167.19" pathLength="1" style="--d:8" class="c-sketch__ink" stroke-width="1.6" /><path d="M148 167.19 L148.09 231.5" pathLength="1" style="--d:9" class="c-sketch__ink" stroke-width="1.6" /><path d="M149 230 L64.54 229.82" pathLength="1" style="--d:10" class="c-sketch__ink" stroke-width="1.6" /><path d="M64.54 231 L64 165.69" pathLength="1" style="--d:11" class="c-sketch__ink" stroke-width="1.6" /></g><g transform="rotate(-4 296 188)"><path d="M243.73 149 L349.5 149.55" pathLength="1" style="--d:12" class="c-sketch__ink" stroke-width="1.6" /><path d="M348 149.55 L348.54 227.5" pathLength="1" style="--d:13" class="c-sketch__ink" stroke-width="1.6" /><path d="M349 226 L243.73 225.19" pathLength="1" style="--d:14" class="c-sketch__ink" stroke-width="1.6" /><path d="M243.73 227 L244 148.05" pathLength="1" style="--d:15" class="c-sketch__ink" stroke-width="1.6" /></g><path d="M126 72 C160 58 172 48 194 50" pathLength="1" style="--d:16" class="c-sketch__ink c-sketch__ink--draft" stroke-width="1.6" /><path d="M104 112 C112 148 96 156 108 168" pathLength="1" style="--d:17" class="c-sketch__ink c-sketch__ink--draft" stroke-width="1.6" /><path d="M238 82 C258 112 266 128 262 148" pathLength="1" style="--d:18" class="c-sketch__ink c-sketch__ink--draft" stroke-width="1.6" /><path d="M150 214 C196 226 224 214 244 198" pathLength="1" style="--d:19" class="c-sketch__ink c-sketch__ink--draft" stroke-width="1.6" /><path d="M132 104 C176 118 214 120 240 154" pathLength="1" style="--d:20" class="c-sketch__ink c-sketch__ink--accent" stroke-width="2" /><path d="M240 154 l-11 -3 M240 154 l2 -11" pathLength="1" style="--d:21" class="c-sketch__ink c-sketch__ink--accent" stroke-width="2" />
+            </svg>
+            <figcaption class="u-visually-hidden"><span data-lang-copy="en">The same four boxes, with dashed lines searching between them and one solid arrow connecting two of them.</span><span data-lang-copy="ar" lang="ar">المربعات الأربعة نفسها، وخطوط متقطعة تبحث بينها، وسهم واحد متصل يربط اثنين منها.</span></figcaption>
+          </figure>
+        </article>
+
+        <div class="c-chapter__joint" aria-hidden="true">
+          <svg class="c-chapter__thread"
+        viewBox="0 0 60 136" fill="none" aria-hidden="true" focusable="false"
+        preserveAspectRatio="xMidYMid meet">
+        <path d="M30 0 C30 30 19 40 19 62 C19 88 38.8 96 30 126" pathLength="1" class="c-sketch__ink"
+          stroke-width="1.6" style="--d:0" />
+        <path d="M30 126 l-6 -9 M30 126 l7 -8" pathLength="1"
+          class="c-sketch__ink" stroke-width="1.6" style="--d:1" />
+      </svg>
+        </div>
+
+        <article class="c-chapter" id="story-idea"
+          aria-labelledby="ch-idea-title" data-chapter="03">
+          <div class="c-chapter__text">
+            <p class="c-chapter__meta">
+              <span class="c-chapter__num" aria-hidden="true">03</span>
+              <span class="c-chapter__annotation"><span data-lang-copy="en">direction</span><span data-lang-copy="ar" lang="ar">الاتجاه</span></span>
+            </p>
+            <h2 class="c-chapter__title" id="ch-idea-title"><span data-lang-copy="en">One system, not four purchases.</span><span data-lang-copy="ar" lang="ar">نظام واحد، لا أربع مشتريات.</span></h2>
+            <p class="c-chapter__lead"><span data-lang-copy="en">Identity builds the foundation. The website creates the digital presence. Social media builds ongoing engagement. Advertising reaches the right audience. Each is worth more when it knows what the others are doing.</span><span data-lang-copy="ar" lang="ar">الهوية تبني الأساس. الموقع الإلكتروني يصنع الحضور الرقمي. وسائل التواصل تبني تفاعلًا مستمرًا. الإعلانات تصل إلى الجمهور المناسب. وكلٌّ منها أثمن حين يعرف ما تفعله البقية.</span></p>
+            <p class="c-chapter__aside"><span data-lang-copy="en">The order is the idea.</span><span data-lang-copy="ar" lang="ar">الترتيب هو الفكرة.</span></p>
+          </div>
+
+          <figure class="c-chapter__figure">
+            <svg class="c-sketch" viewBox="0 0 400 300" fill="none"
+              role="img" aria-labelledby="ch-idea-alt"
+              preserveAspectRatio="xMidYMid meet">
+              <title id="ch-idea-alt">The four boxes aligned in a row, joined by arrows, with a frame drawn around the whole set.</title>
+              <g transform="rotate(-2 62 139)"><path d="M26.18 107 L99.5 107.91" pathLength="1" style="--d:0" class="c-sketch__ink" stroke-width="1.6" /><path d="M98 107.91 L97.55 171.5" pathLength="1" style="--d:1" class="c-sketch__ink" stroke-width="1.6" /><path d="M99 170 L26.18 170.63" pathLength="1" style="--d:2" class="c-sketch__ink" stroke-width="1.6" /><path d="M26.18 171 L26 106.41" pathLength="1" style="--d:3" class="c-sketch__ink" stroke-width="1.6" /></g><g transform="rotate(1.5 162 139)"><path d="M126.9 107 L199.5 108.36" pathLength="1" style="--d:4" class="c-sketch__ink" stroke-width="1.6" /><path d="M198 108.36 L197.1 171.5" pathLength="1" style="--d:5" class="c-sketch__ink" stroke-width="1.6" /><path d="M199 170 L126.9 170.9" pathLength="1" style="--d:6" class="c-sketch__ink" stroke-width="1.6" /><path d="M126.9 171 L126 106.86" pathLength="1" style="--d:7" class="c-sketch__ink" stroke-width="1.6" /></g><g transform="rotate(-1 262 139)"><path d="M226.63 107 L299.5 108.72" pathLength="1" style="--d:8" class="c-sketch__ink" stroke-width="1.6" /><path d="M298 108.72 L297.55 171.5" pathLength="1" style="--d:9" class="c-sketch__ink" stroke-width="1.6" /><path d="M299 170 L226.63 170.9" pathLength="1" style="--d:10" class="c-sketch__ink" stroke-width="1.6" /><path d="M226.63 171 L226 107.22" pathLength="1" style="--d:11" class="c-sketch__ink" stroke-width="1.6" /></g><g transform="rotate(2 350 139)"><path d="M321.19 107 L379.5 107.37" pathLength="1" style="--d:12" class="c-sketch__ink" stroke-width="1.6" /><path d="M378 107.37 L377.46 171.5" pathLength="1" style="--d:13" class="c-sketch__ink" stroke-width="1.6" /><path d="M379 170 L321.19 170" pathLength="1" style="--d:14" class="c-sketch__ink" stroke-width="1.6" /><path d="M321.19 171 L322 105.87" pathLength="1" style="--d:15" class="c-sketch__ink" stroke-width="1.6" /></g><path d="M100 139 l22 0 M122 139 l-7 -5 M122 139 l-7 5" pathLength="1" style="--d:16" class="c-sketch__ink" stroke-width="1.6" /><path d="M200 139 l22 0 M222 139 l-7 -5 M222 139 l-7 5" pathLength="1" style="--d:17" class="c-sketch__ink" stroke-width="1.6" /><path d="M300 139 l19 0 M319 139 l-7 -5 M319 139 l-7 5" pathLength="1" style="--d:18" class="c-sketch__ink c-sketch__ink--accent" stroke-width="2" /><path d="M14 92 L388 88" pathLength="1" style="--d:19" class="c-sketch__ink" stroke-width="1.6" /><path d="M390 92 L388 190" pathLength="1" style="--d:20" class="c-sketch__ink" stroke-width="1.6" /><path d="M386 188 L16 192" pathLength="1" style="--d:21" class="c-sketch__ink" stroke-width="1.6" /><path d="M14 190 L14 96" pathLength="1" style="--d:22" class="c-sketch__ink" stroke-width="1.6" />
+            </svg>
+            <figcaption class="u-visually-hidden"><span data-lang-copy="en">The four boxes aligned in a row, joined by arrows, with a frame drawn around the whole set.</span><span data-lang-copy="ar" lang="ar">المربعات الأربعة مصطفّة في سطر واحد، تربطها أسهم، ويحيط بها إطار مرسوم.</span></figcaption>
+          </figure>
+        </article>
+
+        <div class="c-chapter__joint" aria-hidden="true">
+          <svg class="c-chapter__thread"
+        viewBox="0 0 60 136" fill="none" aria-hidden="true" focusable="false"
+        preserveAspectRatio="xMidYMid meet">
+        <path d="M30 0 C30 30 25 40 25 62 C25 88 34 96 30 126" pathLength="1" class="c-sketch__ink"
+          stroke-width="1.6" style="--d:0" />
+        <path d="M30 126 l-6 -9 M30 126 l7 -8" pathLength="1"
+          class="c-sketch__ink" stroke-width="1.6" style="--d:1" />
+      </svg>
+        </div>
+
+        <article class="c-chapter" id="story-transformation"
+          aria-labelledby="ch-transformation-title" data-chapter="04">
+          <div class="c-chapter__text">
+            <p class="c-chapter__meta">
+              <span class="c-chapter__num" aria-hidden="true">04</span>
+              <span class="c-chapter__annotation"><span data-lang-copy="en">system</span><span data-lang-copy="ar" lang="ar">النظام</span></span>
+            </p>
+            <h2 class="c-chapter__title" id="ch-transformation-title"><span data-lang-copy="en">Six stages turn it into work.</span><span data-lang-copy="ar" lang="ar">ست مراحل تحوّله إلى عمل.</span></h2>
+            <p class="c-chapter__lead"><span data-lang-copy="en">Discover, Plan, Create, Build, Launch, Grow. One sequence, one team, and one set of decisions carried from the first conversation through to the monthly report.</span><span data-lang-copy="ar" lang="ar">الاكتشاف، التخطيط، التصميم، التطوير، الإطلاق، النمو. تسلسل واحد، وفريق واحد، وقرارات واحدة تُحمل من أول محادثة حتى التقرير الشهري.</span></p>
+            <p class="c-chapter__aside"><span data-lang-copy="en">Nothing is handed over at a boundary, because there are no boundaries.</span><span data-lang-copy="ar" lang="ar">لا شيء يُسلَّم عند حدٍّ فاصل، لأنه لا توجد حدود فاصلة.</span></p>
+          </div>
+
+          <figure class="c-chapter__figure">
+            <svg class="c-sketch" viewBox="0 0 400 300" fill="none"
+              role="img" aria-labelledby="ch-transformation-alt"
+              preserveAspectRatio="xMidYMid meet">
+              <title id="ch-transformation-alt">A single horizontal line carrying six evenly spaced markers, alternating above and below it.</title>
+              <path d="M30 150 L382 150" pathLength="1" style="--d:0" class="c-sketch__ink" stroke-width="2" /><path d="M52 150 L52 100" pathLength="1" style="--d:1" class="c-sketch__ink" stroke-width="1.6" /><path d="M32 100 L72 98" pathLength="1" style="--d:2" class="c-sketch__ink" stroke-width="1.6" /><circle cx="52" cy="150" r="3.6" style="--d:3" class="c-sketch__mark" /><path d="M108 150 L108 200" pathLength="1" style="--d:4" class="c-sketch__ink" stroke-width="1.6" /><path d="M88 200 L128 202" pathLength="1" style="--d:5" class="c-sketch__ink" stroke-width="1.6" /><circle cx="108" cy="150" r="3.6" style="--d:6" class="c-sketch__mark" /><path d="M164 150 L164 100" pathLength="1" style="--d:7" class="c-sketch__ink" stroke-width="1.6" /><path d="M144 100 L184 98" pathLength="1" style="--d:8" class="c-sketch__ink" stroke-width="1.6" /><circle cx="164" cy="150" r="3.6" style="--d:9" class="c-sketch__mark" /><path d="M220 150 L220 200" pathLength="1" style="--d:10" class="c-sketch__ink" stroke-width="1.6" /><path d="M200 200 L240 202" pathLength="1" style="--d:11" class="c-sketch__ink" stroke-width="1.6" /><circle cx="220" cy="150" r="3.6" style="--d:12" class="c-sketch__mark" /><path d="M276 150 L276 100" pathLength="1" style="--d:13" class="c-sketch__ink" stroke-width="1.6" /><path d="M256 100 L296 98" pathLength="1" style="--d:14" class="c-sketch__ink" stroke-width="1.6" /><circle cx="276" cy="150" r="3.6" style="--d:15" class="c-sketch__mark" /><path d="M332 150 L332 200" pathLength="1" style="--d:16" class="c-sketch__ink" stroke-width="1.6" /><path d="M312 200 L352 202" pathLength="1" style="--d:17" class="c-sketch__ink" stroke-width="1.6" /><circle cx="332" cy="150" r="3.6" style="--d:18" class="c-sketch__mark c-sketch__mark--accent" /><path d="M382 150 l-11 -4 M382 150 l-11 4" pathLength="1" style="--d:19" class="c-sketch__ink" stroke-width="2" /><path d="M30 150 l0 -9 M30 150 l0 9" pathLength="1" style="--d:20" class="c-sketch__ink" stroke-width="1.6" />
+            </svg>
+            <figcaption class="u-visually-hidden"><span data-lang-copy="en">A single horizontal line carrying six evenly spaced markers, alternating above and below it.</span><span data-lang-copy="ar" lang="ar">خط أفقي واحد يحمل ست علامات متساوية التباعد، تتناوب فوقه وتحته.</span></figcaption>
+          </figure>
+        </article>
+
+        <div class="c-chapter__joint" aria-hidden="true">
+          <svg class="c-chapter__thread c-chapter__thread--resolved"
+        viewBox="0 0 60 136" fill="none" aria-hidden="true" focusable="false"
+        preserveAspectRatio="xMidYMid meet">
+        <path d="M30 0 L30 126" pathLength="1" class="c-sketch__ink c-sketch__ink--accent"
+          stroke-width="2" style="--d:0" />
+        <path d="M30 126 l-6 -9 M30 126 l7 -8" pathLength="1"
+          class="c-sketch__ink c-sketch__ink--accent" stroke-width="2" style="--d:1" />
+      </svg>
+        </div>
+
+        <article class="c-chapter" id="story-impact"
+          aria-labelledby="ch-impact-title" data-chapter="05">
+          <div class="c-chapter__text">
+            <p class="c-chapter__meta">
+              <span class="c-chapter__num" aria-hidden="true">05</span>
+              <span class="c-chapter__annotation"><span data-lang-copy="en">impact</span><span data-lang-copy="ar" lang="ar">الأثر</span></span>
+            </p>
+            <h2 class="c-chapter__title" id="ch-impact-title"><span data-lang-copy="en">Planned together. Delivered together.</span><span data-lang-copy="ar" lang="ar">يُخطَّط معًا. ويُسلَّم معًا.</span></h2>
+            <p class="c-chapter__lead"><span data-lang-copy="en">Connecting these services into one complete digital presence — planned together, delivered together, and answerable to one team.</span><span data-lang-copy="ar" lang="ar">ربط هذه الخدمات في حضور رقمي واحد متكامل — يُخطَّط معًا، ويُسلَّم معًا، ويكون مسؤولًا أمام فريق واحد.</span></p>
+            <p class="c-chapter__aside"><span data-lang-copy="en">The scattered marks of the first chapter, in their finished arrangement.</span><span data-lang-copy="ar" lang="ar">العلامات المتناثرة في الفصل الأول، في ترتيبها النهائي.</span></p>
+          </div>
+
+          <figure class="c-chapter__figure">
+            <svg class="c-sketch" viewBox="0 0 400 300" fill="none"
+              role="img" aria-labelledby="ch-impact-alt"
+              preserveAspectRatio="xMidYMid meet">
+              <title id="ch-impact-alt">Four boxes arranged around a central hub, each joined to it by a spoke.</title>
+              <path d="M200 112 L200 78" pathLength="1" style="--d:0" class="c-sketch__ink" stroke-width="1.4" /><path d="M238 150 L262 150" pathLength="1" style="--d:1" class="c-sketch__ink" stroke-width="1.4" /><path d="M200 188 L200 222" pathLength="1" style="--d:2" class="c-sketch__ink" stroke-width="1.4" /><path d="M162 150 L138 150" pathLength="1" style="--d:3" class="c-sketch__ink" stroke-width="1.4" /><g transform="rotate(0 200 54)"><path d="M169.91 33 L231.5 33.37" pathLength="1" style="--d:4" class="c-sketch__ink" stroke-width="1.6" /><path d="M230 33.37 L230.36 75.5" pathLength="1" style="--d:5" class="c-sketch__ink" stroke-width="1.6" /><path d="M231 74 L169.91 74.9" pathLength="1" style="--d:6" class="c-sketch__ink" stroke-width="1.6" /><path d="M169.91 75 L170 31.869999999999997" pathLength="1" style="--d:7" class="c-sketch__ink" stroke-width="1.6" /></g><g transform="rotate(0 296 150)"><path d="M266.72 129 L327.5 129.1" pathLength="1" style="--d:8" class="c-sketch__ink" stroke-width="1.6" /><path d="M326 129.1 L325.55 171.5" pathLength="1" style="--d:9" class="c-sketch__ink" stroke-width="1.6" /><path d="M327 170 L266.72 170.45" pathLength="1" style="--d:10" class="c-sketch__ink" stroke-width="1.6" /><path d="M266.72 171 L266 127.6" pathLength="1" style="--d:11" class="c-sketch__ink" stroke-width="1.6" /></g><g transform="rotate(0 200 246)"><path d="M170.45 225 L231.5 226" pathLength="1" style="--d:12" class="c-sketch__ink" stroke-width="1.6" /><path d="M230 226 L229.37 267.5" pathLength="1" style="--d:13" class="c-sketch__ink" stroke-width="1.6" /><path d="M231 266 L170.45 266.72" pathLength="1" style="--d:14" class="c-sketch__ink" stroke-width="1.6" /><path d="M170.45 267 L170 224.5" pathLength="1" style="--d:15" class="c-sketch__ink" stroke-width="1.6" /></g><g transform="rotate(0 104 150)"><path d="M74.9 129 L135.5 130.72" pathLength="1" style="--d:16" class="c-sketch__ink" stroke-width="1.6" /><path d="M134 130.72 L133.1 171.5" pathLength="1" style="--d:17" class="c-sketch__ink" stroke-width="1.6" /><path d="M135 170 L74.9 169.91" pathLength="1" style="--d:18" class="c-sketch__ink" stroke-width="1.6" /><path d="M74.9 171 L74 129.22" pathLength="1" style="--d:19" class="c-sketch__ink" stroke-width="1.6" /></g><path d="M166 150 a34 34 0 0 1 68 0 a34 34 0 0 1 -68 0" pathLength="1" style="--d:20" class="c-sketch__ink c-sketch__ink--accent" stroke-width="2" /><circle cx="200" cy="150" r="5" style="--d:21" class="c-sketch__mark c-sketch__mark--accent" />
+            </svg>
+            <figcaption class="u-visually-hidden"><span data-lang-copy="en">Four boxes arranged around a central hub, each joined to it by a spoke.</span><span data-lang-copy="ar" lang="ar">أربعة مربعات مرتّبة حول مركز واحد، يصل كلٌّ منها به خط.</span></figcaption>
+          </figure>
+        </article>
+
+      </div>
+
+      <footer class="c-story__close">
+        <p class="c-story__statement"><span data-lang-copy="en">The diagram at the end of this story is not a metaphor. It is the way the work is organised.</span><span data-lang-copy="ar" lang="ar">الرسم في نهاية هذه القصة ليس استعارة. إنه الطريقة التي يُنظَّم بها العمل فعلًا.</span></p>
+        <a class="c-link c-story__link" href="./index.html#services">
+          <span data-lang-copy="en">See the five services</span><span data-lang-copy="ar" lang="ar">اطّلع على الخدمات الخمس</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="u-flip-rtl">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2"
+              stroke-linecap="square" fill="none" />
+          </svg>
+        </a>
+      </footer>
+      <!-- STORY:END -->
+    </main>
+
+    <!-- CHROME:FOOT:START -->
+    <!-- FOOTER — COPIED FROM index.html by tools/build-chrome.js.
+         Do not edit here: edit index.html and re-run the tool, or this file
+         will be overwritten and the two pages will disagree. -->
+    <footer class="c-footer">
+      <div class="l-container">
+        <div class="c-footer__top" data-reveal-group>
+          <div class="c-footer__brand">
+            <a class="c-header__brand" href="#home"
+              aria-label="Pixora, Digital Agency — home" data-i18n-label="brandHome">
+              <span class="c-brand" aria-hidden="true">
+                <span class="c-brand__word">PI<span class="c-brand__accent">X</span>ORA</span>
+                <span class="c-brand__tagline">Digital Agency</span>
+              </span>
+            </a>
+            <p class="c-footer__statement"><span data-lang-copy="en">Brands, websites, content and advertising — from one partner.</span><span data-lang-copy="ar" lang="ar">علامات ومواقع ومحتوى وإعلانات — من شريك واحد.</span></p>
+          </div>
+
+          <nav class="c-footer__group" aria-label="Quick links" data-i18n-label="footerNav">
+            <h2 class="t-label c-footer__heading" data-i18n="footerNav">Quick links</h2>
+            <ul class="c-footer__list" data-nav-render="footer">
+              <li><a class="c-link" href="#home" data-nav-link>Home</a></li>
+              <li><a class="c-link" href="#services" data-nav-link>Services</a></li>
+              <li><a class="c-link" href="#process" data-nav-link>Process</a></li>
+              <li><a class="c-link" href="#contact" data-nav-link>Contact</a></li>
+            </ul>
+          </nav>
+
+          <nav class="c-footer__group" aria-label="Services" data-i18n-label="footerServices">
+            <h2 class="t-label c-footer__heading" data-i18n="footerServices">Services</h2>
+            <ul class="c-footer__list" data-nav-render="services">
+              <li><a class="c-link" href="#branding" data-nav-link><span data-lang-copy="en">Branding &amp; Design</span><span data-lang-copy="ar" lang="ar">الهوية والتصميم</span></a></li>
+              <li><a class="c-link" href="#websites" data-nav-link><span data-lang-copy="en">Websites</span><span data-lang-copy="ar" lang="ar">المواقع الإلكترونية</span></a></li>
+              <li><a class="c-link" href="#social" data-nav-link><span data-lang-copy="en">Social Media Management</span><span data-lang-copy="ar" lang="ar">إدارة وسائل التواصل</span></a></li>
+              <li><a class="c-link" href="#marketing" data-nav-link><span data-lang-copy="en">Digital Marketing &amp; Advertising</span><span data-lang-copy="ar" lang="ar">التسويق الرقمي والإعلانات</span></a></li>
+              <li><a class="c-link" href="#integrated" data-nav-link><span data-lang-copy="en">Integrated Digital Solutions</span><span data-lang-copy="ar" lang="ar">الحلول الرقمية المتكاملة</span></a></li>
+            </ul>
+          </nav>
+
+          <div class="c-footer__action">
+            <h2 class="t-label c-footer__heading" data-i18n="footerStart">Start</h2>
+            <a class="c-btn c-btn--primary" href="#contact" data-cta-link>
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <p class="c-footer__mark" aria-hidden="true">PIXORA</p>
+
+        <div class="c-footer__bottom">
+          <!-- Seeded like the two link lists above, and re-rendered from
+               SOCIAL_LINKS on boot so the footer and the drawer can never
+               drift apart. Off-site, so each opens in a new tab and says so. -->
+          <nav aria-label="Elsewhere" data-i18n-label="footerElsewhere" data-social-block>
+            <ul class="c-footer__social" data-social-render>
+              <li><a href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer">Website<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+            </ul>
+          </nav>
+
+          <p class="c-footer__copyright">
+            © <span class="c-footer__year" data-year>2026</span> Pixora.
+            <span data-i18n="rights">All rights reserved.</span>
+          </p>
+          <!-- An anchor, not a button: it works without JavaScript, is
+               keyboard-reachable for free, and the smooth scroll is the
+               document's own (already disabled under reduced motion).
+               The chevron points UP — not an inline direction — so it
+               deliberately carries no u-flip-rtl. -->
+          <a class="c-link c-footer__top-link" href="#home">
+            <span data-i18n="backToTop">Back to top</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+    <!-- CHROME:FOOT:END -->
+  </body>
+</html>

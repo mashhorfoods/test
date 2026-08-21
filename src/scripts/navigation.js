@@ -102,6 +102,33 @@ function buildFooterLink(section) {
 }
 
 /**
+ * CROSS-PAGE ANCHORS.
+ *
+ * The header, drawer and footer are one component shared by every page — the
+ * markup says so and tools/build-chrome.js enforces it. But their links are
+ * page anchors: "#services" is correct on the homepage and dead anywhere else.
+ *
+ * Rather than teach every link builder which page it is on, this asks the only
+ * question that actually matters: does the target exist in THIS document? If
+ * it does, the fragment is right and is left alone. If it does not, the link is
+ * pointing at a section of the homepage and gets there explicitly.
+ *
+ * That covers the generated links and the static ones in the same pass, needs
+ * no configuration, and self-corrects — move a section between pages and the
+ * links follow it.
+ */
+function resolveCrossPageAnchors() {
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    const id = link.getAttribute('href').slice(1);
+    if (!id || document.getElementById(id)) return;
+    link.setAttribute('href', `${HOME}#${id}`);
+  });
+}
+
+/** Where the page sections live. Empty string on the homepage itself. */
+const HOME = document.getElementById('home') ? '' : './index.html';
+
+/**
  * Rebuild every [data-nav-render] container from the shared map. Called on
  * boot and again whenever the language changes.
  */
@@ -159,6 +186,8 @@ function renderSurfaces() {
     );
   });
 
+  resolveCrossPageAnchors();
+
   // Social links render only if real profiles exist — none are invented.
   document.querySelectorAll('[data-social-render]').forEach((container) => {
     const block = container.closest('[data-social-block]') ?? container;
@@ -201,7 +230,11 @@ function renderStrings() {
   });
 
   document.querySelectorAll('[data-cta-link]').forEach((el) => {
-    el.setAttribute('href', `#${PRIMARY_CTA.target}`);
+    // HOME is '' on the homepage, so this stays a plain fragment there and
+    // becomes a real cross-page link everywhere else. Set here rather than
+    // patched afterwards, because renderStrings() runs after renderSurfaces()
+    // and would otherwise put the dead fragment back.
+    el.setAttribute('href', `${HOME}#${PRIMARY_CTA.target}`);
   });
 }
 

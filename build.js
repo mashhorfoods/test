@@ -283,7 +283,7 @@ const kb = (n) => `${(n / 1024).toFixed(1)}KB`;
 
 let remote = [];
 let missing = [];
-for (const page of ['index.html', 'styleguide.html']) {
+for (const page of ['index.html', 'styleguide.html', 'story.html']) {
   const { html, stats } = buildPage(page);
   const out = path.join(DIST, page);
   fs.writeFileSync(out, html);

@@ -1,0 +1,448 @@
+/* =============================================================================
+   COMPONENT — SUCCESS STORY  (Stage 24)
+
+   A scroll narrative in five chapters, on its own page.
+
+   WHY ITS OWN PAGE. The homepage is already ~29 screens on a phone, and Stage
+   22 spent its whole budget making that length navigable. Five more chapters
+   would have undone it. A narrative that asks to be read start-to-finish also
+   wants a page it owns, with nothing competing above or below.
+
+   TWO LAYERS, AS THE BRIEF REQUIRES.
+     BRAND SYSTEM  the page's type, colour, grid and spacing are the site's,
+                   unchanged — every value here is an existing token.
+     STORY LAYER   the sketches are the only thing that is hand-drawn, and
+                   they are drawings, not a second brand. No handwritten
+                   typeface, no second palette, no texture.
+
+   The sketch inherits `currentColor`, so it cannot drift from the text it sits
+   beside; the accent appears only where the story turns.
+   ============================================================================= */
+
+@layer components {
+  /* The homepage's one link into the story. Sits under #integrated, whose
+     argument the story follows through. */
+  .c-detail__more {
+    margin-block-start: var(--section-space-tight);
+  }
+
+  .c-detail__more .c-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    min-block-size: var(--touch-target-min);
+  }
+
+  .c-detail__more svg {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  /* -----------------------------------------------------------------------
+     PAGE FRAME
+     ----------------------------------------------------------------------- */
+  .c-story {
+    display: block;
+    padding-block: var(--section-space) var(--section-space-loose);
+    padding-inline: var(--container-gutter);
+    margin-inline: auto;
+    max-inline-size: var(--container-max, 90rem);
+  }
+
+  /* -----------------------------------------------------------------------
+     OPENING
+     Deliberately quiet: a label, a title and one sentence. The story starts
+     at Chapter 01, not here, so this does not compete with it.
+     ----------------------------------------------------------------------- */
+  .c-story__head {
+    max-inline-size: 46rem;
+    margin-block-end: var(--section-space-loose);
+  }
+
+  .c-story__eyebrow {
+    margin-block-end: var(--space-label-group);
+    color: var(--color-accent);
+  }
+
+  .c-story__title {
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    margin-block-end: var(--space-24);
+    text-wrap: balance;
+  }
+
+  .c-story__standfirst {
+    color: var(--color-text-secondary);
+    max-inline-size: 38rem;
+  }
+
+  /* -----------------------------------------------------------------------
+     CHAPTERS
+     Mobile first: number and annotation, title, text, then the drawing.
+     §14 asks for a composition designed for the phone rather than a stacked
+     desktop, and this is that order — the reader knows what they are looking
+     at before they look at it.
+     ----------------------------------------------------------------------- */
+  .c-chapter {
+    display: grid;
+    gap: var(--space-32);
+  }
+
+  .c-chapter__text {
+    display: grid;
+    gap: var(--space-16);
+    align-content: start;
+  }
+
+  .c-chapter__meta {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-16);
+    margin-block-end: var(--space-8);
+  }
+
+  .c-chapter__num {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+    /* A figure inside a right-to-left row still reads left-to-right. */
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* §12 — the annotation names what the chapter IS, in one approved word.
+     It stays in the brand face (§11: the hand-drawn quality comes from the
+     drawings, never from a handwritten typeface) and earns its annotation
+     character from the rule beneath it, which is drawn slightly off-square. */
+  .c-chapter__annotation {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    padding-block-end: var(--space-4);
+  }
+
+  :lang(ar) .c-chapter__annotation,
+  [dir="rtl"] .c-chapter__annotation {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+  }
+
+  .c-chapter__annotation::after {
+    content: "";
+    position: absolute;
+    inset-inline: -2px;
+    inset-block-end: 0;
+    block-size: 2px;
+    background-color: var(--color-accent);
+    opacity: 0.55;
+    /* A ruled line under a word, put there by hand rather than by a layout
+       engine — the only place the sketch language touches the typography. */
+    transform: rotate(-0.6deg);
+    transform-origin: 0 50%;
+  }
+
+  .c-chapter__title {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .c-chapter__lead {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+    max-inline-size: 38ch;
+  }
+
+  /* The one extra beat per chapter. Set apart by a rule rather than by size,
+     so it reads as an aside without becoming a second paragraph. */
+  .c-chapter__aside {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-muted);
+    max-inline-size: 34ch;
+    padding-inline-start: var(--space-16);
+    border-inline-start: 2px solid var(--color-accent);
+  }
+
+  /* -----------------------------------------------------------------------
+     THE DRAWING
+     ----------------------------------------------------------------------- */
+  .c-chapter__figure {
+    margin: 0;
+    display: grid;
+    align-content: center;
+  }
+
+  .c-sketch {
+    inline-size: 100%;
+    block-size: auto;
+    /* The whole sketch layer inherits from here, so it can never drift from
+       the palette: one colour in, every stroke follows. */
+    color: var(--color-text-secondary);
+    overflow: visible;
+  }
+
+  .c-sketch__ink {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* An exploratory line — still a question rather than a decision. Chapter 02
+     is made of these; by Chapter 04 there are none left. */
+  .c-sketch__ink--draft {
+    stroke-dasharray: 5 7;
+    opacity: 0.5;
+  }
+
+  .c-sketch__ink--accent {
+    stroke: var(--color-accent);
+  }
+
+  .c-sketch__mark {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .c-sketch__mark--accent {
+    fill: var(--color-accent);
+  }
+
+  /* -----------------------------------------------------------------------
+     THE THREAD  (§09, §10)
+     One line that leaves each chapter and arrives at the next, so the five
+     are visibly one story rather than five sections. It is a real drawn
+     stroke, not a divider rule: it wanders, corrects itself once, and ends
+     in an arrowhead pointing at what follows.
+     ----------------------------------------------------------------------- */
+  .c-chapter__joint {
+    display: grid;
+    justify-content: center;
+    padding-block: var(--space-32);
+  }
+
+  .c-chapter__thread {
+    inline-size: 3.5rem;
+    block-size: auto;
+    color: var(--color-text-secondary);
+  }
+
+  /* The last connector arrives in the accent — the line has stopped
+     searching. See THREAD in tools/build-story.js. */
+  .c-chapter__thread--resolved {
+    color: var(--color-accent);
+  }
+
+  /* -----------------------------------------------------------------------
+     CLOSE  (§23)
+     Quiet and resolved. One statement, one restrained link — no banner CTA:
+     the page's job is finished when the reader understands the argument.
+     ----------------------------------------------------------------------- */
+  .c-story__close {
+    max-inline-size: 42rem;
+    margin-block-start: var(--section-space-loose);
+    padding-block-start: var(--space-40);
+    border-block-start: var(--border-hairline);
+  }
+
+  /* inline-flex with a non-shrinking icon: without it the label wrapped to
+     three lines against the arrow. */
+  .c-story__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    min-block-size: var(--touch-target-min);
+  }
+
+  .c-story__link svg {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .c-story__statement {
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin-block-end: var(--space-24);
+    text-wrap: balance;
+  }
+
+  /* =======================================================================
+     TABLET
+     ======================================================================= */
+  @media (min-width: 48em) {
+    .c-chapter {
+      gap: var(--space-48);
+    }
+
+    .c-chapter__joint {
+      padding-block: var(--space-48);
+    }
+
+    .c-chapter__thread {
+      inline-size: 4.5rem;
+    }
+  }
+
+  /* =======================================================================
+     DESKTOP  (§13)
+     Editorial, not centred-article: the text holds five of twelve columns and
+     the drawing six, with a full column of air between them, and the two swap
+     sides every chapter. Placement is explicit — never `order` — so the
+     reading order in the markup is the reading order for a screen reader and
+     for a keyboard, whichever side the drawing is on.
+     ======================================================================= */
+  @media (min-width: 64em) {
+    .c-story {
+      padding-inline: var(--space-64);
+    }
+
+    .c-story__head {
+      margin-block-end: calc(var(--section-space-loose) * 1.15);
+    }
+
+    .c-chapter {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--grid-gutter);
+      align-items: center;
+      min-block-size: 60vh;
+    }
+
+    .c-chapter__text {
+      grid-column: 1 / span 5;
+      grid-row: 1;
+    }
+
+    .c-chapter__figure {
+      grid-column: 7 / span 6;
+      grid-row: 1;
+    }
+
+    /* Reverse on every second chapter — the rhythm §13 asks for. */
+    .c-chapter:nth-of-type(even) .c-chapter__text {
+      grid-column: 8 / span 5;
+    }
+
+    .c-chapter:nth-of-type(even) .c-chapter__figure {
+      grid-column: 1 / span 6;
+    }
+
+    /* The thread leaves on the side the drawing was on and arrives on the
+       side the next one will be, so the line and the composition agree. */
+    .c-chapter__joint {
+      justify-content: start;
+      padding-inline-start: 12%;
+      padding-block: var(--space-64);
+    }
+
+    .c-chapter__joint:nth-of-type(even) {
+      justify-content: end;
+      padding-inline: 0 12%;
+    }
+  }
+}
+
+/* =============================================================================
+   MOTION  (§16-§19)
+   The drawing draws. Strokes carry pathLength="1", which normalises every
+   path to the same nominal length, so one dash rule animates a 12px tick and
+   a 400px arc identically and no JavaScript measures anything.
+
+   Each chapter draws ONCE, when it enters the viewport, and is never replayed
+   (§18) — a story that keeps redrawing itself is a distraction, not a story.
+   ============================================================================= */
+@layer motion {
+  @media (prefers-reduced-motion: no-preference) {
+    .c-sketch__ink:not(.c-sketch__ink--draft) {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+
+    .c-sketch__mark,
+    .c-sketch__ink--draft {
+      opacity: 0;
+    }
+
+    /* --d is the stroke's position in the drawing order, written by the
+       generator. The hand works through the sketch rather than the whole
+       thing arriving at once. */
+    .is-drawing .c-sketch__ink:not(.c-sketch__ink--draft) {
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset var(--duration-slow) var(--ease-out)
+        calc(var(--d, 0) * 60ms);
+    }
+
+    .is-drawing .c-sketch__ink--draft {
+      opacity: 0.5;
+      transition: opacity var(--duration-base) var(--ease-standard)
+        calc(var(--d, 0) * 60ms);
+    }
+
+    .is-drawing .c-sketch__mark {
+      opacity: 1;
+      transition: opacity var(--duration-base) var(--ease-standard)
+        calc(var(--d, 0) * 60ms + 160ms);
+    }
+
+    /* The text arrives a beat before the drawing it describes. */
+    .c-chapter__text > * {
+      opacity: 0;
+      translate: 0 var(--space-16);
+    }
+
+    .is-drawing .c-chapter__text > * {
+      opacity: 1;
+      translate: none;
+      transition: opacity var(--duration-base) var(--ease-standard),
+        translate var(--duration-base) var(--ease-out);
+    }
+
+    .is-drawing .c-chapter__text > :nth-child(1) { transition-delay: 0ms; }
+    .is-drawing .c-chapter__text > :nth-child(2) { transition-delay: 70ms; }
+    .is-drawing .c-chapter__text > :nth-child(3) { transition-delay: 140ms; }
+    .is-drawing .c-chapter__text > :nth-child(4) { transition-delay: 210ms; }
+  }
+
+  /* §19 — with reduced motion the final state is simply the state. Nothing
+     animates, nothing is hidden waiting for a trigger, and the story reads
+     identically. The rules above are already inside a no-preference query, so
+     there is nothing to undo here; this block exists to say so, and to make
+     the guarantee testable. */
+  @media (prefers-reduced-motion: reduce) {
+    .c-sketch__ink {
+      stroke-dashoffset: 0;
+    }
+
+    .c-sketch__mark,
+    .c-sketch__ink--draft,
+    .c-chapter__text > * {
+      opacity: 1;
+      translate: none;
+    }
+
+    /* The draft lines keep the opacity the component layer gives them. */
+    .c-sketch__ink--draft {
+      opacity: 0.5;
+    }
+  }
+}

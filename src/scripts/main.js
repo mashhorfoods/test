@@ -12,12 +12,15 @@ import { initNavigation } from './navigation.js';
 import { initDisclosure } from './disclosure.js';
 import { initMotion } from './motion.js';
 import { initContact } from './contact.js';
+import { initStory } from './story.js';
 
 function boot() {
   initNavigation();
   initDisclosure();
   initMotion();
   initContact();
+  // No-op on every page without chapters, which is every page but one.
+  initStory();
 }
 
 if (document.readyState === 'loading') {
