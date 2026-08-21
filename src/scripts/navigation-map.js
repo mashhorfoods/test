@@ -19,6 +19,11 @@
  * @property {string} id        DOM id of the section element on the homepage.
  * @property {string} label     Visible label (en).
  * @property {string} labelAr   Visible label (ar).
+ * @property {string} [href]
+ *   An explicit destination, for entries that are a PAGE rather than a section
+ *   of the homepage. When present it is used verbatim and `id` becomes a
+ *   name rather than an anchor target — the scroll spy will not find a section
+ *   for it, which is correct: there is nothing on this page to be inside of.
  * @property {boolean} [inNav]     Show in header nav + mobile menu. Default true.
  * @property {boolean} [inFooter]  Show in footer quick links. Default true.
  * @property {NavSection[]} [children]
@@ -63,6 +68,11 @@ export const SECTIONS = [
      header still renders this as a flat link: on a desktop the sections are
      visible by scrolling and a dropdown would be chrome for its own sake. */
   { id: 'services', label: 'Services', labelAr: 'خدماتنا', children: SERVICE_LINKS },
+  /* A PAGE, not a section — see `href` in the typedef.
+     It shipped reachable only from a text link at the bottom of #integrated,
+     which measured 68% down the homepage and 20 screens into it on a phone.
+     A page nothing links to from the navigation is a page nobody finds. */
+  { id: 'story', label: 'Story', labelAr: 'القصة', href: './story.html' },
   { id: 'process', label: 'Process', labelAr: 'آلية العمل' },
   // Reached through the primary CTA rather than a sixth nav link, so the
   // header keeps one unambiguous conversion action (§11, §19). It still

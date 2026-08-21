@@ -45,7 +45,7 @@ const FOCUSABLE = [
 
 function buildNavLink(section) {
   const link = document.createElement('a');
-  link.href = `#${section.id}`;
+  link.href = destination(section);
   link.className = 'c-nav__link';
   link.dataset.navLink = '';
 
@@ -59,9 +59,20 @@ function buildNavLink(section) {
   return link;
 }
 
+/**
+ * Where a navigation entry points.
+ *
+ * A section entry is an anchor on the homepage; a page entry (one carrying
+ * `href`) is a file. On the homepage the anchor is a bare fragment; on any
+ * other page it has to name the homepage explicitly, which is what HOME does.
+ */
+function destination(entry) {
+  return entry.href ?? `${HOME}#${entry.id}`;
+}
+
 function buildDrawerLink(section, index) {
   const link = document.createElement('a');
-  link.href = `#${section.id}`;
+  link.href = destination(section);
   link.className = 'c-drawer__link';
   link.dataset.navLink = '';
 
@@ -85,7 +96,7 @@ function buildDrawerLink(section, index) {
  */
 function buildDrawerSubLink(entry) {
   const link = document.createElement('a');
-  link.href = `#${entry.id}`;
+  link.href = destination(entry);
   link.className = 'c-drawer__sublink';
   link.dataset.navLink = '';
   link.textContent = labelFor(entry);
@@ -94,7 +105,7 @@ function buildDrawerSubLink(entry) {
 
 function buildFooterLink(section) {
   const link = document.createElement('a');
-  link.href = `#${section.id}`;
+  link.href = destination(section);
   link.className = 'c-link';
   link.dataset.navLink = '';
   link.textContent = labelFor(section);
@@ -117,6 +128,21 @@ function buildFooterLink(section) {
  * no configuration, and self-corrects — move a section between pages and the
  * links follow it.
  */
+/**
+ * Mark the navigation entry for the page currently being viewed.
+ *
+ * The scroll spy answers "which section am I in", which a page entry can never
+ * satisfy — there is no section to be inside of. This answers the other half:
+ * which FILE am I on. Both write the same attribute, so the two surfaces agree.
+ */
+function markCurrentPage() {
+  const here = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('[data-nav-link]').forEach((link) => {
+    const target = (link.getAttribute('href') || '').split('#')[0].split('/').pop();
+    if (target && target === here) link.setAttribute('aria-current', 'page');
+  });
+}
+
 function resolveCrossPageAnchors() {
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     const id = link.getAttribute('href').slice(1);
@@ -187,6 +213,7 @@ function renderSurfaces() {
   });
 
   resolveCrossPageAnchors();
+  markCurrentPage();
 
   // Social links render only if real profiles exist — none are invented.
   document.querySelectorAll('[data-social-render]').forEach((container) => {
@@ -397,6 +424,8 @@ function initScrollSpy() {
      anything reachable from the map is a target. */
   const targets = SECTIONS
     .flatMap((section) => [section, ...(section.children ?? [])])
+    // A page entry has no section in this document; getElementById returns
+    // null and it drops out here, which is the right answer for it.
     .map((section) => document.getElementById(section.id))
     .filter(Boolean);
 
