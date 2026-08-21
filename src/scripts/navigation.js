@@ -348,7 +348,36 @@ function initDrawer(header) {
     header?.reset();
     setTriggerLabel();
 
-    drawer.querySelector(FOCUSABLE)?.focus();
+    /* MOVE FOCUS INTO THE MENU — and confirm it landed.
+
+       Opening used to leave focus on the trigger. A hidden element cannot
+       take focus, and the drawer is visibility:hidden until .is-open
+       applies, so the call ran against a hidden element and did nothing at
+       all — silently. A keyboard user opened the menu and had no way to
+       tell anything had happened.
+
+       The timing is genuinely awkward and three plausible fixes do not work,
+       recorded so nobody re-tries them. rAF runs BEFORE its own frame's
+       style recalculation. Forcing a reflow settles the drawer but not its
+       children: the reduced-motion safety net puts transition-duration on *,
+       and an element naming no transition-property defaults to `all`, so
+       every descendant briefly transitions its INHERITED visibility and
+       reads hidden. setTimeout(0) can still land before that style pass.
+
+       So rather than predict when the element becomes focusable, this asks
+       whether it did, and tries again next frame if not. It stops the moment
+       it succeeds — usually the first attempt — and gives up after a handful
+       of frames instead of looping. */
+    const focusFirstItem = (attempt = 0) => {
+      if (!isOpen()) return;
+      const first = drawer.querySelector(FOCUSABLE);
+      if (!first) return;
+      first.focus();
+      if (document.activeElement !== first && attempt < 5) {
+        requestAnimationFrame(() => focusFirstItem(attempt + 1));
+      }
+    };
+    focusFirstItem();
   };
 
   const close = ({ restoreFocus = true } = {}) => {

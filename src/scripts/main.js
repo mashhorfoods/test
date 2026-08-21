@@ -13,8 +13,11 @@ import { initDisclosure } from './disclosure.js';
 import { initMotion } from './motion.js';
 import { initContact } from './contact.js';
 import { initStory } from './story.js';
+import { initFocus } from './focus.js';
 
 function boot() {
+  // Before the rest: every other module's links inherit this behaviour.
+  initFocus();
   initNavigation();
   initDisclosure();
   initMotion();

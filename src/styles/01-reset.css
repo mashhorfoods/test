@@ -137,7 +137,19 @@
     *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
+      animation-delay: 0s !important;
       transition-duration: 0.01ms !important;
+      /* DELAYS TOO. Killing the duration and leaving the delay leaves the
+         user waiting anyway — latency without the animation that explained
+         it. It also broke something real. The mobile drawer keeps
+         visibility on a DELAYED transition so the panel stays visible while
+         it fades out, and .is-open cancels that delay on the way in. Under
+         reduced motion the delay survived, so the drawer was still
+         visibility:hidden for 300ms after opening — and a hidden element
+         cannot take focus, so the call that should have landed on its first
+         link silently did nothing. A keyboard user opened the menu and
+         stayed on the trigger, with no way to tell anything had happened. */
+      transition-delay: 0s !important;
       scroll-behavior: auto !important;
     }
   }

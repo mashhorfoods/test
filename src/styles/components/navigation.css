@@ -191,9 +191,22 @@
       visibility 0s linear var(--duration-base);
   }
 
+  /* OPENING IS NOT A TRANSITION.
+     visibility is transitioned on the CLOSE path only, and only so the
+     panel stays visible while it fades out. On the way in it must apply
+     immediately, because a hidden element cannot take focus and the menu
+     focuses its first link the moment it opens.
+
+     transition-delay:0s was not enough. The reduced-motion safety net sets
+     transition-duration to 0.01ms on everything, which turns the instant
+     0s visibility change into a real — if tiny — transition, and for its
+     duration the computed value is still hidden. Naming opacity as the only
+     transitioned property here removes the dependency on that timing
+     altogether rather than racing it. */
   .c-drawer.is-open {
     visibility: visible;
     opacity: 1;
+    transition-property: opacity;
     transition-delay: 0s;
   }
 
