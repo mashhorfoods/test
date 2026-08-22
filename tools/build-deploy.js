@@ -123,8 +123,7 @@ ${URL ? `\nSitemap: ${URL}/sitemap.xml\n` : `
 
 /* --- sitemap.xml ----------------------------------------------------------- */
 const sitemap = (stamp) => `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemap.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${cfg.pages.filter((p) => p.index !== false).map((p) => {
   const loc = `${URL}/${p.file === 'index.html' ? '' : p.file}`;
   return `  <url>
@@ -137,6 +136,42 @@ ${cfg.pages.filter((p) => p.index !== false).map((p) => {
 </urlset>
 `;
 
+/* --- Canonical + og:url ----------------------------------------------------
+   Written into the BUILT pages, not the source, so the modular files stay
+   host-agnostic and a change of domain is a rebuild rather than an edit.
+
+   NO HREFLANG, deliberately. hreflang describes a set of URLs, one per
+   language. This site serves English and Arabic from the SAME url and swaps
+   them client-side, so there is no second URL to point at — emitting
+   /ar/ alternates would advertise pages that do not exist. Separate language
+   URLs would be a real architectural change, worth doing if Arabic search
+   traffic matters, and not something a deploy script should fake. */
+function injectHead(stamp) {
+  if (!URL) return 0;
+  let n = 0;
+  for (const page of cfg.pages) {
+    const file = path.join(DIST, page.file);
+    if (!fs.existsSync(file)) continue;
+    let html = fs.readFileSync(file, 'utf8');
+
+    // Idempotent: strip what a previous run wrote before writing it again.
+    html = html.replace(/\n?\s*<link rel="canonical"[^>]*>/g, '')
+      .replace(/\n?\s*<meta property="og:url"[^>]*>/g, '');
+
+    const loc = `${URL}/${page.file === 'index.html' ? '' : page.file}`;
+    const tags = page.index === false
+      ? '' // noindex pages get no canonical: there is nothing to canonicalise to.
+      : `\n    <link rel="canonical" href="${loc}" />\n    <meta property="og:url" content="${loc}" />`;
+
+    if (tags) {
+      html = html.replace('</head>', `${tags}\n  </head>`);
+      n++;
+    }
+    fs.writeFileSync(file, html);
+  }
+  return n;
+}
+
 /* --- Write ----------------------------------------------------------------- */
 function run(stamp) {
   const out = [];
@@ -148,6 +183,8 @@ function run(stamp) {
   if (URL) {
     fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemap(stamp));
     out.push('sitemap.xml');
+    const n = injectHead(stamp);
+    out.push(`canonical + og:url on ${n} page(s)`);
   }
 
   console.log(`deploy files -> dist/  (${out.join(', ')})`);

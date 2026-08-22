@@ -8,10 +8,23 @@
     "",
     "Fill in `url` (no trailing slash) and re-run `node build.js`."
   ],
-  "url": "",
+  "url": "https://zaokalyamamah.online",
   "pages": [
-    { "file": "index.html", "priority": "1.0", "changefreq": "monthly", "index": true },
-    { "file": "story.html", "priority": "0.8", "changefreq": "yearly", "index": true },
-    { "file": "styleguide.html", "index": false }
+    {
+      "file": "index.html",
+      "priority": "1.0",
+      "changefreq": "monthly",
+      "index": true
+    },
+    {
+      "file": "story.html",
+      "priority": "0.8",
+      "changefreq": "yearly",
+      "index": true
+    },
+    {
+      "file": "styleguide.html",
+      "index": false
+    }
   ]
 }
