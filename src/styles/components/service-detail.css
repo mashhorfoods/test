@@ -102,9 +102,15 @@
 
   /* =======================================================================
      IDENTITY BOARD
-     An abstract studio board: construction, type, palette, application.
-     Nothing here is presented as client work — these demonstrate the nature
-     of the craft rather than fabricate a portfolio.
+     Four boards from one identity project: construction, type, palette,
+     application.
+
+     This comment used to say "nothing here is presented as client work" —
+     written when the panels were abstract line drawings and there was no
+     portfolio to show. That is no longer true: these are real boards from a
+     real client engagement, supplied and cleared by the studio. Recorded
+     because the old note would have read as a standing rule and quietly
+     misled the next person to touch this section.
      ======================================================================= */
   .c-brandboard {
     display: grid;
@@ -644,7 +650,10 @@
    foot — only the column count changes. That is what makes it read as
    responsive capability rather than a gallery of mockups.
 
-   Abstract by design. Nothing here is presented as a real client project.
+   These frames are a real client site shown at three widths, supplied and
+   cleared by the studio. The line that used to sit here said the opposite —
+   "abstract by design, nothing presented as a real client project" — which
+   was true when the frames were drawn placeholders and is not true now.
    ============================================================================= */
 
 @layer components {

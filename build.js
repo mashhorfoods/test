@@ -231,10 +231,19 @@ function buildPage(file) {
   // --- font preloads are pointless once the bytes are in the document -----
   html = html.replace(/[ \t]*<link\s+rel="preload"[\s\S]*?\/>\n?/g, '');
 
-  // --- favicon -> data: URI -----------------------------------------------
-  html = html.replace(/href="\.\/(src\/assets\/brand\/logo\.svg)"/g, (_, p) => {
+  /* --- favicon -> data: URI -----------------------------------------------
+     ANY local rel="icon", not one hardcoded path. The first version matched
+     exactly src/assets/brand/logo.svg, so when two later pages were authored
+     against a filename that did not exist, their links passed through
+     untouched and shipped — a build that only handles the path it was written
+     against is a build that hides mistakes. */
+  html = html.replace(/rel="icon"([^>]*?)href="\.\/([^"]+)"/g, (whole, mid, p) => {
+    if (!fs.existsSync(path.join(ROOT, p))) {
+      faviconMissing.push(p);
+      return whole;
+    }
     const svg = read(p);
-    return `href="data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}"`;
+    return `rel="icon"${mid}href="data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}"`;
   });
 
   // --- <img> -> data: URI, when the file is ours ---------------------------
@@ -282,6 +291,7 @@ fs.mkdirSync(DIST, { recursive: true });
 const kb = (n) => `${(n / 1024).toFixed(1)}KB`;
 
 let remote = [];
+const faviconMissing = [];
 let missing = [];
 for (const page of ['index.html', 'styleguide.html', 'story.html', '404.html']) {
   const { html, stats } = buildPage(page);
@@ -301,6 +311,12 @@ for (const page of ['index.html', 'styleguide.html', 'story.html', '404.html']) 
 if (missing.length) {
   console.log(`\n  ! ${missing.length} image(s) referenced but not on disk:`);
   [...new Set(missing)].forEach((u) => console.log(`      ${u}`));
+}
+
+if (faviconMissing.length) {
+  console.log('\n  ! favicon file(s) referenced but NOT on disk. The link shipped');
+  console.log('    unchanged and will 404 for every visitor to that page:');
+  [...new Set(faviconMissing)].forEach((u) => console.log(`      ./${u}`));
 }
 
 if (remote.length) {
