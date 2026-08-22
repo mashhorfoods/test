@@ -185,6 +185,13 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-8);
+    /* A TEXT LINK IS STILL A TARGET, on both axes. Short labels — "Story" is
+       five characters — came out 43px wide, and this was patched at four
+       separate call sites before it was fixed here. .c-link is never set
+       inline inside a paragraph; it is always a standalone action, so a
+       minimum box costs nothing and no call site has to remember. */
+    min-block-size: var(--touch-target-min);
+    min-inline-size: var(--touch-target-min);
     color: var(--color-accent);
     font-weight: var(--weight-medium);
     text-decoration: none;

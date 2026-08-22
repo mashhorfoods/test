@@ -283,7 +283,7 @@ const kb = (n) => `${(n / 1024).toFixed(1)}KB`;
 
 let remote = [];
 let missing = [];
-for (const page of ['index.html', 'styleguide.html', 'story.html']) {
+for (const page of ['index.html', 'styleguide.html', 'story.html', '404.html']) {
   const { html, stats } = buildPage(page);
   const out = path.join(DIST, page);
   fs.writeFileSync(out, html);
@@ -315,3 +315,13 @@ if (remote.length) {
 } else {
   console.log('\nEach file is self-contained: open it directly, or drop it on any host.');
 }
+
+/* -----------------------------------------------------------------------------
+   SERVER FILES
+   The pages are only half of a deployment. .htaccess, robots.txt and — once a
+   domain is configured — sitemap.xml are generated here so the bundle in dist/
+   is the whole thing to upload, not the part a browser happens to render.
+   ----------------------------------------------------------------------------- */
+const deploy = require('./tools/build-deploy.js');
+console.log('');
+deploy.run(new Date().toISOString().slice(0, 10));

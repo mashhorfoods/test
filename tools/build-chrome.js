@@ -20,7 +20,7 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const SOURCE = path.join(ROOT, 'index.html');
-const TARGETS = ['story.html'];
+const TARGETS = ['story.html', '404.html'];
 
 const src = fs.readFileSync(SOURCE, 'utf8');
 

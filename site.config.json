@@ -1,0 +1,17 @@
+{
+  "_comment": [
+    "DEPLOYMENT CONFIG. One place for the facts a build needs but a designer",
+    "cannot invent. Everything domain-dependent — canonical, og:url, hreflang,",
+    "sitemap.xml — is generated from `url` and is SKIPPED while it is empty,",
+    "rather than emitted with a placeholder. A wrong canonical is worse than a",
+    "missing one: it tells search engines the real page lives somewhere else.",
+    "",
+    "Fill in `url` (no trailing slash) and re-run `node build.js`."
+  ],
+  "url": "",
+  "pages": [
+    { "file": "index.html", "priority": "1.0", "changefreq": "monthly", "index": true },
+    { "file": "story.html", "priority": "0.8", "changefreq": "yearly", "index": true },
+    { "file": "styleguide.html", "index": false }
+  ]
+}

@@ -1,0 +1,6 @@
+# Pixora
+User-agent: *
+Allow: /
+Disallow: /styleguide.html
+
+# Sitemap line is written once site.config.json carries the domain.

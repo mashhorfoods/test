@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- A 404 is served AT THE REQUESTED URL, whatever depth that is, so a
+         relative link on this page would resolve against a path that does not
+         exist. <base> pins every relative URL — including the ones the shared
+         header and footer bring with them — to the site root. It is the only
+         page that needs this, and the only page that has it. -->
+    <base href="/" />
+
+    <title>Page not found — Pixora</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#202020" />
+
+    <link rel="icon" href="./src/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./src/styles/main.css" />
+
+    <script>
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
+    </script>
+    <script type="module" src="./src/scripts/main.js"></script>
+  </head>
+
+  <body>
+    <!-- CHROME:TOP:START -->
+    <!-- HEADER + MOBILE DRAWER — COPIED FROM index.html by tools/build-chrome.js.
+         Do not edit here: edit index.html and re-run the tool, or this file
+         will be overwritten and the two pages will disagree. -->
+    <a class="c-skip-link" href="#main">Skip to content</a>
+
+    <!-- =================================================================
+         HEADER — global component (§24). Identical markup serves every
+         page; nothing here is hero- or homepage-specific.
+         ================================================================= -->
+    <header class="c-header" data-header>
+      <div class="l-container c-header__inner">
+        <!-- LEFT — brand -->
+        <div class="c-header__zone">
+          <a
+            class="c-header__brand"
+            href="#home"
+            aria-label="Pixora, Digital Agency — home"
+            data-i18n-label="brandHome"
+          >
+            <!-- Brand lockup. A type lockup rather than an image: crisp at
+                 any density, no request, restyleable per breakpoint. The
+                 accent letter is the only coloured element. Swap for a vector
+                 asset via src/assets/brand/README.md if one is supplied. -->
+            <span class="c-brand" aria-hidden="true">
+              <span class="c-brand__word"
+                >PI<span class="c-brand__accent">X</span>ORA</span
+              >
+              <span class="c-brand__tagline">Digital Agency</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- CENTRE — primary navigation, rendered from navigation-map.js -->
+        <nav class="c-nav" aria-label="Primary" data-i18n-label="primaryNav">
+          <!-- Seeded so navigation exists with JavaScript disabled; the
+               script replaces these with identical content from
+               navigation-map.js on boot and on language change. A test
+               asserts the seed and the map agree. -->
+          <ul class="c-nav__list" data-nav-render="nav">
+            <li><a class="c-nav__link" href="#home" data-nav-link>Home</a></li>
+            <li><a class="c-nav__link" href="#services" data-nav-link>Services</a></li>
+            <li><a class="c-nav__link" href="#process" data-nav-link>Process</a></li>
+          </ul>
+        </nav>
+
+        <!-- RIGHT — language, CTA, menu trigger -->
+        <div class="c-header__zone c-header__zone--end">
+          <div
+            class="c-lang"
+            role="group"
+            aria-label="Language"
+            data-i18n-label="language"
+          >
+            <button
+              class="c-lang__option"
+              type="button"
+              data-lang="en"
+              aria-pressed="true"
+            >
+              EN
+            </button>
+            <button
+              class="c-lang__option"
+              type="button"
+              data-lang="ar"
+              aria-pressed="false"
+            >
+              AR
+            </button>
+          </div>
+
+          <a class="c-btn c-btn--primary c-header__cta" href="#contact" data-cta-link>
+            <span data-cta-label>Start Your Project</span>
+            <svg
+              class="c-btn__icon u-flip-rtl"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M5 12h13M13 6l6 6-6 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="square"
+              />
+            </svg>
+          </a>
+
+          <button
+            class="c-menu-trigger"
+            type="button"
+            data-menu-trigger
+            aria-expanded="false"
+            aria-controls="site-menu"
+            aria-label="Open menu"
+          >
+            <span class="c-menu-trigger__bars" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- =================================================================
+         MOBILE MENU
+         Rendered from the same array as the header nav, so the two can
+         never present a different order (§25).
+         ================================================================= -->
+    <div class="c-drawer" id="site-menu" data-drawer inert>
+      <div class="l-container c-drawer__inner">
+        <nav aria-label="Menu" data-i18n-label="menuNav">
+          <p class="t-label c-drawer__eyebrow" data-i18n="menuEyebrow">Menu</p>
+          <ul
+            class="c-drawer__list"
+            data-nav-render="nav"
+            data-nav-style="drawer"
+          ></ul>
+        </nav>
+
+        <!-- Enters after the navigation rows (§16). -->
+        <div class="c-drawer__foot" style="--i: 5">
+          <a
+            class="c-btn c-btn--primary c-btn--lg c-btn--block"
+            href="#contact"
+            data-cta-link
+          >
+            <span data-cta-label>Start Your Project</span>
+            <svg
+              class="c-btn__icon u-flip-rtl"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M5 12h13M13 6l6 6-6 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="square"
+              />
+            </svg>
+          </a>
+
+          <!-- Hidden until real profiles exist in navigation-map.js. -->
+          <div data-social-block hidden>
+            <p class="t-label u-mbe-16" data-i18n="followUs">Follow us</p>
+            <ul class="c-drawer__social" data-social-render></ul>
+          </div>
+
+          <div class="c-drawer__utility">
+            <span class="t-label" id="menu-lang-label" data-i18n="language">
+              Language
+            </span>
+            <div class="c-lang" role="group" aria-labelledby="menu-lang-label">
+              <button
+                class="c-lang__option"
+                type="button"
+                data-lang="en"
+                aria-pressed="true"
+              >
+                EN
+              </button>
+              <button
+                class="c-lang__option"
+                type="button"
+                data-lang="ar"
+                aria-pressed="false"
+              >
+                AR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHROME:TOP:END -->
+
+    <main id="main" class="c-notfound">
+      <p class="t-label c-notfound__code">
+        <span data-lang-copy="en">Error 404</span><span data-lang-copy="ar" lang="ar">خطأ ٤٠٤</span>
+      </p>
+      <h1 class="c-notfound__title">
+        <span data-lang-copy="en">This page isn’t here.</span><span data-lang-copy="ar" lang="ar">هذه الصفحة غير موجودة.</span>
+      </h1>
+      <p class="c-notfound__lead t-body-lg">
+        <span data-lang-copy="en">The address may have changed, or it may never have existed. Everything the studio does is one page away.</span><span data-lang-copy="ar" lang="ar">ربما تغيّر العنوان، أو ربما لم يكن موجودًا أصلًا. كل ما يقدّمه الاستوديو على بُعد صفحة واحدة.</span>
+      </p>
+
+      <nav class="c-notfound__links" aria-label="Main destinations">
+        <a class="c-btn c-btn--primary" href="./index.html">
+          <span data-lang-copy="en">Go to the homepage</span><span data-lang-copy="ar" lang="ar">إلى الصفحة الرئيسية</span>
+        </a>
+        <a class="c-link" href="./index.html#services">
+          <span data-lang-copy="en">Services</span><span data-lang-copy="ar" lang="ar">خدماتنا</span>
+        </a>
+        <a class="c-link" href="./story.html">
+          <span data-lang-copy="en">Story</span><span data-lang-copy="ar" lang="ar">القصة</span>
+        </a>
+        <a class="c-link" href="./index.html#contact">
+          <span data-lang-copy="en">Contact</span><span data-lang-copy="ar" lang="ar">تواصل معنا</span>
+        </a>
+      </nav>
+    </main>
+
+    <!-- CHROME:FOOT:START -->
+    <!-- FOOTER — COPIED FROM index.html by tools/build-chrome.js.
+         Do not edit here: edit index.html and re-run the tool, or this file
+         will be overwritten and the two pages will disagree. -->
+    <footer class="c-footer">
+      <div class="l-container">
+        <div class="c-footer__top" data-reveal-group>
+          <div class="c-footer__brand">
+            <a class="c-header__brand" href="#home"
+              aria-label="Pixora, Digital Agency — home" data-i18n-label="brandHome">
+              <span class="c-brand" aria-hidden="true">
+                <span class="c-brand__word">PI<span class="c-brand__accent">X</span>ORA</span>
+                <span class="c-brand__tagline">Digital Agency</span>
+              </span>
+            </a>
+            <p class="c-footer__statement"><span data-lang-copy="en">Brands, websites, content and advertising — from one partner.</span><span data-lang-copy="ar" lang="ar">علامات ومواقع ومحتوى وإعلانات — من شريك واحد.</span></p>
+          </div>
+
+          <nav class="c-footer__group" aria-label="Quick links" data-i18n-label="footerNav">
+            <h2 class="t-label c-footer__heading" data-i18n="footerNav">Quick links</h2>
+            <ul class="c-footer__list" data-nav-render="footer">
+              <li><a class="c-link" href="#home" data-nav-link>Home</a></li>
+              <li><a class="c-link" href="#services" data-nav-link>Services</a></li>
+              <li><a class="c-link" href="#process" data-nav-link>Process</a></li>
+              <li><a class="c-link" href="#contact" data-nav-link>Contact</a></li>
+            </ul>
+          </nav>
+
+          <nav class="c-footer__group" aria-label="Services" data-i18n-label="footerServices">
+            <h2 class="t-label c-footer__heading" data-i18n="footerServices">Services</h2>
+            <ul class="c-footer__list" data-nav-render="services">
+              <li><a class="c-link" href="#branding" data-nav-link><span data-lang-copy="en">Branding &amp; Design</span><span data-lang-copy="ar" lang="ar">الهوية والتصميم</span></a></li>
+              <li><a class="c-link" href="#websites" data-nav-link><span data-lang-copy="en">Websites</span><span data-lang-copy="ar" lang="ar">المواقع الإلكترونية</span></a></li>
+              <li><a class="c-link" href="#social" data-nav-link><span data-lang-copy="en">Social Media Management</span><span data-lang-copy="ar" lang="ar">إدارة وسائل التواصل</span></a></li>
+              <li><a class="c-link" href="#marketing" data-nav-link><span data-lang-copy="en">Digital Marketing &amp; Advertising</span><span data-lang-copy="ar" lang="ar">التسويق الرقمي والإعلانات</span></a></li>
+              <li><a class="c-link" href="#integrated" data-nav-link><span data-lang-copy="en">Integrated Digital Solutions</span><span data-lang-copy="ar" lang="ar">الحلول الرقمية المتكاملة</span></a></li>
+            </ul>
+          </nav>
+
+          <div class="c-footer__action">
+            <h2 class="t-label c-footer__heading" data-i18n="footerStart">Start</h2>
+            <a class="c-btn c-btn--primary" href="#contact" data-cta-link>
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <p class="c-footer__mark" aria-hidden="true">PIXORA</p>
+
+        <div class="c-footer__bottom">
+          <!-- Seeded like the two link lists above, and re-rendered from
+               SOCIAL_LINKS on boot so the footer and the drawer can never
+               drift apart. Off-site, so each opens in a new tab and says so. -->
+          <nav aria-label="Elsewhere" data-i18n-label="footerElsewhere" data-social-block>
+            <ul class="c-footer__social" data-social-render>
+              <li><a href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer">Website<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+            </ul>
+          </nav>
+
+          <p class="c-footer__copyright">
+            © <span class="c-footer__year" data-year>2026</span> Pixora.
+            <span data-i18n="rights">All rights reserved.</span>
+          </p>
+          <!-- An anchor, not a button: it works without JavaScript, is
+               keyboard-reachable for free, and the smooth scroll is the
+               document's own (already disabled under reduced motion).
+               The chevron points UP — not an inline direction — so it
+               deliberately carries no u-flip-rtl. -->
+          <a class="c-link c-footer__top-link" href="#home">
+            <span data-i18n="backToTop">Back to top</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+    <!-- CHROME:FOOT:END -->
+  </body>
+</html>

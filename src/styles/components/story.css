@@ -30,7 +30,6 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-8);
-    min-block-size: var(--touch-target-min);
   }
 
   .c-detail__more svg {
@@ -269,7 +268,6 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-8);
-    min-block-size: var(--touch-target-min);
   }
 
   .c-story__link svg {
@@ -445,4 +443,50 @@
       opacity: 0.5;
     }
   }
+}
+
+/* =============================================================================
+   COMPONENT — 404
+   Deliberately short. A person who lands here wants out, not an experience.
+   ============================================================================= */
+@layer components {
+  .c-notfound {
+    display: grid;
+    align-content: center;
+    gap: var(--space-16);
+    min-block-size: 60vh;
+    padding-block: var(--section-space);
+    padding-inline: var(--container-gutter);
+    margin-inline: auto;
+    max-inline-size: var(--container-max-narrow);
+  }
+
+  .c-notfound__code {
+    color: var(--color-accent);
+    margin-block-end: var(--space-8);
+  }
+
+  .c-notfound__title {
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .c-notfound__lead {
+    color: var(--color-text-secondary);
+    max-inline-size: 42ch;
+  }
+
+  .c-notfound__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-16) var(--space-24);
+    margin-block-start: var(--space-24);
+  }
+
 }

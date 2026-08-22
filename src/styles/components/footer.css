@@ -90,18 +90,13 @@
     list-style: none;
   }
 
-  /* Every footer link is a real target, so every one is a comfortable one.
-     44px minimum rather than padding, so the column keeps its rhythm.
-
-     BOTH AXES. This set only the height until a five-character label — "Story"
-     — arrived and measured 43px wide. Every label already here happened to be
-     long enough to hide the gap; that is luck, not a rule. */
-  .c-footer__list .c-link,
+  /* The 44px minimum lives on .c-link itself — see button.css. This only
+     needs to give .c-footer__top-link, which is not a .c-link, the same box. */
   .c-footer__top-link {
     display: inline-flex;
     align-items: center;
-    min-block-size: 44px;
-    min-inline-size: 44px;
+    min-block-size: var(--touch-target-min);
+    min-inline-size: var(--touch-target-min);
   }
 
   /* .c-link is accent by default, which is right for one link in a section
