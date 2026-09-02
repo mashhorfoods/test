@@ -341,3 +341,7 @@ if (remote.length) {
 const deploy = require('./tools/build-deploy.js');
 console.log('');
 deploy.run(new Date().toISOString().slice(0, 10));
+
+/* The upload package. See tools/build-zip.js for why this exists rather than
+   downloading the files one at a time. */
+require('./tools/build-zip.js').run();

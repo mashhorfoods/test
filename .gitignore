@@ -1,3 +1,6 @@
 node_modules/
 .DS_Store
 *.log
+
+# The upload package is generated; do not commit the binary.
+pixora-site.zip
