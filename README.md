@@ -28,6 +28,7 @@ docs/18-refinement.md       Clarity & repetition pass — read with 12/09
 docs/19-remove-ecommerce.md E-Commerce removed — what it touched
 docs/20-arabic.md           Full Arabic — every string, both languages
 docs/21-performance.md      Performance audit and what it was worth
+docs/27-webstart-audit.md   WEBSTART takeover audit — phase status, gaps, backlog
 index.html                  The homepage — nine sections, header and footer
 styleguide.html             Living specimen sheet for every token and component
 styleguide.css              Chrome for the specimen page (documentation only)
@@ -89,6 +90,7 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | — | E-Commerce removed | Done — see `docs/19-remove-ecommerce.md` |
 | — | Full Arabic | Done — see `docs/20-arabic.md` |
 | — | Performance audit | Done — see `docs/21-performance.md` |
+| — | WEBSTART audit | Done — see `docs/27-webstart-audit.md` |
 
 ## Single-file build
 
