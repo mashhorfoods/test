@@ -18,7 +18,7 @@
      2. its pricing note, if the source states one (only Marketing does);
      3. a summary line — count, price floor, billing model.
 
-   The summary is generated from the same array as the cards, so "from 175 SAR"
+   The summary is generated from the same array as the cards, so "from 250 USD"
    cannot disagree with the cheapest card above it. A test asserts it.
 
    The output is STATIC HTML committed to index.html, not built in the
@@ -153,7 +153,7 @@ ${pkg.features.map(featureItem).join('\n')}
               <span class="c-tier__price">${pkg.priceFrom ? `
                 <span class="c-tier__from" data-i18n="priceFrom">From</span>` : ''}
                 <span class="c-tier__amount">${esc(pkg.price)}</span>
-                <span class="c-tier__currency" data-i18n="currency">SAR</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
               </span>
               <span class="c-tier__billing" data-i18n="${pkg.billing}">${pkg.billing === 'billingMonthly' ? 'Monthly' : 'One-time'}</span>
             </p>
@@ -218,7 +218,7 @@ ${renderNote(c)}
             <span class="c-detail__packages-count">${pair({ en: `${word} packages, from`, ar: `${COUNT_AR[c.packages.length] || `${c.packages.length} باقة`}، تبدأ من` })}</span>
             <span class="c-detail__packages-price">
               <span class="c-detail__packages-amount">${esc(floor.price)}</span>
-              <span class="c-detail__packages-currency" data-i18n="currency">SAR</span>
+              <span class="c-detail__packages-currency" data-i18n="currency">USD</span>
             </span>
             <span class="c-detail__packages-billing" data-i18n="${monthly ? 'billingMonthly' : 'billingOnce'}">${monthly ? 'Monthly' : 'One-time'}</span>
           </p>

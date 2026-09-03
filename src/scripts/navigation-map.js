@@ -162,7 +162,7 @@ export const STRINGS = {
     rights: 'All rights reserved.',
     // Currency SYMBOL only — the price figure itself is business data and is
     // authored in the markup, never here.
-    currency: 'SAR',
+    currency: 'USD',
     billingOnce: 'One-time',
     billingMonthly: 'Monthly',
     // Add-ons are quoted as starting prices, never as a final figure.
@@ -191,7 +191,7 @@ export const STRINGS = {
     opensNewTab: '(يفتح في نافذة جديدة)',
     backToTop: 'العودة إلى الأعلى',
     rights: 'جميع الحقوق محفوظة.',
-    currency: 'ر.س',
+    currency: 'دولار',
     billingOnce: 'لمرة واحدة',
     billingMonthly: 'شهريًا',
     priceFrom: 'يبدأ من',
