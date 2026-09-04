@@ -164,6 +164,24 @@ function serve() {
         canonical: document.querySelector('link[rel="canonical"]')?.href || '',
         ogTitle: document.querySelector('meta[property="og:title"]')?.content || '',
         ogUrl: document.querySelector('meta[property="og:url"]')?.content || '',
+        /* TEXT NODES. Two wrong versions preceded this one, and both passed the
+           very page they were written to catch:
+             1. `innerText` — rendering-aware, so on an English-default page it
+                never saw the Arabic half at all, which is `display: none`.
+             2. `textContent` on childless elements — but the sentence that
+                carried the digits also carried a `<strong>`, so its span had a
+                child and was skipped.
+           Walking text is what a reader does, and it is the third time on this
+           project that has been the answer. */
+        arabicIndic: (() => {
+          const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+          let n = 0;
+          for (let t = walk.nextNode(); t; t = walk.nextNode()) {
+            if (t.parentElement && t.parentElement.closest('script, style')) continue;
+            n += (t.nodeValue.match(/[\u0660-\u0669]/g) || []).length;
+          }
+          return n;
+        })(),
         lcp: performance.getEntriesByType('largest-contentful-paint').slice(-1)[0]?.startTime
           || performance.getEntriesByType('paint').find((e) => e.name === 'first-contentful-paint')?.startTime || 0,
       };
@@ -191,6 +209,14 @@ function serve() {
     /* bilingual */
     if (r.pending) fail('HIGH', 'i18n', `${page}: ${r.pending} string(s) still pending translation`);
     if (r.enCopy !== r.arCopy) fail('HIGH', 'i18n', `${page}: ${r.enCopy} English copies vs ${r.arCopy} Arabic`);
+    /* ONE NUMERAL SYSTEM, SITE-WIDE. `docs/47` §2 and `docs/49` §7 settled this
+       deliberately: prices, dates, delivery windows and `خطأ 404` all use 0-9,
+       because a page whose prices are Western-numeralled and whose body text is
+       not asks a reader to switch systems mid-sentence. It was recorded as
+       "confirmed" and nothing kept it confirmed — the accessibility page was
+       written months later and arrived with ٤٤ × ٤٤ and ١٫٨٦ in it. String
+       parity cannot see this: both languages were present and counted. */
+    if (r.arabicIndic) fail('MED', 'i18n', `${page}: ${r.arabicIndic} Arabic-Indic digit(s) — the site uses 0-9 in both languages (docs/47 §2)`);
 
     /* SEO */
     const meta = cfg.pages.find((x) => x.file === page) || {};

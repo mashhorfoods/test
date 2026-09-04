@@ -1,0 +1,84 @@
+<!--PAGE {
+  "file": "accessibility.html",
+  "title": "Accessibility — Pixora",
+  "description": "What this site has been tested for, what it has not, and how to tell us when something does not work."
+} -->
+      <section class="l-section c-page" aria-labelledby="a11y-title">
+        <div class="l-container">
+          <header class="c-page__head">
+            <p class="t-label c-page__eyebrow"><span data-lang-copy="en">Accessibility</span><span data-lang-copy="ar" lang="ar">إمكانية الوصول</span></p>
+            <h1 class="c-page__title" id="a11y-title"><span data-lang-copy="en">What has been tested, and what has not</span><span data-lang-copy="ar" lang="ar">ما تم اختباره، وما لم يُختبر</span></h1>
+            <p class="t-body-lg c-page__lead"><span data-lang-copy="en">Most accessibility statements say a site is committed to accessibility and stop
+              there. This one says what was actually measured, what was found, and what nobody has checked yet — because the
+              second half is the part that helps you.</span><span data-lang-copy="ar" lang="ar">معظم بيانات إمكانية الوصول تقول إن الموقع ملتزم بإمكانية الوصول وتتوقف عند ذلك. هذا البيان يقول ما جرى قياسه فعلًا، وما وُجد، وما لم يفحصه أحد بعد — لأن النصف الثاني هو الجزء الذي ينفعك.</span></p>
+            <p class="c-page__meta"><span data-lang-copy="en">Last updated: 4 September 2026</span><span data-lang-copy="ar" lang="ar">آخر تحديث: 4 سبتمبر 2026</span></p>
+          </header>
+
+          <div class="c-prose">
+            <h2><span data-lang-copy="en">What we are aiming at</span><span data-lang-copy="ar" lang="ar">ما نستهدفه</span></h2>
+            <p><span data-lang-copy="en">WCAG 2.1 at level AA, in both English and Arabic. We are not claiming a formal
+              conformance certificate — nobody has audited this site on our behalf, and saying otherwise would be the kind of
+              claim this page exists to avoid.</span><span data-lang-copy="ar" lang="ar">معيار WCAG 2.1 عند المستوى AA، بالعربية والإنجليزية معًا. ولا ندّعي شهادة مطابقة رسمية — فلم يدقّق أحد هذا الموقع نيابةً عنّا، وادّعاء غير ذلك هو تحديدًا ما وُجدت هذه الصفحة لتجنّبه.</span></p>
+
+            <h2><span data-lang-copy="en">What was measured</span><span data-lang-copy="ar" lang="ar">ما جرى قياسه</span></h2>
+            <p><span data-lang-copy="en">Every one of these runs again automatically before any change is published, so it
+              is a description of the site as it is now rather than as it was on the day someone last looked.</span><span data-lang-copy="ar" lang="ar">كل ما يلي يُعاد تشغيله تلقائيًا قبل نشر أي تغيير، فهو وصف للموقع كما هو الآن لا كما كان يوم نظر إليه أحدهم آخر مرة.</span></p>
+            <ul>
+              <li><span data-lang-copy="en"><strong>An automated engine we did not write.</strong> axe-core is run over every
+                page, at phone and desktop widths, in both languages, and with the mobile menu open. Zero violations, with one
+                declared exception below.</span><span data-lang-copy="ar" lang="ar"><strong>محرّك آلي لم نكتبه نحن.</strong> يُشغّل axe-core على كل صفحة، بعرض الهاتف وعرض سطح المكتب، وباللغتين، ومع فتح قائمة الهاتف. صفر مخالفات، مع استثناء واحد معلن أدناه.</span></li>
+              <li><span data-lang-copy="en"><strong>The keyboard.</strong> Every page is walked by keyboard alone: a skip link
+                first, a visible focus ring at every stop, and no trap.</span><span data-lang-copy="ar" lang="ar"><strong>لوحة المفاتيح.</strong> تُتصفّح كل صفحة بلوحة المفاتيح وحدها: رابط تخطٍّ أولًا، وحلقة تركيز ظاهرة عند كل محطة، وبلا انحصار.</span></li>
+              <li><span data-lang-copy="en"><strong>Touch targets.</strong> Every link, button and field is at least 44 by 44
+                pixels, checked at three widths.</span><span data-lang-copy="ar" lang="ar"><strong>مساحات اللمس.</strong> كل رابط وزر وحقل لا يقل عن 44 × 44 بكسل، مفحوصًا عند ثلاثة عروض.</span></li>
+              <li><span data-lang-copy="en"><strong>Contrast, against what is actually painted</strong> — not against the colour
+                a stylesheet declares, which is not the same thing once anything is layered or semi-transparent.</span><span data-lang-copy="ar" lang="ar"><strong>التباين، مقابل ما يُرسم فعلًا</strong> — لا مقابل اللون الذي تعلنه ورقة الأنماط، وهما ليسا الشيء نفسه متى تراكبت العناصر أو كانت شبه شفافة.</span></li>
+              <li><span data-lang-copy="en"><strong>Reduced motion.</strong> If your system asks for less motion, the site
+                stops animating — including the film in the header, which is never even downloaded on a phone.</span><span data-lang-copy="ar" lang="ar"><strong>تقليل الحركة.</strong> إن طلب نظامك حركة أقل، توقّف الموقع عن التحريك — بما في ذلك الفيلم في الأعلى، وهو أصلًا لا يُنزَّل على الهاتف إطلاقًا.</span></li>
+              <li><span data-lang-copy="en"><strong>Without JavaScript.</strong> The whole site is readable and every link
+                works with scripting turned off.</span><span data-lang-copy="ar" lang="ar"><strong>بدون جافاسكربت.</strong> الموقع كله مقروء وكل رابط يعمل مع إيقاف البرمجة النصية.</span></li>
+              <li><span data-lang-copy="en"><strong>Arabic as a language, not a translation layer.</strong> The page direction
+                reverses, and every Arabic passage is marked as Arabic so a screen reader reads it in an Arabic voice rather than
+                spelling it out in English.</span><span data-lang-copy="ar" lang="ar"><strong>العربية بوصفها لغة، لا طبقة ترجمة.</strong> يُعكس اتجاه الصفحة، وكل مقطع عربي مُعلَّم بأنه عربي كي يقرأه القارئ الآلي بصوت عربي بدل تهجئته بالإنجليزية.</span></li>
+              <li><span data-lang-copy="en"><strong>On paper.</strong> Printing any page produces a readable black-on-white
+                document.</span><span data-lang-copy="ar" lang="ar"><strong>على الورق.</strong> طباعة أي صفحة تنتج مستندًا مقروءًا بالأسود على الأبيض.</span></li>
+            </ul>
+
+            <h2><span data-lang-copy="en">Known exception</span><span data-lang-copy="ar" lang="ar">استثناء معروف</span></h2>
+            <p><span data-lang-copy="en">The very large word <em>PIXORA</em> at the bottom of every page sits at a contrast of
+              1.86 to 1, below the 3 to 1 that AA asks for. It is kept deliberately: it is decoration, it is hidden from screen
+              readers, and the studio's name is written twice more in the same footer as ordinary text — so nothing is lost if you
+              cannot make it out. Our checks re-confirm that on every release, and the exception is withdrawn automatically if
+              that watermark ever becomes the only place the name appears.</span><span data-lang-copy="ar" lang="ar">الكلمة الكبيرة <em>PIXORA</em> أسفل كل صفحة تباينها 1.86 إلى 1، أي دون 3 إلى 1 التي يطلبها المستوى AA. أبقيناها عن قصد: فهي زخرفة، ومخفيّة عن القارئات الآلية، واسم الاستوديو مكتوب مرّتين أخريين في التذييل نفسه كنصّ عادي — فلا يضيع شيء إن لم تتبيّنها. وفحوصنا تعيد التأكد من ذلك عند كل إصدار، ويسقط الاستثناء تلقائيًا إن صارت تلك العلامة المكان الوحيد الذي يظهر فيه الاسم.</span></p>
+
+            <h2><span data-lang-copy="en">What has not been tested</span><span data-lang-copy="ar" lang="ar">ما لم يُختبر</span></h2>
+            <p><span data-lang-copy="en">This is the honest part, and it is short on purpose.</span><span data-lang-copy="ar" lang="ar">هذا هو الجزء الصادق، وهو قصير عن قصد.</span></p>
+            <ul>
+              <li><span data-lang-copy="en"><strong>No screen reader has been used on this site by a person.</strong> Automated
+                rules catch perhaps a third to a half of real problems. They can prove that a description exists; they cannot tell
+                you it is the wrong description, that a heading is misleading, or that the order things are read in makes no
+                sense.</span><span data-lang-copy="ar" lang="ar"><strong>لم يستخدم أحد قارئ شاشة على هذا الموقع.</strong> القواعد الآلية تلتقط ربما ثلث المشكلات الحقيقية إلى نصفها. تستطيع أن تثبت وجود وصف، ولا تستطيع أن تخبرك أنه الوصف الخاطئ، أو أن عنوانًا مضلِّل، أو أن ترتيب القراءة بلا معنى.</span></li>
+              <li><span data-lang-copy="en"><strong>One browser engine.</strong> The automated checks all run in Chromium. Safari
+                and Firefox have been reasoned about carefully and not measured.</span><span data-lang-copy="ar" lang="ar"><strong>محرّك متصفح واحد.</strong> جميع الفحوص الآلية تعمل في Chromium. أما Safari وFirefox فقد دُرسا بعناية ولم يُقاسا.</span></li>
+              <li><span data-lang-copy="en"><strong>No disabled person has been asked.</strong> Which is the test that matters
+                most, and the one we have not run.</span><span data-lang-copy="ar" lang="ar"><strong>لم يُسأل أي شخص من ذوي الإعاقة.</strong> وهو الاختبار الأهم، وهو الذي لم نُجرِه.</span></li>
+            </ul>
+
+            <h2><span data-lang-copy="en">If something does not work</span><span data-lang-copy="ar" lang="ar">إن لم يعمل شيء ما</span></h2>
+            <p><span data-lang-copy="en">Tell us, and please say what you were using — the browser, the phone, and whether a
+              screen reader or magnifier was on. That detail is usually the difference between a report we can fix and one we
+              cannot reproduce. Write to
+              <a class="c-link" href="mailto:muhalabsalah@gmail.com">muhalabsalah@gmail.com</a> or message
+              <a class="c-link" href="https://wa.me/249962672192" target="_blank" rel="noopener noreferrer">+249 962672192<span class="u-visually-hidden"> (opens in a new tab)</span></a>.</span><span data-lang-copy="ar" lang="ar">أخبرنا، ومن فضلك اذكر ما كنت تستخدمه — المتصفح والهاتف، وهل كان قارئ شاشة أو مكبّر يعمل. هذه التفاصيل عادةً هي الفرق بين بلاغ نستطيع إصلاحه وآخر لا نستطيع إعادة إنتاجه. راسلنا على
+              <a class="c-link" href="mailto:muhalabsalah@gmail.com">muhalabsalah@gmail.com</a> أو عبر
+              <a class="c-link" href="https://wa.me/249962672192" target="_blank" rel="noopener noreferrer">‎+249 962672192<span class="u-visually-hidden"> (يفتح في نافذة جديدة)</span></a>.</span></p>
+            <p><span data-lang-copy="en">We answer within one working day, the same promise the rest of the site makes. If
+              something is broken and we cannot fix it quickly, we will tell you what it is and give you another way to get what
+              you needed — a price, an answer, or a conversation.</span><span data-lang-copy="ar" lang="ar">نردّ خلال يوم عمل واحد، وهو الوعد نفسه الذي يقطعه باقي الموقع. وإن كان شيء معطّلًا ولم نستطع إصلاحه سريعًا، سنخبرك ما هو ونمنحك طريقًا آخر للحصول على ما أردت — سعرًا أو إجابة أو محادثة.</span></p>
+
+            <h2><span data-lang-copy="en">Changes</span><span data-lang-copy="ar" lang="ar">التغييرات</span></h2>
+            <p><span data-lang-copy="en">If any line above stops being true, this page changes and the date at the top moves.
+              A statement that outlives what it describes is worse than none.</span><span data-lang-copy="ar" lang="ar">إن لم يعد أي سطر أعلاه صحيحًا، تتغير هذه الصفحة ويتحرك التاريخ في أعلاها. فبيان يعيش أطول مما يصفه أسوأ من لا بيان.</span></p>
+          </div>
+        </div>
+      </section>

@@ -205,7 +205,7 @@ that were uploaded, never observed. See §6, BLOCKER-1.
 - Staging environment + scripted deploy (replace the manual zip upload).
 - ~~Automated Lighthouse/axe budget on every build.~~ **DONE 4 Sep 2026.** `qa.js` §9 enforces a 1MB per-page transfer budget and §1 a largest-paint budget; `tools/a11y.js` runs **axe-core** over every shipped page at two widths, in both languages, and with the mobile drawer open. Both run on every `npm run check`. Zero violations, with one named and conditionally re-verified exception (the decorative footer watermark). A screen-reader pass is a separate thing and is still outstanding.
 - Split-bundle option for repeat-visit caching, alongside the single file.
-- An accessibility statement.
+- ~~An accessibility statement.~~ **DONE 4 Sep 2026** — `/accessibility`, bilingual, in the footer beside Privacy and Terms. It states what was measured, the one declared exception (the decorative footer watermark at 1.86:1), and — the half that makes it worth reading — that no screen reader has been used on this site by a person, that only one browser engine has been tested, and that no disabled person has been asked.
 
 ### P3 — Future (do not let this affect current scope)
 

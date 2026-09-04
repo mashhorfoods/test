@@ -67,7 +67,7 @@ This is the table to keep. Everything on the site comes from one of these.
 | The Al Mada case study | `src/data/story.json` | Chapters, quotes, the close |
 | Buttons, labels, the reply promise, menu names | `src/scripts/navigation-map.js` | The `STRINGS` block near the bottom |
 | Homepage copy | `index.html` | Every string is a pair: `data-lang-copy="en"` and `="ar"`. **Change both** |
-| About, Pricing, Privacy, Terms pages | `src/pages/*.html` | Same English/Arabic pair rule |
+| About, Pricing, Privacy, Terms, Accessibility pages | `src/pages/*.html` | Same English/Arabic pair rule. **Adding a page:** drop the file in, add it to `site.config.json` `pages`, to `SHIP` in `tools/build-zip.js` and to the list in `build.js`; the sitemap, canonical, social tags, print styles, budgets and axe pick it up on their own |
 | Phone, WhatsApp, email | `src/scripts/navigation-map.js` (`CHANNELS`) and `site.config.json` (`contact.whatsapp`) | Both, or the package buttons and the contact section disagree |
 | The domain, analytics, HSTS | `site.config.json` | One field moves the whole site to a new domain |
 | The hero film | `src/showpiece/scene.html`, then `npm run film` | Or `npm run film:clips -- clipA.mp4 clipB.mp4` for video |
@@ -194,6 +194,7 @@ These need a person, and they are all still open:
 | Verify Search Console and submit the sitemap | You |
 | Al Mada's result sentence and the three facts in `docs/48` | Al Mada |
 | A lawyer's read of the Terms page, especially cancellation | A lawyer |
+| A screen-reader pass — `/accessibility` publicly says this has not been done | You, or a person who uses one |
 | Five moderated sessions with real buyers | You, with buyers |
 
 ## 9. Where the reasoning is
