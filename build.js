@@ -199,7 +199,8 @@ function bundleJs(entry, seen = new Set(), bindings = new Map()) {
 function buildPage(file) {
   let html = read(file);
   const stats = { css: 0, fonts: 0, fontBytes: 0, js: 0,
-    images: 0, imageBytes: 0, imagesMissing: [], imagesRemote: [] };
+    images: 0, imageBytes: 0, imagesMissing: [], imagesRemote: [],
+    imagesCopied: [], imageCopiedBytes: 0 };
 
   /* Every code point the document can render, in either language — the input
      to the font-coverage test below. Script and style are excluded: a base64
@@ -255,13 +256,35 @@ function buildPage(file) {
   // without anyone noticing.
   const MIME = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg',
                  gif: 'image/gif', svg: 'image/svg+xml', webp: 'image/webp' };
+
+  /* A SIZE BUDGET, not a rule about origin.
+     Inlining is worth it for the assets that would otherwise cost a round trip
+     for a few kilobytes — the favicon, a diagram. It is NOT worth it for
+     photographic work: twelve panels inlined as base64 would add megabytes to
+     EVERY page, on a site whose whole argument is that it is light. Above the
+     limit an image is copied into dist/assets/ instead and referenced from
+     there: same origin, cached separately, downloaded once for the whole site
+     rather than re-sent with every page. */
+  const INLINE_LIMIT = 12 * 1024;
+  const ASSETS = path.join(DIST, 'assets');
+
   html = html.replace(/src="(\.\/[^"]+\.(?:png|jpe?g|gif|svg|webp))"/gi, (m, rel) => {
     const abs = path.join(ROOT, rel.slice(2));
     if (!fs.existsSync(abs)) { stats.imagesMissing.push(rel); return m; }
     const buf = fs.readFileSync(abs);
+    const ext = rel.split('.').pop().toLowerCase();
+
+    if (buf.length > INLINE_LIMIT) {
+      fs.mkdirSync(ASSETS, { recursive: true });
+      const name = path.basename(abs);
+      fs.writeFileSync(path.join(ASSETS, name), buf);
+      stats.imagesCopied.push(name);
+      stats.imageCopiedBytes += buf.length;
+      return `src="./assets/${name}"`;
+    }
+
     stats.images += 1;
     stats.imageBytes += buf.length;
-    const ext = rel.split('.').pop().toLowerCase();
     return `src="data:${MIME[ext] || 'application/octet-stream'};base64,${buf.toString('base64')}"`;
   });
   stats.imagesRemote = [...html.matchAll(/<img[^>]+src="(https?:\/\/[^"]+)"/gi)].map(m => m[1]);
@@ -337,6 +360,15 @@ if (faviconMissing.length) {
   console.log('    unchanged and will 404 for every visitor to that page:');
   [...new Set(faviconMissing)].forEach((u) => console.log(`      ./${u}`));
 }
+const assetsDir = path.join(DIST, 'assets');
+if (fs.existsSync(assetsDir)) {
+  const files = fs.readdirSync(assetsDir);
+  const bytes = files.reduce((n, f) => n + fs.statSync(path.join(assetsDir, f)).size, 0);
+  console.log(`\n  ${files.length} image(s) in dist/assets/, ${kb(bytes)} — copied, not inlined.`);
+  console.log('    Above the inline budget: base64 in every page would cost far more than');
+  console.log('    one cached download for the whole site. They ship inside the zip.');
+}
+
 
 if (remote.length) {
   const hosts = [...new Set(remote.map((u) => new URL(u).host))];
@@ -348,7 +380,7 @@ if (remote.length) {
   );
   [...new Set(remote)].forEach((u) => console.log(`      ${u}`));
 } else {
-  console.log('\nEach file is self-contained: open it directly, or drop it on any host.');
+  console.log('\nEach page carries its own CSS, JavaScript and fonts. The only separate\n  files are dist/assets/ — the images, cached once for the whole site.');
 }
 
 /* -----------------------------------------------------------------------------

@@ -33,16 +33,23 @@ const OUT = path.join(ROOT, 'pixora-site.zip');
    deployment and is left out rather than uploaded and then hidden. */
 const SHIP = ['index.html', 'story.html', 'privacy.html', '404.html', '.htaccess', 'robots.txt', 'sitemap.xml'];
 
+/* Directories that ship whole. assets/ holds the images the build no longer
+   inlines — above the size budget they are copied here and referenced from
+   the pages, so they must travel with them or every service section renders
+   an empty panel on the server. */
+const SHIP_DIRS = ['assets'];
+
 function run() {
   const present = SHIP.filter((f) => fs.existsSync(path.join(DIST, f)));
   const missing = SHIP.filter((f) => !present.includes(f));
+  const dirs = SHIP_DIRS.filter((d) => fs.existsSync(path.join(DIST, d)));
 
   if (fs.existsSync(OUT)) fs.unlinkSync(OUT);
 
   try {
     // -X drops extra file attributes; -j would flatten, which we do NOT want
     // here because every file is already at the archive root.
-    execFileSync('zip', ['-qX', OUT, ...present], { cwd: DIST });
+    execFileSync('zip', ['-qXr', OUT, ...present, ...dirs], { cwd: DIST });
   } catch (err) {
     console.log(`  ! could not create the archive: ${err.message}`);
     return;
@@ -51,10 +58,15 @@ function run() {
   const kb = (n) => `${(n / 1024).toFixed(1)}KB`;
   console.log(`\npixora-site.zip  ${kb(fs.statSync(OUT).size)}  (${present.length} files)`);
   present.forEach((f) => console.log(`  ${f.padEnd(14)} ${kb(fs.statSync(path.join(DIST, f)).size)}`));
+  dirs.forEach((d) => {
+    const files = fs.readdirSync(path.join(DIST, d));
+    const bytes = files.reduce((n, f) => n + fs.statSync(path.join(DIST, d, f)).size, 0);
+    console.log(`  ${`${d}/`.padEnd(14)} ${kb(bytes)}  (${files.length} files)`);
+  });
   if (missing.length) {
     console.log(`  ! not built, so not packed: ${missing.join(', ')}`);
   }
   console.log('  Upload this to public_html and Extract. The names survive the trip.');
 }
 
-module.exports = { run, SHIP };
+module.exports = { run, SHIP, SHIP_DIRS };
