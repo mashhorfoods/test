@@ -124,3 +124,33 @@ quote. Then `node build.js`. Nothing else on the page has to move.
 study that shows the work and admits it has no result is a weaker sales
 document and a stronger honesty signal, and this site has already chosen which
 of those it optimises for.
+
+---
+
+## Part 4 — status: drafted, not sent (4 September 2026)
+
+The message is written and sitting as a **Gmail draft** in the agency account,
+Arabic first, with the two verification questions from Part 3 folded in so one
+send closes F1–F3 as well as the missing sentence. It also gained a paragraph
+that Part 2 did not have — **the offer from our side**:
+
+> ومن جانبنا: نحن نعتبر أنفسنا مسؤولين عن هذا العمل بعد تسليمه. إن احتجتم
+> مقاسًا جديدًا لإعلان، أو تعديلًا في الملف التعريفي، أو نسخة من ملفات الهوية،
+> راسلونا — التعديلات الصغيرة من هذا النوع لا كلفة عليها.
+
+Asking a past client for a favour reads better when the message also gives them
+something, and this is something we can actually honour: small post-handover
+changes at no charge. It is also true, which the rest of this project has
+insisted on.
+
+**Two things are missing before it can go out, and neither is mine to invent:**
+
+1. **An address for Al Mada.** There is none in this repository, and a search
+   of the agency mailbox found no correspondence with them — every hit was a
+   newsletter or a mada-card promotion. Guessing an address for a real company
+   is not an option.
+2. **A URL that actually serves the page.** The draft links to the case study,
+   and nothing has been deployed from this environment. The link must point at
+   a page the client can open, on the day it is sent.
+
+Fill both in and send. Everything else in the message is final.
