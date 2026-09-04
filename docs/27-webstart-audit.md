@@ -185,7 +185,7 @@ that were uploaded, never observed. See §6, BLOCKER-1.
 - ~~P1-3 Targeted wireframes (Phase 07).~~ **DONE** — W1–W7 in `docs/33-wireframes.md`.
 - ~~P1-4 Master prompt completion (Phase 08).~~ **DONE** — `docs/38-master-prompt.md`.
 - ~~P1-5 Dashboard requirements definition (Phase 06).~~ **CLOSED as out of scope** (C-8, owner decision): one maintainer editing the data files. `docs/36` §4 records the four triggers that would reopen it.
-- P1-6 CSP — **DONE 4 Sep 2026**, build-generated from inline-script hashes, zero violations across six pages. **Threat model and the backup + monitoring plan are still outstanding**, and monitoring is a Gate 03 criterion that is not met.
+- P1-6 CSP — **DONE 4 Sep 2026**, build-generated from inline-script hashes, zero violations across six pages. **Backup + monitoring plan DONE** — `docs/57`; it needs three owner actions (a second git remote, an uptime monitor with a keyword check, registrar auto-renew) and the monitor is what finally closes the Gate 03 criterion. **The threat model is still outstanding.**
 - ~~P1-7 Commit the QA harness~~ **DONE** — `tools/validate.js`, re-runnable after every change. Cross-browser and device matrix still outstanding.
   `story.html` and `404.html` to homepage depth.
 - P1-8 SEO — canonical, `og:url`, sitemap and robots ship and are verified by `tools/qa.js`. **Outstanding: `og:image`, `apple-touch-icon`, Organization JSON-LD, and Search Console** (which needs the live host first).
@@ -193,7 +193,7 @@ that were uploaded, never observed. See §6, BLOCKER-1.
 - ~~P1-10 Image `width`/`height`, `loading`, `decoding`, modern formats.~~ **DONE** — twelve WebP images, real dimensions, self-hosted (4.0MB → 436KB).
 - P1-11 **About and privacy DONE** (`about.html`, `privacy.html`, both bilingual). **Terms of service still unwritten.**
 - P1-12 Gate 02 held 4 Sep 2026. **The five moderated sessions with real buyers remain outstanding** and cannot be run from here — the risk was accepted knowingly, which is not the same as retired.
-- P1-13 Owner handover document — **outstanding**. `docs/49` §3 covers which file holds which kind of string, but there is no single document that hands the project over.
+- ~~P1-13 Owner handover document~~ **DONE** — `docs/56`, with npm scripts so it has short commands to describe. Every command in it was run before it was written down.
 
 ### P2 — Enhancement
 
