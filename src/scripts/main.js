@@ -14,6 +14,7 @@ import { initMotion } from './motion.js';
 import { initContact } from './contact.js';
 import { initStory } from './story.js';
 import { initFocus } from './focus.js';
+import { initAnalytics } from './analytics.js';
 
 function boot() {
   // Before the rest: every other module's links inherit this behaviour.
@@ -24,6 +25,9 @@ function boot() {
   initContact();
   // No-op on every page without chapters, which is every page but one.
   initStory();
+  // Last: it only listens, and it must never be the reason something else
+  // failed to initialise.
+  initAnalytics();
 }
 
 if (document.readyState === 'loading') {

@@ -18,9 +18,11 @@ behaviour, the states, and what would prove it worked.
 **Answers:** PS-02 (the choice is discarded) and PS-05 (the price is unexplained).
 
 **What is there today**, confirmed from the markup: level mark · name · purpose ·
-price · feature list. **And no action of any kind.** The card is where the buyer
-decides, and the only button on the page is a generic "Start Your Project"
-somewhere else. The most decided moment on the site is a dead end.
+price · feature list · and a generic "Start Your Project" that points at the
+blank contact form. *(Corrected: this document first recorded the card as
+having no action at all, from a truncated read of the markup. The finding is
+unchanged — the choice is discarded at the click — but the fix is a replacement
+rather than an addition.)*
 
 ```
 DESKTOP — three cards per service, unchanged grid

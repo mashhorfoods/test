@@ -172,6 +172,32 @@ function injectHead(stamp) {
   return n;
 }
 
+/* ANALYTICS — injected only when site.config.json names a provider.
+
+   The site inlines everything it needs, so this is the one outbound request it
+   will make, and it is opt-in for that reason. Idempotent like injectHead():
+   a previous run's tag is stripped before this one writes. */
+function injectAnalytics() {
+  const a = cfg.analytics || {};
+  if (!a.provider) return 0;
+
+  const tag = a.provider === 'umami'
+    ? `<script defer data-website-id="${a.websiteId}" src="${a.scriptUrl}"></script>`
+    : `<script defer data-domain="${a.domain}" src="${a.scriptUrl}"></script>`;
+
+  let n = 0;
+  for (const page of cfg.pages) {
+    const file = path.join(DIST, page.file);
+    if (!fs.existsSync(file)) continue;
+    let html = fs.readFileSync(file, 'utf8');
+    html = html.replace(/\n?\s*<script defer data-(?:domain|website-id)[^>]*><\/script>/g, '');
+    html = html.replace('</head>', `    ${tag}\n  </head>`);
+    fs.writeFileSync(file, html);
+    n++;
+  }
+  return n;
+}
+
 /* --- Write ----------------------------------------------------------------- */
 function run(stamp) {
   const out = [];
@@ -185,6 +211,13 @@ function run(stamp) {
     out.push('sitemap.xml');
     const n = injectHead(stamp);
     out.push(`canonical + og:url on ${n} page(s)`);
+  }
+
+  const an = injectAnalytics();
+  if (an) {
+    out.push(`${cfg.analytics.provider} on ${an} page(s)`);
+  } else {
+    out.push('analytics OFF (no provider in site.config.json — events are collected, nothing is sent)');
   }
 
   console.log(`deploy files -> dist/  (${out.join(', ')})`);

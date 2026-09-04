@@ -994,6 +994,73 @@ function initFocus() {
     focusTarget(decodeURIComponent(window.location.hash.slice(1)));
   });
 }
+const seen = new Set();
+function lang() {
+  return document.documentElement.lang?.startsWith('ar') ? 'ar' : 'en';
+}
+function track(name, props = {}) {
+  const detail = { ...props, lang: lang() };
+  try {
+    document.dispatchEvent(new CustomEvent('pixora:event', { detail: { name, ...detail } }));
+    // Plausible, Umami, Fathom and Simple Analytics all expose a global with
+    // this shape. If none is present, the event stays local — which is the
+    // state until a provider is chosen.
+    if (typeof window.plausible === 'function') window.plausible(name, { props: detail });
+    else if (window.umami && typeof window.umami.track === 'function') window.umami.track(name, detail);
+  } catch {  }
+}
+function initAnalytics(scope = document) {
+  // Conversions. `data-about` is the package or service the CTA carries, which
+  // is the same value the WhatsApp message quotes.
+  scope.querySelectorAll('[data-wa]').forEach((link) => {
+    link.addEventListener('click', () => {
+      track('channel_tap', { channel: 'whatsapp', about: link.dataset.about || 'general' });
+    });
+  });
+  scope.querySelectorAll('.c-channel[href^="tel:"]').forEach((link) => {
+    link.addEventListener('click', () => track('channel_tap', { channel: 'phone' }));
+  });
+  scope.querySelectorAll('.c-channel[href^="mailto:"]').forEach((link) => {
+    link.addEventListener('click', () => track('channel_tap', { channel: 'email' }));
+  });
+  scope.querySelectorAll('[data-copy]').forEach((button) => {
+    button.addEventListener('click', () => track('channel_tap', { channel: 'copy' }));
+  });
+  // The form. `once` on the start event: engagement is a single fact, not a
+  // count of keystrokes.
+  scope.querySelectorAll('[data-contact-form]').forEach((form) => {
+    form.addEventListener('focusin', () => {
+      track('enquiry_started', { about: form.querySelector('[data-contact-about]')?.value || 'general' });
+    }, { once: true });
+    form.addEventListener('submit', () => {
+      track('enquiry_sent', { about: form.querySelector('[data-contact-about]')?.value || 'general' });
+    });
+  });
+  observePackages(scope);
+}
+function observePackages(scope) {
+  const cards = [...scope.querySelectorAll('.c-tier')];
+  if (!cards.length || !('IntersectionObserver' in window)) return;
+  const timers = new WeakMap();
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const card = entry.target;
+      const id = card.querySelector('[data-about]')?.dataset.about
+        || card.querySelector('.c-tier__name')?.textContent.trim();
+      if (!id || seen.has(id)) { observer.unobserve(card); return; }
+      if (entry.isIntersecting) {
+        timers.set(card, window.setTimeout(() => {
+          seen.add(id);
+          track('package_view', { about: id });
+          observer.unobserve(card);
+        }, 1000));
+      } else {
+        window.clearTimeout(timers.get(card));
+      }
+    });
+  }, { threshold: 0.5 });
+  cards.forEach((card) => observer.observe(card));
+}
 function boot() {
   // Before the rest: every other module's links inherit this behaviour.
   initFocus();
@@ -1003,6 +1070,9 @@ function boot() {
   initContact();
   // No-op on every page without chapters, which is every page but one.
   initStory();
+  // Last: it only listens, and it must never be the reason something else
+  // failed to initialise.
+  initAnalytics();
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', boot, { once: true });

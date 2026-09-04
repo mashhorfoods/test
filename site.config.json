@@ -30,5 +30,26 @@
   "contact": {
     "_comment": "WhatsApp number in wa.me form (digits only, country code first). One place: build-pricing.js renders every package CTA from it.",
     "whatsapp": "249962672192"
+  },
+  "analytics": {
+    "_comment": [
+      "ANALYTICS. Off until a provider is named here — choosing who receives a",
+      "visitor's data is not a default a build script should pick. Set `provider`",
+      "to \"plausible\" (or \"umami\") and fill in the fields below; build-deploy.js",
+      "then adds the provider's script to the deployed pages, and src/scripts/",
+      "analytics.js starts reporting the four events it already collects.",
+      "",
+      "Both options are cookieless and send no personal data, which is why they",
+      "need no consent banner under most readings — but a privacy policy naming",
+      "the provider must ship in the same release.",
+      "",
+      "Note the trade: this is the only third-party request the site makes. The",
+      "zero-request property is spent deliberately, on the one thing the project",
+      "cannot proceed without."
+    ],
+    "provider": null,
+    "domain": "",
+    "scriptUrl": "https://plausible.io/js/script.js",
+    "websiteId": ""
   }
 }
