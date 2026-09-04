@@ -254,6 +254,57 @@ function serve() {
     await p.context().close();
   }
 
+  /* ---- 7 the showpiece budget ------------------------------------------
+     WEBSTART X, X05: one budgeted showpiece — a video hero on desktop, a
+     still on the phone. Written as a check rather than an intention because
+     a budget nobody measures is a budget that grows. See docs/53.
+
+     Passes vacuously until a video ships. That is the point: it is here on
+     the day the decision was made, not on the day someone notices the phone
+     build got heavy. */
+  {
+    const BUDGET = 2 * 1024 * 1024; // one showpiece, desktop only
+    const assets = path.join(DIST, 'assets');
+    const vids = fs.existsSync(assets)
+      ? fs.readdirSync(assets).filter((f) => /\.(mp4|webm|mov|m4v)$/i.test(f))
+      : [];
+
+    let total = 0;
+    for (const v of vids) {
+      const bytes = fs.statSync(path.join(assets, v)).size;
+      total += bytes;
+      if (/\.mov$/i.test(v)) fail('HIGH', 'budget', `${v} is a .mov — an editing format, not a delivery one`);
+      if (bytes > BUDGET) fail('HIGH', 'budget', `${v} is ${(bytes / 1048576).toFixed(1)}MB, over the ${BUDGET / 1048576}MB showpiece budget`);
+    }
+    if (total > BUDGET) fail('HIGH', 'budget', `video totals ${(total / 1048576).toFixed(1)}MB across ${vids.length} files — the budget is one showpiece, not a library`);
+
+    /* Markup rules. A video without a poster is a blank rectangle until it
+       decodes; one without preload="none" spends the budget on every visitor
+       whether or not they ever see it; one with sound autoplays into a room. */
+    for (const page of PAGES) {
+      const html = fs.readFileSync(path.join(DIST, page), 'utf8');
+      for (const tag of html.match(/<video\b[^>]*>/gi) || []) {
+        if (!/\bposter=/i.test(tag)) fail('HIGH', 'budget', `${page}: <video> has no poster — the hero is blank until it decodes`);
+        if (!/preload="none"/i.test(tag)) fail('HIGH', 'budget', `${page}: <video> does not set preload="none"`);
+        if (/\bautoplay\b/i.test(tag) && !/\bmuted\b/i.test(tag)) fail('HIGH', 'budget', `${page}: <video autoplay> without muted — it will be blocked, and it should be`);
+        if (!/\bplaysinline\b/i.test(tag)) fail('MED', 'budget', `${page}: <video> without playsinline goes fullscreen on iOS`);
+      }
+    }
+
+    /* The rule most likely to be broken quietly: the phone must not pay for
+       the desktop's showpiece. Measured, not assumed. */
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 780 }, isMobile: true, hasTouch: true });
+    const p = await ctx.newPage();
+    const heavy = [];
+    p.on('request', (r) => { if (/\.(mp4|webm|mov|m4v)(\?|$)/i.test(r.url())) heavy.push(r.url().split('/').pop()); });
+    await p.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+    await p.waitForTimeout(1200);
+    await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await p.waitForTimeout(900);
+    if (heavy.length) fail('HIGH', 'budget', `the phone requested video (${heavy.join(', ')}) — the still is the phone's version`);
+    await ctx.close();
+  }
+
   await browser.close();
   server.close();
 
