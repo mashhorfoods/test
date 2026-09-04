@@ -124,7 +124,11 @@ inconvenienced.
 
 `story.json` holds one. A second needs a page of its own — that is real work
 rather than a data edit, and it is the outstanding item most worth paying for:
-it opens `/work` and gives the homepage the proof strip it does not have.
+it opens `/work` and turns the homepage's one proof sentence into a list.
+
+The proof band under the services list is written directly in `index.html`
+(search for `c-proof`) and names Al Mada. If a second story ever replaces it
+there, change both language spans.
 
 ## 6. What the checks actually check
 

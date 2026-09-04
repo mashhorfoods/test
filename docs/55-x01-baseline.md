@@ -140,6 +140,16 @@ Nobody introduced a bug. A rule stopped being true and no check watched it —
 - **A way out of `process`.** Zero links at 79% down the page.
 - **Proof on the homepage.** One case study exists and the homepage does not
   show it.
+
+  **Done, 4 September 2026 — but not as a strip.** §4 originally called for a
+  proof strip and then said a strip needs a second case study or it looks
+  thin. That is true of a *grid*: three cards with one filled reads as a
+  portfolio that failed. It is not true of a *sentence*. What shipped is one
+  bilingual paragraph naming Al Mada and the four deliverables, on an accent
+  rule, directly under the services list at roughly 2.5 screens — where it
+  answers the "one partner for all four" claim with an example *before* the
+  four detail sections repeat that claim four times. The old single link at
+  61.3% stays where it is; it now has a second, much earlier entrance.
 - **A width-parity check in `qa.js`** — the same interactive affordances must
   exist at 390 as at 1440, or the difference must be deliberate and named.
 

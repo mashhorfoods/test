@@ -1,0 +1,85 @@
+/* =============================================================================
+   COMPONENT — PROOF
+   One real project, named, placed early. X01 finding, `docs/55` §4.
+
+   WHY IT IS A SENTENCE AND NOT A GRID.
+   X01 said the homepage needed a proof strip and that a strip needed a second
+   case study to avoid looking thin. That was right about a GRID — three cards
+   with one filled reads as a portfolio that failed. It was wrong about proof
+   itself. A named client, four named deliverables and a link is not thin; it
+   is one specific true thing, which is worth more than three vague ones.
+
+   WHY HERE.
+   The only link to the case study used to sit inside #integrated, measured at
+   61% down the page — thirteen screens before a buyer learned that any client
+   work existed. This lands at roughly 2.5 screens, right after the services
+   overview and before the four long service blocks, so the claim "one partner
+   for all four" is answered by an example before it is repeated four times.
+
+   IT DELIBERATELY DOES NOT GET A BAND OF ITS OWN.
+   It shares the Services ground, takes no top padding at all and only the
+   tight spacing below, so it sits ONE ordinary section gap under the service
+   list and a full chapter gap above Branding. That asymmetry is the whole
+   point: it reads as the closing remark of the services overview rather than
+   a seventh chapter — and the four detail sections keep the alternation X01
+   asked for, untouched. The accent rule is what gives it its own edge.
+   ============================================================================= */
+
+@layer components {
+  .c-proof {
+    background-color: var(--color-bg);
+  }
+
+  .c-proof__inner {
+    display: grid;
+    gap: var(--space-16);
+    justify-items: start;
+    /* An accent rule rather than a border box: this is a remark inside the
+       page, not a card sitting on top of it. */
+    border-inline-start: 2px solid var(--color-accent);
+    padding-inline-start: var(--space-24);
+  }
+
+  @media (min-width: 48em) {
+    .c-proof__inner {
+      padding-inline-start: var(--space-32);
+    }
+  }
+
+  .c-proof__eyebrow {
+    margin: 0;
+  }
+
+  .c-proof__line {
+    /* Deliberately below the section headlines around it. The sentence is
+       evidence, not a chapter opening — sized to be read rather than scanned. */
+    margin: 0;
+    max-inline-size: 58ch;
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .c-proof__line strong {
+    color: var(--color-text-primary);
+    font-weight: var(--weight-semibold);
+  }
+
+  .c-proof__more {
+    margin: 0;
+  }
+
+  .c-proof__more .c-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .c-proof__more svg {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    flex-shrink: 0;
+  }
+}
