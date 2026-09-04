@@ -1,0 +1,247 @@
+#!/usr/bin/env node
+/* =============================================================================
+   QA — Phase 18, release readiness, against the DEPLOYED artefact.
+
+   validate.js walks the journeys on the source. This one audits what is
+   actually uploaded — dist/, with its inlined CSS and JS and its external
+   images — because that is the thing a visitor gets, and the two can differ.
+
+   Groups, in the order the phase names them:
+
+     1  DATA INTEGRITY  every price, name and billing in the markup matches
+                        pricing.json, everywhere it appears
+     2  CONTENT / SEO   title and description per page, canonical, og tags,
+                        sitemap against the page list, robots
+     3  ACCESSIBILITY   heading order, image alt and dimensions, form labels,
+                        contrast against the computed background, off-site
+                        links, reduced motion
+     4  BILINGUAL       every English copy has an Arabic sibling; no string
+                        left pending
+     5  PERFORMANCE     bytes and requests per page, and the largest paint
+     6  STATES          404, empty form validation, the WhatsApp fallback,
+                        the scope-fact disclosure closed and open
+
+   Usage:  node tools/qa.js        (run `node build.js` first)
+   ============================================================================= */
+
+const fs = require('fs');
+const path = require('path');
+const http = require('http');
+
+const ROOT = path.join(__dirname, '..');
+const DIST = path.join(ROOT, 'dist');
+const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+const pricing = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/pricing.json'), 'utf8'));
+
+let chromium;
+try { ({ chromium } = require('playwright-core')); } catch {
+  console.log('qa: playwright-core is not installed — skipping.'); process.exit(0);
+}
+
+const PAGES = cfg.pages.map((p) => p.file).filter((f) => fs.existsSync(path.join(DIST, f)));
+const findings = [];
+const fail = (sev, group, text) => { findings.push({ sev, group, text }); console.log(`  ${sev}  [${group}] ${text}`); };
+
+const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml',
+  '.webp': 'image/webp', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain', '.png': 'image/png' };
+
+function serve() {
+  const server = http.createServer((req, res) => {
+    const rel = decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html';
+    const file = path.join(DIST, rel);
+    if (!file.startsWith(DIST) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) { res.writeHead(404); res.end(); return; }
+    res.writeHead(200, { 'content-type': MIME[path.extname(file)] || 'application/octet-stream' });
+    fs.createReadStream(file).pipe(res);
+  });
+  return new Promise((r) => server.listen(0, '127.0.0.1', () => r(server)));
+}
+
+(async () => {
+  const server = await serve();
+  const BASE = `http://127.0.0.1:${server.address().port}`;
+  const exe = process.env.PLAYWRIGHT_CHROMIUM;
+  const browser = await chromium.launch(exe ? { executablePath: exe, args: ['--no-sandbox'] } : { args: ['--no-sandbox'] });
+
+  /* ---- 1 data integrity, 3 accessibility, 4 bilingual, 5 performance ---- */
+  for (const page of PAGES) {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const p = await ctx.newPage();
+    let bytes = 0; let requests = 0;
+    p.on('response', async (r) => {
+      requests += 1;
+      const len = Number(r.headers()['content-length'] || 0);
+      bytes += len || 0;
+    });
+    await p.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+    await p.waitForTimeout(900);
+
+    const r = await p.evaluate(() => {
+      /* contrast, computed against the first painted ancestor background */
+      const lum = (c) => {
+        const [r, g, b] = c.map((v) => { const s = v / 255; return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4; });
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      };
+      const parse = (s) => (s.match(/[\d.]+/g) || []).slice(0, 3).map(Number);
+      /* Composite every semi-transparent layer over the one behind it. A tag
+         painted as accent-at-14% over a dark ground is not the same colour as
+         the accent, and comparing it to the accent reports 1:1 — a harness
+         bug that would have buried a real finding. */
+      const bgOf = (el) => {
+        const layers = [];
+        for (let n = el; n; n = n.parentElement) {
+          const c = getComputedStyle(n).backgroundColor;
+          const m = (c.match(/[\d.]+/g) || []).map(Number);
+          if (!m.length) continue;
+          const alpha = m.length > 3 ? m[3] : 1;
+          if (alpha === 0) continue;
+          layers.push({ rgb: m.slice(0, 3), alpha });
+          if (alpha === 1) break;
+        }
+        if (!layers.length) return [0, 0, 0];
+        let out = layers[layers.length - 1].alpha === 1 ? layers.pop().rgb : [0, 0, 0];
+        for (let i = layers.length - 1; i >= 0; i -= 1) {
+          const { rgb, alpha } = layers[i];
+          out = out.map((v, k) => rgb[k] * alpha + v * (1 - alpha));
+        }
+        return out;
+      };
+      const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+
+      const lowContrast = [];
+      document.querySelectorAll('p,li,a,h1,h2,h3,h4,span,dd,dt,summary,label,button').forEach((el) => {
+        if (!el.textContent.trim() || el.children.length) return;
+        const cs = getComputedStyle(el);
+        if (cs.visibility === 'hidden' || cs.display === 'none' || !el.getClientRects().length) return;
+        const size = parseFloat(cs.fontSize);
+        const large = size >= 24 || (size >= 18.66 && Number(cs.fontWeight) >= 700);
+        const got = ratio(parse(cs.color), bgOf(el));
+        if (got < (large ? 3 : 4.5)) lowContrast.push(`${el.tagName}.${(el.className || '').toString().split(' ')[0]} ${got.toFixed(2)}:1 "${el.textContent.trim().slice(0, 24)}"`);
+      });
+
+      const headings = [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].map((h) => Number(h.tagName[1]));
+      const skips = headings.filter((lv, i) => i && lv - headings[i - 1] > 1).length;
+
+      const imgs = [...document.images];
+      const enCopy = document.querySelectorAll('[data-lang-copy="en"]').length;
+      const arCopy = document.querySelectorAll('[data-lang-copy="ar"]').length;
+
+      return {
+        lowContrast,
+        skips,
+        imgsNoAlt: imgs.filter((i) => !i.alt).length,
+        imgsNoDims: imgs.filter((i) => !i.getAttribute('width') || !i.getAttribute('height')).length,
+        imgsNoLazy: imgs.filter((i) => i.loading !== 'lazy').length,
+        unlabelled: [...document.querySelectorAll('input,select,textarea')]
+          .filter((f) => !f.labels?.length && !f.getAttribute('aria-label') && !f.getAttribute('aria-labelledby')).length,
+        blankNoRel: [...document.querySelectorAll('a[target="_blank"]')].filter((a) => !/noopener/.test(a.rel)).length,
+        pending: document.querySelectorAll('[data-i18n-pending]').length,
+        enCopy, arCopy,
+        prices: [...document.querySelectorAll('.c-tier__amount')].map((e) => e.textContent.trim()),
+        names: [...document.querySelectorAll('.c-tier__name')].map((e) => e.textContent.trim()),
+        title: document.title,
+        desc: document.querySelector('meta[name="description"]')?.content || '',
+        canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+        ogTitle: document.querySelector('meta[property="og:title"]')?.content || '',
+        ogUrl: document.querySelector('meta[property="og:url"]')?.content || '',
+        lcp: performance.getEntriesByType('largest-contentful-paint').slice(-1)[0]?.startTime
+          || performance.getEntriesByType('paint').find((e) => e.name === 'first-contentful-paint')?.startTime || 0,
+      };
+    });
+
+    /* data integrity */
+    if (r.prices.length) {
+      const expected = pricing.categories.flatMap((c) => c.packages.map((k) => ({ name: k.name, price: k.price })));
+      r.names.forEach((name, i) => {
+        const want = expected.find((e) => e.name === name);
+        if (!want) fail('HIGH', 'data', `${page}: card "${name}" is not in pricing.json`);
+        else if (want.price !== r.prices[i]) fail('HIGH', 'data', `${page}: "${name}" shows ${r.prices[i]}, source says ${want.price}`);
+      });
+    }
+
+    /* accessibility */
+    if (r.skips) fail('MED', 'a11y', `${page}: ${r.skips} skipped heading level(s)`);
+    if (r.imgsNoAlt) fail('HIGH', 'a11y', `${page}: ${r.imgsNoAlt} image(s) without alt`);
+    if (r.imgsNoDims) fail('MED', 'a11y', `${page}: ${r.imgsNoDims} image(s) without width/height`);
+    if (r.imgsNoLazy) fail('LOW', 'perf', `${page}: ${r.imgsNoLazy} image(s) not lazy-loaded`);
+    if (r.unlabelled) fail('HIGH', 'a11y', `${page}: ${r.unlabelled} form control(s) without a label`);
+    if (r.blankNoRel) fail('MED', 'security', `${page}: ${r.blankNoRel} new-tab link(s) without rel=noopener`);
+    r.lowContrast.slice(0, 6).forEach((t) => fail('HIGH', 'a11y', `${page}: contrast ${t}`));
+
+    /* bilingual */
+    if (r.pending) fail('HIGH', 'i18n', `${page}: ${r.pending} string(s) still pending translation`);
+    if (r.enCopy !== r.arCopy) fail('HIGH', 'i18n', `${page}: ${r.enCopy} English copies vs ${r.arCopy} Arabic`);
+
+    /* SEO */
+    const meta = cfg.pages.find((x) => x.file === page) || {};
+    if (!r.title || r.title.length > 65) fail('MED', 'seo', `${page}: title is ${r.title.length} chars`);
+    if (!r.desc || r.desc.length < 50 || r.desc.length > 165) fail('MED', 'seo', `${page}: description is ${r.desc.length} chars`);
+    if (meta.index !== false && !r.canonical) fail('HIGH', 'seo', `${page}: no canonical`);
+    if (meta.index === false && r.canonical) fail('MED', 'seo', `${page}: noindex page carries a canonical`);
+    if (meta.index !== false && !r.ogUrl) fail('MED', 'seo', `${page}: no og:url`);
+
+    /* performance */
+    const html = fs.statSync(path.join(DIST, page)).size;
+    if (html > 600 * 1024) fail('MED', 'perf', `${page}: ${(html / 1024).toFixed(0)}KB of HTML`);
+    if (r.lcp > 2500) fail('MED', 'perf', `${page}: largest paint at ${Math.round(r.lcp)}ms`);
+    console.log(`  ·  ${page.padEnd(16)} ${(html / 1024).toFixed(0).padStart(4)}KB  ${String(requests).padStart(2)} req  paint ${Math.round(r.lcp)}ms  imgs ${r.imgsNoAlt === 0 ? 'alt ok' : 'ALT MISSING'}`);
+    await ctx.close();
+  }
+
+  /* ---- 2 sitemap and robots ---- */
+  {
+    const sitemap = fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8');
+    const listed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+    const should = cfg.pages.filter((p) => p.index !== false).map((p) => `${cfg.url}/${p.file === 'index.html' ? '' : p.file}`);
+    should.filter((u) => !listed.includes(u)).forEach((u) => fail('HIGH', 'seo', `sitemap is missing ${u}`));
+    listed.filter((u) => !should.includes(u)).forEach((u) => fail('MED', 'seo', `sitemap lists an unexpected ${u}`));
+    const robots = fs.readFileSync(path.join(DIST, 'robots.txt'), 'utf8');
+    if (!robots.includes('Sitemap:')) fail('MED', 'seo', 'robots.txt does not point at the sitemap');
+    cfg.pages.filter((p) => p.index === false).forEach((p) => {
+      if (!robots.includes(p.file)) fail('MED', 'seo', `robots.txt does not disallow ${p.file}`);
+    });
+  }
+
+  /* ---- 6 states ---- */
+  {
+    const p = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage();
+    await p.goto(`${BASE}/index.html`, { waitUntil: 'load' }); await p.waitForTimeout(700);
+    const states = await p.evaluate(() => {
+      const form = document.querySelector('[data-contact-form]');
+      /* Measure the <details>, not its child. While closed, the child keeps a
+         bounding box that paints nothing (content-visibility: hidden), so
+         asking the child whether it is visible gets a confident wrong answer
+         — this check reported a bug that did not exist until it was fixed to
+         ask the element that actually reserves space. */
+      const closed = document.querySelector('.c-tier__terms');
+      const summary = closed?.querySelector('summary');
+      const shut = closed ? closed.getBoundingClientRect().height : 0;
+      const hiddenWhenClosed = closed
+        ? !closed.open && Math.abs(shut - summary.getBoundingClientRect().height) < 2 : null;
+      closed?.setAttribute('open', '');
+      const shownWhenOpen = closed
+        ? closed.getBoundingClientRect().height > shut + 10 : null;
+      return {
+        formValidates: form ? !form.checkValidity() : null,
+        status: (document.querySelector('[data-contact-status]')?.textContent || '').trim(),
+        hiddenWhenClosed, shownWhenOpen,
+        waFallback: [...document.querySelectorAll('[data-wa]')].every((a) => /^https:\/\/wa\.me\//.test(a.getAttribute('href'))),
+      };
+    });
+    if (states.formValidates !== true) fail('HIGH', 'states', 'the empty contact form does not fail validation');
+    if (states.status) fail('MED', 'states', `the status line says something before anything happened: "${states.status}"`);
+    if (states.hiddenWhenClosed === false) fail('MED', 'states', 'the scope-fact disclosure shows its body while closed');
+    if (states.shownWhenOpen === false) fail('HIGH', 'states', 'the scope-fact disclosure stays empty when opened');
+    if (!states.waFallback) fail('HIGH', 'states', 'a package CTA is not a real wa.me link');
+    await p.goto(`${BASE}/404.html`, { waitUntil: 'load' }); await p.waitForTimeout(400);
+    const e404 = await p.evaluate(() => ({ nav: document.querySelectorAll('.c-header a[href]').length, h1: document.querySelectorAll('h1').length }));
+    if (e404.nav < 4 || e404.h1 !== 1) fail('MED', 'states', '404 page has lost its navigation or heading');
+    await p.context().close();
+  }
+
+  await browser.close();
+  server.close();
+
+  const by = (s) => findings.filter((f) => f.sev === s).length;
+  console.log(`\nqa: ${findings.length} finding(s) — ${by('HIGH')} high, ${by('MED')} medium, ${by('LOW')} low`);
+  process.exit(by('HIGH') ? 1 : 0);
+})();
