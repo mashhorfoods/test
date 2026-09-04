@@ -1,5 +1,16 @@
 # Pixora — Digital Agency Website
 
+**Three surfaces, and they are not equivalent** — see `docs/44-launch.md` §1.
+
+| | URL | Serves |
+| --- | --- | --- |
+| Review | `mashhorfoods.github.io/test/` | the modular source · no `.htaccess`, so no CSP, no rewrites, no custom 404 |
+| Live | `zaokalyamamah.online` | the built `dist/` bundle |
+| Future | `pixora.net` or similar | one field in `site.config.json`, then rebuild |
+
+**Before every upload:** `node build.js` · `node tools/validate.js` · `node tools/qa.js`
+
+
 Built in stages on a token-driven design system. Every stage builds on the
 system rather than working around it.
 

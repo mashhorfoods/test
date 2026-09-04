@@ -2,11 +2,19 @@
   "_comment": [
     "DEPLOYMENT CONFIG. One place for the facts a build needs but a designer",
     "cannot invent. Everything domain-dependent — canonical, og:url, hreflang,",
-    "sitemap.xml — is generated from `url` and is SKIPPED while it is empty,",
-    "rather than emitted with a placeholder. A wrong canonical is worse than a",
-    "missing one: it tells search engines the real page lives somewhere else.",
+    "sitemap.xml, the robots Sitemap line and the analytics domain — is generated",
+    "from `url`, and is SKIPPED while it is empty rather than emitted with a",
+    "placeholder. A wrong canonical is worse than a missing one: it tells search",
+    "engines the real page lives somewhere else.",
     "",
-    "Fill in `url` (no trailing slash) and re-run `node build.js`."
+    "MOVING DOMAIN (to pixora.net or anything else) is this one field plus",
+    "`node build.js`. Nothing else in the repository names a host. The rest of",
+    "the move — 301s from the old host, renaming the site in Plausible, Search",
+    "Console's change of address — is in docs/44-launch.md §3.",
+    "",
+    "NOTE the review surface: GitHub Pages serves the modular source and ignores",
+    ".htaccess, so no CSP, no rewrites and no custom 404 there. It is for reading",
+    "the pages, not for judging the deployment."
   ],
   "url": "https://zaokalyamamah.online",
   "pages": [
