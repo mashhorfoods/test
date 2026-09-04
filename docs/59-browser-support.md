@@ -24,6 +24,24 @@ of inlined CSS, 42KB of inlined JavaScript — was enumerated by pattern and eac
 one classified by what happens when it is missing. Two real defects came out of
 it, both now fixed (§3, §4).
 
+**The version numbers below were written from knowledge and then checked.**
+Direct fetches to caniuse and MDN are blocked here, but search is not, so the
+two claims this document actually rests on were confirmed against published
+sources:
+
+- **`@layer`** — Chrome/Edge 99 (Mar 2022), Firefox 97 (Feb 2022), Safari 15.4
+  (Mar 2022). Confirmed, including the failure mode: *"styles in your layers
+  will be ignored entirely, and only unlayered styles will be applied."* One
+  summary gives Safari 15.5 rather than 15.4; the difference is two months in
+  2022 and changes nothing here.
+- **`backdrop-filter`** — supported in Safari since 9, but **only prefixed
+  until Safari 18**, which shipped the unprefixed property (WWDC 2024).
+  Confirmed, and it is the whole of §3.
+
+The remaining rows are from knowledge and are not load-bearing: each one
+degrades invisibly, so being a version or two out changes no decision. Check
+them before quoting them.
+
 ## 2. The floor
 
 **Chrome/Edge 105 · Safari 16 · Firefox 121.**
