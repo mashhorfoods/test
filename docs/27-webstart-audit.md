@@ -23,6 +23,12 @@ that were uploaded, never observed. See §6, BLOCKER-1.
 
 ## 1. Phase-by-phase checklist
 
+> **Re-checked 4 September 2026**, after the release build. 8 phases complete,
+> 12 partial, 1 out of scope; no phase is red. Rows 10 and 11 were carrying
+> gaps that the P1 build had already closed and are corrected above. Every
+> remaining partial waits on live data, owner confirmation or real users —
+> none of it is unfinished work sitting in the repository.
+
 | Phase | Status | Evidence | Problems / Gaps | Required action |
 | --- | --- | --- | --- | --- |
 | **00 WEBSTART** (brand → product) | 🟡 PARTIAL | `src/assets/brand/logo.svg` + brand README; colour, type and voice are settled and consistently applied | No kickoff brief, no confirmed scope document, no statement of who owns the brand or the business entity. Contact details are a personal Gmail and a personal GitHub portfolio, not an agency identity | Write the kickoff brief: entity, owner, scope in/out, approval authority |
@@ -36,8 +42,8 @@ that were uploaded, never observed. See §6, BLOCKER-1.
 | **GATE 01 — structural approval** | ✅ HELD *(approved 4 Sep 2026)* | `docs/37-gate-01.md`: ten decisions frozen — market, positioning, prices, conversion, KPIs, IA, proof strategy, no-CMS, the wireframes, and what is deliberately not built | The foundation is frozen. Changes to it from here are change requests, recorded rather than absorbed | Phase 08, then the P1 build in wireframe order |
 | **08 Master prompt** | ✅ COMPLETE *(was 🟡 — executed 4 Sep 2026)* | `docs/38-master-prompt.md`: positioning, audiences, the eleven problems, strategy and KPIs, IA, visual direction, component rules that carry decisions, eight non-negotiables and nine prohibitions — with `docs/00` normative for token values | None. It governs, and points at the normative source for each kind of detail | — |
 | **09 Design system** | ✅ COMPLETE | `src/styles/02-tokens.css` (single source of truth), 21 component stylesheets, `@layer` cascade order fixed in `main.css`, and `styleguide.html` — a living specimen sheet for every token and component | Not a gap: no light theme (`prefers-color-scheme` appears 0 times) — deliberate, the product is dark-only, but it is undocumented as a decision | Keep. Record the dark-only decision explicitly |
-| **10 Homepage design** | 🟡 PARTIAL | Nine sections, one `<h1>`, 13 `<h2>`, coherent hierarchy; hero, services, five service details, add-ons, process, CTA, contact; verified in-browser at four widths | **Proof and trust are absent** — no clients, no testimonials, no results, no credentials. For an agency site that is the conversion gap, not a nice-to-have. No FAQ. Section order was never validated against a user flow | Fill the proof/trust gap with real, permissioned material (Phase 03/04 output) |
-| **11 Inner pages & flows** | 🟡 PARTIAL | `story.html` — a five-chapter scroll narrative, a genuine case study; `404.html`; `styleguide.html` (internal, robots-disallowed) | No About, no per-service pages, no portfolio index, no privacy policy or terms — while the site collects a name, an email and a message | Decide the page set in Phase 05, then build |
+| **10 Homepage design** | 🟡 PARTIAL *(re-checked 4 Sep 2026)* | Nine sections, one `<h1>`, 13 `<h2>`, coherent hierarchy; hero, services, five service details, add-ons, process, CTA, contact; verified in-browser at four widths Proof now exists — a named client case study, a verification band with a real person and two checkable profiles, and a published price list. What is still missing is **proof on the homepage itself**: the strip that would carry it needs a second case study to look like a body of work rather than a single job. Still no FAQ, and section order is still unvalidated against a real user | Second case study → homepage proof strip; run the five-user script |
+| **11 Inner pages & flows** | 🟡 PARTIAL *(re-checked 4 Sep 2026)* | `story.html` (a real client case study), `about.html`, `pricing.html`, `privacy.html`, `404.html`, plus `styleguide.html` (internal, not deployed). Six pages ship | No `/work` index — with one case study there is nothing to index yet, which is the same blocker as the homepage proof strip. No terms of service, and no per-service pages | Second case study opens `/work`; write terms |
 | **12 Prototype & validation** | 🟡 PARTIAL *(was ❌ — executed 4 Sep 2026)* | `docs/40-validation.md` + `tools/validate.js`: seven journeys walked against the built site at two widths, in both languages, by keyboard and with JavaScript off. One real defect found and fixed, two harness false positives recorded, two more issues surfaced by the walk | Five moderated sessions with real buyers remain outstanding — a logic review cannot prove comprehension | Run the five-user script in `docs/33` §9 |
 | **GATE 02 — design approval** | ✅ HELD *(approved 4 Sep 2026)* | `docs/41-gate-02.md`: six pages measured at three widths, seven component rules frozen, content readiness stated line by line | Approved with the §5 risk accepted knowingly — no moderated sessions with real buyers were run | Phases 13–18 finish the build |
 | **13 Responsive & accessibility** | ✅ COMPLETE *(re-verified across all six pages, 4 Sep 2026)* | `docs/16-qa.md` (measured, both directions) plus this audit's independent browser pass: **no horizontal overflow at 360/390/768/1440**, **0 interactive targets below the 44px floor** out of 97, **0 console errors**, one `<h1>`, `<main>`/`<nav>`/`<header>`/`<footer>` landmarks present, skip link present, focus ring at every stop (`src/scripts/focus.js`), 23 `prefers-reduced-motion` guards, contrast failures fixed in Stage 16, RTL verified (`dir`/`lang` flip, no overflow, preference persisted) | No assistive-technology pass (no screen-reader run, no automated axe/Lighthouse-a11y report committed). The 12 images carry `alt` but **no `width`/`height`** — a CLS risk on slow connections. Arabic still needs a native-speaker review (`docs/20-arabic.md`) | Add an automated a11y check to the repo; add image dimensions; commission the Arabic review |
@@ -175,20 +181,19 @@ that were uploaded, never observed. See §6, BLOCKER-1.
 ### P1 — Important (required to meet the WEBSTART standard)
 
 - P1-1 Proof and trust — **client work may now be published anonymised (C-7, 4 Sep 2026; see `docs/35-case-studies.md`).** Also, per Phase 03 (PS-01), the rest of it never needed permission: Named human, kept response promise, the existing Behance work surfaced on the site, a Google Business Profile and one directory listing, CR/Maroof if the entity is Saudi.
-- P1-2 Content inventory, sitemap and the two primary user flows (Phase 05).
-- P1-3 Targeted wireframes for whatever 01–04 changes (Phase 07).
-- P1-4 Master prompt completion (Phase 08).
-- P1-5 Dashboard requirements definition (Phase 06) — requirements only.
-- P1-6 CSP in `.htaccess`; threat model; backup + monitoring plan.
+- ~~P1-2 Content inventory, sitemap and the two primary user flows (Phase 05).~~ **DONE** — `docs/32-content-ia.md`.
+- ~~P1-3 Targeted wireframes (Phase 07).~~ **DONE** — W1–W7 in `docs/33-wireframes.md`.
+- ~~P1-4 Master prompt completion (Phase 08).~~ **DONE** — `docs/38-master-prompt.md`.
+- ~~P1-5 Dashboard requirements definition (Phase 06).~~ **CLOSED as out of scope** (C-8, owner decision): one maintainer editing the data files. `docs/36` §4 records the four triggers that would reopen it.
+- P1-6 CSP — **DONE 4 Sep 2026**, build-generated from inline-script hashes, zero violations across six pages. **Threat model and the backup + monitoring plan are still outstanding**, and monitoring is a Gate 03 criterion that is not met.
 - ~~P1-7 Commit the QA harness~~ **DONE** — `tools/validate.js`, re-runnable after every change. Cross-browser and device matrix still outstanding.
   `story.html` and `404.html` to homepage depth.
-- P1-8 SEO completion: `og:image`, `apple-touch-icon`, Organization JSON-LD,
-  hreflang verification, Search Console.
+- P1-8 SEO — canonical, `og:url`, sitemap and robots ship and are verified by `tools/qa.js`. **Outstanding: `og:image`, `apple-touch-icon`, Organization JSON-LD, and Search Console** (which needs the live host first).
 - P1-9 Native-speaker Arabic review — **systematic pass done 4 Sep 2026** (`docs/47-arabic-review.md`): 37 package feature lines were English in the Arabic view and are now translated; numerals, voice and nine wordings fixed. A native speaker is still needed for register and terminology.
-- P1-10 Image `width`/`height`, `loading`, `decoding`, modern formats.
-- P1-11 About page; privacy policy; terms.
-- P1-12 Prototype validation with 5 real users (Phase 12), then Gate 02.
-- P1-13 Owner handover document.
+- ~~P1-10 Image `width`/`height`, `loading`, `decoding`, modern formats.~~ **DONE** — twelve WebP images, real dimensions, self-hosted (4.0MB → 436KB).
+- P1-11 **About and privacy DONE** (`about.html`, `privacy.html`, both bilingual). **Terms of service still unwritten.**
+- P1-12 Gate 02 held 4 Sep 2026. **The five moderated sessions with real buyers remain outstanding** and cannot be run from here — the risk was accepted knowingly, which is not the same as retired.
+- P1-13 Owner handover document — **outstanding**. `docs/49` §3 covers which file holds which kind of string, but there is no single document that hands the project over.
 
 ### P2 — Enhancement
 
