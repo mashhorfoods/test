@@ -284,6 +284,25 @@ function buildPage(file) {
   return { html, stats };
 }
 
+/* ------------------------------------------------------- CONTENT FIRST -- */
+/* The generators that own the markup, run before it is read.
+
+   They used to be four separate commands to remember after editing a data
+   file, and forgetting one shipped a page that disagreed with its own source:
+   a price in pricing.json that the cards did not show. The owner maintains
+   this site personally (docs/36-technical-and-data.md), so the number of
+   commands to remember is now ONE. Each is idempotent and says whether it
+   changed anything.
+
+   Order matters: pricing and i18n write index.html, story writes story.html,
+   and pages reads the finished index.html as its shell. */
+console.log('— content —');
+require('./tools/build-pricing.js');
+require('./tools/build-i18n.js');
+require('./tools/build-story.js');
+require('./tools/build-pages.js');
+console.log('');
+
 /* ------------------------------------------------------------------ run -- */
 
 fs.mkdirSync(DIST, { recursive: true });
