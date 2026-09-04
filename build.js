@@ -359,6 +359,18 @@ for (const page of ['index.html', 'styleguide.html', 'story.html', 'about.html',
   const page = path.join(DIST, 'index.html');
   const shipped = [];
 
+  /* The share card travels with them for the same reason: og:image is a meta
+     content attribute, not a src, so the image pass above never sees it. A
+     missing card is invisible on the site and only shows up as a grey preview
+     in somebody else's chat window. */
+  const shareCard = path.join(ROOT, 'src/assets/share-card.jpg');
+  if (fs.existsSync(shareCard)) {
+    fs.mkdirSync(assets, { recursive: true });
+    fs.copyFileSync(shareCard, path.join(assets, 'share-card.jpg'));
+  } else {
+    console.log('\n  ! no share card — run node tools/build-share-card.js');
+  }
+
   for (const name of ['hero.webm', 'hero.mp4']) {
     const film = path.join(ROOT, 'src/assets/showpiece', name);
     if (!fs.existsSync(film)) continue;

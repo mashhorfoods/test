@@ -185,6 +185,37 @@ ${cfg.pages.filter((p) => p.index !== false).map((p) => {
    /ar/ alternates would advertise pages that do not exist. Separate language
    URLs would be a real architectural change, worth doing if Arabic search
    traffic matters, and not something a deploy script should fake. */
+/* ORGANIZATION SCHEMA, homepage only.
+   Every field below is a fact already published on this site and checkable
+   from it — the name, the founder, the address the contact section shows, the
+   two profiles the verification band links to. Nothing is asserted here that a
+   visitor could not confirm, which is the same rule the rest of the site is
+   held to; structured data is not a place to be more confident than the page.
+
+   Deliberately absent: aggregateRating and review (there are none),
+   priceRange (it would drift from pricing.json the first time a package moves)
+   and areaServed (the site says "the Gulf and Egypt", and enumerating that
+   into country codes would be inventing precision). */
+function orgSchema() {
+  const json = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Pixora',
+    alternateName: 'بيكسورا',
+    url: `${URL}/`,
+    description: 'A remote studio for the Gulf and Egypt: branding, websites, social and advertising from one team, at prices published in full.',
+    image: `${URL}/assets/share-card.jpg`,
+    email: 'muhalabsalah@gmail.com',
+    founder: { '@type': 'Person', name: 'Muhalab Salah' },
+    knowsLanguage: ['en', 'ar'],
+    sameAs: [
+      'https://www.behance.net/MuhalabSalah',
+      'https://www.linkedin.com/in/muhalabsalah/',
+    ],
+  };
+  return `\n    <script type="application/ld+json">${JSON.stringify(json)}</script>`;
+}
+
 function injectHead(stamp) {
   if (!URL) return 0;
   let n = 0;
@@ -195,12 +226,32 @@ function injectHead(stamp) {
 
     // Idempotent: strip what a previous run wrote before writing it again.
     html = html.replace(/\n?\s*<link rel="canonical"[^>]*>/g, '')
-      .replace(/\n?\s*<meta property="og:url"[^>]*>/g, '');
+      .replace(/\n?\s*<meta property="og:url"[^>]*>/g, '')
+      .replace(/\n?\s*<meta property="og:image[^>]*>/g, '')
+      .replace(/\n?\s*<meta name="twitter:[^>]*>/g, '')
+      .replace(/\n?\s*<script type="application\/ld\+json">[\s\S]*?<\/script>/g, '');
 
     const loc = `${URL}/${publicPath(page.file)}`;
+
+    /* THE SHARE CARD. Absolute, always — a relative og:image is ignored by
+       every scraper, and the one that matters most here is WhatsApp's: this
+       business converts on WhatsApp, so a link with no preview image is a grey
+       strip with a domain in it, which is what a broken site looks like.
+       Dimensions are declared so a previewer can lay out the card before it has
+       finished fetching the image. */
+    const card = `${URL}/assets/share-card.jpg`;
+    const share = page.index === false ? '' : [
+      `<meta property="og:image" content="${card}" />`,
+      `<meta property="og:image:width" content="1200" />`,
+      `<meta property="og:image:height" content="630" />`,
+      `<meta property="og:image:alt" content="Pixora — your brand, your digital presence, one partner" />`,
+      `<meta name="twitter:card" content="summary_large_image" />`,
+      `<meta name="twitter:image" content="${card}" />`,
+    ].map((t) => `\n    ${t}`).join('');
+
     const tags = page.index === false
       ? '' // noindex pages get no canonical: there is nothing to canonicalise to.
-      : `\n    <link rel="canonical" href="${loc}" />\n    <meta property="og:url" content="${loc}" />`;
+      : `\n    <link rel="canonical" href="${loc}" />\n    <meta property="og:url" content="${loc}" />${share}${page.file === 'index.html' ? orgSchema() : ''}`;
 
     if (tags) {
       html = html.replace('</head>', `${tags}\n  </head>`);

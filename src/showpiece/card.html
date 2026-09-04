@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Share card</title>
+<!--
+  THE SHARE CARD — rendered to src/assets/share-card.jpg by
+  tools/build-share-card.js, and served as og:image.
+
+  WHY IT MATTERS MORE HERE THAN ON MOST SITES. Every link to this site travels
+  through WhatsApp, and WhatsApp is not an afterthought channel for this
+  business — it is the conversion path. A link with no image renders as a grey
+  strip with a domain in it, which is what a link to a broken site looks like.
+  For an agency selling design, that is the worst possible first frame.
+
+  1200x630, the size every platform crops from. Nothing important within 60px
+  of any edge: Twitter, LinkedIn and WhatsApp all crop differently, and the
+  safe area is the intersection rather than the canvas.
+
+  TEXT IS FINE HERE, unlike the hero film. A share card is an image by nature —
+  it cannot be translated at render time whatever we do, and a wordless one
+  tells a recipient nothing about what they are being sent. English, because
+  og:locale is en_US with Arabic as the alternate.
+-->
+<style>
+  @font-face {
+    font-family: 'Poppins';
+    src: url('../assets/fonts/poppins-latin-600.woff2') format('woff2');
+    font-weight: 600; font-display: block;
+  }
+  @font-face {
+    font-family: 'Poppins';
+    src: url('../assets/fonts/poppins-latin-400.woff2') format('woff2');
+    font-weight: 400; font-display: block;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: #0d0f12; }
+
+  body {
+    position: relative;
+    font-family: 'Poppins', system-ui, sans-serif;
+    color: #fff;
+  }
+
+  /* The hero's own atmosphere, still: a warm source right of centre, the dust
+     field, and the dark left third the type sits on. Same composition rule as
+     the film, so a shared link and the page it opens look like one thing. */
+  .ground {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 76% 46%, rgba(244,209,63,.30) 0%, rgba(244,209,63,.09) 32%, transparent 60%),
+      radial-gradient(ellipse 46% 30% at 76% 92%, rgba(255,240,205,.30) 0%, rgba(244,209,63,.10) 38%, transparent 70%),
+      #0d0f12;
+  }
+  .dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,.14) 1.2px, transparent 1.3px);
+    background-size: 34px 34px;
+    -webkit-mask-image: radial-gradient(ellipse 60% 70% at 74% 52%, #000 0%, transparent 74%);
+    mask-image: radial-gradient(ellipse 60% 70% at 74% 52%, #000 0%, transparent 74%);
+    opacity: .62;
+  }
+  .scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(13,15,18,.92) 0%, rgba(13,15,18,.72) 44%, rgba(13,15,18,0) 72%);
+  }
+
+  .plate {
+    position: absolute;
+    inset-block-start: 78px;
+    inset-inline-start: 84px;
+    inline-size: 620px;
+  }
+
+  .mark {
+    font-weight: 600; font-size: 40px; letter-spacing: .01em; line-height: 1;
+  }
+  .mark span { color: #f4d13f; }
+  .mark small {
+    display: block; margin-block-start: 8px;
+    font-weight: 400; font-size: 12.5px; letter-spacing: .34em;
+    color: rgba(255,255,255,.52); text-transform: uppercase;
+  }
+
+  .rule { inline-size: 64px; block-size: 3px; background: #f4d13f; margin: 34px 0 30px; }
+
+  h1 {
+    font-weight: 600; font-size: 54px; line-height: 1.1; letter-spacing: -.02em;
+    text-wrap: balance;
+  }
+  h1 em { font-style: normal; color: #f4d13f; }
+
+  p {
+    margin-block-start: 24px;
+    font-weight: 400; font-size: 19px; line-height: 1.5;
+    color: rgba(255,255,255,.72);
+    max-inline-size: 540px;
+  }
+
+  .foot {
+    position: absolute;
+    inset-block-end: 46px; inset-inline-start: 84px;
+    display: flex; gap: 26px; align-items: center;
+    font-size: 15px; color: rgba(255,255,255,.48);
+  }
+  .foot b { color: rgba(255,255,255,.78); font-weight: 600; }
+  .dot { inline-size: 4px; block-size: 4px; border-radius: 50%; background: rgba(244,209,63,.75); }
+</style>
+</head>
+<body>
+  <div class="ground"></div>
+  <div class="dots"></div>
+  <div class="scrim"></div>
+
+  <div class="plate">
+    <p class="mark">PI<span>X</span>ORA<small>Digital Agency</small></p>
+    <div class="rule"></div>
+    <h1>Your Brand.<br />Your Digital Presence.<br /><em>One Partner.</em></h1>
+    <p>Branding, websites, social and ads for the Gulf and Egypt — every price published in full.</p>
+  </div>
+
+  <div class="foot">
+    <b>Prices published</b><span class="dot"></span>
+    <b>Reply within 2 working hours</b><span class="dot"></span>
+    <b>عربي / English</b>
+  </div>
+</body>
+</html>

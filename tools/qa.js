@@ -210,6 +210,21 @@ function serve() {
     const should = cfg.pages.filter((p) => p.index !== false).map((p) => `${cfg.url}/${publicPath(p.file)}`);
     should.filter((u) => !listed.includes(u)).forEach((u) => fail('HIGH', 'seo', `sitemap is missing ${u}`));
     listed.filter((u) => !should.includes(u)).forEach((u) => fail('MED', 'seo', `sitemap lists an unexpected ${u}`));
+    /* The share card. A broken og:image is the one defect that is invisible
+       everywhere except somebody else's chat window — the site looks perfect
+       and the link previews as a grey strip. So the tag must exist on every
+       indexed page, be absolute, and point at a file that actually shipped. */
+    for (const page of cfg.pages.filter((p) => p.index !== false)) {
+      const file = path.join(DIST, page.file);
+      if (!fs.existsSync(file)) continue;
+      const html = fs.readFileSync(file, 'utf8');
+      const og = html.match(/<meta property="og:image" content="([^"]+)"/);
+      if (!og) { fail('MED', 'seo', `${page.file}: no og:image — links to it preview as a grey strip`); continue; }
+      if (!/^https?:\/\//.test(og[1])) fail('HIGH', 'seo', `${page.file}: og:image is relative; every scraper ignores it`);
+      const asset = path.join(DIST, og[1].replace(cfg.url, '').replace(/^\//, ''));
+      if (!fs.existsSync(asset)) fail('HIGH', 'seo', `${page.file}: og:image points at ${og[1]}, which did not ship`);
+    }
+
     const robots = fs.readFileSync(path.join(DIST, 'robots.txt'), 'utf8');
     if (!robots.includes('Sitemap:')) fail('MED', 'seo', 'robots.txt does not point at the sitemap');
     /* A noindex page needs a Disallow only if it ships. styleguide.html is built
