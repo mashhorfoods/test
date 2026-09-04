@@ -115,3 +115,16 @@ one and for two.
 - **`<meta name="description">` is English only** — a static page has one, and
   it cannot switch with the toggle. Serving an Arabic page variant is the fix,
   and that needs a domain and routing.
+
+---
+
+## Correction — 4 September 2026
+
+This stage recorded Arabic as complete, and for **prose** it was: no string
+carries `data-i18n-pending`. The **package data** was never checked the same
+way, and it was not complete — 15 feature lines held English inside their `ar`
+field and 22 had no `ar` field at all, the whole Marketing & Ads category among
+them. Fixed and documented in `docs/47-arabic-review.md`.
+
+The lesson is narrow and worth keeping: a completeness check that only looks at
+one storage shape reports completeness for that shape, not for the site.

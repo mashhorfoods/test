@@ -35,11 +35,11 @@
     "shared": {
       "ownership": {
         "en": "Everything delivered, on completion",
-        "ar": "كل ما يُسلَّم، عند الانتهاء"
+        "ar": "كل ما نسلّمه لك، عند الانتهاء"
       },
       "payment": {
         "en": "50% to start, 50% before handover. Monthly packages are paid at the start of each month.",
-        "ar": "٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر."
+        "ar": "50% عند البدء و50% قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر."
       },
       "fromDepends": {
         "en": "The number of concepts, how many applications you need, and whether the identity works in one language or two.",
@@ -52,7 +52,7 @@
         },
         {
           "en": "Printing and production",
-          "ar": "الطباعة والتنفيذ"
+          "ar": "الطباعة وتنفيذ المطبوعات"
         },
         {
           "en": "Photography and videography — available as add-ons",
@@ -128,7 +128,7 @@
           "facts": {
             "delivery": {
               "en": "5–7 working days",
-              "ar": "٥–٧ أيام عمل"
+              "ar": "5–7 أيام عمل"
             },
             "revisions": {
               "en": "2 rounds",
@@ -162,7 +162,7 @@
             {
               "carry": false,
               "en": "Typography System",
-              "ar": "Typography System"
+              "ar": "نظام الخطوط"
             },
             {
               "carry": false,
@@ -206,7 +206,7 @@
           "facts": {
             "delivery": {
               "en": "7–10 working days",
-              "ar": "٧–١٠ أيام عمل"
+              "ar": "7–10 أيام عمل"
             },
             "revisions": {
               "en": "3 rounds",
@@ -276,7 +276,7 @@
           "facts": {
             "delivery": {
               "en": "12–15 working days",
-              "ar": "١٢–١٥ يوم عمل"
+              "ar": "12–15 يوم عمل"
             },
             "revisions": {
               "en": "3 rounds",
@@ -333,7 +333,7 @@
           "facts": {
             "delivery": {
               "en": "3–5 working days",
-              "ar": "٣–٥ أيام عمل"
+              "ar": "3–5 أيام عمل"
             },
             "revisions": {
               "en": "2 rounds",
@@ -397,7 +397,7 @@
           "facts": {
             "delivery": {
               "en": "7–10 working days",
-              "ar": "٧–١٠ أيام عمل"
+              "ar": "7–10 أيام عمل"
             },
             "revisions": {
               "en": "2 rounds",
@@ -471,7 +471,7 @@
           "facts": {
             "delivery": {
               "en": "12–18 working days",
-              "ar": "١٢–١٨ يوم عمل"
+              "ar": "12–18 يوم عمل"
             },
             "revisions": {
               "en": "3 rounds",
@@ -505,7 +505,7 @@
             {
               "carry": false,
               "en": "Content Calendar",
-              "ar": "Content Calendar"
+              "ar": "تقويم المحتوى"
             },
             {
               "carry": false,
@@ -530,7 +530,7 @@
             {
               "carry": false,
               "en": "Hashtag Research",
-              "ar": "Hashtag Research"
+              "ar": "بحث الوسوم"
             },
             {
               "carry": false,
@@ -541,7 +541,7 @@
           "facts": {
             "delivery": {
               "en": "Plan in 3 working days, then posts on schedule",
-              "ar": "الخطة خلال ٣ أيام عمل، ثم النشر حسب الجدول"
+              "ar": "الخطة خلال 3 أيام عمل، ثم النشر حسب الجدول"
             },
             "revisions": {
               "en": "1 round per design",
@@ -570,7 +570,7 @@
             {
               "carry": false,
               "en": "Content Strategy",
-              "ar": "Content Strategy"
+              "ar": "استراتيجية المحتوى"
             },
             {
               "carry": false,
@@ -600,17 +600,17 @@
             {
               "carry": false,
               "en": "Stories",
-              "ar": "Stories"
+              "ar": "القصص"
             },
             {
               "carry": false,
               "en": "Community Monitoring",
-              "ar": "Community Monitoring"
+              "ar": "متابعة التفاعل والتعليقات"
             },
             {
               "carry": false,
               "en": "Hashtag & Keyword Research",
-              "ar": "Hashtag & Keyword Research"
+              "ar": "بحث الوسوم والكلمات المفتاحية"
             },
             {
               "carry": false,
@@ -621,7 +621,7 @@
           "facts": {
             "delivery": {
               "en": "Plan in 3 working days, then posts on schedule",
-              "ar": "الخطة خلال ٣ أيام عمل، ثم النشر حسب الجدول"
+              "ar": "الخطة خلال 3 أيام عمل، ثم النشر حسب الجدول"
             },
             "revisions": {
               "en": "2 rounds per design",
@@ -662,48 +662,48 @@
             {
               "carry": false,
               "en": "Stories",
-              "ar": "Stories"
+              "ar": "القصص"
             },
             {
               "carry": false,
               "en": "Copywriting",
-              "ar": "Copywriting"
+              "ar": "كتابة المحتوى الإعلاني"
             },
             {
               "carry": false,
               "en": "Graphic Design",
-              "ar": "Graphic Design"
+              "ar": "التصميم الجرافيكي"
             },
             {
               "carry": false,
               "en": "Video Editing",
-              "ar": "Video Editing"
+              "ar": "مونتاج الفيديو"
             },
             {
               "carry": false,
               "en": "Publishing & Scheduling",
-              "ar": "Publishing & Scheduling"
+              "ar": "النشر والجدولة"
             },
             {
               "carry": false,
               "en": "Community Management",
-              "ar": "Community Management"
+              "ar": "إدارة مجتمع المتابعين"
             },
             {
               "carry": false,
               "en": "Monthly Performance Report",
-              "ar": "Monthly Performance Report"
+              "ar": "تقرير أداء شهري"
             },
             {
               "carry": false,
               "en": "Monthly Strategy Review",
-              "ar": "Monthly Strategy Review"
+              "ar": "مراجعة استراتيجية شهرية"
             }
           ],
           "facts": {
             "delivery": {
               "en": "Plan in 3 working days, then posts on schedule",
-              "ar": "الخطة خلال ٣ أيام عمل، ثم النشر حسب الجدول"
+              "ar": "الخطة خلال 3 أيام عمل، ثم النشر حسب الجدول"
             },
             "revisions": {
               "en": "2 rounds per design",
@@ -741,11 +741,13 @@
             },
             {
               "carry": false,
-              "en": "Audience Targeting"
+              "en": "Audience Targeting",
+              "ar": "استهداف الجمهور"
             },
             {
               "carry": false,
-              "en": "Ad Copy"
+              "en": "Ad Copy",
+              "ar": "نصوص الإعلانات"
             },
             {
               "carry": false,
@@ -754,11 +756,13 @@
             },
             {
               "carry": false,
-              "en": "Campaign Monitoring"
+              "en": "Campaign Monitoring",
+              "ar": "متابعة الحملات"
             },
             {
               "carry": false,
-              "en": "Basic Optimization"
+              "en": "Basic Optimization",
+              "ar": "تحسين أساسي"
             },
             {
               "carry": false,
@@ -771,7 +775,7 @@
           "facts": {
             "delivery": {
               "en": "Campaigns live within 3 working days",
-              "ar": "انطلاق الحملات خلال ٣ أيام عمل"
+              "ar": "انطلاق الحملات خلال 3 أيام عمل"
             },
             "revisions": {
               "en": "1 round per creative",
@@ -799,7 +803,8 @@
             },
             {
               "carry": false,
-              "en": "Facebook + Instagram"
+              "en": "Facebook + Instagram",
+              "ar": "فيسبوك + إنستغرام"
             },
             {
               "carry": false,
@@ -808,27 +813,33 @@
             },
             {
               "carry": false,
-              "en": "Audience Research"
+              "en": "Audience Research",
+              "ar": "بحث الجمهور"
             },
             {
               "carry": false,
-              "en": "Ad Creative"
+              "en": "Ad Creative",
+              "ar": "تصاميم إعلانية"
             },
             {
               "carry": false,
-              "en": "Copywriting"
+              "en": "Copywriting",
+              "ar": "كتابة المحتوى الإعلاني"
             },
             {
               "carry": false,
-              "en": "Campaign Optimization"
+              "en": "Campaign Optimization",
+              "ar": "تحسين الحملات"
             },
             {
               "carry": false,
-              "en": "Retargeting"
+              "en": "Retargeting",
+              "ar": "إعادة الاستهداف"
             },
             {
               "carry": false,
-              "en": "Conversion Tracking"
+              "en": "Conversion Tracking",
+              "ar": "تتبّع التحويلات"
             },
             {
               "carry": false,
@@ -841,7 +852,7 @@
           "facts": {
             "delivery": {
               "en": "Campaigns live within 3 working days",
-              "ar": "انطلاق الحملات خلال ٣ أيام عمل"
+              "ar": "انطلاق الحملات خلال 3 أيام عمل"
             },
             "revisions": {
               "en": "2 rounds per creative",
@@ -861,47 +872,58 @@
           "features": [
             {
               "carry": false,
-              "en": "Meta + Google Ads"
+              "en": "Meta + Google Ads",
+              "ar": "إعلانات Meta و Google"
             },
             {
               "carry": false,
-              "en": "Campaign Strategy"
+              "en": "Campaign Strategy",
+              "ar": "استراتيجية الحملات"
             },
             {
               "carry": false,
-              "en": "Audience Segmentation"
+              "en": "Audience Segmentation",
+              "ar": "تقسيم الجمهور"
             },
             {
               "carry": false,
-              "en": "Multiple Campaigns"
+              "en": "Multiple Campaigns",
+              "ar": "حملات متعددة"
             },
             {
               "carry": false,
-              "en": "Retargeting"
+              "en": "Retargeting",
+              "ar": "إعادة الاستهداف"
             },
             {
               "carry": false,
-              "en": "Conversion Tracking"
+              "en": "Conversion Tracking",
+              "ar": "تتبّع التحويلات"
             },
             {
               "carry": false,
-              "en": "A/B Testing"
+              "en": "A/B Testing",
+              "ar": "اختبارات A/B"
             },
             {
               "carry": false,
-              "en": "Creative Optimization"
+              "en": "Creative Optimization",
+              "ar": "تحسين التصاميم"
             },
             {
               "carry": false,
-              "en": "Budget Optimization"
+              "en": "Budget Optimization",
+              "ar": "تحسين الميزانية"
             },
             {
               "carry": false,
-              "en": "Performance Report"
+              "en": "Performance Report",
+              "ar": "تقرير الأداء"
             },
             {
               "carry": false,
-              "en": "Monthly Strategy Meeting"
+              "en": "Monthly Strategy Meeting",
+              "ar": "اجتماع استراتيجي شهري"
             }
           ],
           "levelAr": "المنظومة",

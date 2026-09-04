@@ -184,7 +184,7 @@ that were uploaded, never observed. See §6, BLOCKER-1.
   `story.html` and `404.html` to homepage depth.
 - P1-8 SEO completion: `og:image`, `apple-touch-icon`, Organization JSON-LD,
   hreflang verification, Search Console.
-- P1-9 Native-speaker Arabic review.
+- P1-9 Native-speaker Arabic review — **systematic pass done 4 Sep 2026** (`docs/47-arabic-review.md`): 37 package feature lines were English in the Arabic view and are now translated; numerals, voice and nine wordings fixed. A native speaker is still needed for register and terminology.
 - P1-10 Image `width`/`height`, `loading`, `decoding`, modern formats.
 - P1-11 About page; privacy policy; terms.
 - P1-12 Prototype validation with 5 real users (Phase 12), then Gate 02.
