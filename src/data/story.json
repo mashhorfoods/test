@@ -1,115 +1,150 @@
 {
   "_provenance": [
-    "EVERY LINE OF COPY IN THIS FILE IS ALREADY PUBLISHED ON THE HOMEPAGE.",
-    "Nothing here is invented. The brief that commissioned this story required",
-    "'the actual approved success / impact information' and forbade inventing",
-    "metrics, numbers or client statements. No case study, client, project or",
-    "outcome exists in the supplied source material, so none is written here.",
+    "A REAL CLIENT PROJECT, PUBLISHED WITH PERMISSION (4 September 2026).",
     "",
-    "What IS verified is the agency's own argument, which the homepage makes in",
-    "#integrated and #process. That is the story this page tells: the problem it",
-    "names, the insight it turns on, the idea, the process that executes it, and",
-    "what that produces. Sources are recorded per chapter in `source`.",
+    "This file previously carried the studio's own argument, because no client",
+    "story was permitted. Al Mada Travel & Tourism Agency agreed to be named, so",
+    "the five chapters now describe work that was actually delivered.",
     "",
-    "TO TURN THIS INTO A CLIENT CASE STUDY: replace the five chapters' copy with",
-    "the real project's. The page, the sketches, the thread and the motion do not",
-    "change — they read from this file."
+    "WHAT IS IN HERE IS WHAT THE DELIVERABLES SHOW: the logo construction and its",
+    "stated meanings, the palette and typeface, the icon set, the website and its",
+    "proposition, the campaign set and the company profile. The client's own",
+    "prices appear on their campaign artwork and are theirs, not ours.",
+    "",
+    "WHAT IS DELIBERATELY ABSENT: any before-and-after claim, any traffic,",
+    "booking or revenue figure, and any quotation from the client. None of it was",
+    "supplied, and the rule that has governed this project from the first stage",
+    "is that nothing is invented. When Al Mada gives us a number we can stand",
+    "behind, chapter 05 gains it -- and not before."
   ],
-
-  "eyebrow": { "en": "Success Story", "ar": "قصة نجاح" },
+  "eyebrow": {
+    "en": "Case study",
+    "ar": "دراسة حالة"
+  },
   "title": {
-    "en": "Connecting ideas to impact",
-    "ar": "من الفكرة إلى الأثر"
+    "en": "One brand, four surfaces",
+    "ar": "هوية واحدة، أربعة أسطح"
   },
   "standfirst": {
-    "en": "One argument, in five parts — the one this studio makes on its own homepage, followed from the problem it names to the work it produces.",
-    "ar": "حجّة واحدة في خمسة فصول — الحجّة نفسها التي يقدّمها هذا الاستوديو على صفحته الرئيسية، متتبَّعة من المشكلة التي يسمّيها إلى العمل الذي ينتجه."
+    "en": "Al Mada Travel & Tourism Agency came to us for an identity, a website, a campaign set and a company profile — the four things most businesses buy from four different suppliers. Here is what one partner produced instead.",
+    "ar": "جاءت وكالة المدى للسفر والسياحة من أجل هوية بصرية وموقع إلكتروني وحملات إعلانية وملف تعريفي — وهي الأربعة التي يشتريها معظم أصحاب الأعمال من أربع جهات مختلفة. هذا ما أنتجه شريك واحد بدلًا من ذلك."
   },
-
   "chapters": [
     {
       "id": "challenge",
       "sketch": "scatter",
-      "annotation": { "en": "problem", "ar": "المشكلة" },
-      "title": { "en": "Four services. Four conversations.", "ar": "أربع خدمات. أربعة مسارات منفصلة." },
+      "annotation": {
+        "en": "the client",
+        "ar": "العميل"
+      },
+      "title": {
+        "en": "A travel agency sells trust before it sells a trip.",
+        "ar": "وكالة السفر تبيع الثقة قبل أن تبيع الرحلة."
+      },
       "lead": {
-        "en": "A business needs an identity, a website, a social presence and advertising. Bought separately, each one arrives from a different place, on its own schedule, answering a brief the others never saw.",
-        "ar": "يحتاج أي نشاط تجاري إلى هوية، وموقع إلكتروني، وحضور على وسائل التواصل، وإعلانات. وحين تُشترى كلٌّ منها على حدة، تصل كلٌّ من جهة مختلفة، وبجدولها الخاص، استجابةً لطلب لم تطّلع عليه البقية."
+        "en": "Al Mada Travel & Tourism Agency books Umrah journeys and travel packages for Saudi customers. A traveller handing over documents, dates and money to a name they have not used before is making a decision about trust, not about price — and every surface the agency owns is either helping them make it or getting in the way.",
+        "ar": "تحجز وكالة المدى للسفر والسياحة رحلات العمرة وبرامج السفر لعملاء في السعودية. والمسافر الذي يسلّم مستنداته ومواعيده وأمواله لاسم لم يتعامل معه من قبل يتخذ قرارًا بشأن الثقة، لا بشأن السعر — وكل سطح تملكه الوكالة إمّا أن يساعده على اتخاذه أو أن يقف في طريقه."
       },
       "aside": {
-        "en": "Nothing here is badly made. It is simply unrelated.",
-        "ar": "لا شيء هنا رديء الصنع. لكنه ببساطة غير مترابط."
+        "en": "Identity, website, campaigns, company profile. Four surfaces, usually four suppliers.",
+        "ar": "هوية، وموقع، وحملات، وملف تعريفي. أربعة أسطح، وعادةً أربع جهات."
       },
-      "source": "#integrated — \"Separate providers\""
+      "source": "Deliverables: brand sheet, website, campaign set, company profile"
     },
     {
       "id": "insight",
       "sketch": "probe",
-      "annotation": { "en": "insight", "ar": "الملاحظة" },
-      "title": { "en": "The work was never the problem.", "ar": "لم يكن العمل نفسه هو المشكلة." },
+      "annotation": {
+        "en": "the mark",
+        "ar": "العلامة"
+      },
+      "title": {
+        "en": "The flight path draws the letter.",
+        "ar": "مسار الرحلة هو الذي يرسم الحرف."
+      },
       "lead": {
-        "en": "The same four services, arranged two ways. The difference is not what gets made — it is how much of the coordinating you have to do yourself.",
-        "ar": "الخدمات الأربع نفسها، مرتّبة بطريقتين. الفرق ليس في ما يُنجَز — بل في مقدار التنسيق الذي يقع عليك أنت."
+        "en": "The logo is not an aeroplane placed next to a name. The path the aeroplane leaves behind forms the M of Al Mada, held inside a circle: movement inside completeness. Every element is doing two jobs at once — the circle for wholeness and reach, the flight path for journey and connection.",
+        "ar": "الشعار ليس طائرة وُضعت بجانب اسم. المسار الذي تتركه الطائرة هو ما يرسم حرف الميم في «المدى»، محاطًا بدائرة: حركة داخل اكتمال. كل عنصر فيه يؤدي وظيفتين معًا — الدائرة للاكتمال والامتداد، ومسار الرحلة للسفر والاتصال."
       },
       "aside": {
-        "en": "The cost is not in the work. It is in the gaps between it.",
-        "ar": "التكلفة ليست في العمل، بل في الفجوات بينه."
+        "en": "A mark whose construction can be explained is a mark a client can defend internally.",
+        "ar": "العلامة التي يمكن شرح بنائها هي علامة يستطيع العميل الدفاع عنها داخليًا."
       },
-      "source": "#integrated — section lead, verbatim"
+      "source": "Brand identity sheet — logo construction"
     },
     {
       "id": "idea",
       "sketch": "sequence",
-      "annotation": { "en": "direction", "ar": "الاتجاه" },
-      "title": { "en": "One system, not four purchases.", "ar": "نظام واحد، لا أربع مشتريات." },
+      "annotation": {
+        "en": "the system",
+        "ar": "النظام"
+      },
+      "title": {
+        "en": "Not a logo. A kit that survives the next designer.",
+        "ar": "ليس شعارًا. بل نظام يصمد بعد المصمم التالي."
+      },
       "lead": {
-        "en": "Identity builds the foundation. The website creates the digital presence. Social media builds ongoing engagement. Advertising reaches the right audience. Each is worth more when it knows what the others are doing.",
-        "ar": "الهوية تبني الأساس. الموقع الإلكتروني يصنع الحضور الرقمي. وسائل التواصل تبني تفاعلًا مستمرًا. الإعلانات تصل إلى الجمهور المناسب. وكلٌّ منها أثمن حين يعرف ما تفعله البقية."
+        "en": "Six colours with their values written down, from the primary blue through deep navy to the light grey that carries text. Cairo as the typeface, in bold and regular, because the audience reads Arabic first. Six icons — explore, book, travel, destination, experience, support — drawn as one family. A flight-path graphic language and a dotted pattern that can build a poster nobody has designed yet.",
+        "ar": "ستة ألوان بقيمها المكتوبة، من الأزرق الأساسي إلى الكحلي العميق إلى الرمادي الفاتح الذي يحمل النص. وخط القاهرة بوزنيه العريض والعادي، لأن الجمهور يقرأ بالعربية أولًا. وستة أيقونات — استكشاف، حجز، سفر، وجهة، تجربة، دعم — مرسومة كعائلة واحدة. ولغة بصرية قوامها مسار الرحلة ونمط منقّط يبنيان تصميمًا لم يُصمَّم بعد."
       },
       "aside": {
-        "en": "The order is the idea.",
-        "ar": "الترتيب هو الفكرة."
+        "en": "The test of a system is whether work made after handover still looks like the brand.",
+        "ar": "اختبار أي نظام هو أن يظل ما يُنتَج بعد التسليم شبيهًا بالعلامة."
       },
-      "source": "#integrated — the four ecosystem stops, in their published order"
+      "source": "Brand identity sheet — palette, typography, icon system, brand elements"
     },
     {
       "id": "transformation",
       "sketch": "spine",
-      "annotation": { "en": "system", "ar": "النظام" },
-      "title": { "en": "Six stages turn it into work.", "ar": "ست مراحل تحوّله إلى عمل." },
+      "annotation": {
+        "en": "the website",
+        "ar": "الموقع"
+      },
+      "title": {
+        "en": "Arabic first, on the screen the customer actually holds.",
+        "ar": "العربية أولًا، على الشاشة التي يمسكها العميل فعلًا."
+      },
       "lead": {
-        "en": "Discover, Plan, Create, Build, Launch, Grow. One sequence, one team, and one set of decisions carried from the first conversation through to the monthly report.",
-        "ar": "الاكتشاف، التخطيط، التصميم، التطوير، الإطلاق، النمو. تسلسل واحد، وفريق واحد، وقرارات واحدة تُحمل من أول محادثة حتى التقرير الشهري."
+        "en": "The site is built right-to-left because that is how its readers read, not as a mirrored afterthought. One promise carries the first screen — رحلتك تبدأ بثقة, your journey begins with confidence — and the pages behind it answer the questions a traveller asks in order: who you are, why you, what you do, how you work, what you stand for, how to reach you. Designed for the phone as carefully as for the desktop.",
+        "ar": "بُني الموقع من اليمين إلى اليسار لأن هذه هي طريقة قرّائه، لا كنسخة معكوسة أُضيفت لاحقًا. وعدٌ واحد يحمل الشاشة الأولى — «رحلتك تبدأ بثقة» — والصفحات خلفه تجيب أسئلة المسافر بترتيبها: من أنتم، ولماذا أنتم، وماذا تقدّمون، وكيف تعملون، وما قيمكم، وكيف أصل إليكم. مصمَّم للهاتف بالعناية نفسها التي صُمِّم بها لسطح المكتب."
       },
       "aside": {
-        "en": "Nothing is handed over at a boundary, because there are no boundaries.",
-        "ar": "لا شيء يُسلَّم عند حدٍّ فاصل، لأنه لا توجد حدود فاصلة."
+        "en": "A bilingual studio building an Arabic-first site is not a compromise. It is the point.",
+        "ar": "استوديو ثنائي اللغة يبني موقعًا عربيًا أولًا ليس تنازلًا. بل هو المقصد."
       },
-      "source": "#process — the six published stages, in order"
+      "source": "Website — madatravel.github.io/madatravel"
     },
     {
       "id": "impact",
       "sketch": "resolve",
-      "annotation": { "en": "impact", "ar": "الأثر" },
-      "title": { "en": "Planned together. Delivered together.", "ar": "يُخطَّط معًا. ويُسلَّم معًا." },
+      "annotation": {
+        "en": "what it produced",
+        "ar": "ما أنتجه"
+      },
+      "title": {
+        "en": "The same brand, on the poster and in the brochure.",
+        "ar": "العلامة نفسها، على الإعلان وفي الملف."
+      },
       "lead": {
-        "en": "Connecting these services into one complete digital presence — planned together, delivered together, and answerable to one team.",
-        "ar": "ربط هذه الخدمات في حضور رقمي واحد متكامل — يُخطَّط معًا، ويُسلَّم معًا، ويكون مسؤولًا أمام فريق واحد."
+        "en": "The campaign set for the Umrah offers uses the identity rather than reinterpreting it: the same blues, the same curve, the same mark, across every size the agency posts. The company profile does the same in print. Nothing had to be redrawn to fit a new surface, and nothing needed a second designer to be briefed from the beginning — which is the whole argument of buying the four together.",
+        "ar": "مجموعة حملات عروض العمرة تستخدم الهوية بدل أن تعيد تفسيرها: الزُّرق نفسها، والانحناءة نفسها، والعلامة نفسها، في كل مقاس تنشره الوكالة. والملف التعريفي يفعل الشيء ذاته مطبوعًا. لم يُعَد رسم شيء ليناسب سطحًا جديدًا، ولم يحتج الأمر إلى مصمم ثانٍ يُشرح له كل شيء من البداية — وهذه هي حجّة شراء الأربعة معًا."
       },
       "aside": {
-        "en": "The scattered marks of the first chapter, in their finished arrangement.",
-        "ar": "العلامات المتناثرة في الفصل الأول، في ترتيبها النهائي."
+        "en": "Prices on the campaign artwork are Al Mada's own. We do not publish results we cannot prove.",
+        "ar": "الأسعار الظاهرة في تصاميم الحملات تخصّ «المدى». ونحن لا ننشر نتائج لا نستطيع إثباتها."
       },
-      "source": "#integrated — hub note, verbatim"
+      "source": "Campaign set and company profile, 2026"
     }
   ],
-
   "close": {
     "statement": {
-      "en": "The diagram at the end of this story is not a metaphor. It is the way the work is organised.",
-      "ar": "الرسم في نهاية هذه القصة ليس استعارة. إنه الطريقة التي يُنظَّم بها العمل فعلًا."
+      "en": "Al Mada's site is live. Open it, then look at the poster and the profile — the brand is the same object in three places.",
+      "ar": "موقع «المدى» منشور. افتحه، ثم انظر إلى الإعلان والملف التعريفي — العلامة هي الشيء نفسه في ثلاثة أماكن."
     },
-    "link": { "en": "See the five services", "ar": "اطّلع على الخدمات الخمس" },
-    "href": "./index.html#services"
+    "link": {
+      "en": "Visit the Al Mada website",
+      "ar": "زيارة موقع المدى"
+    },
+    "href": "https://madatravel.github.io/madatravel/"
   }
 }

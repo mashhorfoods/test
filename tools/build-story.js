@@ -45,6 +45,11 @@ const pair = (v) =>
   `<span data-lang-copy="en">${esc(v.en)}</span>`
   + `<span data-lang-copy="ar" lang="ar">${esc(v.ar)}</span>`;
 
+/* A close link can now point at a client's live site rather than back into
+   this one. Off-site destinations open in a new tab and say so, which is the
+   rule every other external link on this site already follows. */
+const OFFSITE = (href) => (/^https?:/i.test(href) ? ' target="_blank" rel="noopener noreferrer"' : '');
+
 /* --- The sketch layer ------------------------------------------------------
    Hand-drawn is a matter of the LINE, not a filter: paths that do not quite
    close, corners that overshoot, strokes that vary, groups sitting a degree
@@ -291,8 +296,8 @@ ${data.chapters.map((c, i) => renderChapter(c, i, i === data.chapters.length - 1
 
       <footer class="c-story__close">
         <p class="c-story__statement">${pair(data.close.statement)}</p>
-        <a class="c-link c-story__link" href="${esc(data.close.href)}">
-          ${pair(data.close.link)}
+        <a class="c-link c-story__link" href="${esc(data.close.href)}"${OFFSITE(data.close.href)}>
+          ${pair(data.close.link)}${OFFSITE(data.close.href) ? '<span class="u-visually-hidden"> (opens in a new tab)</span>' : ''}
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="u-flip-rtl">
             <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2"
               stroke-linecap="square" fill="none" />

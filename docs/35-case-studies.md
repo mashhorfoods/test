@@ -1,6 +1,12 @@
 # Stage 35 — Anonymised client work: rules, format, and what is needed
 
-**C-7 answered, 4 September 2026: client work may be published anonymised.**
+**C-7 answered, 4 September 2026: client work may be published anonymised —
+and the first client, Al Mada Travel & Tourism Agency, agreed to be named.**
+
+**Status: the first case study is live** at `/story`, written from the
+deliverables themselves. What it does not contain is any before-and-after
+claim, traffic or booking figure, or client quotation — none was supplied, and
+inventing one would break the rule this project has held since its first stage.
 
 That is the single largest unblocking in this project. The trust gap was the
 biggest conversion problem the audit found (`docs/30-problem-solution.md`

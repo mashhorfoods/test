@@ -56,8 +56,9 @@ existence invites filling it dishonestly.
 | --- | --- |
 | ~~W2 verification band~~ | **Shipped 4 Sep 2026.** Named person, role, the remote-work line, a reply window rendered from one string, and two links a stranger can check. A Google Business Profile and a directory listing are omitted until they exist — an empty proof slot is worse than none. **Confirm the name, the role and the reply window**; each is one edit |
 | ~~W5 About~~ | **Shipped 4 Sep 2026**, written from what the repository already establishes: who you work with, how remote actually works, why the prices are published, and four things we will not do. Nothing in it is invented — but read it, because it speaks for you |
+| **Al Mada's four images on the story page** | The files. They were pasted into the conversation rather than uploaded, so they are not on disk here |
 | **W6 `/pricing` guide** | The five price drivers (scale, content readiness, languages, integrations, turnaround) in your words, and the "How we bill" facts — which are the same ones as §1 |
-| **`/story` as a real case study** | The ten answers in `docs/35-case-studies.md` §4 |
+| ~~`/story` as a real case study~~ | **Shipped 4 Sep 2026 — Al Mada Travel & Tourism Agency, named with permission.** Five chapters written from the deliverables: the mark and how it is constructed, the system that outlives the designer, the Arabic-first site, and the same brand carried into campaigns and a printed profile. Chapter 05 gains a result the day Al Mada gives us one we can stand behind |
 | **`/work`** | Two case studies. One project is a story, not a portfolio |
 | **Homepage proof strip** | Ships with the first case study |
 
