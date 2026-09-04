@@ -17,6 +17,21 @@
   licence, is sharp at any size instead of upscaled from 784px, and can be
   changed by editing numbers. See docs/54 §8.
 
+  IT HAS AN ARGUMENT, NOT JUST AN ATMOSPHERE. The first drawn version was dust
+  breathing forever, and it was missing the point of the clips it replaced:
+  those two were a SEQUENCE — the ground, then the launch — which is the
+  studio's whole pitch in one loop. So this one is three acts on one timeline:
+
+    GROUND   (0.00-0.45)  the floor is lit, the grid reads, dust drifts loose
+    GATHER   (0.30-0.62)  the dust converges into a column, the pool charges
+    LAUNCH   (0.55-0.85)  the column surges upward and the floor gives up its
+                          light — energy leaves the ground
+    SETTLE   (0.85-1.00)  back to loose dust on a dim floor, which is frame 0
+
+  The rise is VERTICAL, which is both what a launch looks like and the one
+  direction that means the same thing in Arabic. The original clip B said this
+  diagonally and had to be mirrored to survive RTL; upward, it needs nothing.
+
   DETERMINISTIC BY CONSTRUCTION, and more strictly than the CSS version was.
   Every particle's position is a FUNCTION OF TIME — nothing accumulates, no
   frame depends on the frame before it, and the only randomness is a seeded
@@ -84,6 +99,9 @@
         swayRate: 1 + Math.floor(r() * 2),        // 1..2 sways per loop
         phase: r(),
         warm: r() < 0.72,
+        /* How far this mote is drawn into the column. Uneven on purpose —
+           dust that all converged equally would read as a machine. */
+        drawn: 0.35 + r() * 0.65,
         alpha: 0.20 + Math.pow(r(), 1.5) * 0.75,
       });
     }
@@ -98,6 +116,7 @@
         sway: 10 + r() * 22,
         swayRate: 1,
         phase: r(),
+        drawn: 0.15 + r() * 0.3,
         alpha: 0.05 + r() * 0.10,
       });
     }
@@ -107,13 +126,48 @@
   const P = build();
   const TAU = Math.PI * 2;
 
-  /* Where a particle is at time t. Rises, wrapping; sways symmetrically, so
-     there is no net travel in either direction — the sway is a sine, not a
-     drift, and mirrors cleanly. */
+  /* ---- the three acts, as three functions of one phase ------------------
+     Everything below takes s = t / LOOP and returns to its starting value at
+     s = 1, which is what keeps the loop seamless while the film still tells a
+     story rather than idling. */
+
+  /* FLOW. Not a constant speed — the shared progress of every particle, slow
+     while the dust is loose, fastest at the launch. Φ(0)=0, Φ(1)=1 exactly, so
+     a particle that rises `wraps` times is back where it began at the end of
+     the loop no matter how uneven its journey was.
+
+     A < 1 keeps it monotonic: at A = 1 the dust would stall dead, and above it
+     the flow would run backwards, which is the one thing a launch must not
+     appear to do. */
+  const SURGE = 0.80, SLOWEST = 0.12;
+  const flow = (s) => {
+    const f = (u) => u - (SURGE / TAU) * Math.sin(TAU * (u - SLOWEST));
+    return f(s) - f(0);
+  };
+
+  /* GATHER. Zero at both ends, peaking mid-loop: how strongly the dust is
+     pulled toward the column before it goes up. */
+  const gather = (s) => (1 - Math.cos(TAU * s)) / 2;
+
+  /* LAUNCH. A narrow bump centred at 0.65 — the moment the column surges and
+     the floor gives up its light. Far enough from the ends that it is already
+     nothing at s = 0, so the loop is unaffected by it. */
+  const launch = (s) => {
+    const d = Math.min(Math.abs(s - 0.65), 1 - Math.abs(s - 0.65));
+    return Math.exp(-(d * d) / (2 * 0.085 * 0.085));
+  };
+
+  /* Where a particle is at time t. It rises on the shared flow and leans
+     toward the column as the gather builds; the sway is a sine rather than a
+     drift, so there is no net horizontal travel and the frame mirrors cleanly.
+     Nothing here reads the previous frame. */
   const at = (p, t) => {
-    const u = (p.y0 - (t / LOOP) * p.wraps) % 1;
+    const s = t / LOOP;
+    const u = (p.y0 - flow(s) * p.wraps) % 1;
     const y = (u < 0 ? u + 1 : u) * (H + 200) - 100;
-    const x = p.x + Math.sin(TAU * (p.swayRate * (t / LOOP) + p.phase)) * p.sway;
+    const pull = gather(s) * 0.55 * p.drawn;
+    const x = p.x + (CX - p.x) * pull
+      + Math.sin(TAU * (p.swayRate * s + p.phase)) * p.sway * (1 - pull * 0.6);
     return { x, y };
   };
 
@@ -126,9 +180,15 @@
   };
 
   function draw(t) {
-    /* Everything below breathes on this one value, which is why the whole
-       frame is periodic rather than merely each part of it. */
-    const breath = 0.5 + 0.5 * Math.sin(TAU * (t / LOOP));
+    const s = t / LOOP;
+    const G = gather(s);   // the dust drawing together
+    const L = launch(s);   // the surge
+
+    /* The floor charges as the dust gathers and is spent by the launch: the
+       ground gives its light up to what leaves it. That subtraction is the
+       whole argument of the film in one line. */
+    const ground = Math.max(0, G * 0.9 - L * 0.85);
+    const breath = 0.35 + 0.65 * G;
 
     ctx.globalCompositeOperation = 'source-over';
     ctx.fillStyle = INK;
@@ -146,16 +206,19 @@
        this has to read as light. */
     ctx.save();
     ctx.filter = 'blur(46px)';
+    /* Dim while the ground still holds the light; the launch is what lifts it
+       — and it brightens from the TOP down, so the eye is pulled upward. */
     const shaft = ctx.createLinearGradient(0, -40, 0, FLOOR);
-    shaft.addColorStop(0, PALE(0.10 + breath * 0.045));
-    shaft.addColorStop(0.62, WARM(0.045));
-    shaft.addColorStop(1, WARM(0.012));
+    shaft.addColorStop(0, PALE(0.05 + L * 0.22 + ground * 0.03));
+    shaft.addColorStop(0.62, WARM(0.025 + L * 0.085));
+    shaft.addColorStop(1, WARM(0.010 + ground * 0.03));
     ctx.fillStyle = shaft;
     ctx.beginPath();
     ctx.moveTo(CX - 66, -60);
     ctx.lineTo(CX + 66, -60);
-    ctx.lineTo(CX + 250 + breath * 26, FLOOR);
-    ctx.lineTo(CX - 250 - breath * 26, FLOOR);
+    /* Narrows as it fires: a column, not a floodlight. */
+    ctx.lineTo(CX + 250 - L * 96, FLOOR);
+    ctx.lineTo(CX - 250 + L * 96, FLOOR);
     ctx.closePath();
     ctx.fill();
     ctx.restore();
@@ -164,14 +227,14 @@
        from bright — it sits behind a headline. */
     ctx.save();
     ctx.filter = 'blur(26px)';
-    const poolW = 300 + breath * 40;
+    const poolW = 300 + G * 46 - L * 70;
     const pool = ctx.createRadialGradient(CX, FLOOR, 0, CX, FLOOR, poolW);
     /* Warm, not white. A white core reads as a lamp; the accent has to survive
        all the way into the brightest part of the frame or the palette breaks
        exactly where the eye lands. */
-    pool.addColorStop(0, PALE(0.20 + breath * 0.09));
-    pool.addColorStop(0.18, WARM(0.26 + breath * 0.08));
-    pool.addColorStop(0.45, WARM(0.08));
+    pool.addColorStop(0, PALE(0.10 + ground * 0.26));
+    pool.addColorStop(0.18, WARM(0.10 + ground * 0.34));
+    pool.addColorStop(0.45, WARM(0.03 + ground * 0.10));
     pool.addColorStop(1, 'rgba(244,209,63,0)');
     ctx.fillStyle = pool;
     ctx.beginPath();
@@ -182,7 +245,9 @@
     /* The site's grid, receding — the one structural element, kept faint
        enough to be felt rather than read. */
     ctx.save();
-    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+    /* The ground is only legible while it holds the light. After the launch it
+       recedes, which is what makes the launch feel like leaving somewhere. */
+    ctx.strokeStyle = `rgba(255,255,255,${(0.028 + ground * 0.055).toFixed(4)})`;
     ctx.lineWidth = 1;
     for (let i = 1; i <= 9; i += 1) {
       const y = FLOOR + Math.pow(i / 9, 2.1) * (H - FLOOR) * 1.25;
