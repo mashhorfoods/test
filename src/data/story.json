@@ -15,7 +15,19 @@
     "booking or revenue figure, and any quotation from the client. None of it was",
     "supplied, and the rule that has governed this project from the first stage",
     "is that nothing is invented. When Al Mada gives us a number we can stand",
-    "behind, chapter 05 gains it -- and not before."
+    "behind, chapter 05 gains it -- and not before.",
+    "",
+    "UNCONFIRMED WITH THE CLIENT (docs/48, F1-F3). Three statements here were",
+    "written from the deliverables and have not been checked against Al Mada:",
+    "  F1  chapter 01, that a traveller hands over documents, dates and money at",
+    "      booking -- our description of THEIR process, not a fact we sourced.",
+    "  F2  'rehlat al-umrah wa baramij al-safar' as the description of their",
+    "      business -- our words for it, not necessarily theirs.",
+    "  F3  the six section names quoted in chapter 04 were read from the",
+    "      deliverable, not from the published site. They sit inside quotation",
+    "      marks, so they must match what is live, exactly.",
+    "Nothing here is known to be wrong. Each is carrying more confidence than its",
+    "sourcing supports, and one message to the client settles all three."
   ],
   "eyebrow": {
     "en": "Case study",
@@ -110,7 +122,7 @@
       },
       "aside": {
         "en": "A bilingual studio building an Arabic-first site is not a compromise. It is the point.",
-        "ar": "استوديو ثنائي اللغة يبني موقعًا عربيًا أولًا ليس تنازلًا. بل هو المقصد."
+        "ar": "أن يبني استوديو ثنائي اللغة موقعًا عربيًا أولًا ليس تنازلًا، بل هو المقصد."
       },
       "source": "Website — madatravel.github.io/madatravel"
     },
@@ -127,7 +139,7 @@
       },
       "lead": {
         "en": "The campaign set for the Umrah offers uses the identity rather than reinterpreting it: the same blues, the same curve, the same mark, across every size the agency posts. The company profile does the same in print. Nothing had to be redrawn to fit a new surface, and nothing needed a second designer to be briefed from the beginning — which is the whole argument of buying the four together.",
-        "ar": "مجموعة حملات عروض العمرة تستخدم الهوية بدل أن تعيد تفسيرها: درجات الأزرق نفسها، والانحناءة نفسها، والعلامة نفسها، في كل مقاس تنشره الوكالة. والملف التعريفي يفعل الشيء ذاته مطبوعًا. لم نُعِد رسم شيء ليناسب واجهة جديدة، ولم نحتج إلى مصمم ثانٍ نشرح له كل شيء من جديد — وهذه هي فائدة شراء الأربعة معًا."
+        "ar": "مجموعة الحملات الإعلانية لعروض العمرة تستخدم الهوية بدل أن تعيد تفسيرها: درجات الأزرق نفسها، والانحناءة نفسها، والعلامة نفسها، في كل مقاس تنشره الوكالة. والملف التعريفي يفعل الشيء ذاته مطبوعًا. لم نُعِد رسم شيء ليناسب واجهة جديدة، ولم نحتج إلى مصمم ثانٍ نشرح له كل شيء من جديد — وهذه هي فائدة شراء الأربعة معًا."
       },
       "aside": {
         "en": "Prices on the campaign artwork are Al Mada's own. We do not publish results we cannot prove.",
