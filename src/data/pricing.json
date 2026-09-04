@@ -19,31 +19,54 @@
   "terms": {
     "_comment": [
       "SCOPE FACTS — wireframe W1, problem PS-05 (docs/30-problem-solution.md).",
-      "The price is published; what it buys is not, and at the new band a buyer",
-      "asks. Fill these in and the cards grow a facts block and a 'What's not",
-      "included' disclosure. Leave a field empty and NOTHING renders for it — the",
-      "page never shows a label with a blank beside it, and never guesses a value.",
+      "",
+      "DRAFTED BY THE STUDIO, 4 September 2026, at the owner's instruction, from",
+      "what the packages already contain and what the add-ons already exclude.",
+      "They are commitments to a paying client, so READ THEM BEFORE THE NEXT",
+      "UPLOAD and change anything you would not want to be held to: a promise you",
+      "cannot keep costs more than a slower one you can.",
+      "",
+      "Leave a field empty and NOTHING renders for it — no label with a blank",
+      "beside it, and never a guess in place of a value.",
       "",
       "`shared` applies to every package. Per-package `facts` (delivery, revisions)",
-      "live on the package itself, beside its price.",
-      "",
-      "Write both languages. Plain words, no legal register: 'Two rounds of",
-      "changes' beats 'client is entitled to two (2) revision cycles'."
+      "live on the package itself, beside its price."
     ],
     "shared": {
       "ownership": {
-        "en": "",
-        "ar": ""
+        "en": "Everything delivered, on completion",
+        "ar": "كل ما يُسلَّم، عند الانتهاء"
       },
       "payment": {
-        "en": "",
-        "ar": ""
+        "en": "50% to start, 50% before handover. Monthly packages are paid at the start of each month.",
+        "ar": "٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر."
       },
       "fromDepends": {
-        "en": "",
-        "ar": ""
+        "en": "The number of concepts, how many applications you need, and whether the identity works in one language or two.",
+        "ar": "عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين."
       },
-      "excludes": []
+      "excludes": [
+        {
+          "en": "Advertising budget paid to the platforms",
+          "ar": "ميزانية الإعلانات المدفوعة للمنصات"
+        },
+        {
+          "en": "Printing and production",
+          "ar": "الطباعة والتنفيذ"
+        },
+        {
+          "en": "Photography and videography — available as add-ons",
+          "ar": "التصوير الفوتوغرافي والفيديو — متاحة كإضافات"
+        },
+        {
+          "en": "Domain, hosting and paid third-party services",
+          "ar": "النطاق والاستضافة والخدمات الخارجية المدفوعة"
+        },
+        {
+          "en": "Written content, unless the package includes it or you add it",
+          "ar": "كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه"
+        }
+      ]
     }
   },
   "categories": [
@@ -104,12 +127,12 @@
           "priceFrom": true,
           "facts": {
             "delivery": {
-              "en": "",
-              "ar": ""
+              "en": "5–7 working days",
+              "ar": "٥–٧ أيام عمل"
             },
             "revisions": {
-              "en": "",
-              "ar": ""
+              "en": "2 rounds",
+              "ar": "جولتان"
             }
           }
         },
@@ -182,12 +205,12 @@
           "priceFrom": true,
           "facts": {
             "delivery": {
-              "en": "",
-              "ar": ""
+              "en": "7–10 working days",
+              "ar": "٧–١٠ أيام عمل"
             },
             "revisions": {
-              "en": "",
-              "ar": ""
+              "en": "3 rounds",
+              "ar": "ثلاث جولات"
             }
           }
         },
@@ -252,12 +275,12 @@
           "priceFrom": true,
           "facts": {
             "delivery": {
-              "en": "",
-              "ar": ""
+              "en": "12–15 working days",
+              "ar": "١٢–١٥ يوم عمل"
             },
             "revisions": {
-              "en": "",
-              "ar": ""
+              "en": "3 rounds",
+              "ar": "ثلاث جولات"
             }
           }
         }
@@ -309,12 +332,12 @@
           "purposeAr": "لحملات محددة وعمليات الإطلاق والحضور الرقمي البسيط.",
           "facts": {
             "delivery": {
-              "en": "",
-              "ar": ""
+              "en": "3–5 working days",
+              "ar": "٣–٥ أيام عمل"
             },
             "revisions": {
-              "en": "",
-              "ar": ""
+              "en": "2 rounds",
+              "ar": "جولتان"
             }
           }
         },
@@ -373,12 +396,12 @@
           "purposeAr": "للشركات والمؤسسات التي تحتاج موقعًا احترافيًا متعدد الصفحات.",
           "facts": {
             "delivery": {
-              "en": "",
-              "ar": ""
+              "en": "7–10 working days",
+              "ar": "٧–١٠ أيام عمل"
             },
             "revisions": {
-              "en": "",
-              "ar": ""
+              "en": "2 rounds",
+              "ar": "جولتان"
             }
           }
         },
@@ -447,12 +470,12 @@
           "purposeAr": "للأعمال التي تحتاج حضورًا رقميًا أكثر تقدمًا، وبنية محتوى، وتكاملات، ووظائف موسّعة.",
           "facts": {
             "delivery": {
-              "en": "",
-              "ar": ""
+              "en": "12–18 working days",
+              "ar": "١٢–١٨ يوم عمل"
             },
             "revisions": {
-              "en": "",
-              "ar": ""
+              "en": "3 rounds",
+              "ar": "ثلاث جولات"
             }
           }
         }
@@ -517,12 +540,12 @@
           ],
           "facts": {
             "delivery": {
-              "en": "",
-              "ar": ""
+              "en": "Plan in 3 working days, then posts on schedule",
+              "ar": "الخطة خلال ٣ أيام عمل، ثم النشر حسب الجدول"
             },
             "revisions": {
-              "en": "",
-              "ar": ""
+              "en": "1 round per design",
+              "ar": "جولة واحدة لكل تصميم"
             }
           }
         },
@@ -597,12 +620,12 @@
           ],
           "facts": {
             "delivery": {
-              "en": "",
-              "ar": ""
+              "en": "Plan in 3 working days, then posts on schedule",
+              "ar": "الخطة خلال ٣ أيام عمل، ثم النشر حسب الجدول"
             },
             "revisions": {
-              "en": "",
-              "ar": ""
+              "en": "2 rounds per design",
+              "ar": "جولتان لكل تصميم"
             }
           }
         },
@@ -679,12 +702,12 @@
           ],
           "facts": {
             "delivery": {
-              "en": "",
-              "ar": ""
+              "en": "Plan in 3 working days, then posts on schedule",
+              "ar": "الخطة خلال ٣ أيام عمل، ثم النشر حسب الجدول"
             },
             "revisions": {
-              "en": "",
-              "ar": ""
+              "en": "2 rounds per design",
+              "ar": "جولتان لكل تصميم"
             }
           }
         }
@@ -747,12 +770,12 @@
           "purposeAr": "حل تمهيدي.",
           "facts": {
             "delivery": {
-              "en": "",
-              "ar": ""
+              "en": "Campaigns live within 3 working days",
+              "ar": "انطلاق الحملات خلال ٣ أيام عمل"
             },
             "revisions": {
-              "en": "",
-              "ar": ""
+              "en": "1 round per creative",
+              "ar": "جولة واحدة لكل تصميم"
             }
           }
         },
@@ -817,12 +840,12 @@
           "purposeAr": "حل متوازن.",
           "facts": {
             "delivery": {
-              "en": "",
-              "ar": ""
+              "en": "Campaigns live within 3 working days",
+              "ar": "انطلاق الحملات خلال ٣ أيام عمل"
             },
             "revisions": {
-              "en": "",
-              "ar": ""
+              "en": "2 rounds per creative",
+              "ar": "جولتان لكل تصميم"
             }
           }
         },
@@ -885,12 +908,12 @@
           "purposeAr": "حل متقدم يركّز على الأداء.",
           "facts": {
             "delivery": {
-              "en": "",
-              "ar": ""
+              "en": "Campaigns live within 2 working days",
+              "ar": "انطلاق الحملات خلال يومَي عمل"
             },
             "revisions": {
-              "en": "",
-              "ar": ""
+              "en": "2 rounds per creative",
+              "ar": "جولتان لكل تصميم"
             }
           }
         }

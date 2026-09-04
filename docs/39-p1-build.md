@@ -16,10 +16,18 @@ You own** — under a hairline beneath the features, and a single
 **"What's not included"** disclosure holding the exclusions, what *"from"*
 depends on, and payment terms.
 
-**It renders only from values that exist.** Every field is empty today, and the
-markup output is byte-identical to before: no label with a blank beside it, no
-placeholder, no guess. Fill a field in and it appears; leave it empty and it
-does not exist.
+**It renders only from values that exist**, and on 4 September 2026 the studio
+drafted the values at the owner's instruction — delivery and revisions per
+package, and shared terms for ownership, payment, what "from" depends on, and
+five exclusions. They are derived from what each package already contains and
+from what the add-ons already exclude (photography, videography and written
+content are add-ons, so they are not in a package).
+
+**These are commitments to a paying client. Read them before the next upload**
+and change anything you would not want to be held to — a promise you cannot
+keep costs more than a slower one you can. Each is one line in
+`src/data/pricing.json`, and an emptied field renders nothing rather than a
+label with a blank beside it.
 
 Built as a `<details>` rather than the site's accordion, deliberately: no
 JavaScript, no ARIA of our own, no id wiring, and it survives a page whose
