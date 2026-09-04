@@ -1,0 +1,261 @@
+/* =============================================================================
+   PRINT
+   The site on paper, which is the one surface it had never been looked at on.
+
+   WHAT WAS WRONG. Every browser prints with "background graphics" OFF by
+   default, and this is a dark site: the charcoal ground vanishes and the text
+   is `--color-text-primary`, which is white. Rendered as the print dialog
+   would render it, `/pricing` came out as **a blank sheet with one yellow X**
+   — the accent letter of the logo, the only mark on the page dark enough to
+   survive. Nothing else printed at all.
+
+   That matters here more than it would elsewhere. The pricing page is the one
+   page a buyer saves to PDF and forwards to whoever signs, and this business
+   converts by forwarding things. A blank quote is worse than no quote.
+
+   HOW IT IS FIXED: BY REDEFINING TOKENS, NOT BY RESTATING RULES.
+   Every colour on this site resolves through a custom property. So print does
+   not need to re-specify a single component — it swaps the palette at the root
+   and the whole cascade follows. Paper is a light theme that already existed
+   and had never been switched on.
+
+   `print` is the last layer in main.css's cascade contract, so these rules win
+   without `!important` anywhere it can be avoided. The few that keep it are
+   fighting inline styles or `!important` set elsewhere, and are marked.
+   ============================================================================= */
+
+@layer print {
+  @media print {
+    /* ----------------------------------------------------------------------
+       1 — THE PALETTE, INVERTED AT THE ROOT
+       Ink on paper. Not a tint of the screen theme: printers dither greys
+       badly and cheap ones smear anything under about 40% black, so the text
+       ladder is 100% / 72% / 55% of pure black rather than the screen's
+       white-on-charcoal alphas. The accent stays yellow only where it is a
+       colour a reader might match to the brand; as TEXT it becomes black,
+       because yellow ink on white paper is close to invisible.
+       ---------------------------------------------------------------------- */
+    :root {
+      --color-bg: #fff;
+      --color-bg-deep: #fff;
+      --color-bg-sunken: #fff;
+      --color-surface: #fff;
+      --color-surface-hover: #fff;
+      --color-surface-active: #fff;
+      --color-surface-accent: transparent;
+
+      --color-text-primary: #000;
+      --color-text-secondary: rgba(0, 0, 0, 0.78);
+      --color-text-muted: rgba(0, 0, 0, 0.55);
+      --color-text-accent: #000;
+      --color-text-on-accent: #000;
+      --color-text-disabled: rgba(0, 0, 0, 0.45);
+
+      --color-accent: #000;
+      --color-accent-hover: #000;
+      --color-accent-active: #000;
+      --color-accent-subtle: transparent;
+
+      --color-border: rgba(0, 0, 0, 0.28);
+      --color-border-strong: rgba(0, 0, 0, 0.45);
+      --color-border-accent: rgba(0, 0, 0, 0.55);
+      --color-border-subtle: rgba(0, 0, 0, 0.18);
+
+      --color-overlay: transparent;
+      --color-focus: #000;
+    }
+
+    html,
+    body {
+      background: #fff;
+      color: #000;
+    }
+
+    /* ----------------------------------------------------------------------
+       2 — THE PAGE
+       ---------------------------------------------------------------------- */
+    @page {
+      margin: 16mm 14mm;
+    }
+
+    /* Sections are spaced for a 900px screen. On A4 that spacing is most of a
+       sheet of paper, so the rhythm collapses to something a document uses. */
+    .l-section,
+    .l-section--tight,
+    .l-section--loose {
+      padding-block: var(--space-24);
+    }
+
+    .l-container {
+      max-inline-size: none;
+      padding-inline: 0;
+    }
+
+    /* ----------------------------------------------------------------------
+       3 — WHAT DOES NOT BELONG ON PAPER
+       Navigation a reader cannot tap, a film that cannot play, a form that
+       cannot submit, and buttons whose whole content is "open WhatsApp".
+
+       `.c-tier__toggle` goes with them for a subtler reason: section 4 prints
+       every package's full feature list, so a control reading "Show all 10
+       features" would be sitting directly under all ten of them.
+       ---------------------------------------------------------------------- */
+    .c-skip-link,
+    .c-header,
+    .c-drawer,
+    .c-scrim,
+    .c-hero__film,
+    .c-hero__still,
+    .c-hero__loop,
+    .c-orbit,
+    .c-hero__visual,
+    .c-service__indicator,
+    .c-contact__form,
+    .c-footer__mark,
+    .c-footer__action,
+    .c-footer__top-link,
+    .c-lang,
+    .c-btn,
+    .c-tier__cta,
+    .c-service__cta,
+    .c-detail__action,
+    .c-tier__toggle,
+    video,
+    [data-menu-trigger] {
+      display: none;
+    }
+
+    /* The eyebrow rules, chevrons and arrows: pure ornament, and each one is a
+       black bar or a stray glyph once the palette is ink. */
+    .c-detail__eyebrow::after,
+    .c-services__eyebrow::after,
+    .c-btn__icon,
+    .c-link svg,
+    .c-service__chevron {
+      display: none;
+    }
+
+    /* ----------------------------------------------------------------------
+       4 — WHAT MUST BE OPEN
+       A printed page has no interaction, so anything the reader would have had
+       to click is either printed open or lost. The accordion and the "see the
+       full spec" disclosures both animate a grid row from 0fr to 1fr; on paper
+       they are simply 1fr, and the panels lose the overflow clip that made the
+       animation possible.
+       ---------------------------------------------------------------------- */
+    .c-service__panel[data-collapsed="true"],
+    .c-tier__more[data-collapsed="true"],
+    [data-collapsed="true"] {
+      grid-template-rows: 1fr;
+    }
+
+    .c-service__panel-inner,
+    .c-tier__more-inner {
+      overflow: visible;
+    }
+
+    /* The accordion's own closed state is an attribute, not a class, and
+       navigation.js sets it inline on boot — hence the one !important here. */
+    [data-accordion-item] .c-service__panel {
+      grid-template-rows: 1fr !important;
+    }
+
+    /* ----------------------------------------------------------------------
+       5 — HOW IT BREAKS ACROSS SHEETS
+       A package split down the middle is the failure that makes a printed
+       quote useless, because the price ends up on one page and what it buys on
+       the next.
+       ---------------------------------------------------------------------- */
+    .c-tier,
+    .c-card,
+    .c-proof__inner,
+    .c-brandboard__panel,
+    .c-eco__stop,
+    li {
+      break-inside: avoid;
+    }
+
+    h1, h2, h3, h4 {
+      break-after: avoid;
+    }
+
+    /* ----------------------------------------------------------------------
+       6 — INK
+       Twelve full-bleed brand panels at screen width would use most of a
+       cartridge and tell a reader nothing they cannot see on the site. They
+       print, because they are the work — but small enough to be a reference
+       rather than a poster.
+       ---------------------------------------------------------------------- */
+    img {
+      max-inline-size: 100%;
+      max-block-size: 8cm;
+      inline-size: auto;
+      block-size: auto;
+    }
+
+    .c-brandboard {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-8);
+    }
+
+    /* Cards are defined by a border on paper, not by a fill. */
+    .c-tier,
+    .c-card,
+    .c-service__visual {
+      box-shadow: none;
+      border: 1px solid var(--color-border-strong);
+    }
+
+    .c-tier--featured {
+      border-width: 2px;
+    }
+
+    /* The "most requested" ribbon is white-on-accent on screen. With the
+       palette inverted that becomes black text on a black fill — which is
+       invisible on a printer that DOES print backgrounds, and a bare word
+       sitting on the card's own border on one that does not. So it stops being
+       a fill and becomes a label: transparent, outlined, and given a white
+       ground of its own so the border does not run through it. */
+    .c-tier__ribbon {
+      background-color: #fff;
+      color: #000;
+      border: 1px solid #000;
+      letter-spacing: var(--tracking-label);
+    }
+
+    /* ----------------------------------------------------------------------
+       7 — TYPE
+       Display sizes are set with viewport units, and a print viewport is not
+       the one they were tuned for.
+       ---------------------------------------------------------------------- */
+    body {
+      font-size: 10.5pt;
+      line-height: 1.45;
+    }
+
+    h1, .c-hero__headline, .c-page__headline {
+      font-size: 22pt;
+    }
+
+    h2, .c-detail__headline, .c-services__headline {
+      font-size: 16pt;
+    }
+
+    h3, .c-tier__name {
+      font-size: 12pt;
+    }
+
+    /* Nothing animates on paper, and a reveal that never fired would print
+       an invisible section. */
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      translate: none !important;
+      scale: none !important;
+      filter: none !important;
+    }
+  }
+}

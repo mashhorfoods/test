@@ -14,7 +14,7 @@
    The layer statement must remain the first rule.
    ============================================================================= */
 
-@layer reset, tokens, base, layout, components, motion, utilities;
+@layer reset, tokens, base, layout, components, motion, utilities, print;
 
 /* Font faces are declared outside the layer stack — @font-face is not subject
    to the cascade, and keeping it first means the browser can start fetching
@@ -53,3 +53,4 @@
 
 @import url("./05-motion.css");
 @import url("./06-utilities.css");
+@import url("./07-print.css");

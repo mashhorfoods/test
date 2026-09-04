@@ -72,6 +72,7 @@ This is the table to keep. Everything on the site comes from one of these.
 | The domain, analytics, HSTS | `site.config.json` | One field moves the whole site to a new domain |
 | The hero film | `src/showpiece/scene.html`, then `npm run film` | Or `npm run film:clips -- clipA.mp4 clipB.mp4` for video |
 | The link preview card | `src/showpiece/card.html`, then `npm run card` | What WhatsApp shows when someone shares the site |
+| How the site prints | `src/styles/07-print.css` | Paper is a light theme: it swaps the colour tokens and hides what cannot be tapped |
 | The logo | `src/assets/brand/logo.svg`, then `npm run icon` | Regenerates the iPhone home-screen icon from it. The browser tab follows the SVG on its own |
 
 ## 5. The five things you will actually do
@@ -175,6 +176,10 @@ own card.
 - **The security policy regenerates itself** on every build, listing each
   inline script by fingerprint. Add a script and it is included automatically.
   Hand-edit `.htaccess` and the next build discards your change.
+- **The site prints.** `/pricing` on paper or as a PDF is a real document —
+  black on white, every package fully expanded, no buttons. If you ever change
+  a colour token and the print goes strange, `npm run check` says so: `qa.js`
+  measures the printed page against white paper.
 - **Prices are in `pricing.json`, not in the page.** If you find a price in
   `index.html`, something is wrong — tell whoever is maintaining the code.
 
