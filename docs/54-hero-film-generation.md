@@ -147,23 +147,63 @@ this dark.
    result** — a grey patch beside "Your Brand". Even if it were permitted, it
    would not look clean.
 
-2. **Clip B sweeps diagonally, upper-right to lower-left.** That is a reading
-   direction, and it is the one thing `docs/52` §3 rules out: mirrored for the
-   Arabic hero it reverses, and unmirrored it fights the text. Clip B is not
-   usable in either language. Clip A is fine — its motion is a vertical rise
-   from a centred source, which is exactly what was asked for.
+2. ~~**Clip B sweeps diagonally and is unusable.**~~ **Withdrawn — B is
+   usable.** I read the rule as "footage must have no direction", which would
+   have thrown away half the material for nothing. The rule's actual purpose is
+   that motion must not fight the reading direction, and the page already
+   solves that: the whole layout mirrors at `[dir="rtl"]`, so the film mirrors
+   with it. `hero-film.css` now flips both the still and the loop, which costs
+   nothing — no second file, no extra bytes, one `scaleX(-1)`.
+
+   It only works because the footage carries no text; mirrored words are the
+   one thing that cannot be un-read. So the no-text rule is what makes the
+   direction rule solvable, rather than a second restriction on top of it.
+
+   **Which way round to author the file:** ship it **dark side left**. In
+   English the headline is on the left and lands on that dark half; in Arabic
+   both layout and film mirror, and the dark half lands on the right where the
+   Arabic headline now is. `--mirror` flips footage that arrives the wrong way
+   round. Get this backwards and the film is right in exactly one language,
+   which is worse than no film — it will look considered in whichever one you
+   happen to be reviewing.
 
 3. **784×470 is below the 720p spec**, and it is not 16:9 (1.67:1). Upscaling
    soft footage behind text is survivable, but it is a real loss of detail on
    the one asset meant to look expensive.
 
-**What would make them usable**
+**What would make them usable — one thing, not three**
 
-- A **watermark-free export** of both clips — the paid tier, or whatever the
-  tool's licence requires. Not something to remove after the fact.
-- A **replacement for B** with no directional sweep. Keep A. The brief for B
-  stands as written in section 3: gather to centre, bloom once, release.
-- **1280×720 or larger, 16:9**, if the tool offers it.
+- A **watermark-free export** of both clips. The paid tier, or whatever the
+  licence requires. Not something to remove after the fact.
+- 1280×720 or larger would be better, but is **not** a blocker.
 
-Clip A alone, looped at 5 s, is a legitimate fallback if B proves difficult —
-shorter than the 10 s target but it satisfies every rule.
+That is the whole list now. B is usable, and the pair has been assembled end to
+end as a test to prove it.
+
+## 7. The assembly, proved on the watermarked clips
+
+`tools/build-hero-from-clips.js` takes the clips and produces the shipped
+files. Run on A and B (watermark blurred, test only, not committed):
+
+```
+hero: 2 clip(s) -> 8.88s loop @ 25fps, 1280x720
+  hero.mp4         871KB
+  hero.webm        713KB
+  worst case per visitor: 871KB of 2048KB (43%)
+```
+
+**Both seams are invisible.** A→B is one cross-fade; the loop point is the
+harder one, and it is the one that makes a hero look cheap when it is wrong —
+it happens on every repeat, forever. The tool closes it by fading the tail onto
+the **head** and dropping the overlap, so the file's last frame runs into its
+own first. Checked frame by frame: end and start are indistinguishable.
+
+10.08 s of source becomes an **8.88 s loop** — two 0.6 s overlaps are spent on
+the two joins. That is the cost of seamlessness, and it is worth it.
+
+**One caveat on the grade.** The tool pulls the footage onto the site's ground:
+blacks toward `#0D0F12`, contrast eased, saturation down so only the warm
+accent survives, plus the same scrim the CSS film has baked in. Generated
+footage that arrives close to the brief barely moves; this pair arrived bright,
+so it moves a long way. That is recoverable, but footage generated darker to
+begin with will always look better than footage darkened afterwards.

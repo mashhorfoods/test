@@ -50,6 +50,26 @@
     opacity: 1;
   }
 
+  /* THE FILM FLIPS WITH THE PAGE.
+     Footage that travels across the frame has a reading direction, and the
+     rule was that it must not — which looked like it forbade such footage
+     altogether. It does not: the whole layout already mirrors at [dir="rtl"],
+     so the film mirrors with it, and one file is correct in both languages.
+
+     Two things this buys, and the second matters more. Motion that reads as
+     forward in English still reads as forward in Arabic. And the frame's dark
+     side stays behind the headline: in English the copy is on the left, in
+     Arabic on the right, and an unmirrored film would put its bright half
+     under the text in exactly one of them.
+
+     Only safe because the footage carries no text — mirrored words are the
+     one thing that cannot be un-read. That is the rule this depends on, not a
+     coincidence. */
+  [dir="rtl"] .c-hero__still,
+  [dir="rtl"] .c-hero__loop {
+    transform: scaleX(-1);
+  }
+
   /* The hero's own children sit above the film. .c-hero is already
      position:relative with overflow:hidden, so nothing else is needed. */
   .c-hero__inner {
