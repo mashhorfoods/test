@@ -272,3 +272,87 @@ staying static viable for longer than expected.
 concept → feature → UX outcome. No feature enters the build without one.
 
 Deliverable: `docs/30-problem-solution.md`.
+
+---
+
+## 11. Price re-check against 2026 published rates — 4 September 2026
+
+**Why this section exists.** §1 benchmarked the *old* price list and produced
+P0-6, which replaced it the same week. The new ladder went live today and has
+never been checked against anything. A price decision that is verified once,
+before it changes, is not verified.
+
+Direct page fetches are still blocked (§0), but market search is not, so this
+re-check is against **published 2026 pricing guides** — the same class of
+source §1 used, refreshed. Converted at the currency pegs: SAR 3.75, AED 3.67.
+
+### Websites — the decision worked
+
+| Pixora, now | USD | ≈ SAR | Published Saudi range, 2026 |
+| --- | ---: | ---: | --- |
+| Landing Page | 250 | 940 | — |
+| Business Website | 650 | 2,440 | Specialist team, bilingual, 5–7 pages: **1,500–3,000** |
+| Professional Website | 1,200 | 4,500 | Standard business site, 5–10 pages, bilingual: **3,500–12,000** |
+
+**Business Website sits inside the specialist band. Professional sits inside
+the standard band, in its lower third.** §1 measured the old list at 8×–27×
+below; that gap is gone. This is the clearest evidence available that P0-6 did
+what it was meant to do, and it is worth recording as a success rather than
+only recording failures.
+
+### Social and ads — close, still under
+
+| Pixora, now | USD/mo | ≈ SAR | Published Saudi range, 2026 |
+| --- | ---: | ---: | --- |
+| Social Starter | 250 | 940 | Lowest published tier seen: **1,500** |
+| Social Growth | 400 | 1,500 | = that entry tier |
+| **Social Pro** | 650 | **2,440** | "Basic package, content + posting": **3,000–5,000** |
+| Ads Performance | 600 | 2,250 | SME management fee: **3,000–8,000** |
+
+The **top** social tier is below the **bottom** of the basic band. Roughly
+1.2×–2× under rather than §1's 3×–10×, so this moved too — but the ceiling is
+still under the market floor, which means there is no tier a buyer with a real
+budget can choose.
+
+### Branding — the one that did not move far enough
+
+| Pixora, now | USD | ≈ SAR | Published Saudi range, 2026 |
+| --- | ---: | ---: | --- |
+| Starter | 290 | 1,090 | Logo design alone: **5,000–15,500** |
+| Professional | 590 | 2,210 | — |
+| **Advanced** — full identity, guidelines, system | 1,200 | **4,500** | Full brand identity: **10,000–50,000**; "medium package incl. brand guideline book": **15,000–45,000** |
+
+**Advanced is 2.2×–11× below the full-identity band, and Starter is 4.6×–14×
+below the price of a logo on its own.** Multiple independent 2026 guides agree
+on that band, so this is the best-evidenced number in the section — and it is
+the category where the site's own craft signal is strongest, which makes the
+gap read as a claim about the work rather than about the market.
+
+### What this does and does not mean
+
+**It is not a call to raise prices.** `docs/31` §5 priced this deliberately as
+a new entrant, remote, without the local overheads those agencies carry, and
+Gate 01 froze it. Being under the band is the strategy.
+
+**It is a call to look at one number.** Two things are true at once: websites
+now land inside their band, and branding does not. If the discount is a
+positioning choice it should be roughly even across the four categories, and
+it is not — branding is discounted about five times harder than websites. That
+is the shape of a number nobody re-derived, not the shape of a decision.
+
+**The specific question for the owner:** *is Branding Advanced at $1,200 the
+intended signal for a full identity with guidelines, when the published floor
+for that deliverable in the target market is roughly triple it?* If yes, close
+this. If it is a leftover from the old ladder's proportions, it is one number
+in `pricing.json`, and `qa.js` will carry it to every surface on the next
+build.
+
+**Limits, stated as §0 states them.** These are published *guide* prices from
+agency marketing content, which skews high — an agency publishing a pricing
+guide is also selling. They are directional, not quotes. And they are Saudi and
+UAE rates: Egypt, also in the target market, is materially cheaper and is not
+represented here.
+
+**Sources (2026 guides, retrieved 4 September 2026):** Digital Gravity KSA ·
+Neologix · Taqweed · Safwa Web · Albadr Systems · Digital Farm (Dubai) ·
+Arnit · Qemma Soft · Art Molham · GoSocial · Masarib KSA.
