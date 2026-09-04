@@ -144,8 +144,10 @@ JavaScript off, a keyboard reaches everything, and no page overflows at
 **`qa.js`** audits the built files: prices match `pricing.json`, titles and
 descriptions are the right length, the sitemap matches the pages, headings are
 in order, images have alt text and dimensions, contrast passes, both languages
-have the same number of strings, the phone requests no video, and the link
-preview card exists and shipped.
+have the same number of strings, the phone requests no video, the link preview
+card and the iPhone touch icon both exist and shipped, and **no page costs a
+visitor more than 1MB** — measured by loading it and scrolling the whole way
+down, which is the only way the lazy images get counted.
 
 **A finding is not a suggestion.** Every one of them was written because
 something real broke — eight package buttons that vanished on phones, a link

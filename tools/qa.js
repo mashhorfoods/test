@@ -64,6 +64,12 @@ function serve() {
   const exe = process.env.PLAYWRIGHT_CHROMIUM;
   const browser = await chromium.launch(exe ? { executablePath: exe, args: ['--no-sandbox'] } : { args: ['--no-sandbox'] });
 
+  /* The archive's manifest, not cfg.pages: several checks below are about what
+     a VISITOR gets, and styleguide.html is built into dist/ but deliberately
+     never shipped. */
+  const { SHIP } = require('./build-zip');
+  const SHIPPED = SHIP.filter((f) => f.endsWith('.html'));
+
   /* ---- 1 data integrity, 3 accessibility, 4 bilingual, 5 performance ---- */
   for (const page of PAGES) {
     const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
@@ -207,8 +213,6 @@ function serve() {
     const sitemap = fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8');
     const listed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
     const { publicPath } = require('./build-deploy');
-    const { SHIP } = require('./build-zip');
-    const SHIPPED = SHIP.filter((f) => f.endsWith('.html'));
     const should = cfg.pages.filter((p) => p.index !== false).map((p) => `${cfg.url}/${publicPath(p.file)}`);
     should.filter((u) => !listed.includes(u)).forEach((u) => fail('HIGH', 'seo', `sitemap is missing ${u}`));
     listed.filter((u) => !should.includes(u)).forEach((u) => fail('MED', 'seo', `sitemap lists an unexpected ${u}`));
@@ -384,6 +388,82 @@ function serve() {
     }
 
     await ctx.close();
+  }
+
+  /* ---- 9 the transfer budget --------------------------------------------
+     WHAT WAS NEVER MEASURED. Section 1 caps the HTML at 600KB and docs/53 caps
+     the showpiece at 2MB per visitor. Between those two numbers sat everything
+     else — twelve WebP panels, and whatever gets added next — and nothing
+     counted it. A site whose whole argument is that it is light should not
+     learn its own weight from a client on a hotel connection.
+
+     THE BUDGET IS 1MB PER PAGE, EXCLUDING THE SHOWPIECE. The film has its own
+     number in docs/53 §2 and its own check in section 7; counting it here
+     would make one file answer to two budgets that could drift apart. The
+     homepage measures 918KB today — 510KB of one HTML file (fonts, CSS, JS and
+     the inlined poster) plus 408KB of brand-board panels. Roughly 11% of
+     headroom is deliberate: it is about one more panel, which is exactly the
+     size of decision that should have to be made on purpose.
+
+     TWO NUMBERS, BECAUSE DIFFERENT PEOPLE PAY THEM. `first` is what everyone
+     downloads to see the first screen. `full` is what a reader who scrolls the
+     whole page pays — on a 30,000px phone page, a committed one.
+
+     AND `full` IS ONLY REACHABLE BY SCROLLING IN STEPS. A single jump to the
+     bottom fetches almost nothing: a lazy image loads when it enters the
+     viewport, and a page that scrolls past twelve of them in one frame never
+     puts any of them there. The first draft of this check did exactly that and
+     reported the homepage at 510KB — wrong by 408KB, and confident about it. */
+  {
+    const BUDGET = 1024 * 1024;
+    const weigh = async (page, width, height, scroll) => {
+      const c = await browser.newContext({ viewport: { width, height }, isMobile: width < 700, hasTouch: width < 700 });
+      const pg = await c.newPage();
+      const seen = [];
+      pg.on('response', (r) => seen.push(r.body().then((b) => [r.url(), b.length]).catch(() => null)));
+      await pg.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+      await pg.waitForTimeout(900);
+      const settle = async () => (await Promise.all(seen)).filter(Boolean);
+      const sum = (rows, film) => rows.filter(([u]) => /hero\.(mp4|webm)$/.test(u) === film)
+        .reduce((n, [, b]) => n + b, 0);
+      const firstRows = await settle();
+      const first = sum(firstRows, false);
+      if (scroll) {
+        const H = await pg.evaluate(() => document.documentElement.scrollHeight);
+        for (let y = 0; y < H; y += height) {
+          await pg.evaluate((v) => window.scrollTo(0, v), y);
+          await pg.waitForTimeout(60);
+        }
+        await pg.waitForTimeout(1200);
+      }
+      const rows = await settle();
+      const out = { first, full: sum(rows, false), film: sum(rows, true) };
+      await c.close();
+      return out;
+    };
+
+    console.log('');
+    for (const page of SHIPPED) {
+      /* A page that references nothing under dist/assets/ IS its HTML file:
+         nothing about it can change with the viewport or with scrolling, so it
+         is weighed once rather than four times. */
+      const varies = /src="\.\/assets\//.test(fs.readFileSync(path.join(DIST, page), 'utf8'));
+      const phone = await weigh(page, 390, 844, varies);
+      const desktop = varies ? await weigh(page, 1440, 900, true) : phone;
+
+      for (const [label, m] of [['phone', phone], ['desktop', desktop]]) {
+        if (m.full > BUDGET) {
+          fail('MED', 'budget', `${page} @${label}: ${(m.full / 1024).toFixed(0)}KB excluding the showpiece, over the ${BUDGET / 1024}KB budget`);
+        }
+        if (!varies) break; // one measurement, one verdict
+      }
+
+      const line = varies
+        ? `phone ${(phone.full / 1024).toFixed(0)}KB · desktop ${(desktop.full / 1024).toFixed(0)}KB` +
+          ` (first screen ${(phone.first / 1024).toFixed(0)}KB)` + (desktop.film ? ` + ${(desktop.film / 1024).toFixed(0)}KB showpiece` : '')
+        : `${(phone.full / 1024).toFixed(0)}KB, one file`;
+      console.log(`  ·  ${page.padEnd(14)} ${line}`);
+    }
   }
 
   await browser.close();

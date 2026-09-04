@@ -201,7 +201,7 @@ that were uploaded, never observed. See §6, BLOCKER-1.
 - A second and third case study in the `story.html` format.
 - FAQ section, if discovery shows the sales conversation repeats questions.
 - Staging environment + scripted deploy (replace the manual zip upload).
-- Automated Lighthouse/axe budget on every build.
+- Automated Lighthouse/axe budget on every build. **Partly done 4 Sep 2026:** `qa.js` §9 enforces a 1MB per-page transfer budget and §1 a largest-paint budget, both on every `npm run check`. What is still missing is an *axe* run — a real accessibility engine rather than the hand-written contrast, heading, label and alt checks the harness has now.
 - Split-bundle option for repeat-visit caching, alongside the single file.
 - An accessibility statement.
 
