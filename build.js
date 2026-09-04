@@ -335,7 +335,7 @@ const kb = (n) => `${(n / 1024).toFixed(1)}KB`;
 let remote = [];
 const faviconMissing = [];
 let missing = [];
-for (const page of ['index.html', 'styleguide.html', 'story.html', 'about.html', 'pricing.html', 'privacy.html', '404.html']) {
+for (const page of ['index.html', 'styleguide.html', 'story.html', 'about.html', 'pricing.html', 'privacy.html', 'terms.html', '404.html']) {
   const { html, stats } = buildPage(page);
   const out = path.join(DIST, page);
   fs.writeFileSync(out, html);

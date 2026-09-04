@@ -36,7 +36,7 @@ const path = require('path');
 const http = require('http');
 
 const ROOT = path.join(__dirname, '..');
-const PAGES = ['index.html', 'pricing.html', 'about.html', 'story.html', 'privacy.html', '404.html'];
+const PAGES = ['index.html', 'pricing.html', 'about.html', 'story.html', 'privacy.html', 'terms.html', '404.html'];
 
 let chromium;
 try {

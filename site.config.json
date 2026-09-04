@@ -65,6 +65,12 @@
       "priority": "0.3",
       "changefreq": "yearly",
       "index": true
+    },
+    {
+      "file": "terms.html",
+      "priority": "0.3",
+      "changefreq": "yearly",
+      "index": true
     }
   ],
   "contact": {
