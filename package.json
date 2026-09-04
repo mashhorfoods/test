@@ -1,4 +1,16 @@
 {
+  "name": "pixora-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pixora — a bilingual static site. Edit src/, run npm run build, upload the zip.",
+  "scripts": {
+    "build": "node build.js",
+    "check": "node tools/validate.js && node tools/qa.js",
+    "release": "npm run build && npm run check",
+    "film": "node tools/build-showpiece.js",
+    "film:clips": "node tools/build-hero-from-clips.js",
+    "card": "node tools/build-share-card.js"
+  },
   "devDependencies": {
     "ffmpeg-static": "^5.3.0",
     "playwright-core": "^1.62.1"
