@@ -57,10 +57,15 @@ made in `docs/27`: mobile here is *verified*, not *designed*. Nothing overflows
 and every target clears 44 px — and the phone visitor still pays double for the
 same content.
 
-**`process` has zero links.** 141 words, 1.12 screens on desktop and 2.13 on
-the phone, and no way out of it except scrolling. It sits at 79% down the page,
-directly before the closing CTA — the last thing a buyer reads before being
-asked to act, and it is a dead end.
+**`process` has zero links** — 141 words, 1.12 screens on desktop and 2.13 on
+the phone, with no way out except scrolling.
+
+*Re-assessed after the fix pass:* this is milder than the zero makes it sound.
+`process` is followed **immediately** by the closing CTA band, so a reader who
+scrolls out of it lands on the action within one screen. A link inside it would
+compete with that CTA rather than rescue anyone. Recorded as a number worth
+knowing, not a defect worth fixing — the count was right and my reading of it
+was too harsh.
 
 ## 3. The finding that matters most
 
@@ -150,3 +155,44 @@ X06's list was going to start with navigation and hero. It should not.
 
 The hero was worth building. It was not the most valuable thing on this page,
 and X01 is how that becomes knowable rather than arguable.
+
+
+---
+
+## 6. Rhythm — what was fixed, and what was deliberately not
+
+**Measured first.** Every section from `branding` down shared one ground —
+`rgb(20,20,20)` — and the identical 136px above and below. Nine consecutive
+sections, one colour, one spacing. That is not weak rhythm; it is a metronome
+running for 21.7 screens on desktop and 37.8 on a phone.
+
+**Fixed: the four service blocks now alternate.** `#websites` and `#marketing`
+sit on `--color-bg` (#202020) against the others' `--color-bg-deep` (#141414).
+Twelve values apart — felt rather than seen, because the artwork in these
+sections is the subject and a band that announced itself would compete with it.
+A reader who has scrolled past two blocks can now feel that a third has begun.
+
+Keyed by id rather than `:nth-of-type`, because the count would silently
+re-pair every section if one were inserted above, and the alternation is a
+statement about *these four*, not about even numbers.
+
+**Not fixed, and not by oversight: the structural repetition.** The four
+service blocks are half the page and share one shape — head, four-image board,
+three cards. Banding punctuates that; it does not change it. The real options
+are all structural — collapse the non-recommended cards on a phone, move the
+full package specs to `/pricing` and leave summaries here, replace four blocks
+with one filterable set — and each trades something the site has already
+decided it wants: prices published in full, package-aware CTAs on every card,
+no JavaScript dependency for content.
+
+**That is exactly the choice X03 exists to inform**, and X03 has not been able
+to run because the reference recordings have not arrived. Guessing at it would
+be the thing this workflow explicitly forbids: redesigning by building.
+
+**One thing measured and deliberately left alone.** The four-image brand board
+is 970px on a phone — 24% of each service section, and an obvious target for
+compression. Looking at it settles it: these are dense brand-guideline panels
+(logo construction, a type specimen, a palette with hex values, application
+mockups) and at 342px wide they are already at the edge of legible. A 2×2 grid
+would halve the height and destroy the strongest craft proof on the page. The
+height is earning its place. Not every long thing is waste.

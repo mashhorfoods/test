@@ -19,6 +19,26 @@
     background-color: var(--color-bg-deep);
   }
 
+  /* SECTION RHYTHM — X01, `docs/55`.
+     Measured, nine consecutive sections shared one ground and the identical
+     136px above and below. That is not weak rhythm, it is none: a metronome
+     for twenty-two screens on desktop and thirty-eight on a phone. The four
+     service blocks are where the repetition lives — same structure, four
+     times, half the page — so they alternate, and a reader who has scrolled
+     past two of them can feel that a third has started.
+
+     Deliberately small. #202020 against #141414 is twelve values, felt rather
+     than seen: the artwork in these sections is the subject, and a band that
+     announced itself would compete with it. Punctuation, not decoration.
+
+     By id rather than :nth-of-type because the count would silently re-pair
+     every section if one were ever inserted above — and the alternation is a
+     statement about THESE four, not about even numbers. */
+  #websites,
+  #marketing {
+    background-color: var(--color-bg);
+  }
+
   .c-detail__head {
     display: grid;
     gap: var(--space-24);
