@@ -22,6 +22,14 @@ const DIST = path.join(ROOT, 'dist');
    does not contain. One list, two consumers. */
 const { SHIP } = require('./build-zip');
 
+/* THE PUBLIC FORM OF A URL. The .htaccess rewrite serves pricing.html at
+   /pricing, so /pricing is the address this site has — and the canonical, the
+   og:url and the sitemap must all say the same one. Two spellings of a page
+   that both answer is how duplicate content happens; the extension is the
+   implementation detail, not the address. Exported so qa.js asserts against
+   the same rule rather than a copy of it. */
+const publicPath = (file) => (file === 'index.html' ? '' : file.replace(/\.html$/, ''));
+
 const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
 const URL = String(cfg.url || '').replace(/\/+$/, '');
 
@@ -156,7 +164,7 @@ const robots = () => {
 const sitemap = (stamp) => `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${cfg.pages.filter((p) => p.index !== false).map((p) => {
-  const loc = `${URL}/${p.file === 'index.html' ? '' : p.file}`;
+  const loc = `${URL}/${publicPath(p.file)}`;
   return `  <url>
     <loc>${loc}</loc>
     <lastmod>${stamp}</lastmod>
@@ -189,7 +197,7 @@ function injectHead(stamp) {
     html = html.replace(/\n?\s*<link rel="canonical"[^>]*>/g, '')
       .replace(/\n?\s*<meta property="og:url"[^>]*>/g, '');
 
-    const loc = `${URL}/${page.file === 'index.html' ? '' : page.file}`;
+    const loc = `${URL}/${publicPath(page.file)}`;
     const tags = page.index === false
       ? '' // noindex pages get no canonical: there is nothing to canonicalise to.
       : `\n    <link rel="canonical" href="${loc}" />\n    <meta property="og:url" content="${loc}" />`;
@@ -324,4 +332,4 @@ function run(stamp) {
   return { wrote: out, hasUrl: !!URL };
 }
 
-module.exports = { run, URL, cfg };
+module.exports = { run, URL, cfg, publicPath };

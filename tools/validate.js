@@ -56,7 +56,11 @@ const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript
 function serve() {
   const server = http.createServer((req, res) => {
     const rel = decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html';
-    const file = path.join(ROOT, rel);
+    let file = path.join(ROOT, rel);
+    /* The .htaccess rewrite, reproduced: /pricing serves pricing.html. Without
+       it this server would 404 on the very links the site now ships, and the
+       walk would pass against a site nobody visits. */
+    if (!fs.existsSync(file) && fs.existsSync(`${file}.html`)) file = `${file}.html`;
     if (!file.startsWith(ROOT) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
       res.writeHead(404); res.end('not found'); return;
     }

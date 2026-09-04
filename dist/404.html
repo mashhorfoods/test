@@ -55,10 +55,10 @@ const SERVICE_LINKS = [
 const SECTIONS = [
   { id: 'home', label: 'Home', labelAr: 'الرئيسية' },
   { id: 'services', label: 'Services', labelAr: 'خدماتنا', children: SERVICE_LINKS },
-  { id: 'pricing', label: 'Pricing', labelAr: 'الأسعار', href: './pricing.html' },
-  { id: 'story', label: 'Story', labelAr: 'القصة', href: './story.html' },
+  { id: 'pricing', label: 'Pricing', labelAr: 'الأسعار', href: './pricing' },
+  { id: 'story', label: 'Story', labelAr: 'القصة', href: './story' },
   { id: 'process', label: 'Process', labelAr: 'آلية العمل', inNav: false, inMenu: true },
-  { id: 'about', label: 'About', labelAr: 'من نحن', href: './about.html' },
+  { id: 'about', label: 'About', labelAr: 'من نحن', href: './about' },
   // Reached through the primary CTA rather than a sixth nav link, so the
   // header keeps one unambiguous conversion action (§11, §19). It still
   // appears in the footer quick links.
@@ -252,10 +252,13 @@ function buildFooterLink(section) {
   return link;
 }
 function markCurrentPage() {
-  const here = window.location.pathname.split('/').pop() || 'index.html';
+  const norm = (s) => s.replace(/\.html$/, '') || 'index';
+  const here = norm(window.location.pathname.split('/').pop());
   document.querySelectorAll('[data-nav-link]').forEach((link) => {
-    const target = (link.getAttribute('href') || '').split('#')[0].split('/').pop();
-    if (target && target === here) link.setAttribute('aria-current', 'page');
+    const file = (link.getAttribute('href') || '').split('#')[0];
+    // A bare fragment is a section of this page: the scroll spy owns that one.
+    if (!file) return;
+    if (norm(file.split('/').pop()) === here) link.setAttribute('aria-current', 'page');
   });
 }
 function resolveCrossPageAnchors() {
@@ -265,7 +268,7 @@ function resolveCrossPageAnchors() {
     link.setAttribute('href', `${HOME}#${id}`);
   });
 }
-const HOME = document.getElementById('home') ? '' : './index.html';
+const HOME = document.getElementById('home') ? '' : './';
 function renderSurfaces() {
   document.querySelectorAll('[data-nav-render]').forEach((container) => {
     const kind = container.dataset.navRender;
@@ -1294,16 +1297,16 @@ if (document.readyState === 'loading') {
       </p>
 
       <nav class="c-notfound__links" aria-label="Main destinations">
-        <a class="c-btn c-btn--primary" href="./index.html">
+        <a class="c-btn c-btn--primary" href="./">
           <span data-lang-copy="en">Go to the homepage</span><span data-lang-copy="ar" lang="ar">إلى الصفحة الرئيسية</span>
         </a>
-        <a class="c-link" href="./index.html#services">
+        <a class="c-link" href="./#services">
           <span data-lang-copy="en">Services</span><span data-lang-copy="ar" lang="ar">خدماتنا</span>
         </a>
-        <a class="c-link" href="./story.html">
+        <a class="c-link" href="./story">
           <span data-lang-copy="en">Story</span><span data-lang-copy="ar" lang="ar">القصة</span>
         </a>
-        <a class="c-link" href="./index.html#contact">
+        <a class="c-link" href="./#contact">
           <span data-lang-copy="en">Contact</span><span data-lang-copy="ar" lang="ar">تواصل معنا</span>
         </a>
       </nav>

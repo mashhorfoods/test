@@ -136,10 +136,16 @@ function buildFooterLink(section) {
  * which FILE am I on. Both write the same attribute, so the two surfaces agree.
  */
 function markCurrentPage() {
-  const here = window.location.pathname.split('/').pop() || 'index.html';
+  /* Both spellings answer — /pricing and /pricing.html reach the same page —
+     so compare them stripped, or a visitor who typed the extension loses the
+     highlight that tells them where they are. */
+  const norm = (s) => s.replace(/\.html$/, '') || 'index';
+  const here = norm(window.location.pathname.split('/').pop());
   document.querySelectorAll('[data-nav-link]').forEach((link) => {
-    const target = (link.getAttribute('href') || '').split('#')[0].split('/').pop();
-    if (target && target === here) link.setAttribute('aria-current', 'page');
+    const file = (link.getAttribute('href') || '').split('#')[0];
+    // A bare fragment is a section of this page: the scroll spy owns that one.
+    if (!file) return;
+    if (norm(file.split('/').pop()) === here) link.setAttribute('aria-current', 'page');
   });
 }
 
@@ -151,8 +157,11 @@ function resolveCrossPageAnchors() {
   });
 }
 
-/** Where the page sections live. Empty string on the homepage itself. */
-const HOME = document.getElementById('home') ? '' : './index.html';
+/** Where the page sections live. Empty string on the homepage itself.
+    './' and not './index.html': the server serves the homepage at the bare
+    path, and a link that puts the filename back in the address bar undoes the
+    clean URL the moment JavaScript boots. */
+const HOME = document.getElementById('home') ? '' : './';
 
 /**
  * Rebuild every [data-nav-render] container from the shared map. Called on

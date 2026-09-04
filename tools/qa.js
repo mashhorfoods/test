@@ -48,7 +48,9 @@ const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript
 function serve() {
   const server = http.createServer((req, res) => {
     const rel = decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'index.html';
-    const file = path.join(DIST, rel);
+    let file = path.join(DIST, rel);
+    // The .htaccess rewrite, reproduced: /pricing serves pricing.html.
+    if (!fs.existsSync(file) && fs.existsSync(`${file}.html`)) file = `${file}.html`;
     if (!file.startsWith(DIST) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) { res.writeHead(404); res.end(); return; }
     res.writeHead(200, { 'content-type': MIME[path.extname(file)] || 'application/octet-stream' });
     fs.createReadStream(file).pipe(res);
@@ -191,7 +193,8 @@ function serve() {
   {
     const sitemap = fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8');
     const listed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-    const should = cfg.pages.filter((p) => p.index !== false).map((p) => `${cfg.url}/${p.file === 'index.html' ? '' : p.file}`);
+    const { publicPath } = require('./build-deploy');
+    const should = cfg.pages.filter((p) => p.index !== false).map((p) => `${cfg.url}/${publicPath(p.file)}`);
     should.filter((u) => !listed.includes(u)).forEach((u) => fail('HIGH', 'seo', `sitemap is missing ${u}`));
     listed.filter((u) => !should.includes(u)).forEach((u) => fail('MED', 'seo', `sitemap lists an unexpected ${u}`));
     const robots = fs.readFileSync(path.join(DIST, 'robots.txt'), 'utf8');

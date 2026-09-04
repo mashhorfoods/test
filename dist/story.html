@@ -69,10 +69,10 @@ const SERVICE_LINKS = [
 const SECTIONS = [
   { id: 'home', label: 'Home', labelAr: 'الرئيسية' },
   { id: 'services', label: 'Services', labelAr: 'خدماتنا', children: SERVICE_LINKS },
-  { id: 'pricing', label: 'Pricing', labelAr: 'الأسعار', href: './pricing.html' },
-  { id: 'story', label: 'Story', labelAr: 'القصة', href: './story.html' },
+  { id: 'pricing', label: 'Pricing', labelAr: 'الأسعار', href: './pricing' },
+  { id: 'story', label: 'Story', labelAr: 'القصة', href: './story' },
   { id: 'process', label: 'Process', labelAr: 'آلية العمل', inNav: false, inMenu: true },
-  { id: 'about', label: 'About', labelAr: 'من نحن', href: './about.html' },
+  { id: 'about', label: 'About', labelAr: 'من نحن', href: './about' },
   // Reached through the primary CTA rather than a sixth nav link, so the
   // header keeps one unambiguous conversion action (§11, §19). It still
   // appears in the footer quick links.
@@ -266,10 +266,13 @@ function buildFooterLink(section) {
   return link;
 }
 function markCurrentPage() {
-  const here = window.location.pathname.split('/').pop() || 'index.html';
+  const norm = (s) => s.replace(/\.html$/, '') || 'index';
+  const here = norm(window.location.pathname.split('/').pop());
   document.querySelectorAll('[data-nav-link]').forEach((link) => {
-    const target = (link.getAttribute('href') || '').split('#')[0].split('/').pop();
-    if (target && target === here) link.setAttribute('aria-current', 'page');
+    const file = (link.getAttribute('href') || '').split('#')[0];
+    // A bare fragment is a section of this page: the scroll spy owns that one.
+    if (!file) return;
+    if (norm(file.split('/').pop()) === here) link.setAttribute('aria-current', 'page');
   });
 }
 function resolveCrossPageAnchors() {
@@ -279,7 +282,7 @@ function resolveCrossPageAnchors() {
     link.setAttribute('href', `${HOME}#${id}`);
   });
 }
-const HOME = document.getElementById('home') ? '' : './index.html';
+const HOME = document.getElementById('home') ? '' : './';
 function renderSurfaces() {
   document.querySelectorAll('[data-nav-render]').forEach((container) => {
     const kind = container.dataset.navRender;
@@ -1113,8 +1116,8 @@ if (document.readyState === 'loading') {
 })();
     </script>
   
-    <link rel="canonical" href="https://zaokalyamamah.online/story.html" />
-    <meta property="og:url" content="https://zaokalyamamah.online/story.html" />
+    <link rel="canonical" href="https://zaokalyamamah.online/story" />
+    <meta property="og:url" content="https://zaokalyamamah.online/story" />
       <script>window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}</script>
     <script defer data-domain="zaokalyamamah.online" src="https://plausible.io/js/script.js"></script>
   </head>
@@ -1586,7 +1589,7 @@ if (document.readyState === 'loading') {
           <p class="c-footer__copyright">
             © <span class="c-footer__year" data-year>2026</span> Pixora.
             <span data-i18n="rights">All rights reserved.</span>
-            <a class="c-link c-footer__legal" href="./privacy.html"><span data-lang-copy="en">Privacy</span><span data-lang-copy="ar" lang="ar">الخصوصية</span></a>
+            <a class="c-link c-footer__legal" href="./privacy"><span data-lang-copy="en">Privacy</span><span data-lang-copy="ar" lang="ar">الخصوصية</span></a>
           </p>
           <!-- An anchor, not a button: it works without JavaScript, is
                keyboard-reachable for free, and the smooth scroll is the

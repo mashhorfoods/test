@@ -72,8 +72,8 @@ export const SECTIONS = [
      It shipped reachable only from a text link at the bottom of #integrated,
      which measured 68% down the homepage and 20 screens into it on a phone.
      A page nothing links to from the navigation is a page nobody finds. */
-  { id: 'pricing', label: 'Pricing', labelAr: 'الأسعار', href: './pricing.html' },
-  { id: 'story', label: 'Story', labelAr: 'القصة', href: './story.html' },
+  { id: 'pricing', label: 'Pricing', labelAr: 'الأسعار', href: './pricing' },
+  { id: 'story', label: 'Story', labelAr: 'القصة', href: './story' },
   /* Not in the header: Gate 01 froze that row at five items, and wireframe W7
      names them — Home, Services, Pricing, Story, About. Process is a section of
      the homepage, reachable by scrolling and one tap away in the drawer. */
@@ -81,7 +81,7 @@ export const SECTIONS = [
   /* A PAGE, like Story. Flow B — the buyer who verifies before enquiring —
      had nowhere to land: no About meant no answer to "who are these people?",
      which at these prices is the question asked before the price is. */
-  { id: 'about', label: 'About', labelAr: 'من نحن', href: './about.html' },
+  { id: 'about', label: 'About', labelAr: 'من نحن', href: './about' },
   // Reached through the primary CTA rather than a sixth nav link, so the
   // header keeps one unambiguous conversion action (§11, §19). It still
   // appears in the footer quick links.
