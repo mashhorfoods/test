@@ -232,3 +232,44 @@
     display: none;
   }
 }
+
+/* ===========================================================================
+   PACKAGE-AWARE CONTACT — Phase 03 / wireframe W3
+   =========================================================================== */
+
+/* WhatsApp is the primary channel across the Gulf and Egypt, so it stops
+   looking like the first row of a list and starts looking like the action it
+   is. Weight and a filled rule, not a second yellow button: the section
+   already has one, and two primaries compete. */
+.c-channel--primary {
+  border-inline-start: 2px solid var(--color-accent);
+  padding-inline-start: var(--space-16);
+}
+
+.c-channel--primary .c-channel__value {
+  font-weight: var(--weight-semibold, 600);
+}
+
+/* The copy control. A mailto: that opens nothing is the failure this removes,
+   so the address must be takeable without one. Sits inside the same list item
+   as the link, and keeps the 44px floor. */
+.c-channel__copy {
+  appearance: none;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 4px);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-sm, 0.875rem);
+  min-block-size: 44px;
+  padding-inline: var(--space-16);
+  cursor: pointer;
+  transition: color var(--motion-fast, 150ms) var(--ease-standard, ease),
+              border-color var(--motion-fast, 150ms) var(--ease-standard, ease);
+}
+
+.c-channel__copy:hover,
+.c-channel__copy:focus-visible {
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}

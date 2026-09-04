@@ -985,3 +985,21 @@
     }
   }
 }
+
+/* ---------------------------------------------------------------------------
+   THIRD-PARTY IMAGE RESILIENCE — Phase 03 PS-10.
+
+   Twelve images are still hotlinked from a free host. Until they are
+   self-hosted, a host outage renders five service sections as broken-image
+   glyphs on a page that sells design work. A surface-coloured ground behind
+   every image turns that failure into an empty panel instead — quieter, and
+   honest about what happened.
+
+   This is a mitigation, not the fix. The fix is the files on our own disk,
+   which also restores the reserved space documented above.
+   --------------------------------------------------------------------------- */
+.c-brandboard__image,
+.c-devices__image,
+.c-modules__image {
+  background-color: var(--color-surface-2, #262626);
+}

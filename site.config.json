@@ -26,5 +26,9 @@
       "file": "styleguide.html",
       "index": false
     }
-  ]
+  ],
+  "contact": {
+    "_comment": "WhatsApp number in wa.me form (digits only, country code first). One place: build-pricing.js renders every package CTA from it.",
+    "whatsapp": "249962672192"
+  }
 }

@@ -194,3 +194,20 @@
     color: var(--color-text-on-accent);
   }
 }
+
+/* The "About" select (wireframe W3). Same control shape as every other field —
+   only the caret is added, drawn rather than left to the platform so it lands
+   on the right edge in both directions. */
+.c-field__select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  background-position: right var(--space-16) center, calc(100% - var(--space-16) + 6px) center;
+  padding-inline-end: var(--space-32);
+}
+
+[dir='rtl'] .c-field__select {
+  background-position: left var(--space-16) center, calc(var(--space-16) + 6px) center;
+}

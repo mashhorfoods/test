@@ -34,7 +34,48 @@ const ROOT = path.join(__dirname, '..');
 const HTML = path.join(ROOT, 'index.html');
 const DATA = path.join(ROOT, 'src/data/pricing.json');
 
+const CONFIG = path.join(ROOT, 'site.config.json');
+
 const data = JSON.parse(fs.readFileSync(DATA, 'utf8')).categories;
+
+/* The WhatsApp number lives in site.config.json, next to the domain — one
+   place for the facts a build needs and a designer cannot invent. Without it
+   the CTAs fall back to the contact section, which is what they did before
+   this existed: a missing number must never render `wa.me/undefined`. */
+const WHATSAPP = (JSON.parse(fs.readFileSync(CONFIG, 'utf8')).contact || {}).whatsapp || '';
+
+/* PACKAGE-AWARE CONVERSION (Phase 03 PS-02, wireframe W1).
+   The card knows which package the visitor chose; the old CTA threw that away
+   and opened a blank form. These build the message instead, in both languages,
+   from the SAME data the card renders — so the message can never quote a price
+   the card does not show. */
+const waLink = (text) => (WHATSAPP
+  ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`
+  : '#contact');
+
+const cardMessage = (pkg, c, lang) => (lang === 'ar'
+  ? `مرحبًا بيكسورا — أنا مهتم بباقة ${pkg.name} ضمن ${c.labelAr} (${pkg.priceFrom ? 'من ' : ''}${pkg.price} دولار، ${pkg.billing === 'billingMonthly' ? 'شهريًا' : 'لمرة واحدة'}).`
+  : `Hi Pixora — I'm interested in ${c.label} · ${pkg.name} (${pkg.priceFrom ? 'from ' : ''}${pkg.price} USD, ${pkg.billing === 'billingMonthly' ? 'monthly' : 'one-time'}).`);
+
+const serviceMessage = (c, lang) => (lang === 'ar'
+  ? `مرحبًا بيكسورا — أود التحدث بخصوص ${c.labelAr}.`
+  : `Hi Pixora — I'd like to talk about ${c.label}.`);
+
+/* One anchor shape for both. `data-wa-en` / `data-wa-ar` carry the two hrefs;
+   the href itself ships as English so the link works with no JavaScript, and
+   contact.js swaps it when the language does. `data-about` is the package the
+   visitor chose, remembered for the form if they come back. */
+const waCta = ({ href, hrefAr, labelEn, labelAr, about, primary, describedBy }) => `
+            <a class="c-btn ${primary ? 'c-btn--primary' : 'c-btn--secondary'} c-tier__cta"
+              href="${href}" data-wa data-wa-en="${href}" data-wa-ar="${hrefAr}"
+              ${about ? `data-about="${about}"` : ''}
+              ${WHATSAPP ? 'target="_blank" rel="noopener noreferrer"' : ''}
+              aria-describedby="${describedBy}">
+              <span><span data-lang-copy="en">${labelEn}</span><span data-lang-copy="ar" lang="ar">${labelAr}</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>`;
 const total = data.reduce((n, c) => n + c.packages.length, 0);
 
 /* The JSON holds PLAIN TEXT, not markup. It used to hold HTML-escaped strings
@@ -75,8 +116,8 @@ const featureItem = (f) =>
   `                    <li class="c-tier__feature${f.carry ? ' c-tier__feature--carry' : ''}">${CHECK}`
   + `<span>${f.ar ? pair(f) : esc(f.en)}</span></li>`;
 
-function renderCard(pkg, catId, i) {
-  const idBase = `price-${catId}-${pkg.id}`;
+function renderCard(pkg, category, i) {
+  const idBase = `price-${category.id}-${pkg.id}`;
   const vis = pkg.features.slice(0, 4);
   const more = pkg.features.slice(4);
   const ribbon = pkg.ribbon
@@ -158,13 +199,15 @@ ${pkg.features.map(featureItem).join('\n')}
               <span class="c-tier__billing" data-i18n="${pkg.billing}">${pkg.billing === 'billingMonthly' ? 'Monthly' : 'One-time'}</span>
             </p>
 ${disclosure}
-            <a class="c-btn ${pkg.featured ? 'c-btn--primary' : 'c-btn--secondary'} c-tier__cta" href="#contact" data-cta-link
-              aria-describedby="${idBase}-name">
-              <span data-cta-label>Start Your Project</span>
-              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
-              </svg>
-            </a>
+${waCta({
+    href: waLink(cardMessage(pkg, category, 'en')),
+    hrefAr: waLink(cardMessage(pkg, category, 'ar')),
+    labelEn: `Ask about ${esc(pkg.name)}`,
+    labelAr: `اسأل عن باقة ${esc(pkg.name)}`,
+    about: `${category.id}:${pkg.id}`,
+    primary: pkg.featured,
+    describedBy: `${idBase}-name`,
+  })}
           </article>`;
 }
 
@@ -211,7 +254,7 @@ function renderBlock(c) {
 
   return `<!-- PACKAGES:${c.id}:START -->
           <div class="c-tiers${pairClass}" data-reveal-group>
-${c.packages.map((p, i) => renderCard(p, c.id, i)).join('\n\n')}
+${c.packages.map((p, i) => renderCard(p, c, i)).join('\n\n')}
           </div>
 ${renderNote(c)}
           <p class="c-detail__packages" data-reveal id="${c.id}-packages">
@@ -222,14 +265,42 @@ ${renderNote(c)}
             </span>
             <span class="c-detail__packages-billing" data-i18n="${monthly ? 'billingMonthly' : 'billingOnce'}">${monthly ? 'Monthly' : 'One-time'}</span>
           </p>
-          <a class="c-btn c-btn--primary c-detail__action" href="#contact" data-cta-link
+          <a class="c-btn c-btn--primary c-detail__action"
+            href="${waLink(serviceMessage(c, 'en'))}" data-wa
+            data-wa-en="${waLink(serviceMessage(c, 'en'))}"
+            data-wa-ar="${waLink(serviceMessage(c, 'ar'))}"
+            data-about="${c.id}"
+            ${WHATSAPP ? 'target="_blank" rel="noopener noreferrer"' : ''}
             data-reveal aria-describedby="${c.id}-packages">
-            <span data-cta-label>Start Your Project</span>
+            <span><span data-lang-copy="en">Ask about this service</span><span data-lang-copy="ar" lang="ar">اسأل عن هذه الخدمة</span></span>
             <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
             </svg>
           </a>
           <!-- PACKAGES:${c.id}:END -->`;
+}
+
+
+/* THE FORM'S "ABOUT" FIELD (wireframe W3).
+   Same source as the cards, so an option can never name a package or a price
+   that the page does not sell. Option text ships in English with the Arabic on
+   `data-label-ar`, because <option> cannot hold the two spans the rest of the
+   page uses — contact.js swaps the text when the language changes, and with no
+   JavaScript the English labels still submit the right value. */
+function renderAbout() {
+  const groups = data.map((c) => {
+    const opts = c.packages.map((p) => {
+      const en = `${esc(p.name)} — ${p.priceFrom ? 'from ' : ''}${esc(p.price)} USD`;
+      const ar = `${esc(p.name)} — ${p.priceFrom ? 'من ' : ''}${esc(p.price)} دولار`;
+      return `                    <option value="${c.id}:${p.id}" data-label-ar="${ar}">${en}</option>`;
+    }).join('\n');
+    return `                  <optgroup label="${esc(c.label)}" data-label-ar="${esc(c.labelAr)}">\n${opts}\n                  </optgroup>`;
+  }).join('\n');
+
+  return `<!-- CONTACT-ABOUT:START -->
+                  <option value="" data-label-ar="استفسار عام">General enquiry</option>
+${groups}
+                  <!-- CONTACT-ABOUT:END -->`;
 }
 
 /* --- Write --------------------------------------------------------------- */
@@ -245,6 +316,14 @@ data.forEach((c) => {
   }
   html = html.replace(new RegExp(`${a}[\\s\\S]*?${b}`), () => renderBlock(c));
 });
+
+{
+  const a = '<!-- CONTACT-ABOUT:START -->';
+  const b = '<!-- CONTACT-ABOUT:END -->';
+  if (html.includes(a)) {
+    html = html.replace(new RegExp(`${a}[\\s\\S]*?${b}`), () => renderAbout());
+  }
+}
 
 // An unchanged output is the SUCCESS case on a re-run, not a failure.
 fs.writeFileSync(HTML, html);
