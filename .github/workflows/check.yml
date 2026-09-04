@@ -1,0 +1,77 @@
+# =============================================================================
+# CHECK — build the site and run all three harnesses on every push.
+#
+# WHY THIS EXISTS.
+# `docs/27` Phase 14 has listed "no CI" as a gap since the audit, and until now
+# every quality control on this project ran only when a person remembered to
+# run it. Four harnesses that are a habit are not a control: the value of
+# `qa.js` refusing a 1MB page or `a11y.js` refusing an axe violation is exactly
+# zero on the day someone ships without running them.
+#
+# This does not deploy anything. Deployment stays a deliberate manual upload —
+# `docs/44` — because one person owning the moment the site changes is a
+# feature at this size, not a gap. What CI owns is the question of whether the
+# thing being uploaded is sound.
+# =============================================================================
+
+name: check
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      # `ci`, not `install`: the lockfile is the pin, and `docs/58` T2 says to
+      # prefer it. A build machine that quietly resolves a newer dependency is
+      # the supply-chain risk that threat model names.
+      - run: npm ci
+
+      # playwright-core ships no installer, so the browser comes from the
+      # matching full package — and the version is READ FROM THE INSTALLED
+      # playwright-core rather than written here. A hardcoded version is a
+      # second place to remember: bump the dependency, forget the workflow, and
+      # CI downloads a browser build the harnesses cannot launch while blaming
+      # the browser rather than the mismatch. This cannot drift.
+      - name: Install Chromium for the harnesses
+        run: |
+          V="$(node -p "require('playwright-core/package.json').version")"
+          echo "playwright-core is $V — fetching the browser build it expects"
+          npx --yes playwright@"$V" install --with-deps chromium
+
+      - run: npm run build
+
+      # THE COMMITTED dist/ IS WHAT SHIPS.
+      # `pixora-site.zip` is built from `dist/`, and `dist/` is committed — so
+      # editing `src/` and committing without rebuilding produces a repository
+      # whose source and whose deployable disagree, silently, with the old
+      # version being the one that reaches visitors. Nothing else checks this.
+      #
+      # sitemap.xml is excluded because it carries the build date and therefore
+      # differs on any day after the last commit. Nothing else in dist/ does.
+      - name: The committed dist must match a fresh build
+        run: |
+          git diff --exit-code -- dist ':(exclude)dist/sitemap.xml' || {
+            echo
+            echo "dist/ is stale — src/ was changed without running 'npm run build'."
+            echo "Run 'npm run release' and commit dist/."
+            exit 1
+          }
+
+      # validate.js, qa.js, a11y.js. Each exits non-zero only on a HIGH finding;
+      # MEDIUM and LOW print and pass, which is deliberate (docs/56 §3) — so
+      # read the log rather than only the tick.
+      - run: npm run check

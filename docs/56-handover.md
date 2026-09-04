@@ -33,6 +33,9 @@ Run them from the project folder.
 | `npm run check` | Runs the three quality harnesses. **Read the last line of each** |
 | `npm run release` | Both of the above, in order. This is the one to use |
 
+GitHub also runs all of this on every push (`.github/workflows/check.yml`).
+It does **not** deploy — uploading stays yours (`docs/61` AD-07).
+
 First time on a new machine: `npm install` once, to fetch the two tools the
 checks need.
 
@@ -211,6 +214,7 @@ than the code if you ever hand this to another studio.
 | `docs/53` | The hero film budget, and what happens on a phone |
 | `docs/55` | The quality baseline — what is good, what is not, measured |
 | `docs/59` | Which browsers this works in, and what breaks below that |
+| `docs/61` | Why the code is built the way it is, and what should make you change it |
 | `docs/56` | This document |
 
 If a future decision contradicts one of these, that is allowed. Contradicting

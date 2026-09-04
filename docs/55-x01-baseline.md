@@ -137,7 +137,14 @@ Nobody introduced a bug. A rule stopped being true and no check watched it —
 
 **ADD**
 
-- **A way out of `process`.** Zero links at 79% down the page.
+- ~~**A way out of `process`.**~~ Zero links at 79% down the page.
+
+  **Withdrawn, not done** — and §2 already said so while this line went on
+  asking for it. `process` is followed *immediately* by the closing CTA band,
+  so a reader who scrolls out of it meets the action within one screen; a link
+  inside it would compete with that CTA rather than rescue anyone. The count
+  was right and the conclusion drawn from it was too harsh. Left visible rather
+  than deleted, because a retracted finding is worth more than a tidy list.
 - **Proof on the homepage.** One case study exists and the homepage does not
   show it.
 
