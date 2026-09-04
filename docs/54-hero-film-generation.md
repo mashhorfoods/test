@@ -119,3 +119,51 @@ If it does not fit, the options in order of preference: raise CRF until it
 does, drop to 20 fps (the motion is slow, nobody will see it), shorten the loop
 back to 8 s, or reduce to 960×540 — it sits behind text at low opacity, and
 nobody inspects it. **The budget does not move.** That was the decision.
+
+---
+
+## 6. Review of the first generation — 4 September 2026
+
+Two clips arrived, `vida.mp4` and `vidb.mp4`: 5.03 s each, **784×470**, 30 fps.
+Graded and composited behind the hero to judge them (test render only, not
+committed).
+
+**The direction is right.** Warm dust in a dark volume, lit from a single
+source, reads as considerably richer than the CSS film — premium rather than
+decorative. Encoded weight is not a problem either: the graded 5 s test came to
+251 KB at 720p, so a 10 s loop lands near 500 KB, well inside the 2 MB budget.
+The earlier warning about photographic footage was too pessimistic for material
+this dark.
+
+**Three things block using them as they are.**
+
+1. **A "Pika" watermark, top-left, on both clips.** Two separate problems in
+   one mark. It is another company's logo on our hero — and it is *text*, which
+   section 1 rules out because it cannot be translated. It also sits exactly
+   where the headline sits. Removing it is not ours to decide: on a free tier
+   the watermark is usually the price of the export, so stripping it is a
+   licence question, not an editing one. The test render blurred it with
+   `delogo` purely to judge the footage, and **the smudge is visible in the
+   result** — a grey patch beside "Your Brand". Even if it were permitted, it
+   would not look clean.
+
+2. **Clip B sweeps diagonally, upper-right to lower-left.** That is a reading
+   direction, and it is the one thing `docs/52` §3 rules out: mirrored for the
+   Arabic hero it reverses, and unmirrored it fights the text. Clip B is not
+   usable in either language. Clip A is fine — its motion is a vertical rise
+   from a centred source, which is exactly what was asked for.
+
+3. **784×470 is below the 720p spec**, and it is not 16:9 (1.67:1). Upscaling
+   soft footage behind text is survivable, but it is a real loss of detail on
+   the one asset meant to look expensive.
+
+**What would make them usable**
+
+- A **watermark-free export** of both clips — the paid tier, or whatever the
+  tool's licence requires. Not something to remove after the fact.
+- A **replacement for B** with no directional sweep. Keep A. The brief for B
+  stands as written in section 3: gather to centre, bloom once, release.
+- **1280×720 or larger, 16:9**, if the tool offers it.
+
+Clip A alone, looped at 5 s, is a legitimate fallback if B proves difficult —
+shorter than the 10 s target but it satisfies every rule.

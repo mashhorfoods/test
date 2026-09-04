@@ -22,7 +22,7 @@
     /* The film is atmosphere, not subject. Held back so the headline stays the
        brightest thing in the frame — the scrim is baked into the footage, this
        is the second, adjustable half of the same decision. */
-    opacity: 0.62;
+    opacity: 1;
   }
 
   .c-hero__still,
@@ -62,7 +62,7 @@
      visitor who is more likely to be paying for the bytes. */
   @media (max-width: 47.99em) {
     .c-hero__film {
-      opacity: 0.5;
+      opacity: 0.8;
     }
   }
 
