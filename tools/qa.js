@@ -207,6 +207,8 @@ function serve() {
     const sitemap = fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8');
     const listed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
     const { publicPath } = require('./build-deploy');
+    const { SHIP } = require('./build-zip');
+    const SHIPPED = SHIP.filter((f) => f.endsWith('.html'));
     const should = cfg.pages.filter((p) => p.index !== false).map((p) => `${cfg.url}/${publicPath(p.file)}`);
     should.filter((u) => !listed.includes(u)).forEach((u) => fail('HIGH', 'seo', `sitemap is missing ${u}`));
     listed.filter((u) => !should.includes(u)).forEach((u) => fail('MED', 'seo', `sitemap lists an unexpected ${u}`));
@@ -225,6 +227,27 @@ function serve() {
       if (!fs.existsSync(asset)) fail('HIGH', 'seo', `${page.file}: og:image points at ${og[1]}, which did not ship`);
     }
 
+    /* The touch icon, checked for the same reason and with the same shape of
+       failure: nothing on the page looks wrong, and an iPhone that saves the
+       site to its home screen shows a screenshot instead of the mark.
+
+       Three separate things go wrong here, so all three are asserted:
+       the link must exist on every shipped page (four <head>s are maintained
+       by hand and only this catches the one that was forgotten), it must NOT
+       be a data: URI (Safari ignores those, silently), and the file must
+       actually be in the archive. */
+    for (const page of SHIPPED) {
+      const file = path.join(DIST, page);
+      if (!fs.existsSync(file)) continue;
+      const html = fs.readFileSync(file, 'utf8');
+      const link = html.match(/<link rel="apple-touch-icon"[^>]*href="([^"]+)"/);
+      if (!link) { fail('MED', 'seo', `${page}: no apple-touch-icon — an iPhone home-screen shortcut shows a screenshot of the page`); continue; }
+      if (link[1].startsWith('data:')) { fail('HIGH', 'seo', `${page}: apple-touch-icon is a data: URI, which Safari ignores`); continue; }
+      if (!fs.existsSync(path.join(DIST, link[1].replace(/^\.\//, '')))) {
+        fail('HIGH', 'seo', `${page}: apple-touch-icon points at ${link[1]}, which did not ship`);
+      }
+    }
+
     const robots = fs.readFileSync(path.join(DIST, 'robots.txt'), 'utf8');
     if (!robots.includes('Sitemap:')) fail('MED', 'seo', 'robots.txt does not point at the sitemap');
     /* A noindex page needs a Disallow only if it ships. styleguide.html is built
@@ -232,7 +255,6 @@ function serve() {
        silent about it — a Disallow would name a URL that returns 404 and would
        advertise an internal page to anyone reading the file. Its own
        `noindex, nofollow` meta is what protects it if it is ever uploaded. */
-    const { SHIP } = require('./build-zip');
     cfg.pages.filter((p) => p.index === false && SHIP.includes(p.file)).forEach((p) => {
       if (!robots.includes(p.file)) fail('MED', 'seo', `robots.txt does not disallow ${p.file}`);
     });

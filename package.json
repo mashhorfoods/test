@@ -9,7 +9,8 @@
     "release": "npm run build && npm run check",
     "film": "node tools/build-showpiece.js",
     "film:clips": "node tools/build-hero-from-clips.js",
-    "card": "node tools/build-share-card.js"
+    "card": "node tools/build-share-card.js",
+    "icon": "node tools/build-icon.js"
   },
   "devDependencies": {
     "ffmpeg-static": "^5.3.0",

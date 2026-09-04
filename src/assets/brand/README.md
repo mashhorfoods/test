@@ -41,14 +41,30 @@ If a designed logo file exists, it replaces one or both:
   will show against the charcoal), at least 3x the display size. Vector is
   strongly preferred.
 
-## Still outstanding
+## The two generated files
 
-Both need the final artwork and are marked as TODOs in `index.html`:
+Neither is drawn by hand, and neither should be. Both are rendered from source
+that already exists, so replacing the artwork updates them by re-running one
+command rather than by finding an export.
 
-| File | Size | Purpose |
-| --- | --- | --- |
-| `apple-touch-icon.png` | 180x180 | iOS home-screen icon |
-| `og-image.png` | 1200x630 | Link preview card |
+| File | Size | Made by | From |
+| --- | --- | --- | --- |
+| `apple-touch-icon.png` | 180x180 | `npm run icon` | `logo.svg` |
+| `../share-card.jpg` | 1200x630 | `npm run card` | `src/showpiece/card.html` |
 
-The OG image is a designed card rather than the mark on a background, so it
-belongs with the final brand assets.
+**Why the touch icon exists at all.** `<link rel="icon">` ships `logo.svg` and
+every browser tab is served by it. Safari is the exception — it has never read
+SVG for `apple-touch-icon` — so without a PNG an iPhone that adds this site to
+its home screen renders a screenshot of the page instead of the mark. The build
+copies it to `dist/assets/` as a real file rather than inlining it, because
+Safari ignores a `data:` URI there and does so silently; `tools/qa.js` asserts
+all three failure modes (the link missing on a page, the link inlined, the file
+not shipped).
+
+**Why the share card is not "the mark on a background".** It carries the
+proposition and the price promise, both of which change. It is markup using the
+same tokens and typeface as the site, so the card and the page cannot disagree
+for long. See the comment at the top of `tools/build-share-card.js`.
+
+If a designed logo replaces `logo.svg`, run `npm run icon` and commit the PNG
+alongside it.

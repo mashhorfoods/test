@@ -72,6 +72,7 @@ This is the table to keep. Everything on the site comes from one of these.
 | The domain, analytics, HSTS | `site.config.json` | One field moves the whole site to a new domain |
 | The hero film | `src/showpiece/scene.html`, then `npm run film` | Or `npm run film:clips -- clipA.mp4 clipB.mp4` for video |
 | The link preview card | `src/showpiece/card.html`, then `npm run card` | What WhatsApp shows when someone shares the site |
+| The logo | `src/assets/brand/logo.svg`, then `npm run icon` | Regenerates the iPhone home-screen icon from it. The browser tab follows the SVG on its own |
 
 ## 5. The five things you will actually do
 

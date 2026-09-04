@@ -22,6 +22,7 @@ const path = require('path');
 
 const ROOT = __dirname;
 const DIST = path.join(ROOT, 'dist');
+const ASSETS_DIR = path.join(DIST, 'assets');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 
 /* ------------------------------------------------------------------ CSS -- */
@@ -247,6 +248,25 @@ function buildPage(file) {
     return `rel="icon"${mid}href="data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}"`;
   });
 
+  /* --- apple-touch-icon -> a REAL FILE in dist/assets/ ---------------------
+     The one link that must NOT be inlined. Safari ignores a data: URI in
+     rel="apple-touch-icon" entirely — it does not fail loudly, it just falls
+     back to a screenshot of the page — and Safari is the only reader this
+     link exists for. So it is copied, whatever its size, and the size budget
+     that governs <img> deliberately does not apply.
+
+     Matched on the rel, not on a path, for the same reason the favicon rule
+     is: a build that only handles the filename it was written against is a
+     build that hides a page authored against a different one. */
+  html = html.replace(/rel="apple-touch-icon"([^>]*?)href="\.\/([^"]+)"/g, (whole, mid, p) => {
+    const abs = path.join(ROOT, p);
+    if (!fs.existsSync(abs)) { touchIconMissing.push(p); return whole; }
+    fs.mkdirSync(ASSETS_DIR, { recursive: true });
+    const name = path.basename(abs);
+    fs.copyFileSync(abs, path.join(ASSETS_DIR, name));
+    return `rel="apple-touch-icon"${mid}href="./assets/${name}"`;
+  });
+
   // --- <img> -> data: URI, when the file is ours ---------------------------
   // A LOCAL image becomes bytes in the document like everything else. A REMOTE
   // one cannot: this build has no business fetching third-party hosts, and a
@@ -266,7 +286,7 @@ function buildPage(file) {
      there: same origin, cached separately, downloaded once for the whole site
      rather than re-sent with every page. */
   const INLINE_LIMIT = 12 * 1024;
-  const ASSETS = path.join(DIST, 'assets');
+  const ASSETS = ASSETS_DIR;
 
   html = html.replace(/src="(\.\/[^"]+\.(?:png|jpe?g|gif|svg|webp))"/gi, (m, rel) => {
     const abs = path.join(ROOT, rel.slice(2));
@@ -334,6 +354,7 @@ const kb = (n) => `${(n / 1024).toFixed(1)}KB`;
 
 let remote = [];
 const faviconMissing = [];
+const touchIconMissing = [];
 let missing = [];
 for (const page of ['index.html', 'styleguide.html', 'story.html', 'about.html', 'pricing.html', 'privacy.html', 'terms.html', '404.html']) {
   const { html, stats } = buildPage(page);
@@ -399,6 +420,11 @@ if (faviconMissing.length) {
   console.log('\n  ! favicon file(s) referenced but NOT on disk. The link shipped');
   console.log('    unchanged and will 404 for every visitor to that page:');
   [...new Set(faviconMissing)].forEach((u) => console.log(`      ./${u}`));
+}
+
+if (touchIconMissing.length) {
+  console.log('\n  ! apple-touch-icon referenced but NOT on disk. Run `npm run icon`:');
+  [...new Set(touchIconMissing)].forEach((u) => console.log(`      ./${u}`));
 }
 const assetsDir = path.join(DIST, 'assets');
 if (fs.existsSync(assetsDir)) {
