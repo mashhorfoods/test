@@ -164,9 +164,13 @@ function encode(master) {
 
   /* The poster is what every phone, reduced-motion and no-JS visitor sees, so
      it is taken from the calmest instant rather than frame zero — a quarter in,
-     past any opening ramp, before whatever the middle builds to. */
+     past any opening ramp, before whatever the middle builds to.
+
+     Quality 72, not 86: under 12KB the build inlines it into the page and the
+     phone makes no request at all, which is worth more than the difference
+     between the two on a dark, soft frame nobody inspects. */
   run(['-ss', (seconds(master) * 0.25).toFixed(2), '-i', master, '-frames:v', '1',
-    '-c:v', 'libwebp', '-quality', '86', poster]);
+    '-c:v', 'libwebp', '-quality', '72', poster]);
 
   return { mp4, webm, poster };
 }

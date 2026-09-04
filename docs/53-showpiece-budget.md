@@ -110,3 +110,34 @@ repeating the page — and baked-in English labels cannot be translated, which
 would have handed the Arabic reader a picture of the other language. Type in a
 hero belongs in the DOM: selectable, translatable, readable aloud. The film
 carries atmosphere only, and that is a rule, not a preference.
+
+
+---
+
+## 8. Current footage: the generated clips, watermark and all — 4 September 2026
+
+The hero now plays **the owner's own clips**, A and B, joined by
+`tools/build-hero-from-clips.js`. 878 KB MP4, 720 KB WebM, 43% of budget.
+
+**The watermark is on screen, deliberately.** On a free tier it is the licence
+condition, so leaving it visible is honouring the terms rather than working
+around them — which was the only objection to using this footage. It sits
+top-left, faintly, behind the headline. Watermark-free exports replace it with
+one command and nothing else changes:
+
+```
+node tools/build-hero-from-clips.js clipA.mp4 clipB.mp4
+```
+
+**Not mirrored, and that was a correction.** `--mirror` was passed on the first
+attempt on the assumption the footage was bright-left. It is not: clip B's beam
+already runs to the right, so mirroring put the brightest part of the frame
+straight through the headline and the lead paragraph, and flipped the watermark
+into mirror-writing on the way. The originals are already dark-left. The rule
+still stands — ship it dark side left — it was the reading of *this* footage
+that was wrong, not the rule.
+
+**The drawn scene is not deleted.** `src/showpiece/scene.html` and
+`tools/build-showpiece.js` remain, and `node tools/build-showpiece.js` puts the
+three-act canvas film back. Two hero films, one command apart, and the choice
+stays open.
