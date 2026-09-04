@@ -245,3 +245,13 @@
 .c-footer__legal {
   margin-inline-start: var(--space-8);
 }
+
+/* Phase 12 measured two footer links at 43.98px — the 44px floor missed by a
+   rounding error in the line box, which is a pass on this machine and a fail
+   on the next one. Stated rather than inherited. */
+.c-footer__list a,
+.c-footer__group a {
+  min-block-size: 44px;
+  display: flex;
+  align-items: center;
+}

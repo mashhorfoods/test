@@ -21,6 +21,8 @@
         WhatsApp links, the scope-fact disclosure
      6  a keyboard reaches a package CTA and the disclosure, painting a ring
      7  the drawer — a phone's only map of the site — offers every destination
+     8  every page at 360/768/1440: no overflow, no target under 44px, one h1,
+        four landmarks, no console errors
 
    Usage:  node tools/validate.js
    Needs:  playwright-core and a Chromium. Set PLAYWRIGHT_CHROMIUM to the
@@ -202,6 +204,36 @@ const fail = (sev, flow, text) => { findings.push({ sev, flow, text }); console.
       .filter((want) => !items.some((t) => t.includes(want)))
       .forEach((want) => fail('MED', 'drawer', `the drawer does not offer ${want}`));
     await ctx.close();
+  }
+
+  /* 8 — the responsive and accessibility floor, every page, three widths.
+     44px is the touch-target floor. The comparison allows 0.1px because a
+     line box can compute to 43.999 on a value declared as 44 — a rounding
+     artefact, not a small target. */
+  {
+    for (const page of PAGES) {
+      for (const width of [360, 768, 1440]) {
+        const ctx = await browser.newContext({ viewport: { width, height: 900 } });
+        const p = await ctx.newPage();
+        let errors = 0;
+        p.on('pageerror', () => { errors += 1; });
+        p.on('console', (m) => { if (m.type() === 'error') errors += 1; });
+        await p.goto(`${BASE}/${page}`, { waitUntil: 'load' }); await p.waitForTimeout(500);
+        const m = await p.evaluate(() => ({
+          overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+          small: [...document.querySelectorAll('a,button,summary,input,select,textarea')]
+            .filter((e) => { const b = e.getBoundingClientRect(); return b.width > 0 && b.height < 43.9; }).length,
+          h1: document.querySelectorAll('h1').length,
+          landmarks: ['header', 'nav', 'main', 'footer'].filter((t) => document.querySelector(t)).length,
+        }));
+        if (m.overflow) fail('HIGH', 'responsive', `${page} @${width}: horizontal overflow`);
+        if (m.small) fail('HIGH', 'responsive', `${page} @${width}: ${m.small} target(s) under 44px`);
+        if (m.h1 !== 1) fail('MED', 'a11y', `${page} @${width}: ${m.h1} h1 elements`);
+        if (m.landmarks < 4) fail('MED', 'a11y', `${page} @${width}: ${m.landmarks}/4 landmarks`);
+        if (errors) fail('HIGH', 'console', `${page} @${width}: ${errors} console error(s)`);
+        await ctx.close();
+      }
+    }
   }
 
   await browser.close();
