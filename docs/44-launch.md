@@ -94,11 +94,12 @@ and no `content-security-policy` means the dotfile did not upload.
 
 ### Then, and only then
 
-1. **HSTS.** Once check 4 shows the site is genuinely serving TLS, add to
-   `.htaccess` (and to `tools/build-deploy.js` so it survives the next build):
-   `Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"`.
-   Not before: the header is cached by browsers and locks visitors out of a
-   site that cannot serve TLS.
+1. **HSTS.** Once check 4 shows the site is genuinely serving TLS:
+   set `"hsts": true` in `site.config.json`, run `node build.js`, upload again.
+   One field — the header survives every future build, and nobody has to
+   remember to re-add it to a hand-edited server file. Not before: it is cached
+   by browsers for a year, so switching it on early locks visitors out of a
+   site that cannot answer.
 2. **Plausible** — confirm the site is created there with the domain exactly as
    `site.config.json` has it, then load a page and watch one event arrive.
 3. **Search Console** — add the property, submit `sitemap.xml`.

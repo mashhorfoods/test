@@ -93,9 +93,13 @@ const htaccess = (csp) => `# ===================================================
   # plausible.io appears twice: script-src to load the tag, connect-src for
   # the event it sends. Nothing else off-origin is permitted at all.
   Header set Content-Security-Policy "${csp}"
-  # HSTS is deliberately NOT set here. Turn it on only once HTTPS is confirmed
-  # working on the live domain — a bad HSTS header locks visitors out of a site
-  # that cannot yet serve TLS, and the header is cached by the browser.
+${cfg.hsts
+    ? '  # HSTS: enabled in site.config.json AFTER the live site was verified.\n'
+      + '  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"'
+    : '  # HSTS is off: `hsts` is false in site.config.json. Turn it on there — not\n'
+      + '  # here — once the live site is confirmed serving TLS. The header is cached\n'
+      + '  # by browsers for a year, so switching it on too early locks visitors out\n'
+      + '  # of a site that cannot answer, rather than merely inconveniencing them.'}
 </IfModule>
 
 # --- Character encoding ------------------------------------------------------

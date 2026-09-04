@@ -7,6 +7,12 @@
     "placeholder. A wrong canonical is worse than a missing one: it tells search",
     "engines the real page lives somewhere else.",
     "",
+    "`hsts` STAYS FALSE until check 4 in docs/44-launch.md §2 shows the live site",
+    "serving TLS and its headers. The header is cached by browsers for a year:",
+    "switch it on over a host that cannot serve https and visitors are locked out",
+    "of the site, not merely inconvenienced. Once verified, set it to true and",
+    "run `node build.js` — one field, not a hand-edited server file.",
+    "",
     "MOVING DOMAIN (to pixora.net or anything else) is this one field plus",
     "`node build.js`. Nothing else in the repository names a host. The rest of",
     "the move — 301s from the old host, renaming the site in Plausible, Search",
@@ -17,6 +23,7 @@
     "the pages, not for judging the deployment."
   ],
   "url": "https://zaokalyamamah.online",
+  "hsts": false,
   "pages": [
     {
       "file": "index.html",
