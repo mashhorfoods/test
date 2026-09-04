@@ -16,6 +16,36 @@
     "",
     "Previous list, for reversal (SAR): tier-starter 580, tier-professional 1180, tier-advanced 2580, web-landing 175, web-business 450, web-professional 700, soc-starter 150, soc-growth 250, soc-pro 450, ads-starter 150, ads-growth 225, ads-performance 400"
   ],
+  "terms": {
+    "_comment": [
+      "SCOPE FACTS — wireframe W1, problem PS-05 (docs/30-problem-solution.md).",
+      "The price is published; what it buys is not, and at the new band a buyer",
+      "asks. Fill these in and the cards grow a facts block and a 'What's not",
+      "included' disclosure. Leave a field empty and NOTHING renders for it — the",
+      "page never shows a label with a blank beside it, and never guesses a value.",
+      "",
+      "`shared` applies to every package. Per-package `facts` (delivery, revisions)",
+      "live on the package itself, beside its price.",
+      "",
+      "Write both languages. Plain words, no legal register: 'Two rounds of",
+      "changes' beats 'client is entitled to two (2) revision cycles'."
+    ],
+    "shared": {
+      "ownership": {
+        "en": "",
+        "ar": ""
+      },
+      "payment": {
+        "en": "",
+        "ar": ""
+      },
+      "fromDepends": {
+        "en": "",
+        "ar": ""
+      },
+      "excludes": []
+    }
+  },
   "categories": [
     {
       "id": "branding",
@@ -71,7 +101,17 @@
           ],
           "levelAr": "الأساس",
           "purposeAr": "هوية أساسية للمشاريع الجديدة أو الصغيرة.",
-          "priceFrom": true
+          "priceFrom": true,
+          "facts": {
+            "delivery": {
+              "en": "",
+              "ar": ""
+            },
+            "revisions": {
+              "en": "",
+              "ar": ""
+            }
+          }
         },
         {
           "id": "tier-professional",
@@ -139,7 +179,17 @@
           ],
           "levelAr": "النظام",
           "purposeAr": "هوية بصرية أكثر اكتمالًا وتنظيمًا.",
-          "priceFrom": true
+          "priceFrom": true,
+          "facts": {
+            "delivery": {
+              "en": "",
+              "ar": ""
+            },
+            "revisions": {
+              "en": "",
+              "ar": ""
+            }
+          }
         },
         {
           "id": "tier-advanced",
@@ -199,7 +249,17 @@
           ],
           "levelAr": "المنظومة",
           "purposeAr": "هوية بصرية متكاملة ومنظومة علامة قابلة لإعادة الاستخدام.",
-          "priceFrom": true
+          "priceFrom": true,
+          "facts": {
+            "delivery": {
+              "en": "",
+              "ar": ""
+            },
+            "revisions": {
+              "en": "",
+              "ar": ""
+            }
+          }
         }
       ]
     },
@@ -246,7 +306,17 @@
             }
           ],
           "levelAr": "الأساس",
-          "purposeAr": "لحملات محددة وعمليات الإطلاق والحضور الرقمي البسيط."
+          "purposeAr": "لحملات محددة وعمليات الإطلاق والحضور الرقمي البسيط.",
+          "facts": {
+            "delivery": {
+              "en": "",
+              "ar": ""
+            },
+            "revisions": {
+              "en": "",
+              "ar": ""
+            }
+          }
         },
         {
           "id": "web-business",
@@ -300,7 +370,17 @@
             }
           ],
           "levelAr": "النظام",
-          "purposeAr": "للشركات والمؤسسات التي تحتاج موقعًا احترافيًا متعدد الصفحات."
+          "purposeAr": "للشركات والمؤسسات التي تحتاج موقعًا احترافيًا متعدد الصفحات.",
+          "facts": {
+            "delivery": {
+              "en": "",
+              "ar": ""
+            },
+            "revisions": {
+              "en": "",
+              "ar": ""
+            }
+          }
         },
         {
           "id": "web-professional",
@@ -364,7 +444,17 @@
             }
           ],
           "levelAr": "المنظومة",
-          "purposeAr": "للأعمال التي تحتاج حضورًا رقميًا أكثر تقدمًا، وبنية محتوى، وتكاملات، ووظائف موسّعة."
+          "purposeAr": "للأعمال التي تحتاج حضورًا رقميًا أكثر تقدمًا، وبنية محتوى، وتكاملات، ووظائف موسّعة.",
+          "facts": {
+            "delivery": {
+              "en": "",
+              "ar": ""
+            },
+            "revisions": {
+              "en": "",
+              "ar": ""
+            }
+          }
         }
       ]
     },
@@ -424,7 +514,17 @@
               "en": "Brief monthly report",
               "ar": "تقرير شهري مختصر"
             }
-          ]
+          ],
+          "facts": {
+            "delivery": {
+              "en": "",
+              "ar": ""
+            },
+            "revisions": {
+              "en": "",
+              "ar": ""
+            }
+          }
         },
         {
           "id": "soc-growth",
@@ -494,7 +594,17 @@
               "en": "Monthly performance report",
               "ar": "تقرير أداء شهري"
             }
-          ]
+          ],
+          "facts": {
+            "delivery": {
+              "en": "",
+              "ar": ""
+            },
+            "revisions": {
+              "en": "",
+              "ar": ""
+            }
+          }
         },
         {
           "id": "soc-pro",
@@ -566,7 +676,17 @@
               "en": "Monthly Strategy Review",
               "ar": "Monthly Strategy Review"
             }
-          ]
+          ],
+          "facts": {
+            "delivery": {
+              "en": "",
+              "ar": ""
+            },
+            "revisions": {
+              "en": "",
+              "ar": ""
+            }
+          }
         }
       ]
     },
@@ -624,7 +744,17 @@
             }
           ],
           "levelAr": "الأساس",
-          "purposeAr": "حل تمهيدي."
+          "purposeAr": "حل تمهيدي.",
+          "facts": {
+            "delivery": {
+              "en": "",
+              "ar": ""
+            },
+            "revisions": {
+              "en": "",
+              "ar": ""
+            }
+          }
         },
         {
           "id": "ads-growth",
@@ -684,7 +814,17 @@
             }
           ],
           "levelAr": "النظام",
-          "purposeAr": "حل متوازن."
+          "purposeAr": "حل متوازن.",
+          "facts": {
+            "delivery": {
+              "en": "",
+              "ar": ""
+            },
+            "revisions": {
+              "en": "",
+              "ar": ""
+            }
+          }
         },
         {
           "id": "ads-performance",
@@ -742,7 +882,17 @@
             }
           ],
           "levelAr": "المنظومة",
-          "purposeAr": "حل متقدم يركّز على الأداء."
+          "purposeAr": "حل متقدم يركّز على الأداء.",
+          "facts": {
+            "delivery": {
+              "en": "",
+              "ar": ""
+            },
+            "revisions": {
+              "en": "",
+              "ar": ""
+            }
+          }
         }
       ],
       "note": {

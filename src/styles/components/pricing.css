@@ -75,3 +75,97 @@
     }
   }
 }
+
+/* ===========================================================================
+   SCOPE FACTS — wireframe W1, problem PS-05
+
+   The price was published and never explained, which at this band makes a
+   buyer guess what is missing. Three facts sit always-visible under a hairline
+   — they are the reason to believe the figure above them — and everything that
+   qualifies rather than sells lives behind one disclosure.
+
+   A <details>, not the site's accordion: it needs no JavaScript, no ARIA of
+   our own, and it keeps working on a page whose scripts failed to load.
+   =========================================================================== */
+
+@layer components {
+  .c-tier__facts {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-8) var(--space-16);
+    margin: 0;
+    padding-block-start: var(--space-16);
+    border-block-start: 1px solid var(--color-border);
+    font-size: var(--text-sm, 0.875rem);
+  }
+
+  .c-tier__facts dt {
+    color: var(--color-text-muted);
+  }
+
+  .c-tier__facts dd {
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .c-tier__terms {
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--color-text-muted);
+  }
+
+  .c-tier__terms > summary {
+    cursor: pointer;
+    padding-block: var(--space-8);
+    min-block-size: 44px;
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    list-style: none;
+  }
+
+  /* The marker is drawn, so it points the right way in both directions and
+     rotates when the panel opens. */
+  .c-tier__terms > summary::-webkit-details-marker { display: none; }
+
+  .c-tier__terms > summary::before {
+    content: '';
+    inline-size: 0.5em;
+    block-size: 0.5em;
+    border-inline-end: 1.5px solid currentColor;
+    border-block-end: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    transform-origin: center;
+    transition: transform var(--motion-fast, 150ms) var(--ease-standard, ease);
+  }
+
+  .c-tier__terms[open] > summary::before {
+    transform: rotate(-135deg);
+  }
+
+  .c-tier__terms > summary:focus-visible {
+    outline: var(--focus-ring-width, 2px) solid var(--color-focus, currentColor);
+    outline-offset: 2px;
+  }
+
+  .c-tier__terms-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding-block-end: var(--space-8);
+  }
+
+  .c-tier__terms-body ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding-inline-start: var(--space-16);
+  }
+
+  .c-tier__terms-label {
+    color: var(--color-text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-tier__terms > summary::before { transition: none; }
+  }
+}

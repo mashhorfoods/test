@@ -36,7 +36,53 @@ const DATA = path.join(ROOT, 'src/data/pricing.json');
 
 const CONFIG = path.join(ROOT, 'site.config.json');
 
-const data = JSON.parse(fs.readFileSync(DATA, 'utf8')).categories;
+const SOURCE = JSON.parse(fs.readFileSync(DATA, 'utf8'));
+const data = SOURCE.categories;
+const TERMS = (SOURCE.terms || {}).shared || {};
+
+/* SCOPE FACTS (wireframe W1, PS-05). A published price that is never explained
+   makes the buyer guess what is missing, and at this band the guess is
+   unflattering. These render ONLY from values that exist: an empty field
+   renders nothing at all, rather than a label with a blank beside it. */
+const has = (v) => Boolean(v && (v.en || '').trim());
+
+function renderFacts(pkg) {
+  const rows = [
+    ['Delivery', 'التسليم', pkg.facts?.delivery],
+    ['Revisions', 'التعديلات', pkg.facts?.revisions],
+    ['You own', 'ملكيتك', TERMS.ownership],
+  ].filter(([, , v]) => has(v));
+
+  const excludes = (TERMS.excludes || []).filter(has);
+  const extras = [
+    ['What "from" depends on', 'ما الذي يحدد السعر', TERMS.fromDepends],
+    ['Payment', 'الدفع', TERMS.payment],
+  ].filter(([, , v]) => has(v));
+
+  if (!rows.length && !excludes.length && !extras.length) return '';
+
+  const facts = rows.length ? `
+            <dl class="c-tier__facts">
+${rows.map(([en, ar, v]) => `              <dt>${pair({ en, ar })}</dt>
+              <dd>${pair(v)}</dd>`).join('\n')}
+            </dl>` : '';
+
+  /* <details>, not the site's accordion: it needs no JavaScript, no ARIA of
+     our own and no id wiring, and it is the one disclosure on the page whose
+     content a search engine should still see when closed. */
+  const more = (excludes.length || extras.length) ? `
+            <details class="c-tier__terms">
+              <summary>${pair({ en: "What's not included", ar: 'ما لا تشمله الباقة' })}</summary>
+              <div class="c-tier__terms-body">
+${excludes.length ? `                <ul>
+${excludes.map((v) => `                  <li>${pair(v)}</li>`).join('\n')}
+                </ul>` : ''}
+${extras.map(([en, ar, v]) => `                <p><span class="c-tier__terms-label">${pair({ en, ar })}:</span> ${pair(v)}</p>`).join('\n')}
+              </div>
+            </details>` : '';
+
+  return `${facts}${more}`;
+}
 
 /* The WhatsApp number lives in site.config.json, next to the domain — one
    place for the facts a build needs and a designer cannot invent. Without it
@@ -199,7 +245,7 @@ ${pkg.features.map(featureItem).join('\n')}
               <span class="c-tier__billing" data-i18n="${pkg.billing}">${pkg.billing === 'billingMonthly' ? 'Monthly' : 'One-time'}</span>
             </p>
 ${disclosure}
-${waCta({
+${renderFacts(pkg)}${waCta({
     href: waLink(cardMessage(pkg, category, 'en')),
     hrefAr: waLink(cardMessage(pkg, category, 'ar')),
     labelEn: `Ask about ${esc(pkg.name)}`,
