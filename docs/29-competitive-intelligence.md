@@ -316,6 +316,14 @@ budget can choose.
 
 ### Branding — the one that did not move far enough
 
+> **Acted on, 4 September 2026.** The owner's decision was to fix it. Branding
+> is now **$490 / $990 / $1,990**, and the table below is left at the numbers
+> that produced that decision rather than rewritten to agree with it — the
+> finding is the record. `docs/31` §5.5 has the change request and the checks
+> the new ladder passes; the row that follows now reads 0.9×–4.5× below the
+> full-identity band rather than 2.2×–11×, which is the same shape of discount
+> the website tiers carry.
+
 | Pixora, now | USD | ≈ SAR | Published Saudi range, 2026 |
 | --- | ---: | ---: | --- |
 | Starter | 290 | 1,090 | Logo design alone: **5,000–15,500** |
@@ -340,12 +348,15 @@ positioning choice it should be roughly even across the four categories, and
 it is not — branding is discounted about five times harder than websites. That
 is the shape of a number nobody re-derived, not the shape of a decision.
 
-**The specific question for the owner:** *is Branding Advanced at $1,200 the
-intended signal for a full identity with guidelines, when the published floor
-for that deliverable in the target market is roughly triple it?* If yes, close
-this. If it is a leftover from the old ladder's proportions, it is one number
-in `pricing.json`, and `qa.js` will carry it to every surface on the next
-build.
+**The question this section put to the owner** — *is Branding Advanced at
+$1,200 the intended signal for a full identity with guidelines, when the
+published floor for that deliverable is roughly triple it?* — **was answered
+the same day: no, it was a leftover from the old ladder's proportions.**
+
+It was three fields in `pricing.json`. The generator carried them to twelve
+places — three cards, three WhatsApp deep links in each language, the packages
+summary and the contact form's option list — and `qa.js` re-verified every
+rendered price against the source. That is AD-05 doing the job it exists for.
 
 **Limits, stated as §0 states them.** These are published *guide* prices from
 agency marketing content, which skews high — an agency publishing a pricing

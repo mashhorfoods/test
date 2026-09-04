@@ -79,11 +79,13 @@ in**, and it is stable enough to print. Arabic renders it as *دولار*.
 
 ### 5.2 The new ladder
 
+*Branding revised 4 September 2026 — see §5.5.*
+
 | Service | Package | Was (SAR) | **Now (USD)** | Billing |
 | --- | --- | --- | --- | --- |
-| Branding | Starter | 580 | **from 290** | one-off |
-| | Professional | 1,180 | **from 590** | one-off |
-| | Advanced | 2,580 | **from 1,200** | one-off |
+| Branding | Starter | 580 | **from 490** | one-off |
+| | Professional | 1,180 | **from 990** | one-off |
+| | Advanced | 2,580 | **from 1,990** | one-off |
 | Websites | Landing Page | 175 | **250** | one-off |
 | | Business Website | 450 | **650** | one-off |
 | | Professional Website | 700 | **1,200** | one-off |
@@ -106,13 +108,67 @@ with the Marketing packages is unchanged and now matters more.
 | Business website | **$650** | ~$490–1,510 (EGP 25k–77k) | ~$930–3,200 |
 | Professional website | **$1,200** | upper half of the Egyptian band | below the Gulf floor |
 | Social, monthly | **$250–650** | ~$290–980 (EGP 15k–50k) | ~$400–1,200 |
-| Branding | **from $290** | startup basics from ~$490 | logo alone from ~$530 |
+| Branding | **from $490** | startup basics from ~$490 | logo alone from ~$530 |
 
 **At or just under the Egyptian floor, and clearly under the Gulf band.** That
 is the cheapest *credible* position: a new entrant undercutting both markets
 while still reading as a studio. The previous list sat below both markets
 entirely, in freelance-marketplace territory, where a low price reads as risk
 rather than as value.
+
+### 5.5 Branding revised — 4 September 2026
+
+A change request against a Gate 01 decision, recorded rather than absorbed.
+
+**What was wrong was not the number, it was that one row escaped the rule.**
+§5.3's own conclusion is *"at or just under the Egyptian floor, and clearly
+under the Gulf band"* — and its own table, in the line directly above that
+sentence, showed Branding at **$290 against an Egyptian floor of ~$490**. Not
+"just under": 41% under. Every other category obeyed the rule the paragraph
+stated. Branding did not, and nobody noticed because nobody re-derived it.
+
+`docs/29` §11 found the same thing from the other direction, against 2026
+published Gulf rates: websites had moved into their market band, branding was
+still discounted about five times harder. Two independent checks, one
+conclusion.
+
+**The fix is the rule, applied.** Starter moves to the Egyptian floor it was
+supposed to sit at, and the ladder keeps the ×2 rhythm it already had:
+
+| | Was | Now | Step |
+| --- | ---: | ---: | ---: |
+| Starter | from 290 | **from 490** | — |
+| Professional | from 590 | **from 990** | ×2.02 |
+| Advanced | from 1,200 | **from 1,990** | ×2.01 |
+
+*(The old ladder stepped ×2.03 and ×2.03. The shape is unchanged; only the
+base moved.)*
+
+**Checks the new numbers pass:**
+
+- **Advanced now costs more than the Professional Website** ($1,990 vs
+  $1,200), which is what the market says: a full identity with guidelines runs
+  SAR 10,000–50,000 against SAR 3,500–12,000 for a standard site. The old
+  ladder priced them identically, which said the two were the same size of job.
+  They are not.
+- **Still clearly under the Gulf band.** $1,990 ≈ SAR 7,460 against a published
+  full-identity floor of 10,000 — about 25% under, which is the same shape of
+  discount the website tiers carry. The new-entrant position is intact; it is
+  now even across all four categories, which is what makes it read as a
+  position rather than as a gap.
+- **Starter stays the funnel entry** and stays below the Business Website
+  ($490 vs $650) — a logo package should cost less than a five-page bilingual
+  site.
+
+**What this obliges**, on the same logic as §5.4: the proof that justified the
+first rise has to hold for this one. It does — the case study, the verification
+band and the homepage proof band all shipped after §5.4 was written, and the
+branding work is the part of that case study a buyer can see most of.
+
+**One number to watch.** G1 is qualified enquiries. If branding enquiries fall
+after this and nothing else changes, the ladder is the cause and `pricing.json`
+is one field per package. Phase 20's rulebook already pre-commits what a fall
+means; this is exactly the kind of change it exists to read.
 
 ### 5.4 What the new prices oblige us to do
 
