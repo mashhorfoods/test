@@ -209,6 +209,7 @@ than the code if you ever hand this to another studio.
 | `docs/44` | The release runbook and the four live checks |
 | `docs/53` | The hero film budget, and what happens on a phone |
 | `docs/55` | The quality baseline — what is good, what is not, measured |
+| `docs/59` | Which browsers this works in, and what breaks below that |
 | `docs/56` | This document |
 
 If a future decision contradicts one of these, that is allowed. Contradicting

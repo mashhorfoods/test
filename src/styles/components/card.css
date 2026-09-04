@@ -58,14 +58,24 @@
     border-radius: inherit;
   }
 
-  /* Focus travels to the inner link, so the ring is drawn on the card. */
-  .c-card:has(.c-card__link:focus-visible) {
-    box-shadow: var(--focus-ring);
-    border-color: var(--color-border-accent);
-  }
+  /* Focus travels to the inner link, so the ring is drawn on the card.
 
-  .c-card__link:focus-visible {
-    box-shadow: none;
+     BOTH RULES ARE GUARDED, and the second is the reason. Suppressing the
+     link's own ring is only safe once the card is definitely drawing one:
+     unguarded, a browser without `:has()` applied the suppression, skipped the
+     card rule it could not parse, and left a keyboard user with no focus
+     indicator at all — a 2.4.7 failure produced by a progressive enhancement
+     that only enhanced one half of itself. Firefox shipped `:has()` in 121,
+     so this was real rather than theoretical. `docs/59` §4. */
+  @supports selector(:has(*)) {
+    .c-card:has(.c-card__link:focus-visible) {
+      box-shadow: var(--focus-ring);
+      border-color: var(--color-border-accent);
+    }
+
+    .c-card__link:focus-visible {
+      box-shadow: none;
+    }
   }
 
   /* -----------------------------------------------------------------------
