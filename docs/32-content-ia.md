@@ -75,7 +75,8 @@ terms · any content that could rank in search · a real client case study.
    404                Designed error page                                        —
 
 Deferred, with triggers:
-   /work              Portfolio index          ← trigger: C-7 permits client work
+   /work              Portfolio index          ← TRIGGER FIRED (C-7, 4 Sep): in scope
+                                                 at two anonymised case studies
    /services/<slug>   Per-service pages        ← trigger: a service's scope
                                                  outgrows its accordion panel
    /terms             Terms of service         ← trigger: first contract dispute

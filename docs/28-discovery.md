@@ -249,7 +249,7 @@ Nothing here is a preference question; each one changes work downstream.
 | C-4 | Is the branding-vs-website price relationship deliberate? What does "from" depend on? | Pricing presentation; the qualification question in the lead form |
 | C-5 | **Which market: Saudi, Sudan, or both?** And is `zaokalyamamah.online` a staging host or the permanent domain? | Currency, phone numbers, trust content, domain, competitor set |
 | C-6 | Is there a legal entity, an agency-owned email and phone, and a business address? | About page, Organization JSON-LD, contact block, buyer trust |
-| C-7 | May we publish any real client name, work or result? If not, is a permissioned anonymous format acceptable ("a retail client in Riyadh…")? | The entire proof/trust gap — the largest conversion problem on the site |
+| ~~C-7~~ **ANSWERED** | Client work may be published **anonymised** (4 Sep 2026). Rules, format and the facts needed: `docs/35-case-studies.md` | The proof/trust gap is now open for want of facts, not permission |
 | C-8 | Who maintains content, and must they edit without a developer? | Whether a CMS/dashboard is ever in scope (Phase 06/15) |
 | C-9 | Appetite for a backend (lead capture, CRM, analytics) vs staying fully static? | Phase 06 technical direction, P0-4 lead path |
 

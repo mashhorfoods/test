@@ -174,7 +174,7 @@ that were uploaded, never observed. See §6, BLOCKER-1.
 
 ### P1 — Important (required to meet the WEBSTART standard)
 
-- P1-1 Proof and trust — **narrowed by Phase 03 (PS-01): no longer waits on client permission.** Named human, kept response promise, the existing Behance work surfaced on the site, a Google Business Profile and one directory listing, CR/Maroof if the entity is Saudi.
+- P1-1 Proof and trust — **client work may now be published anonymised (C-7, 4 Sep 2026; see `docs/35-case-studies.md`).** Also, per Phase 03 (PS-01), the rest of it never needed permission: Named human, kept response promise, the existing Behance work surfaced on the site, a Google Business Profile and one directory listing, CR/Maroof if the entity is Saudi.
 - P1-2 Content inventory, sitemap and the two primary user flows (Phase 05).
 - P1-3 Targeted wireframes for whatever 01–04 changes (Phase 07).
 - P1-4 Master prompt completion (Phase 08).
