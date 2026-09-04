@@ -196,9 +196,23 @@ function injectAnalytics() {
   const a = cfg.analytics || {};
   if (!a.provider) return 0;
 
+  /* THE QUEUE STUB, and why it is not optional.
+
+     The provider's tag is deferred, so it lands after the document is
+     interactive. Our own events start earlier than that — a package counts as
+     read after one second on screen, and a visitor can press a CTA before any
+     of it arrives. Without this stub `window.plausible` is undefined at that
+     moment and the event is dropped silently, which is the exact failure this
+     project keeps refusing to ship.
+
+     With it, early events queue and are sent when the script loads. If the
+     script never loads — a blocker, an outage — `plausible.q` simply grows and
+     nothing else notices, which is the correct behaviour for a metric. */
+  const stub = '<script>window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}</script>';
+
   const tag = a.provider === 'umami'
     ? `<script defer data-website-id="${a.websiteId}" src="${a.scriptUrl}"></script>`
-    : `<script defer data-domain="${a.domain}" src="${a.scriptUrl}"></script>`;
+    : `${stub}\n    <script defer data-domain="${a.domain}" src="${a.scriptUrl}"></script>`;
 
   let n = 0;
   for (const page of cfg.pages) {
@@ -207,7 +221,8 @@ function injectAnalytics() {
     let html = fs.readFileSync(file, 'utf8');
     // Strip first, on EVERY page: a page that stops being tracked has to lose
     // the tag a previous run wrote, or it goes on reporting for ever.
-    html = html.replace(/\n?\s*<script defer data-(?:domain|website-id)[^>]*><\/script>/g, '');
+    html = html.replace(/\n?\s*<script>window\.plausible=[\s\S]*?<\/script>/g, '')
+      .replace(/\n?\s*<script defer data-(?:domain|website-id)[^>]*><\/script>/g, '');
     // A noindex page is internal — the styleguide is read by us, and counting
     // our own visits would be the first thing to corrupt the numbers.
     if (page.index !== false) {
@@ -257,9 +272,7 @@ function policy() {
 
 /* --- Write ----------------------------------------------------------------- */
 function run(stamp) {
-  const out = [];
-  fs.writeFileSync(path.join(DIST, '.htaccess'), htaccess(policy()));
-  out.push('.htaccess');
+  const out = ['.htaccess'];
   fs.writeFileSync(path.join(DIST, 'robots.txt'), robots());
   out.push('robots.txt');
 
@@ -276,6 +289,12 @@ function run(stamp) {
   } else {
     out.push('analytics OFF (no provider in site.config.json — events are collected, nothing is sent)');
   }
+
+  /* LAST, deliberately. The CSP names every inline script by hash, so it can
+     only be written once the pages are final — including the analytics stub
+     injected a few lines above. Writing it first would produce a policy that
+     forbids a script this same build had just added. */
+  fs.writeFileSync(path.join(DIST, '.htaccess'), htaccess(policy()));
 
   console.log(`deploy files -> dist/  (${out.join(', ')})`);
   if (!URL) {

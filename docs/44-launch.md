@@ -179,6 +179,6 @@ reach the domain.
 
 ## 6. Gate 03
 
-`docs/45-gate-03.md` will be a go/no-go decision, and it needs exactly one
+`docs/46-gate-03.md` will be a go/no-go decision, and it needs exactly one
 input that does not exist yet: the output of the four checks. Paste them and
 the gate closes.
