@@ -120,8 +120,8 @@ Three honest positions, to be chosen deliberately rather than drifted into:
 **CHOSEN 4 September 2026.** The middle one — see `docs/53` for the budget and
 the checks that now enforce it. It is also what I would have argued for, and it is the one the guardrails
 support: the desktop visitor who is browsing gets the showpiece; the phone
-visitor on mobile data gets a fast page and a still frame. But this is the
-owner's call, and it is the single decision that shapes everything downstream.
+visitor on mobile data gets a fast page and a still frame. It was the single
+decision shaping everything downstream, and it is now made.
 
 ## 6. Status
 
