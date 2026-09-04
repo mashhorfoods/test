@@ -6,155 +6,256 @@
 <!--
   THE SHOWPIECE SCENE — rendered to the hero film by tools/build-showpiece.js.
 
-  NOT a page. It is a film set: 1280x720, no scrollbars, no interaction. The
-  build opens it in headless Chromium, seeks frame by frame, and encodes what
-  it sees. Editing this file changes the hero footage; nothing else does.
+  NOT a page. It is a film set: 1280x720, no interaction, one canvas. The build
+  opens it in headless Chromium, seeks frame by frame, and encodes what it
+  sees. Editing this file changes the hero footage; nothing else does.
 
-  NO TEXT, DELIBERATELY — and this is the rule most likely to be broken later.
-  The first cut of this scene carried the PIXORA wordmark and four service
-  cards. It looked good alone and was wrong in the hero: the headline already
-  says the name, the sections already name the services, and baked-in English
-  labels cannot be translated — the Arabic reader would have got an image of
-  another language. Type in the hero belongs in the DOM, where it is
-  selectable, translatable and readable by a screen reader. The film carries
-  atmosphere only.
+  WHY THIS IS DRAWN RATHER THAN FILMED. The generated footage this replaces was
+  good, and it arrived with another company's watermark baked into the corner
+  where the headline sits — removing which is a licence question, not an
+  editing one. Drawn, the same look costs nothing per export, carries no
+  licence, is sharp at any size instead of upscaled from 784px, and can be
+  changed by editing numbers. See docs/54 §8.
 
-  DETERMINISTIC BY CONSTRUCTION. Every animation is paused and driven by one
-  negative delay (--t), so frame N is identical on every run and on every
-  machine. Nothing reads the clock, nothing is random: built twice from the
-  same commit it is byte-identical, which is what makes the budget check mean
-  something.
+  DETERMINISTIC BY CONSTRUCTION, and more strictly than the CSS version was.
+  Every particle's position is a FUNCTION OF TIME — nothing accumulates, no
+  frame depends on the frame before it, and the only randomness is a seeded
+  generator that produces the same sequence on every machine. Frame N is
+  identical on every run.
 
-  DIRECTION-NEUTRAL. Motion is radial, vertical or centre-out, never a
-  left-to-right sweep — this plays behind the Arabic hero as well as the
-  English one, and a sweep that reads as forward in one reads as backwards in
-  the other. One file, both languages. See docs/53 §5.
+  SEAMLESS BY CONSTRUCTION, not by cross-fade. Every motion is periodic with
+  exactly the loop length: particles wrap a whole number of times, every sway
+  and pulse is a sine of an integer multiple of t/loop. There is no seam to
+  hide, because the last frame IS the frame before the first.
+
+  DARK SIDE LEFT. The light source sits at 62% across, so the left third stays
+  darkest — that is where the English headline goes. hero-film.css mirrors the
+  whole thing at [dir="rtl"], which puts the dark half on the right where the
+  Arabic headline goes. One file, correct in both. Get the source orientation
+  backwards and it is correct in exactly one.
 -->
 <style>
-  :root {
-    --t: 0s;
-    --loop: 12s;
-    --charcoal-900: #0d0f12;
-    --charcoal-800: #111418;
-    --yellow: #f4d13f;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html, body {
-    width: 1280px;
-    height: 720px;
-    overflow: hidden;
-    background: var(--charcoal-900);
-  }
-
-  body { position: relative; }
-
-  /* One paused timeline, shared. */
-  .a {
-    animation-duration: var(--loop);
-    animation-iteration-count: infinite;
-    animation-play-state: paused;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: both;
-    animation-delay: var(--t);
-  }
-
-  /* A ground that is not flat black: the site's own two darkest surfaces,
-     drifting vertically so the frame is never quite static. */
-  .ground {
-    position: absolute;
-    inset: -6%;
-    background:
-      radial-gradient(ellipse 70% 50% at 50% 38%, var(--charcoal-800) 0%, transparent 70%),
-      var(--charcoal-900);
-    animation-name: drift;
-  }
-  @keyframes drift {
-    0%, 100% { transform: translateY(0) scale(1.00); }
-    50%      { transform: translateY(-14px) scale(1.03); }
-  }
-
-  /* The dot field — the site's grid, made visible and breathing. */
-  .field {
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(255,255,255,.13) 1.1px, transparent 1.1px);
-    background-size: 36px 36px;
-    -webkit-mask-image: radial-gradient(circle at 50% 44%, #000 0%, transparent 66%);
-    mask-image: radial-gradient(circle at 50% 44%, #000 0%, transparent 66%);
-    animation-name: breathe;
-  }
-  @keyframes breathe {
-    0%, 100% { opacity: .26; transform: scale(1.000); }
-    50%      { opacity: .58; transform: scale(1.045); }
-  }
-
-  /* NO RINGS. The first cut expanded concentric circles from centre, and in
-     the hero they vanished — the orbit diagram beside them is already made of
-     circles, so the eye merged the two layers and read neither. Turning the
-     film up would have put two ring systems in one frame. The atmosphere has
-     to do something the orbit does not: rise. Slow vertical drift reads as a
-     separate layer, and vertical has no reading direction, so Arabic is
-     unaffected. */
-  .motes {
-    position: absolute;
-    inset: -20% 0;
-    background-image:
-      radial-gradient(circle, rgba(244,209,63,.55) 1.6px, transparent 1.7px),
-      radial-gradient(circle, rgba(255,255,255,.30) 1.2px, transparent 1.3px);
-    background-size: 240px 190px, 170px 260px;
-    background-position: 30px 0, 120px 40px;
-    -webkit-mask-image: radial-gradient(ellipse 62% 58% at 50% 46%, #000 0%, transparent 78%);
-    mask-image: radial-gradient(ellipse 62% 58% at 50% 46%, #000 0%, transparent 78%);
-    animation-name: rise;
-  }
-  @keyframes rise {
-    0%   { transform: translateY(0); opacity: 0; }
-    14%  { opacity: .85; }
-    86%  { opacity: .85; }
-    /* Exactly one tile height, so the loop seam is invisible. */
-    100% { transform: translateY(-190px); opacity: 0; }
-  }
-
-  /* One accent bloom, centred. The only warm light in the frame. */
-  .bloom {
-    position: absolute;
-    left: 50%; top: 44%;
-    width: 980px; height: 980px;
-    translate: -50% -50%;
-    background: radial-gradient(circle, rgba(244,209,63,.13) 0%, transparent 60%);
-    animation-name: bloom;
-  }
-  @keyframes bloom {
-    0%, 100% { opacity: .30; transform: scale(.86); }
-    50%      { opacity: .80; transform: scale(1.06); }
-  }
-
-  /* A scrim, so the hero's text sits on a predictable ground no matter which
-     instant of the loop is on screen. Contrast is not left to chance. */
-  .scrim {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(13,15,18,.42) 0%, rgba(13,15,18,.16) 46%, rgba(13,15,18,.58) 100%);
-  }
+  * { margin: 0; padding: 0; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #0d0f12; }
+  canvas { display: block; }
 </style>
 </head>
 <body>
-  <div class="ground a"></div>
-  <div class="field a"></div>
-  <div class="bloom a"></div>
-  <div class="motes a"></div>
-  <div class="scrim"></div>
-
+<canvas id="stage" width="1280" height="720"></canvas>
 <script>
-  /* The only entry point the renderer uses. `p` is 0..1 through the loop;
-     one negative delay seeks every animation to the same instant. */
-  window.__seek = (p) => {
-    const loop = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--loop'));
-    document.documentElement.style.setProperty('--t', `${-(p * loop).toFixed(4)}s`);
-    return document.fonts.ready;
+(() => {
+  const W = 1280, H = 720, LOOP = 12;
+  const ctx = document.getElementById('stage').getContext('2d');
+
+  /* The light source. Everything is composed around it, and its horizontal
+     position is what keeps the left side dark. */
+  const CX = W * 0.62, FLOOR = H * 0.78;
+
+  const INK = '#0d0f12';
+  const WARM = (a) => `rgba(244, 209, 63, ${a})`;
+  const PALE = (a) => `rgba(255, 240, 205, ${a})`;
+
+  /* mulberry32 — small, fast, and identical everywhere. Math.random() would
+     make every build a different film and the budget check meaningless. */
+  const rng = (seed) => () => {
+    seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
+
+  /* Particles are built once and never mutated. Each carries the constants of
+     its own orbit; `at(t)` evaluates it. `wraps` and `swayRate` are integers,
+     which is the entire reason the loop is seamless: every particle is back
+     where it started at t = LOOP. */
+  const build = () => {
+    const r = rng(20260904);
+    const dust = [];
+    for (let i = 0; i < 520; i += 1) {
+      /* Clustered toward the shaft, with a long tail into the dark. */
+      const cluster = Math.pow(r(), 1.7);
+      const side = r() < 0.5 ? -1 : 1;
+      dust.push({
+        x: CX + side * cluster * W * 0.52 + (r() - 0.5) * 60,
+        y0: r(),
+        wraps: 1 + Math.floor(r() * 3),          // 1..3 rises per loop
+        size: 0.45 + Math.pow(r(), 2.2) * 2.1,
+        sway: 6 + r() * 26,
+        swayRate: 1 + Math.floor(r() * 2),        // 1..2 sways per loop
+        phase: r(),
+        warm: r() < 0.72,
+        alpha: 0.20 + Math.pow(r(), 1.5) * 0.75,
+      });
+    }
+    /* A handful of out-of-focus motes, larger and dimmer, for depth. */
+    const bokeh = [];
+    for (let i = 0; i < 26; i += 1) {
+      bokeh.push({
+        x: CX + (r() - 0.5) * W * 0.95,
+        y0: r(),
+        wraps: 1,
+        size: 5 + r() * 13,
+        sway: 10 + r() * 22,
+        swayRate: 1,
+        phase: r(),
+        alpha: 0.05 + r() * 0.10,
+      });
+    }
+    return { dust, bokeh };
+  };
+
+  const P = build();
+  const TAU = Math.PI * 2;
+
+  /* Where a particle is at time t. Rises, wrapping; sways symmetrically, so
+     there is no net travel in either direction — the sway is a sine, not a
+     drift, and mirrors cleanly. */
+  const at = (p, t) => {
+    const u = (p.y0 - (t / LOOP) * p.wraps) % 1;
+    const y = (u < 0 ? u + 1 : u) * (H + 200) - 100;
+    const x = p.x + Math.sin(TAU * (p.swayRate * (t / LOOP) + p.phase)) * p.sway;
+    return { x, y };
+  };
+
+  /* Fades a particle out at the top and bottom of its travel, so nothing pops
+     into existence at the frame edge. */
+  const edgeFade = (y) => {
+    const top = Math.min(1, Math.max(0, (y + 60) / 200));
+    const bottom = Math.min(1, Math.max(0, (H + 60 - y) / 220));
+    return Math.min(top, bottom);
+  };
+
+  function draw(t) {
+    /* Everything below breathes on this one value, which is why the whole
+       frame is periodic rather than merely each part of it. */
+    const breath = 0.5 + 0.5 * Math.sin(TAU * (t / LOOP));
+
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = INK;
+    ctx.fillRect(0, 0, W, H);
+
+    /* The volume itself: a wide warm haze around the source. */
+    const haze = ctx.createRadialGradient(CX, H * 0.44, 0, CX, H * 0.44, 700);
+    haze.addColorStop(0, WARM(0.085 + breath * 0.05));
+    haze.addColorStop(0.55, WARM(0.02));
+    haze.addColorStop(1, 'rgba(244,209,63,0)');
+    ctx.fillStyle = haze;
+    ctx.fillRect(0, 0, W, H);
+
+    /* The shaft. Blurred heavily — a hard-edged cone reads as a shape, and
+       this has to read as light. */
+    ctx.save();
+    ctx.filter = 'blur(46px)';
+    const shaft = ctx.createLinearGradient(0, -40, 0, FLOOR);
+    shaft.addColorStop(0, PALE(0.10 + breath * 0.045));
+    shaft.addColorStop(0.62, WARM(0.045));
+    shaft.addColorStop(1, WARM(0.012));
+    ctx.fillStyle = shaft;
+    ctx.beginPath();
+    ctx.moveTo(CX - 66, -60);
+    ctx.lineTo(CX + 66, -60);
+    ctx.lineTo(CX + 250 + breath * 26, FLOOR);
+    ctx.lineTo(CX - 250 - breath * 26, FLOOR);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    /* Where the shaft lands. The brightest thing in the frame, and still far
+       from bright — it sits behind a headline. */
+    ctx.save();
+    ctx.filter = 'blur(26px)';
+    const poolW = 300 + breath * 40;
+    const pool = ctx.createRadialGradient(CX, FLOOR, 0, CX, FLOOR, poolW);
+    /* Warm, not white. A white core reads as a lamp; the accent has to survive
+       all the way into the brightest part of the frame or the palette breaks
+       exactly where the eye lands. */
+    pool.addColorStop(0, PALE(0.20 + breath * 0.09));
+    pool.addColorStop(0.18, WARM(0.26 + breath * 0.08));
+    pool.addColorStop(0.45, WARM(0.08));
+    pool.addColorStop(1, 'rgba(244,209,63,0)');
+    ctx.fillStyle = pool;
+    ctx.beginPath();
+    ctx.ellipse(CX, FLOOR, poolW, poolW * 0.17, 0, 0, TAU);
+    ctx.fill();
+    ctx.restore();
+
+    /* The site's grid, receding — the one structural element, kept faint
+       enough to be felt rather than read. */
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+    ctx.lineWidth = 1;
+    for (let i = 1; i <= 9; i += 1) {
+      const y = FLOOR + Math.pow(i / 9, 2.1) * (H - FLOOR) * 1.25;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(W, y);
+      ctx.stroke();
+    }
+    for (let i = -7; i <= 7; i += 1) {
+      ctx.beginPath();
+      ctx.moveTo(CX + i * 44, FLOOR);
+      ctx.lineTo(CX + i * 300, H + 40);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    /* Dust. Additive, so overlapping motes build light rather than paint over
+       one another — which is what makes it read as suspended in a beam. */
+    ctx.globalCompositeOperation = 'lighter';
+
+    for (const p of P.bokeh) {
+      const { x, y } = at(p, t);
+      const a = p.alpha * edgeFade(y) * (0.6 + breath * 0.4);
+      if (a <= 0.002) continue;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, p.size);
+      g.addColorStop(0, WARM(a));
+      g.addColorStop(1, 'rgba(244,209,63,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, p.size, 0, TAU);
+      ctx.fill();
+    }
+
+    for (const p of P.dust) {
+      const { x, y } = at(p, t);
+      /* Lit by the shaft: a mote far from the source is barely there. */
+      const lit = Math.max(0, 1 - Math.abs(x - CX) / (W * 0.46));
+      const a = p.alpha * edgeFade(y) * (0.28 + lit * 0.72) * (0.75 + breath * 0.25);
+      if (a <= 0.004) continue;
+      ctx.fillStyle = p.warm ? WARM(a) : PALE(a * 0.75);
+      ctx.beginPath();
+      ctx.arc(x, y, p.size, 0, TAU);
+      ctx.fill();
+    }
+
+    ctx.globalCompositeOperation = 'source-over';
+
+    /* Vignette, then scrim. The scrim is the contrast guarantee: the hero's
+       text sits on a predictable ground whatever instant is on screen, and it
+       is baked in here rather than left to the CSS, so the footage is safe
+       wherever it is used. */
+    const vig = ctx.createRadialGradient(CX, H * 0.46, H * 0.25, CX, H * 0.46, H * 1.05);
+    vig.addColorStop(0, 'rgba(13,15,18,0)');
+    vig.addColorStop(1, 'rgba(13,15,18,0.62)');
+    ctx.fillStyle = vig;
+    ctx.fillRect(0, 0, W, H);
+
+    const scrim = ctx.createLinearGradient(0, 0, 0, H);
+    scrim.addColorStop(0, 'rgba(13,15,18,0.40)');
+    scrim.addColorStop(0.46, 'rgba(13,15,18,0.12)');
+    scrim.addColorStop(1, 'rgba(13,15,18,0.52)');
+    ctx.fillStyle = scrim;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  /* The only entry point the renderer uses. `p` is 0..1 through the loop. */
+  window.__seek = (p) => {
+    draw(p * LOOP);
+    return Promise.resolve();
+  };
+
+  draw(0);
+})();
 </script>
 </body>
 </html>

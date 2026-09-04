@@ -37,7 +37,7 @@ const SPEC = {
   fps: 25,
   seconds: 12,
   budgetBytes: 2 * 1024 * 1024,
-  crf: 20, // quality knob: lower is better and heavier. Gradients band above ~24.
+  crf: 24, // H.264 needs less here than the flat CSS scene did; VP9 tracks it.
 };
 
 function chromium() {

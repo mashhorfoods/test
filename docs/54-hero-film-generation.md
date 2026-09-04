@@ -207,3 +207,52 @@ accent survives, plus the same scrim the CSS film has baked in. Generated
 footage that arrives close to the brief barely moves; this pair arrived bright,
 so it moves a long way. That is recoverable, but footage generated darker to
 begin with will always look better than footage darkened afterwards.
+
+---
+
+## 8. Drawn instead — the decision, 4 September 2026
+
+The generated clips are not being used. Not because they were bad: **the look
+was right, and this scene is a deliberate reconstruction of it** — a light
+shaft in a dark volume, warm dust suspended in the beam, a pool where it lands.
+
+The watermark is why. On a free tier it is the licence condition, so removing
+it — blur, patch, or a crop framed to exclude it — is circumventing that, and
+that is the owner's decision to make with their account rather than an editing
+step. And it failed on its own terms too: `delogo` left a grey smudge beside
+the headline, a patch reads as a dead rectangle on a moving grainy plate, and
+cropping it out costs 37% of the width or 30% of the height of footage already
+below 720p.
+
+**Drawing it removes the question rather than answering it.**
+
+| | Generated | Drawn |
+| --- | --- | --- |
+| Licence | A watermark, or a subscription | None. It is ours |
+| Resolution | 784×470, upscaled | Any size, sharp, re-renders at 4K if wanted |
+| Weight | 871 KB worst case | **657 KB MP4 / 211 KB WebM** |
+| Changing it | Re-generate, re-download, hope | Edit a number, re-run one command |
+| Seam | Two cross-fades hide two joins | No seam exists — see below |
+
+**Seamless by construction rather than by cross-fade.** Every motion is
+periodic with exactly the loop length: each particle rises a whole number of
+times per loop, every sway and pulse is a sine of an integer multiple of
+`t / LOOP`. There is nothing to hide, because the last frame is the frame
+before the first. That is strictly better than fading a tail onto a head, which
+is a repair.
+
+**Deterministic more strictly than the CSS version was.** Every particle's
+position is a function of time — nothing accumulates, no frame depends on the
+one before it — and the only randomness is a seeded generator. `Math.random()`
+would have made every build a different film and the budget check meaningless.
+
+**Dark side left, and now proved.** The light sits at 62% across, so the left
+third stays darkest for the English headline; `hero-film.css` mirrors it at
+`[dir="rtl"]` and the dark half lands on the right for the Arabic one.
+Verified in both: `transform: matrix(-1, 0, 0, 1, 0, 0)` on the Arabic view,
+with the bright half behind the orbit and the headline on clean ground.
+
+**What the generated clips were still worth.** They set the direction — this
+scene would not exist without them — and `tools/build-hero-from-clips.js`
+remains, working and proven. If a watermark-free export ever arrives, it is one
+command, and the two approaches can be compared honestly.
