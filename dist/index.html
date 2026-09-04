@@ -86,14 +86,14 @@ const SERVICE_LINKS = [
 const SECTIONS = [
   { id: 'home', label: 'Home', labelAr: 'الرئيسية' },
   { id: 'services', label: 'Services', labelAr: 'خدماتنا', children: SERVICE_LINKS },
-  { id: 'story', label: 'Story', labelAr: 'القصة', href: './story.html' },
-  { id: 'process', label: 'Process', labelAr: 'آلية العمل' },
   { id: 'pricing', label: 'Pricing', labelAr: 'الأسعار', href: './pricing.html' },
+  { id: 'story', label: 'Story', labelAr: 'القصة', href: './story.html' },
+  { id: 'process', label: 'Process', labelAr: 'آلية العمل', inNav: false, inMenu: true },
   { id: 'about', label: 'About', labelAr: 'من نحن', href: './about.html' },
   // Reached through the primary CTA rather than a sixth nav link, so the
   // header keeps one unambiguous conversion action (§11, §19). It still
   // appears in the footer quick links.
-  { id: 'contact', label: 'Contact', labelAr: 'تواصل معنا', inNav: false },
+  { id: 'contact', label: 'Contact', labelAr: 'تواصل معنا', inNav: false, inMenu: true },
 ];
 const PRIMARY_CTA = {
   target: 'contact',
@@ -103,7 +103,7 @@ const PRIMARY_CTA = {
 const SOCIAL_LINKS = [
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhalabsalah/' },
   { label: 'Behance', href: 'https://www.behance.net/MuhalabSalah' },
-  { label: 'Website', href: 'https://muhalabsalah.github.io/muhalabsalah/' },
+  { label: "Founder's portfolio", labelAr: 'أعمال المؤسس', href: 'https://muhalabsalah.github.io/muhalabsalah/' },
 ];
 const CONTACT_CHANNELS = [
   {
@@ -212,8 +212,11 @@ function currentLang() {
   return document.documentElement.lang?.startsWith('ar') ? 'ar' : 'en';
 }
 function sectionsFor(surface) {
-  const key = surface === 'footer' ? 'inFooter' : 'inNav';
-  return SECTIONS.filter((section) => section[key] !== false);
+  if (surface === 'footer') return SECTIONS.filter((s) => s.inFooter !== false);
+  if (surface === 'menu') {
+    return SECTIONS.filter((s) => (s.inMenu !== undefined ? s.inMenu : s.inNav !== false));
+  }
+  return SECTIONS.filter((s) => s.inNav !== false);
 }
 function labelFor(entry) {
   return currentLang() === 'ar' && entry.labelAr ? entry.labelAr : entry.label;
@@ -311,7 +314,9 @@ function renderSurfaces() {
       );
       return;
     }
-    const surface = kind === 'footer' ? 'footer' : 'nav';
+    const surface = kind === 'footer'
+      ? 'footer'
+      : (container.dataset.navStyle === 'drawer' ? 'menu' : 'nav');
     const style = container.dataset.navStyle ?? surface;
     const sections = sectionsFor(surface);
     container.replaceChildren(
@@ -4099,7 +4104,7 @@ if (document.readyState === 'loading') {
             <ul class="c-footer__social" data-social-render>
               <li><a href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
               <li><a href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
-              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer">Website<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer">Founder's portfolio<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
             </ul>
           </nav>
 

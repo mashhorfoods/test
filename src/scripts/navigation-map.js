@@ -72,17 +72,23 @@ export const SECTIONS = [
      It shipped reachable only from a text link at the bottom of #integrated,
      which measured 68% down the homepage and 20 screens into it on a phone.
      A page nothing links to from the navigation is a page nobody finds. */
+  { id: 'pricing', label: 'Pricing', labelAr: 'الأسعار', href: './pricing.html' },
   { id: 'story', label: 'Story', labelAr: 'القصة', href: './story.html' },
-  { id: 'process', label: 'Process', labelAr: 'آلية العمل' },
+  /* Not in the header: Gate 01 froze that row at five items, and wireframe W7
+     names them — Home, Services, Pricing, Story, About. Process is a section of
+     the homepage, reachable by scrolling and one tap away in the drawer. */
+  { id: 'process', label: 'Process', labelAr: 'آلية العمل', inNav: false, inMenu: true },
   /* A PAGE, like Story. Flow B — the buyer who verifies before enquiring —
      had nowhere to land: no About meant no answer to "who are these people?",
      which at these prices is the question asked before the price is. */
-  { id: 'pricing', label: 'Pricing', labelAr: 'الأسعار', href: './pricing.html' },
   { id: 'about', label: 'About', labelAr: 'من نحن', href: './about.html' },
   // Reached through the primary CTA rather than a sixth nav link, so the
   // header keeps one unambiguous conversion action (§11, §19). It still
   // appears in the footer quick links.
-  { id: 'contact', label: 'Contact', labelAr: 'تواصل معنا', inNav: false },
+  /* Reached through the primary CTA in the header, and now ALSO a labelled
+     destination in the drawer (IA-5): a button is not a way-finding target, and
+     a returning visitor looking for a phone number had nothing to scan for. */
+  { id: 'contact', label: 'Contact', labelAr: 'تواصل معنا', inNav: false, inMenu: true },
 ];
 
 /**
@@ -107,7 +113,10 @@ export const PRIMARY_CTA = {
 export const SOCIAL_LINKS = [
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhalabsalah/' },
   { label: 'Behance', href: 'https://www.behance.net/MuhalabSalah' },
-  { label: 'Website', href: 'https://muhalabsalah.github.io/muhalabsalah/' },
+  /* Labelled for what it is. As "Website" it read as the agency's own site,
+     sitting in a list beside it — the identity mismatch Phase 03 flagged
+     (PS-06). The destination is unchanged; only the promise it makes is. */
+  { label: "Founder's portfolio", labelAr: 'أعمال المؤسس', href: 'https://muhalabsalah.github.io/muhalabsalah/' },
 ];
 
 /**
@@ -240,8 +249,17 @@ export function currentLang() {
  * @returns {NavSection[]}
  */
 export function sectionsFor(surface) {
-  const key = surface === 'footer' ? 'inFooter' : 'inNav';
-  return SECTIONS.filter((section) => section[key] !== false);
+  /* THREE SURFACES, NOT TWO (Phase 12).
+     The header and the drawer used to share one flag, which forced a false
+     choice: an entry was either in both or in neither. The header is a scarce
+     row that Gate 01 froze at five items; the drawer is a phone's whole map of
+     the site and can afford more. `inMenu` splits them, defaulting to whatever
+     `inNav` says, so every existing entry behaves exactly as it did. */
+  if (surface === 'footer') return SECTIONS.filter((s) => s.inFooter !== false);
+  if (surface === 'menu') {
+    return SECTIONS.filter((s) => (s.inMenu !== undefined ? s.inMenu : s.inNav !== false));
+  }
+  return SECTIONS.filter((s) => s.inNav !== false);
 }
 
 /**

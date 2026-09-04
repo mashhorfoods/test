@@ -177,7 +177,12 @@ function renderSurfaces() {
       return;
     }
 
-    const surface = kind === 'footer' ? 'footer' : 'nav';
+    /* The drawer asks for its own surface, not the header's: Phase 12 found
+       Process and Contact missing from a phone's only map of the site because
+       both surfaces shared one flag. */
+    const surface = kind === 'footer'
+      ? 'footer'
+      : (container.dataset.navStyle === 'drawer' ? 'menu' : 'nav');
     const style = container.dataset.navStyle ?? surface;
     const sections = sectionsFor(surface);
 
