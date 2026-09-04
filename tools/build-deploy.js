@@ -98,7 +98,11 @@ const htaccess = (csp) => `# ===================================================
   Header set Content-Security-Policy "${csp}"
 ${cfg.hsts
     ? '  # HSTS: enabled in site.config.json AFTER the live site was verified.\n'
-      + '  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"'
+      + '  # The apex only. includeSubDomains would force HTTPS on every subdomain of\n'
+      + '  # this host — webmail, cpanel, anything a control panel creates later — and\n'
+      + '  # any one of them that cannot answer over TLS becomes unreachable for a\n'
+      + '  # year. Set "hsts": "all" once every subdomain is confirmed to serve HTTPS.\n'
+      + `  Header always set Strict-Transport-Security "max-age=31536000${cfg.hsts === 'all' ? '; includeSubDomains' : ''}"`
     : '  # HSTS is off: `hsts` is false in site.config.json. Turn it on there — not\n'
       + '  # here — once the live site is confirmed serving TLS. The header is cached\n'
       + '  # by browsers for a year, so switching it on too early locks visitors out\n'

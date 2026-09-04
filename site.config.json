@@ -7,6 +7,13 @@
     "placeholder. A wrong canonical is worse than a missing one: it tells search",
     "engines the real page lives somewhere else.",
     "",
+    "`hsts` was FALSE until the four live checks passed on 4 September 2026:",
+    "brotli, the CSP, Referrer-Policy and the custom 404 all confirmed served by",
+    "the live host. It is now true — the APEX ONLY. Set it to the string \"all\"",
+    "to add includeSubDomains, but only once every subdomain of this host is",
+    "known to serve HTTPS: one that cannot is unreachable for a year.",
+    "",
+    "The original warning, which still governs any NEW domain this moves to:",
     "`hsts` STAYS FALSE until check 4 in docs/44-launch.md §2 shows the live site",
     "serving TLS and its headers. The header is cached by browsers for a year:",
     "switch it on over a host that cannot serve https and visitors are locked out",
@@ -23,7 +30,7 @@
     "the pages, not for judging the deployment."
   ],
   "url": "https://zaokalyamamah.online",
-  "hsts": false,
+  "hsts": true,
   "pages": [
     {
       "file": "index.html",
