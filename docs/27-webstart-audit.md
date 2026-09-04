@@ -50,7 +50,7 @@ that were uploaded, never observed. See §6, BLOCKER-1.
 | **19 Launch & handover** | 🔴 BLOCKED / 🟡 PARTIAL | Deployment bundle is complete and well documented: `dist/` (6 files), `.htaccess`, `robots.txt`, generated `sitemap.xml`, canonical + `og:url` written from `site.config.json`, `docs/26-deployment.md` with a four-point post-upload check. Live on `zaokalyamamah.online` per the project owner | **Cannot verify** — the host is blocked by this environment's egress policy (BLOCKER-1). Unverified: TLS, HTTP→HTTPS redirect, gzip/brotli, `.htaccess` actually uploaded, extensionless routes, the 404 route. Missing regardless: analytics, Search Console, `og:image`, `apple-touch-icon`, Organization JSON-LD, monitoring, backups, and an owner handover document | Verify the four checks, then close the launch gaps |
 | **20 Post-launch optimization** | ❌ NOT DONE | None | Impossible by construction: there is no analytics, no event tracking, no conversion definition and no KPI. The site cannot currently tell us whether it works | Blocked on Phase 04 (KPIs) + analytics install |
 
-**Score:** 7 ✅ · 10 🟡 · 3 ❌ · 1 🔴 · 1 ⬛ out of scope (+ Gate 01 ready, Gates 02–03 unheld) — updated after Phases 01–07 ran; see `docs/28`–`docs/37`
+**Score:** 6 ✅ · 11 🟡 · 2 ❌ · 1 🔴 · 1 ⬛ out of scope = 21 phases (Gate 01 ready for sign-off; Gates 02–03 unheld) — updated after Phases 01–07 ran; see `docs/28`–`docs/37`
 
 ---
 
