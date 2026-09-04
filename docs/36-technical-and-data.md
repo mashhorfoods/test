@@ -99,6 +99,27 @@ surface and a hosting bill to solve a problem nobody has.
 Recorded here so a future "we should have a dashboard" has to argue against a
 written reason rather than fill a gap.
 
+**Update, 4 September 2026.** The owner is reconsidering, and has asked that it
+stay out of scope for now. Both halves matter: the decision above still stands
+and nothing is being built, but it is no longer settled the way it was on the
+day it was made. So this section is a live question, not a closed one — and the
+four triggers stop being the only route back. If the owner returns to it, the
+argument to have is the one below, not a fresh start.
+
+**What would actually need answering**, whenever that conversation happens:
+
+| Question | Why it decides the shape |
+| --- | --- |
+| Who logs in, and from where? | One person on one laptop is a very different security surface from staff on shared devices |
+| What changes — prices, or pages? | A form over `pricing.json` is a weekend. A page builder is a product |
+| Does the build still run? | The site is generated. A dashboard that writes data but cannot trigger a build has only moved the problem |
+| Where does it live? | Static hosting cannot run it. This is the item that ends the zero-backend architecture and starts a hosting bill |
+
+The cheapest honest version is not a dashboard at all: a form that edits
+`pricing.json` and commits it, letting the existing build do the rest. Worth
+pricing that against a real dashboard before assuming the dashboard is the
+thing being asked for.
+
 ---
 
 ## 5. Environments, backups, monitoring
