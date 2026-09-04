@@ -127,10 +127,9 @@ of those it optimises for.
 
 ---
 
-## Part 4 — status: drafted, not sent (4 September 2026)
+## Part 4 — status: sent (4 September 2026)
 
-The message is written and sitting as a **Gmail draft** in the agency account,
-Arabic first, with the two verification questions from Part 3 folded in so one
+**Sent to madatravel@gmail.com on 4 September 2026**, Arabic first, with the two verification questions from Part 3 folded in so one
 send closes F1–F3 as well as the missing sentence. It also gained a paragraph
 that Part 2 did not have — **the offer from our side**:
 
@@ -143,14 +142,19 @@ something, and this is something we can actually honour: small post-handover
 changes at no charge. It is also true, which the rest of this project has
 insisted on.
 
-**Two things are missing before it can go out, and neither is mine to invent:**
+**What had to be settled first.** The message links to the case study, and the
+GitHub Pages link serves the repository's default branch — which still carried
+the *previous* story page, *Connecting ideas to impact*, with no mention of Al
+Mada anywhere in it. Sending that link would have invited a client to read a
+page about themselves that did not mention them.
 
-1. **An address for Al Mada.** There is none in this repository, and a search
-   of the agency mailbox found no correspondence with them — every hit was a
-   newsletter or a mada-card promotion. Guessing an address for a real company
-   is not an option.
-2. **A URL that actually serves the page.** The draft links to the case study,
-   and nothing has been deployed from this environment. The link must point at
-   a page the client can open, on the day it is sent.
+So `claude/master-design-system-setup-5oy6mo` was fast-forwarded to this
+branch (no divergence, nothing overwritten, with the owner's permission), and
+`https://mashhorfoods.github.io/test/story.html` now resolves to
+*Al Mada — one brand, four surfaces*. Verified in git, not in a browser: this
+environment cannot reach github.io, so the live page has not been opened by
+anyone here.
 
-Fill both in and send. Everything else in the message is final.
+**Open until Al Mada replies:** the missing sentence, and F1-F3. If the reply
+answers any of them, the edits go into `src/data/story.json` and
+`docs/48-story-arabic-checklist.md`.
