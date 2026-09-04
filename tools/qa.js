@@ -320,6 +320,32 @@ function serve() {
     await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await p.waitForTimeout(900);
     if (heavy.length) fail('HIGH', 'budget', `the phone requested video (${heavy.join(', ')}) — the still is the phone's version`);
+
+    /* ---- 8 width parity ---------------------------------------------------
+       X01 found eight of thirteen package CTAs missing on the phone: a rule
+       hid them when they were interchangeable, and stayed after P0-4 made each
+       one carry its own package, price and analytics attribute. Nothing
+       watched it, because every check counted links on ONE width.
+
+       So this counts the conversion affordances a buyer can actually reach at
+       390 and at 1280 and requires them to match. A deliberate difference is
+       still allowed — it just has to be argued for here rather than happen. */
+    const reach = async (width, isMobile) => {
+      const c = await browser.newContext({ viewport: { width, height: 800 }, isMobile, hasTouch: isMobile });
+      const pg = await c.newPage();
+      await pg.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+      await pg.waitForTimeout(700);
+      const n = await pg.evaluate(() => [...document.querySelectorAll('main a[href*="wa.me"]')]
+        .filter((a) => { const b = a.getBoundingClientRect(); return b.width > 0 && b.height > 0; }).length);
+      await c.close();
+      return n;
+    };
+    const wide = await reach(1280, false);
+    const narrow = await reach(390, true);
+    if (narrow < wide) {
+      fail('HIGH', 'parity', `the phone reaches ${narrow} package CTA(s), the desktop ${wide} — the conversion path is not the same on both`);
+    }
+
     await ctx.close();
   }
 

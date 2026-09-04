@@ -523,31 +523,31 @@
      the summary line (.c-detail__action). Nothing is lost: every one of these
      buttons was the same button. Above 48em, where the cards are a row again,
      they come back. */
+     REVERSED 4 September 2026, by X01. The paragraph above was true when it
+     was written and P0-4 made it false: these are no longer the same button.
+     Each says "Ask about Starter" / "Professional" / "Advanced", each opens
+     WhatsApp with its own package and price already written, and each carries
+     the data-about that feeds analytics and pre-fills the contact form. Hidden
+     on the phone, the package-aware conversion path P0-4 built reached desktop
+     only — and the measurement behind Phase 20 was quietly desktop-skewed in a
+     market that arrives on phones.
+
+     Three distinct labels stacked are a CHOICE, which is what a package grid
+     is for. Three identical ones were a stutter. The rule was measuring the
+     labels, so when the labels changed the rule should have been re-read. */
   .c-tier__cta {
-    display: none;
-  }
-
-  @media (min-width: 48em) {
-    .c-tier__cta {
-      display: inline-flex;
-      margin-block-start: auto;
-      inline-size: 100%;
-    }
-  }
-
-  /* Its phone counterpart — one per service block, and only while the cards
-     are stacked. Full width, because at this size a button that does not fill
-     the column reads as secondary. */
-  .c-detail__action {
+    display: inline-flex;
+    margin-block-start: auto;
     inline-size: 100%;
-    justify-content: center;
-    margin-block-start: var(--space-24);
   }
 
-  @media (min-width: 48em) {
-    .c-detail__action {
-      display: none;
-    }
+  /* Its phone counterpart is now redundant: with the card actions restored,
+     this would be a fourth button under three, asking a vaguer version of the
+     question the cards already ask precisely. Kept in the markup and hidden
+     everywhere, because it is still the right answer for a service block that
+     has no packages under it — and one is coming. */
+  .c-detail__action {
+    display: none;
   }
 
   /* On the narrowest phones the card cannot hold 32px of padding and a
