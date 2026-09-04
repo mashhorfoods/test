@@ -77,6 +77,7 @@ export const SECTIONS = [
   /* A PAGE, like Story. Flow B — the buyer who verifies before enquiring —
      had nowhere to land: no About meant no answer to "who are these people?",
      which at these prices is the question asked before the price is. */
+  { id: 'pricing', label: 'Pricing', labelAr: 'الأسعار', href: './pricing.html' },
   { id: 'about', label: 'About', labelAr: 'من نحن', href: './about.html' },
   // Reached through the primary CTA rather than a sixth nav link, so the
   // header keeps one unambiguous conversion action (§11, §19). It still

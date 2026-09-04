@@ -67,8 +67,8 @@ terms · any content that could rank in search · a real client case study.
 
 ```
 /                     Homepage — the sales narrative, one page, nine sections
-├─ /about             NEW · who we are, how remote works, the named human      P1
-├─ /pricing           NEW · what it costs and what changes the price            P2
+├─ /about             LIVE · who we are, how remote works, the named human
+├─ /pricing           LIVE · what it costs and what changes the price
 ├─ /story             Case-study format — holds the studio argument until C-7   —
 ├─ /privacy           NEW · the form, the analytics, the lawful basis           P0
 └─ /styleguide        Internal, robots-disallowed                                —

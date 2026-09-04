@@ -351,15 +351,25 @@ ${groups}
 
 /* --- Write --------------------------------------------------------------- */
 
-let html = fs.readFileSync(HTML, 'utf8');
+/* The same blocks now feed two documents: the homepage, where a service
+   section carries its own packages, and the pricing guide, which explains what
+   moves a price and shows the same cards underneath. Rendering both from here
+   is the only way the guide cannot drift from the page it explains — which is
+   exactly what went wrong with the standalone Pricing section this project
+   removed in an earlier stage. */
+const TARGETS = [HTML, path.join(ROOT, 'src/pages/pricing.html')].filter(fs.existsSync);
+
+TARGETS.forEach((file) => {
+let html = fs.readFileSync(file, 'utf8');
 const before = html;
 
 data.forEach((c) => {
   const a = `<!-- PACKAGES:${c.id}:START -->`;
   const b = `<!-- PACKAGES:${c.id}:END -->`;
-  if (!html.includes(a) || !html.includes(b)) {
-    throw new Error(`packages markers not found for #${c.section}`);
-  }
+  // A target that does not carry this service's markers simply does not want
+  // this block — the guide and the homepage may diverge in what they include,
+  // but never in what a package says.
+  if (!html.includes(a) || !html.includes(b)) return;
   html = html.replace(new RegExp(`${a}[\\s\\S]*?${b}`), () => renderBlock(c));
 });
 
@@ -372,8 +382,9 @@ data.forEach((c) => {
 }
 
 // An unchanged output is the SUCCESS case on a re-run, not a failure.
-fs.writeFileSync(HTML, html);
-console.log(html === before ? 'markup already up to date' : 'markup updated');
+fs.writeFileSync(file, html);
+console.log(`${path.relative(ROOT, file)}: ${html === before ? 'already up to date' : 'updated'}`);
+});
 console.log(`pricing: ${data.length} categories, ${total} packages`);
 console.log(`  source -> src/data/pricing.json`);
 console.log(`  markup -> index.html (${data.length} service sections)`);

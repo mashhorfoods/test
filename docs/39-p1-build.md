@@ -65,7 +65,7 @@ existence invites filling it dishonestly.
 | ~~W2 verification band~~ | **Shipped 4 Sep 2026.** Named person, role, the remote-work line, a reply window rendered from one string, and two links a stranger can check. A Google Business Profile and a directory listing are omitted until they exist — an empty proof slot is worse than none. **Confirm the name, the role and the reply window**; each is one edit |
 | ~~W5 About~~ | **Shipped 4 Sep 2026**, written from what the repository already establishes: who you work with, how remote actually works, why the prices are published, and four things we will not do. Nothing in it is invented — but read it, because it speaks for you |
 | **Al Mada's four images on the story page** | The files. They were pasted into the conversation rather than uploaded, so they are not on disk here |
-| **W6 `/pricing` guide** | The five price drivers (scale, content readiness, languages, integrations, turnaround) in your words, and the "How we bill" facts — which are the same ones as §1 |
+| ~~W6 `/pricing` guide~~ | **Shipped 4 Sep 2026.** The five drivers, the twelve cards generated from the same file as the homepage, and a "How we bill" section built from the scope facts. Read the drivers and the billing lines — like the scope facts, they are commitments |
 | ~~`/story` as a real case study~~ | **Shipped 4 Sep 2026 — Al Mada Travel & Tourism Agency, named with permission.** Five chapters written from the deliverables: the mark and how it is constructed, the system that outlives the designer, the Arabic-first site, and the same brand carried into campaigns and a printed profile. Chapter 05 gains a result the day Al Mada gives us one we can stand behind |
 | **`/work`** | Two case studies. One project is a story, not a portfolio |
 | **Homepage proof strip** | Ships with the first case study |
@@ -84,6 +84,14 @@ the "How we bill" content the pricing guide needs.
 | CSP | Written after the images are settled, so it names the final origin set |
 
 ---
+
+## 3a. What is left
+
+| Item | Waiting on |
+| --- | --- |
+| Al Mada's four images on the story page | The files — they were pasted into the conversation, not uploaded |
+| `/work` index | A second case study. One project is a story, not a portfolio |
+| Homepage proof strip | Best built with the second case study, so it has more than one thing to point at |
 
 ## 4. Order when the content arrives
 

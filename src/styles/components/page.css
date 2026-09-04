@@ -64,3 +64,32 @@
     color: var(--color-text-muted);
   }
 }
+
+@layer components {
+  /* A SERVICE BLOCK on the pricing guide: a heading, one line naming the
+     decision the three tiers are really asking you to make, and the same
+     cards the homepage shows — generated from the same file, so the guide
+     cannot quote a price the homepage does not. */
+  .c-page__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    margin-block-start: var(--space-64, 4rem);
+  }
+
+  .c-page__h2 {
+    font-size: var(--text-h3, 1.5rem);
+    line-height: var(--leading-tight, 1.2);
+  }
+
+  .c-page__note {
+    color: var(--color-text-muted);
+    max-inline-size: 42rem;
+  }
+
+  /* The cards arrive with the section's own spacing already applied, so the
+     grid only needs the gap the homepage gives it. */
+  .c-page__section .c-tiers {
+    margin-block-start: var(--space-16);
+  }
+}

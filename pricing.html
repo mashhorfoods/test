@@ -1,0 +1,1560 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- ===================================================================
+         SEO — the Stage 00 §21 template.
+
+         The title and description shipped as Stage 01 scaffold text ("Homepage
+         shell… sections are built in later stages") right up to Stage 16.
+         They now describe the finished page, using only the six approved
+         services and the one-partner proposition — no claim the site does not
+         already make.
+
+         What is still TODO genuinely cannot be filled in yet: og:url and the
+         canonical need a domain, og:image and apple-touch-icon need raster
+         exports of the logo, and Organization JSON-LD needs a legal name and
+         address. None of those exist in the supplied data.
+         =================================================================== -->
+    <title>Pricing — Pixora</title>
+    <meta
+      name="description"
+      content="Every package and price we publish, plus the five things that move a quote up or down."
+    />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#202020" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Pixora" />
+    <meta property="og:title" content="Pricing — Pixora" />
+    <meta
+      property="og:description"
+      content="Branding and design, websites, social media management and digital advertising — delivered together, by one partner."
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ar_SA" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- TODO: og:url, og:image (1200x630), canonical, hreflang alternates and
+         Organization JSON-LD — all blocked on a domain, raster logo exports
+         and the legal entity details. -->
+
+    <!-- Browser tab. Same file as the header logo — one asset, every surface. -->
+    <link rel="icon" href="./src/assets/brand/logo.svg" type="image/svg+xml" />
+    <!-- TODO: apple-touch-icon.png (180x180) and og-image.png (1200x630) need
+         raster exports of the final logo; see src/assets/brand/README.md. -->
+
+    <!-- Fonts are self-hosted, so there is no third-party connection to open.
+         The two faces the first screen needs are preloaded; the rest are
+         fetched only if the page's content calls for them (unicode-range). -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./src/assets/fonts/poppins-latin-700.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./src/assets/fonts/poppins-latin-400.woff2"
+      crossorigin
+    />
+
+    <link rel="stylesheet" href="./src/styles/main.css" />
+
+    <script>
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
+    </script>
+    <script type="module" src="./src/scripts/main.js"></script>
+  </head>
+
+  <body>
+    <a class="c-skip-link" href="./index.html#main">Skip to content</a>
+
+    <!-- =================================================================
+         HEADER — global component (§24). Identical markup serves every
+         page; nothing here is hero- or homepage-specific.
+         ================================================================= -->
+    <header class="c-header" data-header>
+      <div class="l-container c-header__inner">
+        <!-- LEFT — brand -->
+        <div class="c-header__zone">
+          <a
+            class="c-header__brand"
+            href="./index.html#home"
+            aria-label="Pixora, Digital Agency — home"
+            data-i18n-label="brandHome"
+          >
+            <!-- Brand lockup. A type lockup rather than an image: crisp at
+                 any density, no request, restyleable per breakpoint. The
+                 accent letter is the only coloured element. Swap for a vector
+                 asset via src/assets/brand/README.md if one is supplied. -->
+            <span class="c-brand" aria-hidden="true">
+              <span class="c-brand__word"
+                >PI<span class="c-brand__accent">X</span>ORA</span
+              >
+              <span class="c-brand__tagline">Digital Agency</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- CENTRE — primary navigation, rendered from navigation-map.js -->
+        <nav class="c-nav" aria-label="Primary" data-i18n-label="primaryNav">
+          <!-- Seeded so navigation exists with JavaScript disabled; the
+               script replaces these with identical content from
+               navigation-map.js on boot and on language change. A test
+               asserts the seed and the map agree. -->
+          <ul class="c-nav__list" data-nav-render="nav">
+            <li><a class="c-nav__link" href="./index.html#home" data-nav-link>Home</a></li>
+            <li><a class="c-nav__link" href="./index.html#services" data-nav-link>Services</a></li>
+            <li><a class="c-nav__link" href="./index.html#process" data-nav-link>Process</a></li>
+          </ul>
+        </nav>
+
+        <!-- RIGHT — language, CTA, menu trigger -->
+        <div class="c-header__zone c-header__zone--end">
+          <div
+            class="c-lang"
+            role="group"
+            aria-label="Language"
+            data-i18n-label="language"
+          >
+            <button
+              class="c-lang__option"
+              type="button"
+              data-lang="en"
+              aria-pressed="true"
+            >
+              EN
+            </button>
+            <button
+              class="c-lang__option"
+              type="button"
+              data-lang="ar"
+              aria-pressed="false"
+            >
+              AR
+            </button>
+          </div>
+
+          <a class="c-btn c-btn--primary c-header__cta" href="./index.html#contact" data-cta-link>
+            <span data-cta-label>Start Your Project</span>
+            <svg
+              class="c-btn__icon u-flip-rtl"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M5 12h13M13 6l6 6-6 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="square"
+              />
+            </svg>
+          </a>
+
+          <button
+            class="c-menu-trigger"
+            type="button"
+            data-menu-trigger
+            aria-expanded="false"
+            aria-controls="site-menu"
+            aria-label="Open menu"
+          >
+            <span class="c-menu-trigger__bars" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- =================================================================
+         MOBILE MENU
+         Rendered from the same array as the header nav, so the two can
+         never present a different order (§25).
+         ================================================================= -->
+    <div class="c-drawer" id="site-menu" data-drawer inert>
+      <div class="l-container c-drawer__inner">
+        <nav aria-label="Menu" data-i18n-label="menuNav">
+          <p class="t-label c-drawer__eyebrow" data-i18n="menuEyebrow">Menu</p>
+          <ul
+            class="c-drawer__list"
+            data-nav-render="nav"
+            data-nav-style="drawer"
+          ></ul>
+        </nav>
+
+        <!-- Enters after the navigation rows (§16). -->
+        <div class="c-drawer__foot" style="--i: 5">
+          <a
+            class="c-btn c-btn--primary c-btn--lg c-btn--block"
+            href="./index.html#contact"
+            data-cta-link
+          >
+            <span data-cta-label>Start Your Project</span>
+            <svg
+              class="c-btn__icon u-flip-rtl"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M5 12h13M13 6l6 6-6 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="square"
+              />
+            </svg>
+          </a>
+
+          <!-- Hidden until real profiles exist in navigation-map.js. -->
+          <div data-social-block hidden>
+            <p class="t-label u-mbe-16" data-i18n="followUs">Follow us</p>
+            <ul class="c-drawer__social" data-social-render></ul>
+          </div>
+
+          <div class="c-drawer__utility">
+            <span class="t-label" id="menu-lang-label" data-i18n="language">
+              Language
+            </span>
+            <div class="c-lang" role="group" aria-labelledby="menu-lang-label">
+              <button
+                class="c-lang__option"
+                type="button"
+                data-lang="en"
+                aria-pressed="true"
+              >
+                EN
+              </button>
+              <button
+                class="c-lang__option"
+                type="button"
+                data-lang="ar"
+                aria-pressed="false"
+              >
+                AR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================
+         PAGE SECTIONS
+         Placeholders only — each is replaced by its own stage. They exist
+         so navigation, anchors and scroll spy are real and testable. No
+         business content appears here.
+         ================================================================= -->
+    <main id="main">
+<section class="l-section c-page" aria-labelledby="pricing-title">
+        <div class="l-container">
+          <header class="c-page__head">
+            <p class="t-label c-page__eyebrow"><span data-lang-copy="en">Pricing</span><span data-lang-copy="ar" lang="ar">الأسعار</span></p>
+            <h1 class="c-page__title" id="pricing-title"><span data-lang-copy="en">What a project costs, and what changes the price</span><span data-lang-copy="ar" lang="ar">كم يكلّف المشروع، وما الذي يغيّر السعر</span></h1>
+            <p class="t-body-lg c-page__lead"><span data-lang-copy="en">Every package and price is published — on the homepage, and again here with
+              the part most studios leave out: what actually moves a quote up or down.</span><span data-lang-copy="ar" lang="ar">كل باقة وكل سعر منشور — في الصفحة الرئيسية، وهنا مرة أخرى مع الجزء الذي تتركه معظم الاستوديوهات: ما الذي يرفع السعر أو يخفضه فعلًا.</span></p>
+          </header>
+
+          <div class="c-prose">
+            <h2><span data-lang-copy="en">The five things that move a price</span><span data-lang-copy="ar" lang="ar">خمسة أشياء تحرّك السعر</span></h2>
+            <p><span data-lang-copy="en"><strong>Scale.</strong> How many pages, how many identity concepts, how many posts a month. A landing page and an eight-page site are different amounts of work, not different amounts of ambition.</span><span data-lang-copy="ar" lang="ar"><strong>الحجم.</strong> كم صفحة، وكم مقترح هوية، وكم منشورًا في الشهر. صفحة هبوط وموقع من ثماني صفحات كمّان مختلفان من العمل، لا مستويان مختلفان من الطموح.</span></p>
+            <p><span data-lang-copy="en"><strong>Content readiness.</strong> If the text and the photographs exist, the work is design. If they do not, writing and shooting are add-ons, and they add time as well as cost.</span><span data-lang-copy="ar" lang="ar"><strong>جاهزية المحتوى.</strong> إن كانت النصوص والصور موجودة، فالعمل تصميم. وإن لم تكن، فالكتابة والتصوير إضافات، وهي تضيف وقتًا كما تضيف كلفة.</span></p>
+            <p><span data-lang-copy="en"><strong>Languages.</strong> One or two. A bilingual site is not a translation layer bolted on at the end — it is every string twice and a layout that mirrors properly, which is why it is priced as work rather than as a toggle.</span><span data-lang-copy="ar" lang="ar"><strong>اللغات.</strong> واحدة أم اثنتان. الموقع ثنائي اللغة ليس طبقة ترجمة تُضاف في النهاية — بل كل نص مرتين وتخطيط ينعكس كما ينبغي، ولهذا يُسعَّر كعمل لا كزرّ تبديل.</span></p>
+            <p><span data-lang-copy="en"><strong>Integrations.</strong> Anything the site has to talk to: a booking flow, a payment provider, WhatsApp, analytics, a system you already run.</span><span data-lang-copy="ar" lang="ar"><strong>الربط.</strong> أي شيء يحتاج الموقع أن يتحدث إليه: مسار حجز، أو مزوّد دفع، أو واتساب، أو أدوات تحليل، أو نظام تستخدمه بالفعل.</span></p>
+            <p><span data-lang-copy="en"><strong>Turnaround.</strong> The delivery windows on each package are the normal ones. Compressing a schedule means moving other work, and that is priced honestly rather than absorbed quietly.</span><span data-lang-copy="ar" lang="ar"><strong>مدة التنفيذ.</strong> مُدد التسليم في كل باقة هي المدد المعتادة. وضغط الجدول يعني تأجيل عمل آخر، وهذا يُسعَّر بصراحة بدل أن يُبتلَع بصمت.</span></p>
+          </div>
+
+          <div class="c-page__section">
+            <h2 class="c-page__h2"><span data-lang-copy="en">Branding &amp; Design</span><span data-lang-copy="ar" lang="ar">الهوية والتصميم</span></h2>
+            <p class="c-page__note"><span data-lang-copy="en">The question here is how complete the identity has to be on day one: a mark and the basics, a working system, or an ecosystem another designer could pick up and extend.</span><span data-lang-copy="ar" lang="ar">السؤال هنا هو كم يجب أن تكون الهوية مكتملة من اليوم الأول: علامة وأساسيات، أم نظام عملي، أم منظومة يستطيع مصمم آخر أن يكملها.</span></p>
+          <!-- PACKAGES:branding:START -->
+          <div class="c-tiers" data-reveal-group>
+          <article class="c-tier" style="--i: 0"
+            aria-labelledby="price-branding-tier-starter-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+              <span class="c-tier__level-name"><span data-lang-copy="en">Foundation</span><span data-lang-copy="ar" lang="ar">الأساس</span></span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-branding-tier-starter-name" lang="en" dir="ltr">Starter</h3>
+              <p class="c-tier__purpose"><span data-lang-copy="en">A foundational identity for new or small projects.</span><span data-lang-copy="ar" lang="ar">هوية أساسية للمشاريع الجديدة أو الصغيرة.</span></p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__from" data-i18n="priceFrom">From</span>
+                <span class="c-tier__amount">290</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Professional logo design</span><span data-lang-copy="ar" lang="ar">تصميم شعار احترافي</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Color selection</span><span data-lang-copy="ar" lang="ar">اختيار الألوان</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Font selection</span><span data-lang-copy="ar" lang="ar">اختيار الخطوط</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Basic brand identity card</span><span data-lang-copy="ar" lang="ar">بطاقة هوية أساسية للعلامة</span></span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Profile picture and cover design</span><span data-lang-copy="ar" lang="ar">تصميم صورة الملف والغلاف</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">3 social media designs</span><span data-lang-copy="ar" lang="ar">3 تصاميم لوسائل التواصل</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Basic final files</span><span data-lang-copy="ar" lang="ar">ملفات نهائية أساسية</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 7 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (7)</span></span>
+                <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+
+            <dl class="c-tier__facts">
+              <dt><span data-lang-copy="en">Delivery</span><span data-lang-copy="ar" lang="ar">التسليم</span></dt>
+              <dd><span data-lang-copy="en">5–7 working days</span><span data-lang-copy="ar" lang="ar">٥–٧ أيام عمل</span></dd>
+              <dt><span data-lang-copy="en">Revisions</span><span data-lang-copy="ar" lang="ar">التعديلات</span></dt>
+              <dd><span data-lang-copy="en">2 rounds</span><span data-lang-copy="ar" lang="ar">جولتان</span></dd>
+              <dt><span data-lang-copy="en">You own</span><span data-lang-copy="ar" lang="ar">ملكيتك</span></dt>
+              <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما يُسلَّم، عند الانتهاء</span></dd>
+            </dl>
+            <details class="c-tier__terms">
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span></summary>
+              <div class="c-tier__terms-body">
+                <ul>
+                  <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
+                  <li><span data-lang-copy="en">Printing and production</span><span data-lang-copy="ar" lang="ar">الطباعة والتنفيذ</span></li>
+                  <li><span data-lang-copy="en">Photography and videography — available as add-ons</span><span data-lang-copy="ar" lang="ar">التصوير الفوتوغرافي والفيديو — متاحة كإضافات</span></li>
+                  <li><span data-lang-copy="en">Domain, hosting and paid third-party services</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة والخدمات الخارجية المدفوعة</span></li>
+                  <li><span data-lang-copy="en">Written content, unless the package includes it or you add it</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه</span></li>
+                </ul>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">What "from" depends on</span><span data-lang-copy="ar" lang="ar">ما الذي يحدد السعر</span>:</span> <span data-lang-copy="en">The number of concepts, how many applications you need, and whether the identity works in one language or two.</span><span data-lang-copy="ar" lang="ar">عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين.</span></p>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">Payment</span><span data-lang-copy="ar" lang="ar">الدفع</span>:</span> <span data-lang-copy="en">50% to start, 50% before handover. Monthly packages are paid at the start of each month.</span><span data-lang-copy="ar" lang="ar">٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر.</span></p>
+              </div>
+            </details>
+            <a class="c-btn c-btn--secondary c-tier__cta"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Branding%20%26%20Design%20%C2%B7%20Starter%20(from%20290%20USD%2C%20one-time)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Branding%20%26%20Design%20%C2%B7%20Starter%20(from%20290%20USD%2C%20one-time)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Starter%20%D8%B6%D9%85%D9%86%20%D8%A7%D9%84%D9%87%D9%88%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20(%D9%85%D9%86%20290%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D9%84%D9%85%D8%B1%D8%A9%20%D9%88%D8%A7%D8%AD%D8%AF%D8%A9)."
+              data-about="branding:tier-starter"
+              target="_blank" rel="noopener noreferrer"
+              aria-describedby="price-branding-tier-starter-name">
+              <span><span data-lang-copy="en">Ask about Starter</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Starter</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier c-tier--featured" style="--i: 1"
+            aria-labelledby="price-branding-tier-professional-name">
+            <span class="c-tier__ribbon"><span data-lang-copy="en">Most Requested</span><span data-lang-copy="ar" lang="ar">الأكثر طلبًا</span></span>
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
+              <span class="c-tier__level-name"><span data-lang-copy="en">System</span><span data-lang-copy="ar" lang="ar">النظام</span></span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-branding-tier-professional-name" lang="en" dir="ltr">Professional</h3>
+              <p class="c-tier__purpose"><span data-lang-copy="en">A more complete and structured visual identity.</span><span data-lang-copy="ar" lang="ar">هوية بصرية أكثر اكتمالًا وتنظيمًا.</span></p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__from" data-i18n="priceFrom">From</span>
+                <span class="c-tier__amount">590</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Professional logo</span><span data-lang-copy="ar" lang="ar">شعار احترافي</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Complete color system</span><span data-lang-copy="ar" lang="ar">نظام ألوان متكامل</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Typography System</span><span data-lang-copy="ar" lang="ar">Typography System</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Short Brand Guidelines</span><span data-lang-copy="ar" lang="ar">دليل علامة مختصر</span></span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Business card design</span><span data-lang-copy="ar" lang="ar">تصميم بطاقة أعمال</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Letterhead design</span><span data-lang-copy="ar" lang="ar">تصميم ورق رسمي</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Social media profile / cover design</span><span data-lang-copy="ar" lang="ar">تصميم ملف وغلاف لوسائل التواصل</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">6 social media designs</span><span data-lang-copy="ar" lang="ar">6 تصاميم لوسائل التواصل</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Basic advertising templates</span><span data-lang-copy="ar" lang="ar">قوالب إعلانية أساسية</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Source and final files</span><span data-lang-copy="ar" lang="ar">الملفات المصدرية والنهائية</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 10 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (10)</span></span>
+                <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+
+            <dl class="c-tier__facts">
+              <dt><span data-lang-copy="en">Delivery</span><span data-lang-copy="ar" lang="ar">التسليم</span></dt>
+              <dd><span data-lang-copy="en">7–10 working days</span><span data-lang-copy="ar" lang="ar">٧–١٠ أيام عمل</span></dd>
+              <dt><span data-lang-copy="en">Revisions</span><span data-lang-copy="ar" lang="ar">التعديلات</span></dt>
+              <dd><span data-lang-copy="en">3 rounds</span><span data-lang-copy="ar" lang="ar">ثلاث جولات</span></dd>
+              <dt><span data-lang-copy="en">You own</span><span data-lang-copy="ar" lang="ar">ملكيتك</span></dt>
+              <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما يُسلَّم، عند الانتهاء</span></dd>
+            </dl>
+            <details class="c-tier__terms">
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span></summary>
+              <div class="c-tier__terms-body">
+                <ul>
+                  <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
+                  <li><span data-lang-copy="en">Printing and production</span><span data-lang-copy="ar" lang="ar">الطباعة والتنفيذ</span></li>
+                  <li><span data-lang-copy="en">Photography and videography — available as add-ons</span><span data-lang-copy="ar" lang="ar">التصوير الفوتوغرافي والفيديو — متاحة كإضافات</span></li>
+                  <li><span data-lang-copy="en">Domain, hosting and paid third-party services</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة والخدمات الخارجية المدفوعة</span></li>
+                  <li><span data-lang-copy="en">Written content, unless the package includes it or you add it</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه</span></li>
+                </ul>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">What "from" depends on</span><span data-lang-copy="ar" lang="ar">ما الذي يحدد السعر</span>:</span> <span data-lang-copy="en">The number of concepts, how many applications you need, and whether the identity works in one language or two.</span><span data-lang-copy="ar" lang="ar">عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين.</span></p>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">Payment</span><span data-lang-copy="ar" lang="ar">الدفع</span>:</span> <span data-lang-copy="en">50% to start, 50% before handover. Monthly packages are paid at the start of each month.</span><span data-lang-copy="ar" lang="ar">٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر.</span></p>
+              </div>
+            </details>
+            <a class="c-btn c-btn--primary c-tier__cta"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Branding%20%26%20Design%20%C2%B7%20Professional%20(from%20590%20USD%2C%20one-time)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Branding%20%26%20Design%20%C2%B7%20Professional%20(from%20590%20USD%2C%20one-time)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Professional%20%D8%B6%D9%85%D9%86%20%D8%A7%D9%84%D9%87%D9%88%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20(%D9%85%D9%86%20590%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D9%84%D9%85%D8%B1%D8%A9%20%D9%88%D8%A7%D8%AD%D8%AF%D8%A9)."
+              data-about="branding:tier-professional"
+              target="_blank" rel="noopener noreferrer"
+              aria-describedby="price-branding-tier-professional-name">
+              <span><span data-lang-copy="en">Ask about Professional</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Professional</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier" style="--i: 2"
+            aria-labelledby="price-branding-tier-advanced-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 1.5 24 7.5 13 13.5 2 7.5 13 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /><path d="M2 12.5 13 18.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.6" /><path d="M2 17.5 13 23.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.32" /></svg>
+              <span class="c-tier__level-name"><span data-lang-copy="en">Ecosystem</span><span data-lang-copy="ar" lang="ar">المنظومة</span></span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-branding-tier-advanced-name" lang="en" dir="ltr">Advanced</h3>
+              <p class="c-tier__purpose"><span data-lang-copy="en">A complete visual identity and reusable brand ecosystem.</span><span data-lang-copy="ar" lang="ar">هوية بصرية متكاملة ومنظومة علامة قابلة لإعادة الاستخدام.</span></p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__from" data-i18n="priceFrom">From</span>
+                <span class="c-tier__amount">1200</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature c-tier__feature--carry"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Everything in Professional</span><span data-lang-copy="ar" lang="ar">كل ما في باقة Professional</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Complete Brand Guidelines</span><span data-lang-copy="ar" lang="ar">دليل علامة متكامل</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Visual Language</span><span data-lang-copy="ar" lang="ar">لغة بصرية</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Social Media Design System</span><span data-lang-copy="ar" lang="ar">نظام تصميم لوسائل التواصل</span></span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Advertising Templates</span><span data-lang-copy="ar" lang="ar">قوالب إعلانية</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Presentation Template</span><span data-lang-copy="ar" lang="ar">قالب Presentation</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Business Profile Template</span><span data-lang-copy="ar" lang="ar">قالب ملف تعريفي</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">10 reusable content templates</span><span data-lang-copy="ar" lang="ar">10 قوالب محتوى قابلة لإعادة الاستخدام</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Complete Brand Assets</span><span data-lang-copy="ar" lang="ar">أصول العلامة كاملة</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 9 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (9)</span></span>
+                <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+
+            <dl class="c-tier__facts">
+              <dt><span data-lang-copy="en">Delivery</span><span data-lang-copy="ar" lang="ar">التسليم</span></dt>
+              <dd><span data-lang-copy="en">12–15 working days</span><span data-lang-copy="ar" lang="ar">١٢–١٥ يوم عمل</span></dd>
+              <dt><span data-lang-copy="en">Revisions</span><span data-lang-copy="ar" lang="ar">التعديلات</span></dt>
+              <dd><span data-lang-copy="en">3 rounds</span><span data-lang-copy="ar" lang="ar">ثلاث جولات</span></dd>
+              <dt><span data-lang-copy="en">You own</span><span data-lang-copy="ar" lang="ar">ملكيتك</span></dt>
+              <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما يُسلَّم، عند الانتهاء</span></dd>
+            </dl>
+            <details class="c-tier__terms">
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span></summary>
+              <div class="c-tier__terms-body">
+                <ul>
+                  <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
+                  <li><span data-lang-copy="en">Printing and production</span><span data-lang-copy="ar" lang="ar">الطباعة والتنفيذ</span></li>
+                  <li><span data-lang-copy="en">Photography and videography — available as add-ons</span><span data-lang-copy="ar" lang="ar">التصوير الفوتوغرافي والفيديو — متاحة كإضافات</span></li>
+                  <li><span data-lang-copy="en">Domain, hosting and paid third-party services</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة والخدمات الخارجية المدفوعة</span></li>
+                  <li><span data-lang-copy="en">Written content, unless the package includes it or you add it</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه</span></li>
+                </ul>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">What "from" depends on</span><span data-lang-copy="ar" lang="ar">ما الذي يحدد السعر</span>:</span> <span data-lang-copy="en">The number of concepts, how many applications you need, and whether the identity works in one language or two.</span><span data-lang-copy="ar" lang="ar">عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين.</span></p>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">Payment</span><span data-lang-copy="ar" lang="ar">الدفع</span>:</span> <span data-lang-copy="en">50% to start, 50% before handover. Monthly packages are paid at the start of each month.</span><span data-lang-copy="ar" lang="ar">٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر.</span></p>
+              </div>
+            </details>
+            <a class="c-btn c-btn--secondary c-tier__cta"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Branding%20%26%20Design%20%C2%B7%20Advanced%20(from%201200%20USD%2C%20one-time)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Branding%20%26%20Design%20%C2%B7%20Advanced%20(from%201200%20USD%2C%20one-time)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Advanced%20%D8%B6%D9%85%D9%86%20%D8%A7%D9%84%D9%87%D9%88%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20(%D9%85%D9%86%201200%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D9%84%D9%85%D8%B1%D8%A9%20%D9%88%D8%A7%D8%AD%D8%AF%D8%A9)."
+              data-about="branding:tier-advanced"
+              target="_blank" rel="noopener noreferrer"
+              aria-describedby="price-branding-tier-advanced-name">
+              <span><span data-lang-copy="en">Ask about Advanced</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Advanced</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+          </div>
+
+          <p class="c-detail__packages" data-reveal id="branding-packages">
+            <span class="c-detail__packages-count"><span data-lang-copy="en">Three packages, from</span><span data-lang-copy="ar" lang="ar">ثلاث باقات، تبدأ من</span></span>
+            <span class="c-detail__packages-price">
+              <span class="c-detail__packages-amount">290</span>
+              <span class="c-detail__packages-currency" data-i18n="currency">USD</span>
+            </span>
+            <span class="c-detail__packages-billing" data-i18n="billingOnce">One-time</span>
+          </p>
+          <a class="c-btn c-btn--primary c-detail__action"
+            href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'd%20like%20to%20talk%20about%20Branding%20%26%20Design." data-wa
+            data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'd%20like%20to%20talk%20about%20Branding%20%26%20Design."
+            data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%AA%D8%AD%D8%AF%D8%AB%20%D8%A8%D8%AE%D8%B5%D9%88%D8%B5%20%D8%A7%D9%84%D9%87%D9%88%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B5%D9%85%D9%8A%D9%85."
+            data-about="branding"
+            target="_blank" rel="noopener noreferrer"
+            data-reveal aria-describedby="branding-packages">
+            <span><span data-lang-copy="en">Ask about this service</span><span data-lang-copy="ar" lang="ar">اسأل عن هذه الخدمة</span></span>
+            <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+            </svg>
+          </a>
+          <!-- PACKAGES:branding:END -->
+          </div>
+
+          <div class="c-page__section">
+            <h2 class="c-page__h2"><span data-lang-copy="en">Websites</span><span data-lang-copy="ar" lang="ar">المواقع الإلكترونية</span></h2>
+            <p class="c-page__note"><span data-lang-copy="en">The question here is how much the site has to carry: one page that converts, a business site that answers every question, or a professional build with the pages and integrations a growing company needs.</span><span data-lang-copy="ar" lang="ar">السؤال هنا هو كم يحتاج الموقع أن يحمل: صفحة واحدة تحوّل الزائر، أم موقع أعمال يجيب كل الأسئلة، أم بناء احترافي بالصفحات والربط الذي تحتاجه شركة نامية.</span></p>
+          <!-- PACKAGES:websites:START -->
+          <div class="c-tiers" data-reveal-group>
+          <article class="c-tier" style="--i: 0"
+            aria-labelledby="price-websites-web-landing-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+              <span class="c-tier__level-name"><span data-lang-copy="en">Foundation</span><span data-lang-copy="ar" lang="ar">الأساس</span></span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-websites-web-landing-name" lang="en" dir="ltr">Landing Page</h3>
+              <p class="c-tier__purpose"><span data-lang-copy="en">For focused campaigns, launches and simple digital presence.</span><span data-lang-copy="ar" lang="ar">لحملات محددة وعمليات الإطلاق والحضور الرقمي البسيط.</span></p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">250</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Domain registration</span><span data-lang-copy="ar" lang="ar">تسجيل النطاق</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Hosting</span><span data-lang-copy="ar" lang="ar">الاستضافة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website UI/UX design</span><span data-lang-copy="ar" lang="ar">تصميم واجهة وتجربة الموقع</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Responsive implementation</span><span data-lang-copy="ar" lang="ar">تنفيذ متجاوب</span></span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Delivery ready for use</span><span data-lang-copy="ar" lang="ar">تسليم جاهز للاستخدام</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 5 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (5)</span></span>
+                <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+
+            <dl class="c-tier__facts">
+              <dt><span data-lang-copy="en">Delivery</span><span data-lang-copy="ar" lang="ar">التسليم</span></dt>
+              <dd><span data-lang-copy="en">3–5 working days</span><span data-lang-copy="ar" lang="ar">٣–٥ أيام عمل</span></dd>
+              <dt><span data-lang-copy="en">Revisions</span><span data-lang-copy="ar" lang="ar">التعديلات</span></dt>
+              <dd><span data-lang-copy="en">2 rounds</span><span data-lang-copy="ar" lang="ar">جولتان</span></dd>
+              <dt><span data-lang-copy="en">You own</span><span data-lang-copy="ar" lang="ar">ملكيتك</span></dt>
+              <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما يُسلَّم، عند الانتهاء</span></dd>
+            </dl>
+            <details class="c-tier__terms">
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span></summary>
+              <div class="c-tier__terms-body">
+                <ul>
+                  <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
+                  <li><span data-lang-copy="en">Printing and production</span><span data-lang-copy="ar" lang="ar">الطباعة والتنفيذ</span></li>
+                  <li><span data-lang-copy="en">Photography and videography — available as add-ons</span><span data-lang-copy="ar" lang="ar">التصوير الفوتوغرافي والفيديو — متاحة كإضافات</span></li>
+                  <li><span data-lang-copy="en">Domain, hosting and paid third-party services</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة والخدمات الخارجية المدفوعة</span></li>
+                  <li><span data-lang-copy="en">Written content, unless the package includes it or you add it</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه</span></li>
+                </ul>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">What "from" depends on</span><span data-lang-copy="ar" lang="ar">ما الذي يحدد السعر</span>:</span> <span data-lang-copy="en">The number of concepts, how many applications you need, and whether the identity works in one language or two.</span><span data-lang-copy="ar" lang="ar">عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين.</span></p>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">Payment</span><span data-lang-copy="ar" lang="ar">الدفع</span>:</span> <span data-lang-copy="en">50% to start, 50% before handover. Monthly packages are paid at the start of each month.</span><span data-lang-copy="ar" lang="ar">٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر.</span></p>
+              </div>
+            </details>
+            <a class="c-btn c-btn--secondary c-tier__cta"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Websites%20%C2%B7%20Landing%20Page%20(250%20USD%2C%20one-time)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Websites%20%C2%B7%20Landing%20Page%20(250%20USD%2C%20one-time)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Landing%20Page%20%D8%B6%D9%85%D9%86%20%D8%A7%D9%84%D9%85%D9%88%D8%A7%D9%82%D8%B9%20%D8%A7%D9%84%D8%A5%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A%D8%A9%20(250%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D9%84%D9%85%D8%B1%D8%A9%20%D9%88%D8%A7%D8%AD%D8%AF%D8%A9)."
+              data-about="websites:web-landing"
+              target="_blank" rel="noopener noreferrer"
+              aria-describedby="price-websites-web-landing-name">
+              <span><span data-lang-copy="en">Ask about Landing Page</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Landing Page</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier" style="--i: 1"
+            aria-labelledby="price-websites-web-business-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
+              <span class="c-tier__level-name"><span data-lang-copy="en">System</span><span data-lang-copy="ar" lang="ar">النظام</span></span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-websites-web-business-name" lang="en" dir="ltr">Business Website</h3>
+              <p class="c-tier__purpose"><span data-lang-copy="en">For companies and organizations requiring a professional multi-page website.</span><span data-lang-copy="ar" lang="ar">للشركات والمؤسسات التي تحتاج موقعًا احترافيًا متعدد الصفحات.</span></p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">650</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Domain registration</span><span data-lang-copy="ar" lang="ar">تسجيل النطاق</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Hosting</span><span data-lang-copy="ar" lang="ar">الاستضافة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website UI/UX design</span><span data-lang-copy="ar" lang="ar">تصميم واجهة وتجربة الموقع</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website development</span><span data-lang-copy="ar" lang="ar">تطوير الموقع</span></span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Responsive implementation</span><span data-lang-copy="ar" lang="ar">تنفيذ متجاوب</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website setup</span><span data-lang-copy="ar" lang="ar">إعداد الموقع</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Testing</span><span data-lang-copy="ar" lang="ar">الاختبار</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Delivery ready for use</span><span data-lang-copy="ar" lang="ar">تسليم جاهز للاستخدام</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 8 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (8)</span></span>
+                <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+
+            <dl class="c-tier__facts">
+              <dt><span data-lang-copy="en">Delivery</span><span data-lang-copy="ar" lang="ar">التسليم</span></dt>
+              <dd><span data-lang-copy="en">7–10 working days</span><span data-lang-copy="ar" lang="ar">٧–١٠ أيام عمل</span></dd>
+              <dt><span data-lang-copy="en">Revisions</span><span data-lang-copy="ar" lang="ar">التعديلات</span></dt>
+              <dd><span data-lang-copy="en">2 rounds</span><span data-lang-copy="ar" lang="ar">جولتان</span></dd>
+              <dt><span data-lang-copy="en">You own</span><span data-lang-copy="ar" lang="ar">ملكيتك</span></dt>
+              <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما يُسلَّم، عند الانتهاء</span></dd>
+            </dl>
+            <details class="c-tier__terms">
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span></summary>
+              <div class="c-tier__terms-body">
+                <ul>
+                  <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
+                  <li><span data-lang-copy="en">Printing and production</span><span data-lang-copy="ar" lang="ar">الطباعة والتنفيذ</span></li>
+                  <li><span data-lang-copy="en">Photography and videography — available as add-ons</span><span data-lang-copy="ar" lang="ar">التصوير الفوتوغرافي والفيديو — متاحة كإضافات</span></li>
+                  <li><span data-lang-copy="en">Domain, hosting and paid third-party services</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة والخدمات الخارجية المدفوعة</span></li>
+                  <li><span data-lang-copy="en">Written content, unless the package includes it or you add it</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه</span></li>
+                </ul>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">What "from" depends on</span><span data-lang-copy="ar" lang="ar">ما الذي يحدد السعر</span>:</span> <span data-lang-copy="en">The number of concepts, how many applications you need, and whether the identity works in one language or two.</span><span data-lang-copy="ar" lang="ar">عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين.</span></p>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">Payment</span><span data-lang-copy="ar" lang="ar">الدفع</span>:</span> <span data-lang-copy="en">50% to start, 50% before handover. Monthly packages are paid at the start of each month.</span><span data-lang-copy="ar" lang="ar">٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر.</span></p>
+              </div>
+            </details>
+            <a class="c-btn c-btn--secondary c-tier__cta"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Websites%20%C2%B7%20Business%20Website%20(650%20USD%2C%20one-time)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Websites%20%C2%B7%20Business%20Website%20(650%20USD%2C%20one-time)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Business%20Website%20%D8%B6%D9%85%D9%86%20%D8%A7%D9%84%D9%85%D9%88%D8%A7%D9%82%D8%B9%20%D8%A7%D9%84%D8%A5%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A%D8%A9%20(650%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D9%84%D9%85%D8%B1%D8%A9%20%D9%88%D8%A7%D8%AD%D8%AF%D8%A9)."
+              data-about="websites:web-business"
+              target="_blank" rel="noopener noreferrer"
+              aria-describedby="price-websites-web-business-name">
+              <span><span data-lang-copy="en">Ask about Business Website</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Business Website</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier" style="--i: 2"
+            aria-labelledby="price-websites-web-professional-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 1.5 24 7.5 13 13.5 2 7.5 13 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /><path d="M2 12.5 13 18.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.6" /><path d="M2 17.5 13 23.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.32" /></svg>
+              <span class="c-tier__level-name"><span data-lang-copy="en">Ecosystem</span><span data-lang-copy="ar" lang="ar">المنظومة</span></span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-websites-web-professional-name" lang="en" dir="ltr">Professional Website</h3>
+              <p class="c-tier__purpose"><span data-lang-copy="en">For businesses requiring a more advanced digital presence, content architecture, integrations and enhanced functionality.</span><span data-lang-copy="ar" lang="ar">للأعمال التي تحتاج حضورًا رقميًا أكثر تقدمًا، وبنية محتوى، وتكاملات، ووظائف موسّعة.</span></p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">1200</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingOnce">One-time</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Domain registration</span><span data-lang-copy="ar" lang="ar">تسجيل النطاق</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Hosting</span><span data-lang-copy="ar" lang="ar">الاستضافة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website UI/UX design</span><span data-lang-copy="ar" lang="ar">تصميم واجهة وتجربة الموقع</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website development</span><span data-lang-copy="ar" lang="ar">تطوير الموقع</span></span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Responsive implementation</span><span data-lang-copy="ar" lang="ar">تنفيذ متجاوب</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website setup</span><span data-lang-copy="ar" lang="ar">إعداد الموقع</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Required integrations</span><span data-lang-copy="ar" lang="ar">التكاملات المطلوبة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Testing</span><span data-lang-copy="ar" lang="ar">الاختبار</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Deployment</span><span data-lang-copy="ar" lang="ar">النشر</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Delivery ready for use</span><span data-lang-copy="ar" lang="ar">تسليم جاهز للاستخدام</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 10 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (10)</span></span>
+                <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+
+            <dl class="c-tier__facts">
+              <dt><span data-lang-copy="en">Delivery</span><span data-lang-copy="ar" lang="ar">التسليم</span></dt>
+              <dd><span data-lang-copy="en">12–18 working days</span><span data-lang-copy="ar" lang="ar">١٢–١٨ يوم عمل</span></dd>
+              <dt><span data-lang-copy="en">Revisions</span><span data-lang-copy="ar" lang="ar">التعديلات</span></dt>
+              <dd><span data-lang-copy="en">3 rounds</span><span data-lang-copy="ar" lang="ar">ثلاث جولات</span></dd>
+              <dt><span data-lang-copy="en">You own</span><span data-lang-copy="ar" lang="ar">ملكيتك</span></dt>
+              <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما يُسلَّم، عند الانتهاء</span></dd>
+            </dl>
+            <details class="c-tier__terms">
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span></summary>
+              <div class="c-tier__terms-body">
+                <ul>
+                  <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
+                  <li><span data-lang-copy="en">Printing and production</span><span data-lang-copy="ar" lang="ar">الطباعة والتنفيذ</span></li>
+                  <li><span data-lang-copy="en">Photography and videography — available as add-ons</span><span data-lang-copy="ar" lang="ar">التصوير الفوتوغرافي والفيديو — متاحة كإضافات</span></li>
+                  <li><span data-lang-copy="en">Domain, hosting and paid third-party services</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة والخدمات الخارجية المدفوعة</span></li>
+                  <li><span data-lang-copy="en">Written content, unless the package includes it or you add it</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه</span></li>
+                </ul>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">What "from" depends on</span><span data-lang-copy="ar" lang="ar">ما الذي يحدد السعر</span>:</span> <span data-lang-copy="en">The number of concepts, how many applications you need, and whether the identity works in one language or two.</span><span data-lang-copy="ar" lang="ar">عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين.</span></p>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">Payment</span><span data-lang-copy="ar" lang="ar">الدفع</span>:</span> <span data-lang-copy="en">50% to start, 50% before handover. Monthly packages are paid at the start of each month.</span><span data-lang-copy="ar" lang="ar">٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر.</span></p>
+              </div>
+            </details>
+            <a class="c-btn c-btn--secondary c-tier__cta"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Websites%20%C2%B7%20Professional%20Website%20(1200%20USD%2C%20one-time)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Websites%20%C2%B7%20Professional%20Website%20(1200%20USD%2C%20one-time)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Professional%20Website%20%D8%B6%D9%85%D9%86%20%D8%A7%D9%84%D9%85%D9%88%D8%A7%D9%82%D8%B9%20%D8%A7%D9%84%D8%A5%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A%D8%A9%20(1200%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D9%84%D9%85%D8%B1%D8%A9%20%D9%88%D8%A7%D8%AD%D8%AF%D8%A9)."
+              data-about="websites:web-professional"
+              target="_blank" rel="noopener noreferrer"
+              aria-describedby="price-websites-web-professional-name">
+              <span><span data-lang-copy="en">Ask about Professional Website</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Professional Website</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+          </div>
+
+          <p class="c-detail__packages" data-reveal id="websites-packages">
+            <span class="c-detail__packages-count"><span data-lang-copy="en">Three packages, from</span><span data-lang-copy="ar" lang="ar">ثلاث باقات، تبدأ من</span></span>
+            <span class="c-detail__packages-price">
+              <span class="c-detail__packages-amount">250</span>
+              <span class="c-detail__packages-currency" data-i18n="currency">USD</span>
+            </span>
+            <span class="c-detail__packages-billing" data-i18n="billingOnce">One-time</span>
+          </p>
+          <a class="c-btn c-btn--primary c-detail__action"
+            href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'd%20like%20to%20talk%20about%20Websites." data-wa
+            data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'd%20like%20to%20talk%20about%20Websites."
+            data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%AA%D8%AD%D8%AF%D8%AB%20%D8%A8%D8%AE%D8%B5%D9%88%D8%B5%20%D8%A7%D9%84%D9%85%D9%88%D8%A7%D9%82%D8%B9%20%D8%A7%D9%84%D8%A5%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A%D8%A9."
+            data-about="websites"
+            target="_blank" rel="noopener noreferrer"
+            data-reveal aria-describedby="websites-packages">
+            <span><span data-lang-copy="en">Ask about this service</span><span data-lang-copy="ar" lang="ar">اسأل عن هذه الخدمة</span></span>
+            <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+            </svg>
+          </a>
+          <!-- PACKAGES:websites:END -->
+          </div>
+
+          <div class="c-page__section">
+            <h2 class="c-page__h2"><span data-lang-copy="en">Social Media</span><span data-lang-copy="ar" lang="ar">إدارة وسائل التواصل</span></h2>
+            <p class="c-page__note"><span data-lang-copy="en">The question here is how often you need to appear, and with how much of it made for you rather than by you.</span><span data-lang-copy="ar" lang="ar">السؤال هنا هو كم مرة تحتاج أن تظهر، وكم من ذلك يُصنع لك بدل أن تصنعه بنفسك.</span></p>
+          <!-- PACKAGES:social:START -->
+          <div class="c-tiers" data-reveal-group>
+          <article class="c-tier" style="--i: 0"
+            aria-labelledby="price-social-soc-starter-name">
+            <div>
+              <h3 class="c-tier__name" id="price-social-soc-starter-name" lang="en" dir="ltr">Social Starter</h3>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">250</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Management of 2 platforms</span><span data-lang-copy="ar" lang="ar">إدارة منصتين</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Content Calendar</span><span data-lang-copy="ar" lang="ar">Content Calendar</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">8 posts per month</span><span data-lang-copy="ar" lang="ar">8 منشورات شهريًا</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Content writing</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى</span></span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Post design</span><span data-lang-copy="ar" lang="ar">تصميم المنشورات</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Publishing and scheduling</span><span data-lang-copy="ar" lang="ar">النشر والجدولة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Hashtag Research</span><span data-lang-copy="ar" lang="ar">Hashtag Research</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Brief monthly report</span><span data-lang-copy="ar" lang="ar">تقرير شهري مختصر</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 8 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (8)</span></span>
+                <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+
+            <dl class="c-tier__facts">
+              <dt><span data-lang-copy="en">Delivery</span><span data-lang-copy="ar" lang="ar">التسليم</span></dt>
+              <dd><span data-lang-copy="en">Plan in 3 working days, then posts on schedule</span><span data-lang-copy="ar" lang="ar">الخطة خلال ٣ أيام عمل، ثم النشر حسب الجدول</span></dd>
+              <dt><span data-lang-copy="en">Revisions</span><span data-lang-copy="ar" lang="ar">التعديلات</span></dt>
+              <dd><span data-lang-copy="en">1 round per design</span><span data-lang-copy="ar" lang="ar">جولة واحدة لكل تصميم</span></dd>
+              <dt><span data-lang-copy="en">You own</span><span data-lang-copy="ar" lang="ar">ملكيتك</span></dt>
+              <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما يُسلَّم، عند الانتهاء</span></dd>
+            </dl>
+            <details class="c-tier__terms">
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span></summary>
+              <div class="c-tier__terms-body">
+                <ul>
+                  <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
+                  <li><span data-lang-copy="en">Printing and production</span><span data-lang-copy="ar" lang="ar">الطباعة والتنفيذ</span></li>
+                  <li><span data-lang-copy="en">Photography and videography — available as add-ons</span><span data-lang-copy="ar" lang="ar">التصوير الفوتوغرافي والفيديو — متاحة كإضافات</span></li>
+                  <li><span data-lang-copy="en">Domain, hosting and paid third-party services</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة والخدمات الخارجية المدفوعة</span></li>
+                  <li><span data-lang-copy="en">Written content, unless the package includes it or you add it</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه</span></li>
+                </ul>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">What "from" depends on</span><span data-lang-copy="ar" lang="ar">ما الذي يحدد السعر</span>:</span> <span data-lang-copy="en">The number of concepts, how many applications you need, and whether the identity works in one language or two.</span><span data-lang-copy="ar" lang="ar">عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين.</span></p>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">Payment</span><span data-lang-copy="ar" lang="ar">الدفع</span>:</span> <span data-lang-copy="en">50% to start, 50% before handover. Monthly packages are paid at the start of each month.</span><span data-lang-copy="ar" lang="ar">٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر.</span></p>
+              </div>
+            </details>
+            <a class="c-btn c-btn--secondary c-tier__cta"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20%C2%B7%20Social%20Starter%20(250%20USD%2C%20monthly)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20%C2%B7%20Social%20Starter%20(250%20USD%2C%20monthly)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Social%20Starter%20%D8%B6%D9%85%D9%86%20%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9%20%D9%88%D8%B3%D8%A7%D8%A6%D9%84%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20(250%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D8%B4%D9%87%D8%B1%D9%8A%D9%8B%D8%A7)."
+              data-about="social:soc-starter"
+              target="_blank" rel="noopener noreferrer"
+              aria-describedby="price-social-soc-starter-name">
+              <span><span data-lang-copy="en">Ask about Social Starter</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Social Starter</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier c-tier--featured" style="--i: 1"
+            aria-labelledby="price-social-soc-growth-name">
+            <span class="c-tier__ribbon"><span data-lang-copy="en">Most Popular</span><span data-lang-copy="ar" lang="ar">الأكثر طلبًا</span></span>
+            <div>
+              <h3 class="c-tier__name" id="price-social-soc-growth-name" lang="en" dir="ltr">Social Growth</h3>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">400</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Management of up to 3 platforms</span><span data-lang-copy="ar" lang="ar">إدارة حتى 3 منصات</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Content Strategy</span><span data-lang-copy="ar" lang="ar">Content Strategy</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">12 posts per month</span><span data-lang-copy="ar" lang="ar">12 منشورًا شهريًا</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">4 Reels per month</span><span data-lang-copy="ar" lang="ar">4 Reels شهريًا</span></span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Content writing</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Design</span><span data-lang-copy="ar" lang="ar">التصميم</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Publishing and scheduling</span><span data-lang-copy="ar" lang="ar">النشر والجدولة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Stories</span><span data-lang-copy="ar" lang="ar">Stories</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Community Monitoring</span><span data-lang-copy="ar" lang="ar">Community Monitoring</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Hashtag &amp; Keyword Research</span><span data-lang-copy="ar" lang="ar">Hashtag &amp; Keyword Research</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Monthly performance report</span><span data-lang-copy="ar" lang="ar">تقرير أداء شهري</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 11 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (11)</span></span>
+                <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+
+            <dl class="c-tier__facts">
+              <dt><span data-lang-copy="en">Delivery</span><span data-lang-copy="ar" lang="ar">التسليم</span></dt>
+              <dd><span data-lang-copy="en">Plan in 3 working days, then posts on schedule</span><span data-lang-copy="ar" lang="ar">الخطة خلال ٣ أيام عمل، ثم النشر حسب الجدول</span></dd>
+              <dt><span data-lang-copy="en">Revisions</span><span data-lang-copy="ar" lang="ar">التعديلات</span></dt>
+              <dd><span data-lang-copy="en">2 rounds per design</span><span data-lang-copy="ar" lang="ar">جولتان لكل تصميم</span></dd>
+              <dt><span data-lang-copy="en">You own</span><span data-lang-copy="ar" lang="ar">ملكيتك</span></dt>
+              <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما يُسلَّم، عند الانتهاء</span></dd>
+            </dl>
+            <details class="c-tier__terms">
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span></summary>
+              <div class="c-tier__terms-body">
+                <ul>
+                  <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
+                  <li><span data-lang-copy="en">Printing and production</span><span data-lang-copy="ar" lang="ar">الطباعة والتنفيذ</span></li>
+                  <li><span data-lang-copy="en">Photography and videography — available as add-ons</span><span data-lang-copy="ar" lang="ar">التصوير الفوتوغرافي والفيديو — متاحة كإضافات</span></li>
+                  <li><span data-lang-copy="en">Domain, hosting and paid third-party services</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة والخدمات الخارجية المدفوعة</span></li>
+                  <li><span data-lang-copy="en">Written content, unless the package includes it or you add it</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه</span></li>
+                </ul>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">What "from" depends on</span><span data-lang-copy="ar" lang="ar">ما الذي يحدد السعر</span>:</span> <span data-lang-copy="en">The number of concepts, how many applications you need, and whether the identity works in one language or two.</span><span data-lang-copy="ar" lang="ar">عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين.</span></p>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">Payment</span><span data-lang-copy="ar" lang="ar">الدفع</span>:</span> <span data-lang-copy="en">50% to start, 50% before handover. Monthly packages are paid at the start of each month.</span><span data-lang-copy="ar" lang="ar">٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر.</span></p>
+              </div>
+            </details>
+            <a class="c-btn c-btn--primary c-tier__cta"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20%C2%B7%20Social%20Growth%20(400%20USD%2C%20monthly)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20%C2%B7%20Social%20Growth%20(400%20USD%2C%20monthly)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Social%20Growth%20%D8%B6%D9%85%D9%86%20%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9%20%D9%88%D8%B3%D8%A7%D8%A6%D9%84%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20(400%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D8%B4%D9%87%D8%B1%D9%8A%D9%8B%D8%A7)."
+              data-about="social:soc-growth"
+              target="_blank" rel="noopener noreferrer"
+              aria-describedby="price-social-soc-growth-name">
+              <span><span data-lang-copy="en">Ask about Social Growth</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Social Growth</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier" style="--i: 2"
+            aria-labelledby="price-social-soc-pro-name">
+            <div>
+              <h3 class="c-tier__name" id="price-social-soc-pro-name" lang="en" dir="ltr">Social Pro</h3>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">650</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Management of up to 5 platforms</span><span data-lang-copy="ar" lang="ar">إدارة حتى 5 منصات</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Complete content strategy</span><span data-lang-copy="ar" lang="ar">استراتيجية محتوى كاملة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">16 posts per month</span><span data-lang-copy="ar" lang="ar">16 منشورًا شهريًا</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">8 Reels per month</span><span data-lang-copy="ar" lang="ar">8 Reels شهريًا</span></span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Stories</span><span data-lang-copy="ar" lang="ar">Stories</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Copywriting</span><span data-lang-copy="ar" lang="ar">Copywriting</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Graphic Design</span><span data-lang-copy="ar" lang="ar">Graphic Design</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Video Editing</span><span data-lang-copy="ar" lang="ar">Video Editing</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Publishing &amp; Scheduling</span><span data-lang-copy="ar" lang="ar">Publishing &amp; Scheduling</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Community Management</span><span data-lang-copy="ar" lang="ar">Community Management</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Monthly Performance Report</span><span data-lang-copy="ar" lang="ar">Monthly Performance Report</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Monthly Strategy Review</span><span data-lang-copy="ar" lang="ar">Monthly Strategy Review</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 12 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (12)</span></span>
+                <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+
+            <dl class="c-tier__facts">
+              <dt><span data-lang-copy="en">Delivery</span><span data-lang-copy="ar" lang="ar">التسليم</span></dt>
+              <dd><span data-lang-copy="en">Plan in 3 working days, then posts on schedule</span><span data-lang-copy="ar" lang="ar">الخطة خلال ٣ أيام عمل، ثم النشر حسب الجدول</span></dd>
+              <dt><span data-lang-copy="en">Revisions</span><span data-lang-copy="ar" lang="ar">التعديلات</span></dt>
+              <dd><span data-lang-copy="en">2 rounds per design</span><span data-lang-copy="ar" lang="ar">جولتان لكل تصميم</span></dd>
+              <dt><span data-lang-copy="en">You own</span><span data-lang-copy="ar" lang="ar">ملكيتك</span></dt>
+              <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما يُسلَّم، عند الانتهاء</span></dd>
+            </dl>
+            <details class="c-tier__terms">
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span></summary>
+              <div class="c-tier__terms-body">
+                <ul>
+                  <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
+                  <li><span data-lang-copy="en">Printing and production</span><span data-lang-copy="ar" lang="ar">الطباعة والتنفيذ</span></li>
+                  <li><span data-lang-copy="en">Photography and videography — available as add-ons</span><span data-lang-copy="ar" lang="ar">التصوير الفوتوغرافي والفيديو — متاحة كإضافات</span></li>
+                  <li><span data-lang-copy="en">Domain, hosting and paid third-party services</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة والخدمات الخارجية المدفوعة</span></li>
+                  <li><span data-lang-copy="en">Written content, unless the package includes it or you add it</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه</span></li>
+                </ul>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">What "from" depends on</span><span data-lang-copy="ar" lang="ar">ما الذي يحدد السعر</span>:</span> <span data-lang-copy="en">The number of concepts, how many applications you need, and whether the identity works in one language or two.</span><span data-lang-copy="ar" lang="ar">عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين.</span></p>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">Payment</span><span data-lang-copy="ar" lang="ar">الدفع</span>:</span> <span data-lang-copy="en">50% to start, 50% before handover. Monthly packages are paid at the start of each month.</span><span data-lang-copy="ar" lang="ar">٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر.</span></p>
+              </div>
+            </details>
+            <a class="c-btn c-btn--secondary c-tier__cta"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20%C2%B7%20Social%20Pro%20(650%20USD%2C%20monthly)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20%C2%B7%20Social%20Pro%20(650%20USD%2C%20monthly)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Social%20Pro%20%D8%B6%D9%85%D9%86%20%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9%20%D9%88%D8%B3%D8%A7%D8%A6%D9%84%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20(650%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D8%B4%D9%87%D8%B1%D9%8A%D9%8B%D8%A7)."
+              data-about="social:soc-pro"
+              target="_blank" rel="noopener noreferrer"
+              aria-describedby="price-social-soc-pro-name">
+              <span><span data-lang-copy="en">Ask about Social Pro</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Social Pro</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+          </div>
+
+          <p class="c-detail__packages" data-reveal id="social-packages">
+            <span class="c-detail__packages-count"><span data-lang-copy="en">Three packages, from</span><span data-lang-copy="ar" lang="ar">ثلاث باقات، تبدأ من</span></span>
+            <span class="c-detail__packages-price">
+              <span class="c-detail__packages-amount">250</span>
+              <span class="c-detail__packages-currency" data-i18n="currency">USD</span>
+            </span>
+            <span class="c-detail__packages-billing" data-i18n="billingMonthly">Monthly</span>
+          </p>
+          <a class="c-btn c-btn--primary c-detail__action"
+            href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'd%20like%20to%20talk%20about%20Social%20Media." data-wa
+            data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'd%20like%20to%20talk%20about%20Social%20Media."
+            data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%AA%D8%AD%D8%AF%D8%AB%20%D8%A8%D8%AE%D8%B5%D9%88%D8%B5%20%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9%20%D9%88%D8%B3%D8%A7%D8%A6%D9%84%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84."
+            data-about="social"
+            target="_blank" rel="noopener noreferrer"
+            data-reveal aria-describedby="social-packages">
+            <span><span data-lang-copy="en">Ask about this service</span><span data-lang-copy="ar" lang="ar">اسأل عن هذه الخدمة</span></span>
+            <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+            </svg>
+          </a>
+          <!-- PACKAGES:social:END -->
+          </div>
+
+          <div class="c-page__section">
+            <h2 class="c-page__h2"><span data-lang-copy="en">Marketing &amp; Ads</span><span data-lang-copy="ar" lang="ar">التسويق والإعلانات</span></h2>
+            <p class="c-page__note"><span data-lang-copy="en">The question here is how much management the campaigns need — and the budget you spend with the platforms is always separate from the fee for running them.</span><span data-lang-copy="ar" lang="ar">السؤال هنا هو كم تحتاج الحملات من إدارة — والميزانية التي تنفقها على المنصات منفصلة دائمًا عن أجر إدارتها.</span></p>
+          <!-- PACKAGES:marketing:START -->
+          <div class="c-tiers" data-reveal-group>
+          <article class="c-tier" style="--i: 0"
+            aria-labelledby="price-marketing-ads-starter-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+              <span class="c-tier__level-name"><span data-lang-copy="en">Foundation</span><span data-lang-copy="ar" lang="ar">الأساس</span></span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-marketing-ads-starter-name" lang="en" dir="ltr">Ads Starter</h3>
+              <p class="c-tier__purpose"><span data-lang-copy="en">Entry-level solution.</span><span data-lang-copy="ar" lang="ar">حل تمهيدي.</span></p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">250</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">One advertising platform managed</span><span data-lang-copy="ar" lang="ar">إدارة منصة إعلانية واحدة</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Campaign setup</span><span data-lang-copy="ar" lang="ar">إعداد الحملات</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Audience Targeting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Ad Copy</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Up to 2 ad designs</span><span data-lang-copy="ar" lang="ar">تصميم حتى 2 إعلان</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Campaign Monitoring</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Basic Optimization</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Monthly report</span><span data-lang-copy="ar" lang="ar">تقرير شهري</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 8 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (8)</span></span>
+                <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+
+            <dl class="c-tier__facts">
+              <dt><span data-lang-copy="en">Delivery</span><span data-lang-copy="ar" lang="ar">التسليم</span></dt>
+              <dd><span data-lang-copy="en">Campaigns live within 3 working days</span><span data-lang-copy="ar" lang="ar">انطلاق الحملات خلال ٣ أيام عمل</span></dd>
+              <dt><span data-lang-copy="en">Revisions</span><span data-lang-copy="ar" lang="ar">التعديلات</span></dt>
+              <dd><span data-lang-copy="en">1 round per creative</span><span data-lang-copy="ar" lang="ar">جولة واحدة لكل تصميم</span></dd>
+              <dt><span data-lang-copy="en">You own</span><span data-lang-copy="ar" lang="ar">ملكيتك</span></dt>
+              <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما يُسلَّم، عند الانتهاء</span></dd>
+            </dl>
+            <details class="c-tier__terms">
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span></summary>
+              <div class="c-tier__terms-body">
+                <ul>
+                  <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
+                  <li><span data-lang-copy="en">Printing and production</span><span data-lang-copy="ar" lang="ar">الطباعة والتنفيذ</span></li>
+                  <li><span data-lang-copy="en">Photography and videography — available as add-ons</span><span data-lang-copy="ar" lang="ar">التصوير الفوتوغرافي والفيديو — متاحة كإضافات</span></li>
+                  <li><span data-lang-copy="en">Domain, hosting and paid third-party services</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة والخدمات الخارجية المدفوعة</span></li>
+                  <li><span data-lang-copy="en">Written content, unless the package includes it or you add it</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه</span></li>
+                </ul>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">What "from" depends on</span><span data-lang-copy="ar" lang="ar">ما الذي يحدد السعر</span>:</span> <span data-lang-copy="en">The number of concepts, how many applications you need, and whether the identity works in one language or two.</span><span data-lang-copy="ar" lang="ar">عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين.</span></p>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">Payment</span><span data-lang-copy="ar" lang="ar">الدفع</span>:</span> <span data-lang-copy="en">50% to start, 50% before handover. Monthly packages are paid at the start of each month.</span><span data-lang-copy="ar" lang="ar">٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر.</span></p>
+              </div>
+            </details>
+            <a class="c-btn c-btn--secondary c-tier__cta"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Marketing%20%26%20Ads%20%C2%B7%20Ads%20Starter%20(250%20USD%2C%20monthly)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Marketing%20%26%20Ads%20%C2%B7%20Ads%20Starter%20(250%20USD%2C%20monthly)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Ads%20Starter%20%D8%B6%D9%85%D9%86%20%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%88%D8%A7%D9%84%D8%A5%D8%B9%D9%84%D8%A7%D9%86%D8%A7%D8%AA%20(250%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D8%B4%D9%87%D8%B1%D9%8A%D9%8B%D8%A7)."
+              data-about="marketing:ads-starter"
+              target="_blank" rel="noopener noreferrer"
+              aria-describedby="price-marketing-ads-starter-name">
+              <span><span data-lang-copy="en">Ask about Ads Starter</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Ads Starter</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier c-tier--featured" style="--i: 1"
+            aria-labelledby="price-marketing-ads-growth-name">
+            <span class="c-tier__ribbon"><span data-lang-copy="en">Recommended</span><span data-lang-copy="ar" lang="ar">موصى به</span></span>
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
+              <span class="c-tier__level-name"><span data-lang-copy="en">System</span><span data-lang-copy="ar" lang="ar">النظام</span></span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-marketing-ads-growth-name" lang="en" dir="ltr">Ads Growth</h3>
+              <p class="c-tier__purpose"><span data-lang-copy="en">Balanced solution.</span><span data-lang-copy="ar" lang="ar">حل متوازن.</span></p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">400</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Meta Ads management</span><span data-lang-copy="ar" lang="ar">إدارة Meta Ads</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Facebook + Instagram</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Up to 4 campaigns</span><span data-lang-copy="ar" lang="ar">حتى 4 حملات</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Audience Research</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Ad Creative</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Copywriting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Campaign Optimization</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Retargeting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Conversion Tracking</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Monthly performance report</span><span data-lang-copy="ar" lang="ar">تقرير أداء شهري</span></span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 10 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (10)</span></span>
+                <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+
+            <dl class="c-tier__facts">
+              <dt><span data-lang-copy="en">Delivery</span><span data-lang-copy="ar" lang="ar">التسليم</span></dt>
+              <dd><span data-lang-copy="en">Campaigns live within 3 working days</span><span data-lang-copy="ar" lang="ar">انطلاق الحملات خلال ٣ أيام عمل</span></dd>
+              <dt><span data-lang-copy="en">Revisions</span><span data-lang-copy="ar" lang="ar">التعديلات</span></dt>
+              <dd><span data-lang-copy="en">2 rounds per creative</span><span data-lang-copy="ar" lang="ar">جولتان لكل تصميم</span></dd>
+              <dt><span data-lang-copy="en">You own</span><span data-lang-copy="ar" lang="ar">ملكيتك</span></dt>
+              <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما يُسلَّم، عند الانتهاء</span></dd>
+            </dl>
+            <details class="c-tier__terms">
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span></summary>
+              <div class="c-tier__terms-body">
+                <ul>
+                  <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
+                  <li><span data-lang-copy="en">Printing and production</span><span data-lang-copy="ar" lang="ar">الطباعة والتنفيذ</span></li>
+                  <li><span data-lang-copy="en">Photography and videography — available as add-ons</span><span data-lang-copy="ar" lang="ar">التصوير الفوتوغرافي والفيديو — متاحة كإضافات</span></li>
+                  <li><span data-lang-copy="en">Domain, hosting and paid third-party services</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة والخدمات الخارجية المدفوعة</span></li>
+                  <li><span data-lang-copy="en">Written content, unless the package includes it or you add it</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه</span></li>
+                </ul>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">What "from" depends on</span><span data-lang-copy="ar" lang="ar">ما الذي يحدد السعر</span>:</span> <span data-lang-copy="en">The number of concepts, how many applications you need, and whether the identity works in one language or two.</span><span data-lang-copy="ar" lang="ar">عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين.</span></p>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">Payment</span><span data-lang-copy="ar" lang="ar">الدفع</span>:</span> <span data-lang-copy="en">50% to start, 50% before handover. Monthly packages are paid at the start of each month.</span><span data-lang-copy="ar" lang="ar">٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر.</span></p>
+              </div>
+            </details>
+            <a class="c-btn c-btn--primary c-tier__cta"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Marketing%20%26%20Ads%20%C2%B7%20Ads%20Growth%20(400%20USD%2C%20monthly)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Marketing%20%26%20Ads%20%C2%B7%20Ads%20Growth%20(400%20USD%2C%20monthly)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Ads%20Growth%20%D8%B6%D9%85%D9%86%20%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%88%D8%A7%D9%84%D8%A5%D8%B9%D9%84%D8%A7%D9%86%D8%A7%D8%AA%20(400%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D8%B4%D9%87%D8%B1%D9%8A%D9%8B%D8%A7)."
+              data-about="marketing:ads-growth"
+              target="_blank" rel="noopener noreferrer"
+              aria-describedby="price-marketing-ads-growth-name">
+              <span><span data-lang-copy="en">Ask about Ads Growth</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Ads Growth</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="c-tier" style="--i: 2"
+            aria-labelledby="price-marketing-ads-performance-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 1.5 24 7.5 13 13.5 2 7.5 13 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /><path d="M2 12.5 13 18.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.6" /><path d="M2 17.5 13 23.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.32" /></svg>
+              <span class="c-tier__level-name"><span data-lang-copy="en">Ecosystem</span><span data-lang-copy="ar" lang="ar">المنظومة</span></span>
+            </p>
+
+            <div>
+              <h3 class="c-tier__name" id="price-marketing-ads-performance-name" lang="en" dir="ltr">Ads Performance</h3>
+              <p class="c-tier__purpose"><span data-lang-copy="en">Advanced, performance-focused solution.</span><span data-lang-copy="ar" lang="ar">حل متقدم يركّز على الأداء.</span></p>
+            </div>
+
+            <p class="c-tier__price-block">
+              <span class="c-tier__price">
+                <span class="c-tier__amount">600</span>
+                <span class="c-tier__currency" data-i18n="currency">USD</span>
+              </span>
+              <span class="c-tier__billing" data-i18n="billingMonthly">Monthly</span>
+            </p>
+
+            <div data-expand data-expand-static-above="64em">
+              <ul class="c-tier__features">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Meta + Google Ads</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Campaign Strategy</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Audience Segmentation</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Multiple Campaigns</span></li>
+              </ul>
+
+              <div class="c-tier__more" data-expand-panel>
+                <div class="c-tier__more-inner">
+                  <ul class="c-tier__more-list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Retargeting</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Conversion Tracking</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>A/B Testing</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Creative Optimization</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Budget Optimization</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Performance Report</span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Monthly Strategy Meeting</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button class="c-tier__toggle" data-expand-trigger>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 11 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (11)</span></span>
+                <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
+                <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                </svg>
+              </button>
+            </div>
+
+
+            <dl class="c-tier__facts">
+              <dt><span data-lang-copy="en">Delivery</span><span data-lang-copy="ar" lang="ar">التسليم</span></dt>
+              <dd><span data-lang-copy="en">Campaigns live within 2 working days</span><span data-lang-copy="ar" lang="ar">انطلاق الحملات خلال يومَي عمل</span></dd>
+              <dt><span data-lang-copy="en">Revisions</span><span data-lang-copy="ar" lang="ar">التعديلات</span></dt>
+              <dd><span data-lang-copy="en">2 rounds per creative</span><span data-lang-copy="ar" lang="ar">جولتان لكل تصميم</span></dd>
+              <dt><span data-lang-copy="en">You own</span><span data-lang-copy="ar" lang="ar">ملكيتك</span></dt>
+              <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما يُسلَّم، عند الانتهاء</span></dd>
+            </dl>
+            <details class="c-tier__terms">
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span></summary>
+              <div class="c-tier__terms-body">
+                <ul>
+                  <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
+                  <li><span data-lang-copy="en">Printing and production</span><span data-lang-copy="ar" lang="ar">الطباعة والتنفيذ</span></li>
+                  <li><span data-lang-copy="en">Photography and videography — available as add-ons</span><span data-lang-copy="ar" lang="ar">التصوير الفوتوغرافي والفيديو — متاحة كإضافات</span></li>
+                  <li><span data-lang-copy="en">Domain, hosting and paid third-party services</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة والخدمات الخارجية المدفوعة</span></li>
+                  <li><span data-lang-copy="en">Written content, unless the package includes it or you add it</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه</span></li>
+                </ul>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">What "from" depends on</span><span data-lang-copy="ar" lang="ar">ما الذي يحدد السعر</span>:</span> <span data-lang-copy="en">The number of concepts, how many applications you need, and whether the identity works in one language or two.</span><span data-lang-copy="ar" lang="ar">عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين.</span></p>
+                <p><span class="c-tier__terms-label"><span data-lang-copy="en">Payment</span><span data-lang-copy="ar" lang="ar">الدفع</span>:</span> <span data-lang-copy="en">50% to start, 50% before handover. Monthly packages are paid at the start of each month.</span><span data-lang-copy="ar" lang="ar">٥٠٪ عند البدء و٥٠٪ قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر.</span></p>
+              </div>
+            </details>
+            <a class="c-btn c-btn--secondary c-tier__cta"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Marketing%20%26%20Ads%20%C2%B7%20Ads%20Performance%20(600%20USD%2C%20monthly)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Marketing%20%26%20Ads%20%C2%B7%20Ads%20Performance%20(600%20USD%2C%20monthly)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Ads%20Performance%20%D8%B6%D9%85%D9%86%20%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%88%D8%A7%D9%84%D8%A5%D8%B9%D9%84%D8%A7%D9%86%D8%A7%D8%AA%20(600%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D8%B4%D9%87%D8%B1%D9%8A%D9%8B%D8%A7)."
+              data-about="marketing:ads-performance"
+              target="_blank" rel="noopener noreferrer"
+              aria-describedby="price-marketing-ads-performance-name">
+              <span><span data-lang-copy="en">Ask about Ads Performance</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Ads Performance</span></span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </article>
+          </div>
+
+            <aside class="c-note" data-reveal aria-labelledby="marketing-note-label">
+              <svg class="c-note__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.6" />
+                <path d="M12 7.4v5.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <circle cx="12" cy="16.4" r="1.1" fill="currentColor" />
+              </svg>
+              <p>
+                <span class="c-note__label" id="marketing-note-label">
+                  <span data-lang-copy="en">Note</span><span data-lang-copy="ar" lang="ar">ملاحظة</span>
+                </span>
+                <span class="c-note__body">
+                  <span data-lang-copy="en">The advertising budget itself is not included in the management fee. The package price covers managing your campaigns; what you spend with the platforms is separate and paid by you.</span>
+                  <span data-lang-copy="ar" lang="ar">ميزانية الإعلانات نفسها غير مشمولة في رسوم الإدارة.</span>
+                </span>
+              </p>
+            </aside>
+
+          <p class="c-detail__packages" data-reveal id="marketing-packages">
+            <span class="c-detail__packages-count"><span data-lang-copy="en">Three packages, from</span><span data-lang-copy="ar" lang="ar">ثلاث باقات، تبدأ من</span></span>
+            <span class="c-detail__packages-price">
+              <span class="c-detail__packages-amount">250</span>
+              <span class="c-detail__packages-currency" data-i18n="currency">USD</span>
+            </span>
+            <span class="c-detail__packages-billing" data-i18n="billingMonthly">Monthly</span>
+          </p>
+          <a class="c-btn c-btn--primary c-detail__action"
+            href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'd%20like%20to%20talk%20about%20Marketing%20%26%20Ads." data-wa
+            data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'd%20like%20to%20talk%20about%20Marketing%20%26%20Ads."
+            data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%AA%D8%AD%D8%AF%D8%AB%20%D8%A8%D8%AE%D8%B5%D9%88%D8%B5%20%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%88%D8%A7%D9%84%D8%A5%D8%B9%D9%84%D8%A7%D9%86%D8%A7%D8%AA."
+            data-about="marketing"
+            target="_blank" rel="noopener noreferrer"
+            data-reveal aria-describedby="marketing-packages">
+            <span><span data-lang-copy="en">Ask about this service</span><span data-lang-copy="ar" lang="ar">اسأل عن هذه الخدمة</span></span>
+            <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+            </svg>
+          </a>
+          <!-- PACKAGES:marketing:END -->
+          </div>
+
+          <div class="c-prose">
+            <h2><span data-lang-copy="en">How we bill</span><span data-lang-copy="ar" lang="ar">كيف نحاسب</span></h2>
+            <ul>
+              <li><span data-lang-copy="en">Prices are in US dollars, the same in every market we serve.</span><span data-lang-copy="ar" lang="ar">الأسعار بالدولار الأمريكي، وهي نفسها في كل سوق نخدمه.</span></li>
+              <li><span data-lang-copy="en">Project work: 50% to start, 50% before handover.</span><span data-lang-copy="ar" lang="ar">أعمال المشاريع: ٥٠٪ عند البدء و٥٠٪ قبل التسليم.</span></li>
+              <li><span data-lang-copy="en">Monthly packages are paid at the start of each month, and you can stop at the end of any month.</span><span data-lang-copy="ar" lang="ar">الباقات الشهرية تُدفع في بداية كل شهر، ويمكنك التوقف في نهاية أي شهر.</span></li>
+              <li><span data-lang-copy="en">Advertising budget is paid by you to the platforms. The package price covers running the campaigns, never the spend.</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات تدفعها أنت للمنصات. وسعر الباقة يغطي إدارة الحملات، لا الإنفاق.</span></li>
+              <li><span data-lang-copy="en">Add-ons are quoted from the figures on the homepage; work priced by quantity or by project is quoted once we know the scope.</span><span data-lang-copy="ar" lang="ar">الإضافات تُسعَّر ابتداءً من الأرقام المنشورة في الصفحة الرئيسية؛ والعمل المسعَّر بالكمية أو بالمشروع يُسعَّر بعد معرفة النطاق.</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Quick links render from the same array as the header (§25). The
+         footer itself is designed in a later stage. -->
+    <!-- =============================================================
+         FOOTER (Stage 15)
+         The last navigation system, the last action, and the closure.
+
+         NO SECOND DISPLAY CTA. Stage 14 sits directly above this and is the
+         conversion moment §05 asks for; repeating a display headline and a
+         large button a hundred pixels below it would be two climaxes in a
+         row. The action is carried forward as the primary button in the
+         fourth column instead.
+
+         NOTHING INVENTED. Stage 15 shipped with no contact detail and no
+         social profile, because none existed — §14/§15/§17 all say not to
+         create them — and parked a bottom row for them. Stage 17 supplied
+         three profiles, so that row now holds them, rendered from the same
+         SOCIAL_LINKS the drawer uses. Still no legal page, so still none
+         here. The direct channels live in the contact section, one screen
+         above, rather than being repeated here.
+
+         SEEDED, NOT JUST RENDERED. Both link lists are written out in the
+         markup as well as carrying [data-nav-render]. The script replaces
+         them with identical content on boot and on language change; without
+         it they still work. The header and drawer are seeded the same way
+         for the same reason — see the note there.
+         ============================================================= -->
+      <!-- ===================================================================
+           VERIFICATION BAND — wireframe W2, problem PS-01.
+
+           The trust gap was never a permission problem. Four claims, each one
+           checkable in a click, none of them requiring a client to say yes:
+           a named human, a reply window we can keep, and the work itself where
+           a stranger can already see it.
+
+           A link with no live destination is OMITTED, not greyed: an empty
+           proof slot is worse than none. When a Google Business Profile or a
+           directory listing exists, it is added here — and not before.
+           =================================================================== -->
+      <section class="c-verify" aria-labelledby="verify-title">
+        <div class="l-container c-verify__inner">
+          <h2 class="t-label c-verify__title" id="verify-title" data-i18n="verifyHeading">Who you are talking to</h2>
+          <div class="c-verify__grid">
+            <div class="c-verify__person">
+              <p class="c-verify__name">Muhalab Salah</p>
+              <p class="c-verify__role"><span data-lang-copy="en">Founder — brand and web design</span><span data-lang-copy="ar" lang="ar">المؤسس — تصميم الهوية والمواقع</span></p>
+              <p class="c-verify__note"><span data-lang-copy="en">Working remotely with clients across the Gulf and Egypt.</span><span data-lang-copy="ar" lang="ar">أعمل عن بُعد مع عملاء في الخليج ومصر.</span></p>
+            </div>
+            <div class="c-verify__promise">
+              <p class="c-verify__window" data-i18n="replyWindow">We reply within 2 working hours</p>
+              <p class="c-verify__hours" data-i18n="replyHours">Sunday to Thursday</p>
+            </div>
+            <div class="c-verify__links">
+              <p class="c-verify__check" data-i18n="verifyCheck">Check us:</p>
+              <ul class="c-verify__list">
+                <li><a class="c-link" href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">The work, on Behance</span><span data-lang-copy="ar" lang="ar">الأعمال على Behance</span><span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+                <li><a class="c-link" href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">The person, on LinkedIn</span><span data-lang-copy="ar" lang="ar">الملف الشخصي على LinkedIn</span><span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    <footer class="c-footer">
+      <div class="l-container">
+        <div class="c-footer__top" data-reveal-group>
+          <div class="c-footer__brand">
+            <a class="c-header__brand" href="./index.html#home"
+              aria-label="Pixora, Digital Agency — home" data-i18n-label="brandHome">
+              <span class="c-brand" aria-hidden="true">
+                <span class="c-brand__word">PI<span class="c-brand__accent">X</span>ORA</span>
+                <span class="c-brand__tagline">Digital Agency</span>
+              </span>
+            </a>
+            <p class="c-footer__statement"><span data-lang-copy="en">Brands, websites, content and advertising — from one partner.</span><span data-lang-copy="ar" lang="ar">علامات ومواقع ومحتوى وإعلانات — من شريك واحد.</span></p>
+          </div>
+
+          <nav class="c-footer__group" aria-label="Quick links" data-i18n-label="footerNav">
+            <h2 class="t-label c-footer__heading" data-i18n="footerNav">Quick links</h2>
+            <ul class="c-footer__list" data-nav-render="footer">
+              <li><a class="c-link" href="./index.html#home" data-nav-link>Home</a></li>
+              <li><a class="c-link" href="./index.html#services" data-nav-link>Services</a></li>
+              <li><a class="c-link" href="./index.html#process" data-nav-link>Process</a></li>
+              <li><a class="c-link" href="./index.html#contact" data-nav-link>Contact</a></li>
+            </ul>
+          </nav>
+
+          <nav class="c-footer__group" aria-label="Services" data-i18n-label="footerServices">
+            <h2 class="t-label c-footer__heading" data-i18n="footerServices">Services</h2>
+            <ul class="c-footer__list" data-nav-render="services">
+              <li><a class="c-link" href="./index.html#branding" data-nav-link><span data-lang-copy="en">Branding &amp; Design</span><span data-lang-copy="ar" lang="ar">الهوية والتصميم</span></a></li>
+              <li><a class="c-link" href="./index.html#websites" data-nav-link><span data-lang-copy="en">Websites</span><span data-lang-copy="ar" lang="ar">المواقع الإلكترونية</span></a></li>
+              <li><a class="c-link" href="./index.html#social" data-nav-link><span data-lang-copy="en">Social Media Management</span><span data-lang-copy="ar" lang="ar">إدارة وسائل التواصل</span></a></li>
+              <li><a class="c-link" href="./index.html#marketing" data-nav-link><span data-lang-copy="en">Digital Marketing &amp; Advertising</span><span data-lang-copy="ar" lang="ar">التسويق الرقمي والإعلانات</span></a></li>
+              <li><a class="c-link" href="./index.html#integrated" data-nav-link><span data-lang-copy="en">Integrated Digital Solutions</span><span data-lang-copy="ar" lang="ar">الحلول الرقمية المتكاملة</span></a></li>
+            </ul>
+          </nav>
+
+          <div class="c-footer__action">
+            <h2 class="t-label c-footer__heading" data-i18n="footerStart">Start</h2>
+            <a class="c-btn c-btn--primary" href="./index.html#contact" data-cta-link>
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <p class="c-footer__mark" aria-hidden="true">PIXORA</p>
+
+        <div class="c-footer__bottom">
+          <!-- Seeded like the two link lists above, and re-rendered from
+               SOCIAL_LINKS on boot so the footer and the drawer can never
+               drift apart. Off-site, so each opens in a new tab and says so. -->
+          <nav aria-label="Elsewhere" data-i18n-label="footerElsewhere" data-social-block>
+            <ul class="c-footer__social" data-social-render>
+              <li><a href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer">Website<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+            </ul>
+          </nav>
+
+          <p class="c-footer__copyright">
+            © <span class="c-footer__year" data-year>2026</span> Pixora.
+            <span data-i18n="rights">All rights reserved.</span>
+            <a class="c-link c-footer__legal" href="./privacy.html"><span data-lang-copy="en">Privacy</span><span data-lang-copy="ar" lang="ar">الخصوصية</span></a>
+          </p>
+          <!-- An anchor, not a button: it works without JavaScript, is
+               keyboard-reachable for free, and the smooth scroll is the
+               document's own (already disabled under reduced motion).
+               The chevron points UP — not an inline direction — so it
+               deliberately carries no u-flip-rtl. -->
+          <a class="c-link c-footer__top-link" href="./index.html#home">
+            <span data-i18n="backToTop">Back to top</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

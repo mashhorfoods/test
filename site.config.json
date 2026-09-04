@@ -17,6 +17,12 @@
       "index": true
     },
     {
+      "file": "pricing.html",
+      "priority": "0.9",
+      "changefreq": "monthly",
+      "index": true
+    },
+    {
       "file": "about.html",
       "priority": "0.6",
       "changefreq": "yearly",
