@@ -196,8 +196,21 @@ function serve() {
     listed.filter((u) => !should.includes(u)).forEach((u) => fail('MED', 'seo', `sitemap lists an unexpected ${u}`));
     const robots = fs.readFileSync(path.join(DIST, 'robots.txt'), 'utf8');
     if (!robots.includes('Sitemap:')) fail('MED', 'seo', 'robots.txt does not point at the sitemap');
-    cfg.pages.filter((p) => p.index === false).forEach((p) => {
+    /* A noindex page needs a Disallow only if it ships. styleguide.html is built
+       into dist/ and deliberately kept out of the archive, so robots.txt stays
+       silent about it — a Disallow would name a URL that returns 404 and would
+       advertise an internal page to anyone reading the file. Its own
+       `noindex, nofollow` meta is what protects it if it is ever uploaded. */
+    const { SHIP } = require('./build-zip');
+    cfg.pages.filter((p) => p.index === false && SHIP.includes(p.file)).forEach((p) => {
       if (!robots.includes(p.file)) fail('MED', 'seo', `robots.txt does not disallow ${p.file}`);
+    });
+    cfg.pages.filter((p) => p.index === false && !SHIP.includes(p.file)).forEach((p) => {
+      const file = path.join(DIST, p.file);
+      if (!fs.existsSync(file)) return;
+      if (!/<meta name="robots" content="noindex/.test(fs.readFileSync(file, 'utf8'))) {
+        fail('MED', 'seo', `${p.file} is not in the deployment and carries no noindex meta — nothing keeps it out of an index if it is ever uploaded`);
+      }
     });
   }
 

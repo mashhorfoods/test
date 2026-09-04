@@ -18,6 +18,9 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
+/* The deployment's own manifest, so robots.txt cannot name a page the upload
+   does not contain. One list, two consumers. */
+const { SHIP } = require('./build-zip');
 
 const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
 const URL = String(cfg.url || '').replace(/\/+$/, '');
@@ -130,14 +133,19 @@ Options -Indexes
 
 /* --- robots.txt ------------------------------------------------------------ */
 const robots = () => {
-  const blocked = cfg.pages.filter((p) => p.index === false);
-  return `# Pixora
-User-agent: *
-Allow: /
-${blocked.map((p) => `Disallow: /${p.file}`).join('\n')}
-${URL ? `\nSitemap: ${URL}/sitemap.xml\n` : `
-# Sitemap line is written once site.config.json carries the domain.
-`}`;
+  /* Only pages the upload actually contains. dist/ is not the deployment —
+     styleguide.html is built there and deliberately left out of the archive —
+     so a Disallow keyed on dist/ names a file no crawler will ever find, and
+     tells anyone reading robots.txt that the site has a page it does not have. */
+  const blocked = cfg.pages
+    .filter((p) => p.index === false && SHIP.includes(p.file))
+    .map((p) => `Disallow: /${p.file}`);
+
+  const lines = ['# Pixora', 'User-agent: *', 'Allow: /', ...blocked, ''];
+  lines.push(URL
+    ? `Sitemap: ${URL}/sitemap.xml`
+    : '# Sitemap line is written once site.config.json carries the domain.');
+  return `${lines.join('\n')}\n`;
 };
 
 /* --- sitemap.xml ----------------------------------------------------------- */
