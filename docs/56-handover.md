@@ -30,7 +30,7 @@ Run them from the project folder.
 | Command | What it does |
 | --- | --- |
 | `npm run build` | Rebuilds everything and writes `pixora-site.zip` |
-| `npm run check` | Runs both quality harnesses. **Read the last line of each** |
+| `npm run check` | Runs the three quality harnesses. **Read the last line of each** |
 | `npm run release` | Both of the above, in order. This is the one to use |
 
 First time on a new machine: `npm install` once, to fetch the two tools the
@@ -38,7 +38,7 @@ checks need.
 
 ## 3. Uploading
 
-1. `npm run release` — it should end with `0 finding(s)` twice.
+1. `npm run release` — each of the three harnesses should end with zero.
 
    **Read those two lines rather than trusting that the command finished.** The
    harnesses stop the build only on a HIGH finding; a MEDIUM or LOW is printed
@@ -133,7 +133,7 @@ there, change both language spans.
 
 ## 6. What the checks actually check
 
-`npm run check` runs two harnesses. Neither is decoration.
+`npm run check` runs three harnesses. None of them is decoration.
 
 **`validate.js`** walks what a buyer does: every link resolves, a package
 button carries its package and price into WhatsApp, the choice survives a round
@@ -148,6 +148,15 @@ have the same number of strings, the phone requests no video, the link preview
 card and the iPhone touch icon both exist and shipped, and **no page costs a
 visitor more than 1MB** — measured by loading it and scrolling the whole way
 down, which is the only way the lazy images get counted.
+
+**`a11y.js`** runs axe-core — an accessibility engine nobody here wrote —
+against every shipped page at two widths and in both languages, plus the mobile
+drawer while it is open. It carries exactly one exception, the decorative
+footer watermark, and it re-verifies on every run that the watermark is still
+decorative before granting it.
+
+**What none of them can do** is tell you the site makes sense read aloud. A
+screen-reader pass is still outstanding, and a green `a11y` line is not it.
 
 **A finding is not a suggestion.** Every one of them was written because
 something real broke — eight package buttons that vanished on phones, a link

@@ -108,7 +108,7 @@ then anyone who tried to hire you has gone elsewhere.
 **The site is down or serving the wrong thing.** ~15 minutes.
 
 1. Check Hostinger is up before assuming it is you.
-2. `npm run release` locally — it must end with `0 finding(s)` twice.
+2. `npm run release` locally — all three harnesses must end with zero.
 3. Upload `pixora-site.zip` to `public_html` and extract.
 4. Confirm `.htaccess` is there (hidden files on) and re-run the four checks in
    `docs/44` §2.

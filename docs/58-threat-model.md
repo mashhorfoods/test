@@ -80,10 +80,12 @@ minutes, and it is the highest-value security work available on this project.
 
 There is no CI. The site is built on one laptop and uploaded by hand, so
 whatever that laptop runs is what visitors get. `package-lock.json` is
-committed, which pins the two build-time tools, but `ffmpeg-static` and
-`playwright-core` both execute during a build.
+committed, which pins the three build-time tools. `ffmpeg-static` and
+`playwright-core` execute during a build; `axe-core` is read as a string and
+injected into a headless browser during `npm run check`, so it never runs in
+this process — and none of the three ever reaches a visitor.
 
-*Current control:* the lockfile; two dependencies rather than two hundred;
+*Current control:* the lockfile; three dependencies rather than two hundred;
 `npm run check` would catch a *visible* change, not a hidden one.
 
 *What to do:* nothing structural at this scale. Do not run `npm install` on a

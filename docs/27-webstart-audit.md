@@ -186,7 +186,7 @@ that were uploaded, never observed. See §6, BLOCKER-1.
 - ~~P1-4 Master prompt completion (Phase 08).~~ **DONE** — `docs/38-master-prompt.md`.
 - ~~P1-5 Dashboard requirements definition (Phase 06).~~ **CLOSED as out of scope** (C-8, owner decision): one maintainer editing the data files. `docs/36` §4 records the four triggers that would reopen it.
 - P1-6 CSP — **DONE 4 Sep 2026**, build-generated from inline-script hashes, zero violations across six pages. **Backup + monitoring plan DONE** — `docs/57`; it needs three owner actions (a second git remote, an uptime monitor with a keyword check, registrar auto-renew) and the monitor is what finally closes the Gate 03 criterion. **Threat model DONE** — `docs/58`; it names three actions worth taking (2FA and a transfer lock on the registrar, host and GitHub; SPF/DKIM/DMARC when domain email exists; a quarterly search for a cloned site) and records that most of OWASP does not apply here by architecture rather than by control. **P1-6 is closed.**
-- ~~P1-7 Commit the QA harness~~ **DONE** — `tools/validate.js`, re-runnable after every change. Cross-browser and device matrix still outstanding.
+- ~~P1-7 Commit the QA harness~~ **DONE** — three harnesses now, all re-runnable after every change: `tools/validate.js` (the journeys), `tools/qa.js` (the built files, plus the showpiece, width-parity and transfer budgets) and `tools/a11y.js` (axe-core). Cross-browser and device matrix still outstanding — one engine, emulated devices.
   `story.html` and `404.html` to homepage depth.
 - P1-8 SEO — canonical, `og:url`, sitemap and robots ship and are verified by `tools/qa.js`. **`og:image` + Twitter card, Organization JSON-LD and `apple-touch-icon` all DONE 4 Sep 2026** — the card and the icon are generated (`npm run card`, `npm run icon`) from source that already exists rather than exported by hand, and `qa.js` asserts both shipped and neither is a `data:` URI. **Outstanding: Search Console only**, which needs the live host first. P1-8 is otherwise closed.
 - P1-9 Native-speaker Arabic review — **systematic pass done 4 Sep 2026** (`docs/47-arabic-review.md`): 37 package feature lines were English in the Arabic view and are now translated; numerals, voice and nine wordings fixed. A native speaker is still needed for register and terminology.
@@ -201,7 +201,7 @@ that were uploaded, never observed. See §6, BLOCKER-1.
 - A second and third case study in the `story.html` format.
 - FAQ section, if discovery shows the sales conversation repeats questions.
 - Staging environment + scripted deploy (replace the manual zip upload).
-- Automated Lighthouse/axe budget on every build. **Partly done 4 Sep 2026:** `qa.js` §9 enforces a 1MB per-page transfer budget and §1 a largest-paint budget, both on every `npm run check`. What is still missing is an *axe* run — a real accessibility engine rather than the hand-written contrast, heading, label and alt checks the harness has now.
+- ~~Automated Lighthouse/axe budget on every build.~~ **DONE 4 Sep 2026.** `qa.js` §9 enforces a 1MB per-page transfer budget and §1 a largest-paint budget; `tools/a11y.js` runs **axe-core** over every shipped page at two widths, in both languages, and with the mobile drawer open. Both run on every `npm run check`. Zero violations, with one named and conditionally re-verified exception (the decorative footer watermark). A screen-reader pass is a separate thing and is still outstanding.
 - Split-bundle option for repeat-visit caching, alongside the single file.
 - An accessibility statement.
 
