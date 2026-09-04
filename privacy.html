@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- ===================================================================
+         SEO — the Stage 00 §21 template.
+
+         The title and description shipped as Stage 01 scaffold text ("Homepage
+         shell… sections are built in later stages") right up to Stage 16.
+         They now describe the finished page, using only the six approved
+         services and the one-partner proposition — no claim the site does not
+         already make.
+
+         What is still TODO genuinely cannot be filled in yet: og:url and the
+         canonical need a domain, og:image and apple-touch-icon need raster
+         exports of the logo, and Organization JSON-LD needs a legal name and
+         address. None of those exist in the supplied data.
+         =================================================================== -->
+    <title>Privacy — Pixora</title>
+    <meta
+      name="description"
+      content="What this site collects, what it does not, and how to reach us about it."
+    />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#202020" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Pixora" />
+    <meta property="og:title" content="Privacy — Pixora" />
+    <meta
+      property="og:description"
+      content="Branding and design, websites, social media management and digital advertising — delivered together, by one partner."
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ar_SA" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- TODO: og:url, og:image (1200x630), canonical, hreflang alternates and
+         Organization JSON-LD — all blocked on a domain, raster logo exports
+         and the legal entity details. -->
+
+    <!-- Browser tab. Same file as the header logo — one asset, every surface. -->
+    <link rel="icon" href="./src/assets/brand/logo.svg" type="image/svg+xml" />
+    <!-- TODO: apple-touch-icon.png (180x180) and og-image.png (1200x630) need
+         raster exports of the final logo; see src/assets/brand/README.md. -->
+
+    <!-- Fonts are self-hosted, so there is no third-party connection to open.
+         The two faces the first screen needs are preloaded; the rest are
+         fetched only if the page's content calls for them (unicode-range). -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./src/assets/fonts/poppins-latin-700.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./src/assets/fonts/poppins-latin-400.woff2"
+      crossorigin
+    />
+
+    <link rel="stylesheet" href="./src/styles/main.css" />
+
+    <script>
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
+    </script>
+    <script type="module" src="./src/scripts/main.js"></script>
+  </head>
+
+  <body>
+    <a class="c-skip-link" href="./index.html#main">Skip to content</a>
+
+    <!-- =================================================================
+         HEADER — global component (§24). Identical markup serves every
+         page; nothing here is hero- or homepage-specific.
+         ================================================================= -->
+    <header class="c-header" data-header>
+      <div class="l-container c-header__inner">
+        <!-- LEFT — brand -->
+        <div class="c-header__zone">
+          <a
+            class="c-header__brand"
+            href="./index.html#home"
+            aria-label="Pixora, Digital Agency — home"
+            data-i18n-label="brandHome"
+          >
+            <!-- Brand lockup. A type lockup rather than an image: crisp at
+                 any density, no request, restyleable per breakpoint. The
+                 accent letter is the only coloured element. Swap for a vector
+                 asset via src/assets/brand/README.md if one is supplied. -->
+            <span class="c-brand" aria-hidden="true">
+              <span class="c-brand__word"
+                >PI<span class="c-brand__accent">X</span>ORA</span
+              >
+              <span class="c-brand__tagline">Digital Agency</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- CENTRE — primary navigation, rendered from navigation-map.js -->
+        <nav class="c-nav" aria-label="Primary" data-i18n-label="primaryNav">
+          <!-- Seeded so navigation exists with JavaScript disabled; the
+               script replaces these with identical content from
+               navigation-map.js on boot and on language change. A test
+               asserts the seed and the map agree. -->
+          <ul class="c-nav__list" data-nav-render="nav">
+            <li><a class="c-nav__link" href="./index.html#home" data-nav-link>Home</a></li>
+            <li><a class="c-nav__link" href="./index.html#services" data-nav-link>Services</a></li>
+            <li><a class="c-nav__link" href="./index.html#process" data-nav-link>Process</a></li>
+          </ul>
+        </nav>
+
+        <!-- RIGHT — language, CTA, menu trigger -->
+        <div class="c-header__zone c-header__zone--end">
+          <div
+            class="c-lang"
+            role="group"
+            aria-label="Language"
+            data-i18n-label="language"
+          >
+            <button
+              class="c-lang__option"
+              type="button"
+              data-lang="en"
+              aria-pressed="true"
+            >
+              EN
+            </button>
+            <button
+              class="c-lang__option"
+              type="button"
+              data-lang="ar"
+              aria-pressed="false"
+            >
+              AR
+            </button>
+          </div>
+
+          <a class="c-btn c-btn--primary c-header__cta" href="./index.html#contact" data-cta-link>
+            <span data-cta-label>Start Your Project</span>
+            <svg
+              class="c-btn__icon u-flip-rtl"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M5 12h13M13 6l6 6-6 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="square"
+              />
+            </svg>
+          </a>
+
+          <button
+            class="c-menu-trigger"
+            type="button"
+            data-menu-trigger
+            aria-expanded="false"
+            aria-controls="site-menu"
+            aria-label="Open menu"
+          >
+            <span class="c-menu-trigger__bars" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- =================================================================
+         MOBILE MENU
+         Rendered from the same array as the header nav, so the two can
+         never present a different order (§25).
+         ================================================================= -->
+    <div class="c-drawer" id="site-menu" data-drawer inert>
+      <div class="l-container c-drawer__inner">
+        <nav aria-label="Menu" data-i18n-label="menuNav">
+          <p class="t-label c-drawer__eyebrow" data-i18n="menuEyebrow">Menu</p>
+          <ul
+            class="c-drawer__list"
+            data-nav-render="nav"
+            data-nav-style="drawer"
+          ></ul>
+        </nav>
+
+        <!-- Enters after the navigation rows (§16). -->
+        <div class="c-drawer__foot" style="--i: 5">
+          <a
+            class="c-btn c-btn--primary c-btn--lg c-btn--block"
+            href="./index.html#contact"
+            data-cta-link
+          >
+            <span data-cta-label>Start Your Project</span>
+            <svg
+              class="c-btn__icon u-flip-rtl"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M5 12h13M13 6l6 6-6 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="square"
+              />
+            </svg>
+          </a>
+
+          <!-- Hidden until real profiles exist in navigation-map.js. -->
+          <div data-social-block hidden>
+            <p class="t-label u-mbe-16" data-i18n="followUs">Follow us</p>
+            <ul class="c-drawer__social" data-social-render></ul>
+          </div>
+
+          <div class="c-drawer__utility">
+            <span class="t-label" id="menu-lang-label" data-i18n="language">
+              Language
+            </span>
+            <div class="c-lang" role="group" aria-labelledby="menu-lang-label">
+              <button
+                class="c-lang__option"
+                type="button"
+                data-lang="en"
+                aria-pressed="true"
+              >
+                EN
+              </button>
+              <button
+                class="c-lang__option"
+                type="button"
+                data-lang="ar"
+                aria-pressed="false"
+              >
+                AR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================
+         PAGE SECTIONS
+         Placeholders only — each is replaced by its own stage. They exist
+         so navigation, anchors and scroll spy are real and testable. No
+         business content appears here.
+         ================================================================= -->
+    <main id="main">
+<section class="l-section c-page" aria-labelledby="privacy-title">
+        <div class="l-container">
+          <header class="c-page__head">
+            <p class="t-label c-page__eyebrow"><span data-lang-copy="en">Privacy</span><span data-lang-copy="ar" lang="ar">الخصوصية</span></p>
+            <h1 class="c-page__title" id="privacy-title"><span data-lang-copy="en">What this site collects, and what it does not</span><span data-lang-copy="ar" lang="ar">ما يجمعه هذا الموقع، وما لا يجمعه</span></h1>
+            <p class="t-body-lg c-page__lead"><span data-lang-copy="en">Short, because there is little to say: this site has no accounts, no
+              cookies, and no advertising. It stores nothing about you on our side that you did not send us yourself.</span><span data-lang-copy="ar" lang="ar">قصيرة، لأن ما يُقال قليل: لا حسابات في هذا الموقع، ولا ملفات تعريف ارتباط، ولا إعلانات. ولا نحتفظ عندنا بشيء عنك لم ترسله أنت.</span></p>
+            <p class="c-page__meta"><span data-lang-copy="en">Last updated: 4 September 2026</span><span data-lang-copy="ar" lang="ar">آخر تحديث: 4 سبتمبر 2026</span></p>
+          </header>
+
+          <div class="c-prose">
+            <h2><span data-lang-copy="en">Who we are</span><span data-lang-copy="ar" lang="ar">من نحن</span></h2>
+            <p><span data-lang-copy="en">Pixora is a digital studio working remotely with clients across the Gulf and Egypt. There is no
+              office to visit. For anything on this page — including a request to see or delete what we hold — write to
+              <a class="c-link" href="mailto:muhalabsalah@gmail.com">muhalabsalah@gmail.com</a> or message
+              <a class="c-link" href="https://wa.me/249962672192" target="_blank" rel="noopener noreferrer">+249 962672192<span class="u-visually-hidden"> (opens in a new tab)</span></a>.</span><span data-lang-copy="ar" lang="ar">بيكسورا استوديو رقمي يعمل عن بُعد مع عملاء في الخليج ومصر. لا يوجد مكتب تزوره. لأي أمر في هذه الصفحة — بما في ذلك طلب الاطلاع على ما لدينا أو حذفه — راسلنا على
+              <a class="c-link" href="mailto:muhalabsalah@gmail.com">muhalabsalah@gmail.com</a> أو عبر
+              <a class="c-link" href="https://wa.me/249962672192" target="_blank" rel="noopener noreferrer">‎+249 962672192<span class="u-visually-hidden"> (يفتح في نافذة جديدة)</span></a>.</span></p>
+
+            <h2><span data-lang-copy="en">What you send us</span><span data-lang-copy="ar" lang="ar">ما ترسله إلينا</span></h2>
+            <p><span data-lang-copy="en">The contact form has no server behind it. Pressing send opens your own email application with the
+              message ready — your name, your email address and what you wrote travel through your mail provider to our
+              inbox, exactly as any email you send does. The package buttons work the same way through WhatsApp: the
+              message is written for you, and you send it yourself.</span><span data-lang-copy="ar" lang="ar">نموذج التواصل لا يقف خلفه خادم. الضغط على «إرسال» يفتح تطبيق البريد لديك والرسالة جاهزة — اسمك وبريدك وما كتبته تنتقل عبر مزوّد بريدك إلى صندوقنا، تمامًا كأي رسالة ترسلها. وأزرار الباقات تعمل بالطريقة نفسها عبر واتساب: تُكتب الرسالة من أجلك، وترسلها أنت بنفسك.</span></p>
+            <p><span data-lang-copy="en">We keep an enquiry while the conversation is alive, and afterwards only so that we can pick it up
+              again if you come back. We do not add you to a mailing list, and we do not pass your details to anyone.</span><span data-lang-copy="ar" lang="ar">نحتفظ بالاستفسار ما دامت المحادثة قائمة، وبعدها فقط لنتمكن من متابعتها إن عدت إلينا. لا نضيفك إلى قائمة بريدية، ولا نمرّر بياناتك لأي جهة.</span></p>
+
+            <h2><span data-lang-copy="en">What we measure</span><span data-lang-copy="ar" lang="ar">ما نقيسه</span></h2>
+            <p><span data-lang-copy="en">This site uses Plausible Analytics to count what is read: which packages people open, which contact
+              channel they choose, and whether they read in Arabic or English. Plausible sets no cookies and does not
+              collect personal data; the numbers it returns are aggregated and cannot identify anyone. Nothing typed into
+              the form is ever measured — not a name, not an address, not a word of a message.</span><span data-lang-copy="ar" lang="ar">يستخدم هذا الموقع Plausible Analytics لقياس ما يُقرأ: أي الباقات تُفتح، وأي قناة تواصل تُختار، وهل تُقرأ الصفحة بالعربية أم بالإنجليزية. لا يضع Plausible ملفات تعريف ارتباط ولا يجمع بيانات شخصية، والأرقام التي يعيدها مجمّعة ولا تدل على شخص بعينه. ولا يُقاس أبدًا ما يُكتب في النموذج — لا اسم ولا بريد ولا كلمة من الرسالة.</span></p>
+            <p><span data-lang-copy="en">If you would rather not be counted at all, any content blocker that blocks analytics will stop it,
+              and the site works exactly the same without it.</span><span data-lang-copy="ar" lang="ar">وإن كنت تفضّل ألا تُحتسب أصلًا، فأي مانع محتوى يحجب أدوات التحليل يوقف ذلك، والموقع يعمل كما هو تمامًا من دونه.</span></p>
+
+            <h2><span data-lang-copy="en">What stays in your browser</span><span data-lang-copy="ar" lang="ar">ما يبقى في متصفحك</span></h2>
+            <p><span data-lang-copy="en">Two small things, and neither is sent anywhere: the language you chose, so the site opens in it next
+              time; and, for the length of one visit, the package whose button you pressed, so the form is already filled
+              in if you come back to it. Clearing your browser storage removes both.</span><span data-lang-copy="ar" lang="ar">شيئان صغيران لا يُرسل أيٌّ منهما إلى أي مكان: اللغة التي اخترتها، ليفتح الموقع بها في المرة القادمة؛ وطوال زيارة واحدة، الباقة التي ضغطت زرّها، ليكون النموذج مُعبّأً إن عدت إليه. ومسح تخزين المتصفح يزيلهما.</span></p>
+
+            <h2><span data-lang-copy="en">Who else is involved</span><span data-lang-copy="ar" lang="ar">من غيرنا في الصورة</span></h2>
+            <p><span data-lang-copy="en">Your email provider and ours carry an email. WhatsApp carries a WhatsApp message, under its own terms.
+              Plausible processes the aggregated counts described above. Our host serves the pages. That is the whole
+              list: there is no advertising network, no tracking pixel, no data broker, and nothing is sold.</span><span data-lang-copy="ar" lang="ar">مزوّد بريدك ومزوّدنا ينقلان الرسالة البريدية. وواتساب ينقل رسالة واتساب وفق شروطه. وPlausible يعالج الأرقام المجمّعة الموصوفة أعلاه. ومستضيفنا يقدّم الصفحات. هذه هي القائمة كاملة: لا شبكة إعلانات، ولا بكسل تتبّع، ولا وسيط بيانات، ولا شيء يُباع.</span></p>
+
+            <h2><span data-lang-copy="en">Your choices</span><span data-lang-copy="ar" lang="ar">خياراتك</span></h2>
+            <p><span data-lang-copy="en">Send us only what you want us to have. Ask us at any time what we hold about you, or ask us to delete
+              it, and we will — an enquiry is an email in an inbox, and it can be removed from it.</span><span data-lang-copy="ar" lang="ar">أرسل إلينا ما ترغب في أن يكون لدينا فقط. واسألنا في أي وقت عمّا نحتفظ به عنك، أو اطلب حذفه، وسنفعل — فالاستفسار رسالة في صندوق بريد، ويمكن إزالتها منه.</span></p>
+
+            <h2><span data-lang-copy="en">Changes</span><span data-lang-copy="ar" lang="ar">التغييرات</span></h2>
+            <p><span data-lang-copy="en">If what this page describes changes, the page changes with it, and the date at the top moves. There is
+              no other version of this document.</span><span data-lang-copy="ar" lang="ar">إن تغيّر ما تصفه هذه الصفحة، تتغير الصفحة معه، ويتحرك التاريخ في أعلاها. ولا توجد نسخة أخرى من هذا المستند.</span></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Quick links render from the same array as the header (§25). The
+         footer itself is designed in a later stage. -->
+    <!-- =============================================================
+         FOOTER (Stage 15)
+         The last navigation system, the last action, and the closure.
+
+         NO SECOND DISPLAY CTA. Stage 14 sits directly above this and is the
+         conversion moment §05 asks for; repeating a display headline and a
+         large button a hundred pixels below it would be two climaxes in a
+         row. The action is carried forward as the primary button in the
+         fourth column instead.
+
+         NOTHING INVENTED. Stage 15 shipped with no contact detail and no
+         social profile, because none existed — §14/§15/§17 all say not to
+         create them — and parked a bottom row for them. Stage 17 supplied
+         three profiles, so that row now holds them, rendered from the same
+         SOCIAL_LINKS the drawer uses. Still no legal page, so still none
+         here. The direct channels live in the contact section, one screen
+         above, rather than being repeated here.
+
+         SEEDED, NOT JUST RENDERED. Both link lists are written out in the
+         markup as well as carrying [data-nav-render]. The script replaces
+         them with identical content on boot and on language change; without
+         it they still work. The header and drawer are seeded the same way
+         for the same reason — see the note there.
+         ============================================================= -->
+    <footer class="c-footer">
+      <div class="l-container">
+        <div class="c-footer__top" data-reveal-group>
+          <div class="c-footer__brand">
+            <a class="c-header__brand" href="./index.html#home"
+              aria-label="Pixora, Digital Agency — home" data-i18n-label="brandHome">
+              <span class="c-brand" aria-hidden="true">
+                <span class="c-brand__word">PI<span class="c-brand__accent">X</span>ORA</span>
+                <span class="c-brand__tagline">Digital Agency</span>
+              </span>
+            </a>
+            <p class="c-footer__statement"><span data-lang-copy="en">Brands, websites, content and advertising — from one partner.</span><span data-lang-copy="ar" lang="ar">علامات ومواقع ومحتوى وإعلانات — من شريك واحد.</span></p>
+          </div>
+
+          <nav class="c-footer__group" aria-label="Quick links" data-i18n-label="footerNav">
+            <h2 class="t-label c-footer__heading" data-i18n="footerNav">Quick links</h2>
+            <ul class="c-footer__list" data-nav-render="footer">
+              <li><a class="c-link" href="./index.html#home" data-nav-link>Home</a></li>
+              <li><a class="c-link" href="./index.html#services" data-nav-link>Services</a></li>
+              <li><a class="c-link" href="./index.html#process" data-nav-link>Process</a></li>
+              <li><a class="c-link" href="./index.html#contact" data-nav-link>Contact</a></li>
+            </ul>
+          </nav>
+
+          <nav class="c-footer__group" aria-label="Services" data-i18n-label="footerServices">
+            <h2 class="t-label c-footer__heading" data-i18n="footerServices">Services</h2>
+            <ul class="c-footer__list" data-nav-render="services">
+              <li><a class="c-link" href="./index.html#branding" data-nav-link><span data-lang-copy="en">Branding &amp; Design</span><span data-lang-copy="ar" lang="ar">الهوية والتصميم</span></a></li>
+              <li><a class="c-link" href="./index.html#websites" data-nav-link><span data-lang-copy="en">Websites</span><span data-lang-copy="ar" lang="ar">المواقع الإلكترونية</span></a></li>
+              <li><a class="c-link" href="./index.html#social" data-nav-link><span data-lang-copy="en">Social Media Management</span><span data-lang-copy="ar" lang="ar">إدارة وسائل التواصل</span></a></li>
+              <li><a class="c-link" href="./index.html#marketing" data-nav-link><span data-lang-copy="en">Digital Marketing &amp; Advertising</span><span data-lang-copy="ar" lang="ar">التسويق الرقمي والإعلانات</span></a></li>
+              <li><a class="c-link" href="./index.html#integrated" data-nav-link><span data-lang-copy="en">Integrated Digital Solutions</span><span data-lang-copy="ar" lang="ar">الحلول الرقمية المتكاملة</span></a></li>
+            </ul>
+          </nav>
+
+          <div class="c-footer__action">
+            <h2 class="t-label c-footer__heading" data-i18n="footerStart">Start</h2>
+            <a class="c-btn c-btn--primary" href="./index.html#contact" data-cta-link>
+              <span data-cta-label>Start Your Project</span>
+              <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <p class="c-footer__mark" aria-hidden="true">PIXORA</p>
+
+        <div class="c-footer__bottom">
+          <!-- Seeded like the two link lists above, and re-rendered from
+               SOCIAL_LINKS on boot so the footer and the drawer can never
+               drift apart. Off-site, so each opens in a new tab and says so. -->
+          <nav aria-label="Elsewhere" data-i18n-label="footerElsewhere" data-social-block>
+            <ul class="c-footer__social" data-social-render>
+              <li><a href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer">Website<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+            </ul>
+          </nav>
+
+          <p class="c-footer__copyright">
+            © <span class="c-footer__year" data-year>2026</span> Pixora.
+            <span data-i18n="rights">All rights reserved.</span>
+            <a class="c-link c-footer__legal" href="./privacy.html"><span data-lang-copy="en">Privacy</span><span data-lang-copy="ar" lang="ar">الخصوصية</span></a>
+          </p>
+          <!-- An anchor, not a button: it works without JavaScript, is
+               keyboard-reachable for free, and the smooth scroll is the
+               document's own (already disabled under reduced motion).
+               The chevron points UP — not an inline direction — so it
+               deliberately carries no u-flip-rtl. -->
+          <a class="c-link c-footer__top-link" href="./index.html#home">
+            <span data-i18n="backToTop">Back to top</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

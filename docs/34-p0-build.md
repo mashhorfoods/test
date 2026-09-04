@@ -47,7 +47,7 @@ overflow in either direction.
 
 ---
 
-## 2. P0-5 — instrumentation *(shipped)*, provider and policy *(open)*
+## 2. P0-5 — analytics and privacy policy *(shipped)*
 
 `src/scripts/analytics.js` collects four events, each one answering a KPI from
 `docs/31-strategy-kpis.md` §7 and nothing else:
@@ -64,37 +64,49 @@ service that produced it (K3). **It never carries a name, an email address, a
 message or anything typed into a field.** There is no identifier and no cookie:
 the only state is a per-visit set that stops one package counting twice.
 
-### It sends nothing yet, deliberately
+### Plausible, chosen 4 September 2026
 
-Choosing who receives a visitor's data is the owner's decision, not a default
-inherited from a build script. With no provider named in `site.config.json`,
-the module dispatches a DOM event and stops. Naming one turns it on with **no
-code change** — `tools/build-deploy.js` then adds that provider's script to the
-deployed pages, and says so on every run:
+The owner chose Plausible. `site.config.json` names it, the domain is derived
+from the site URL, and `tools/build-deploy.js` adds the script to the deployed
+pages — **and only the indexed ones**: the styleguide is internal, and counting
+our own visits would be the first thing to corrupt the numbers. The tag is
+stripped before it is written on every run, so a page that stops being tracked
+loses it rather than reporting for ever.
 
 ```
-deploy files -> dist/  (…, analytics OFF (no provider in site.config.json —
-                        events are collected, nothing is sent))
+deploy files -> dist/  (…, canonical + og:url on 3 page(s), plausible on 3 page(s))
 ```
 
-**The recommendation is Plausible or Umami** — both cookieless, both sending no
-personal data, both about 1KB. That is also the honest cost to state: this
-becomes **the only third-party request the site makes**. The zero-request
-property is worth spending here and nowhere else, because Phase 20 cannot begin
-without measurement and every KPI currently reads "unknown".
+The cost, stated where it is paid: this is now **the only third-party request
+the site makes**. It is worth spending here and nowhere else, because Phase 20
+cannot begin without measurement and every KPI still reads "unknown".
 
-### What is still open, and why nothing was faked
+### The privacy policy — `/privacy`
 
-The privacy policy has **not** been written, and that is deliberate. It must
-name the analytics provider (not chosen) and the legal entity that controls the
-data (C-6, unanswered). A privacy policy with blanks in those two places is
-worse than none — it is a document that misstates who is accountable. It ships
-in the same release as the provider, not before.
+Written and shipped, in both languages, at 4 September 2026. It says what the
+site actually does rather than what a template assumes: there is no server
+behind the form, so an enquiry travels through the sender's own mail provider;
+WhatsApp carries a WhatsApp message under its own terms; Plausible sees
+aggregated counts and sets no cookies; and the only things kept in the browser
+are the chosen language and, for one visit, the package whose button was
+pressed. **No cookie banner**, because there are no cookies to consent to.
 
-The page also needs the T3 content template and a shared page shell: the header
-and footer are currently duplicated between `index.html` and `story.html`, and
-a third page would make three copies. That is a small build change, worth doing
-once rather than three times.
+On C-6, the owner's answer was to use the existing contact details, so the page
+names those and claims no company registration it does not have.
+
+### The page shell, built once
+
+A third page would have made a third hand-copied header and footer. Instead
+`tools/build-pages.js` reads the shell **from `index.html`** and swaps only the
+`<main>`; a file in `src/pages/` holds nothing but the page and a small JSON
+block naming its title and description. Seeded fragment links are rewritten to
+`./index.html#…` so the navigation works on a subpage with JavaScript disabled —
+which is what `navigation.js` already did at runtime, now agreed with by the
+markup before boot.
+
+`src/styles/components/page.css` adds the T3 template — heading, lead, meta and
+a 42rem prose measure — entirely from existing tokens. About and the pricing
+guide are now content files, not builds.
 
 ---
 
@@ -126,9 +138,10 @@ returns with real dimensions, and the site's zero-request property comes back.
 | P0-2 self-host images | 🔴 blocked here — needs the files |
 | P0-3 verify the live deployment | 🔴 blocked here — egress policy |
 | P0-4 lead path | ✅ shipped |
-| P0-5 analytics | 🟡 instrumented; provider and privacy policy open |
+| P0-5 analytics + privacy | ✅ shipped — Plausible configured, `/privacy` live in both languages |
 | P0-6 price band | ✅ decided and shipped (Phase 04) |
 | P0-1 strategic foundation | ✅ Phases 01–05, 07 done; Gate 01 awaiting sign-off |
 
-Nothing in this stage waited on C-6 to C-9. Everything left in P0 now does, or
-needs a file this environment cannot reach.
+P0-2 is the only item left, and it needs twelve files this environment cannot
+fetch. C-6 was answered by keeping the existing contact details, which the
+privacy page now names.

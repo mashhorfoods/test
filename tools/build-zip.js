@@ -31,7 +31,7 @@ const OUT = path.join(ROOT, 'pixora-site.zip');
 /* Only what belongs on the server. styleguide.html is the internal design
    reference — noindex and robots-disallowed — so it is not part of a
    deployment and is left out rather than uploaded and then hidden. */
-const SHIP = ['index.html', 'story.html', '404.html', '.htaccess', 'robots.txt', 'sitemap.xml'];
+const SHIP = ['index.html', 'story.html', 'privacy.html', '404.html', '.htaccess', 'robots.txt', 'sitemap.xml'];
 
 function run() {
   const present = SHIP.filter((f) => fs.existsSync(path.join(DIST, f)));

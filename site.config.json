@@ -25,6 +25,12 @@
     {
       "file": "styleguide.html",
       "index": false
+    },
+    {
+      "file": "privacy.html",
+      "priority": "0.3",
+      "changefreq": "yearly",
+      "index": true
     }
   ],
   "contact": {
@@ -47,8 +53,8 @@
       "zero-request property is spent deliberately, on the one thing the project",
       "cannot proceed without."
     ],
-    "provider": null,
-    "domain": "",
+    "provider": "plausible",
+    "domain": "zaokalyamamah.online",
     "scriptUrl": "https://plausible.io/js/script.js",
     "websiteId": ""
   }

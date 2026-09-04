@@ -190,10 +190,16 @@ function injectAnalytics() {
     const file = path.join(DIST, page.file);
     if (!fs.existsSync(file)) continue;
     let html = fs.readFileSync(file, 'utf8');
+    // Strip first, on EVERY page: a page that stops being tracked has to lose
+    // the tag a previous run wrote, or it goes on reporting for ever.
     html = html.replace(/\n?\s*<script defer data-(?:domain|website-id)[^>]*><\/script>/g, '');
-    html = html.replace('</head>', `    ${tag}\n  </head>`);
+    // A noindex page is internal — the styleguide is read by us, and counting
+    // our own visits would be the first thing to corrupt the numbers.
+    if (page.index !== false) {
+      html = html.replace('</head>', `    ${tag}\n  </head>`);
+      n++;
+    }
     fs.writeFileSync(file, html);
-    n++;
   }
   return n;
 }

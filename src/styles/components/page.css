@@ -1,0 +1,66 @@
+/* =============================================================================
+   CONTENT PAGE — template T3 (docs/32-content-ia.md §5, wireframe W4)
+
+   One template, three pages: privacy now, About and the pricing guide next.
+   It adds no new colour, no new type scale and no new spacing step — every
+   value here is an existing token. That is the whole point of building the
+   template rather than three one-off pages: the fourth one costs nothing.
+   ============================================================================= */
+
+@layer components {
+  .c-page__head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    max-inline-size: 46rem;
+    margin-block-end: var(--space-48);
+  }
+
+  .c-page__title {
+    font-size: var(--text-h1, clamp(2.2rem, 5vw, 3.4rem));
+    line-height: var(--leading-tight, 1.1);
+    text-wrap: balance;
+  }
+
+  .c-page__lead {
+    color: var(--color-text-muted);
+  }
+
+  .c-page__meta {
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--color-text-muted);
+  }
+
+  /* PROSE. A reading measure, not a layout: long-form text is the one place on
+     this site where the 12-column grid is the wrong tool. ~65 characters is the
+     line the type scale was drawn for. */
+  .c-prose {
+    max-inline-size: 42rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .c-prose h2 {
+    font-size: var(--text-h3, 1.5rem);
+    line-height: var(--leading-tight, 1.2);
+    margin-block-start: var(--space-32);
+  }
+
+  .c-prose h2:first-child {
+    margin-block-start: 0;
+  }
+
+  .c-prose p {
+    color: var(--color-text-muted);
+  }
+
+  .c-prose ul,
+  .c-prose ol {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding-inline-start: var(--space-24);
+    color: var(--color-text-muted);
+  }
+}
