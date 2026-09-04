@@ -139,7 +139,11 @@
      A < 1 keeps it monotonic: at A = 1 the dust would stall dead, and above it
      the flow would run backwards, which is the one thing a launch must not
      appear to do. */
-  const SURGE = 0.80, SLOWEST = 0.12;
+  /* SURGE raised and SLOWEST moved so the flow's fastest instant lands exactly on
+   the launch rather than three-hundredths before it — the acceleration and the
+   flare were arriving separately, which is why it read as a swell instead of a
+   hit. Still under 1: at 1 the dust stalls dead, above it the flow reverses. */
+  const SURGE = 0.93, SLOWEST = 0.15;
   const flow = (s) => {
     const f = (u) => u - (SURGE / TAU) * Math.sin(TAU * (u - SLOWEST));
     return f(s) - f(0);
@@ -153,9 +157,19 @@
      the floor gives up its light. Far enough from the ends that it is already
      nothing at s = 0, so the loop is unaffected by it. */
   const launch = (s) => {
-    const d = Math.min(Math.abs(s - 0.65), 1 - Math.abs(s - 0.65));
-    return Math.exp(-(d * d) / (2 * 0.085 * 0.085));
+    /* Asymmetric on purpose. A symmetric bump swells and subsides and reads as
+       a breath; an impact rises far faster than it falls. Narrow on the way in,
+       three times wider on the way out — the difference between a flare and a
+       pulse. */
+    let d = s - 0.65;
+    if (d > 0.5) d -= 1; else if (d < -0.5) d += 1;
+    const sigma = d < 0 ? 0.042 : 0.125;
+    return Math.exp(-(d * d) / (2 * sigma * sigma));
   };
+
+  /* The sharpest elements ride this rather than L, so the flare peaks harder
+     and clears faster than the light around it. */
+  const punchOf = (L) => Math.pow(L, 1.7);
 
   /* Where a particle is at time t. It rises on the shared flow and leans
      toward the column as the gather builds; the sway is a sine rather than a
@@ -187,7 +201,8 @@
     /* The floor charges as the dust gathers and is spent by the launch: the
        ground gives its light up to what leaves it. That subtraction is the
        whole argument of the film in one line. */
-    const ground = Math.max(0, G * 0.9 - L * 0.85);
+    const K = punchOf(L);  // the sharp half of the launch
+    const ground = Math.max(0, G * 0.9 - L * 1.15);
     const breath = 0.35 + 0.65 * G;
 
     ctx.globalCompositeOperation = 'source-over';
@@ -209,16 +224,16 @@
     /* Dim while the ground still holds the light; the launch is what lifts it
        — and it brightens from the TOP down, so the eye is pulled upward. */
     const shaft = ctx.createLinearGradient(0, -40, 0, FLOOR);
-    shaft.addColorStop(0, PALE(0.05 + L * 0.22 + ground * 0.03));
-    shaft.addColorStop(0.62, WARM(0.025 + L * 0.085));
+    shaft.addColorStop(0, PALE(0.05 + K * 0.40 + ground * 0.03));
+    shaft.addColorStop(0.62, WARM(0.025 + K * 0.13));
     shaft.addColorStop(1, WARM(0.010 + ground * 0.03));
     ctx.fillStyle = shaft;
     ctx.beginPath();
     ctx.moveTo(CX - 66, -60);
     ctx.lineTo(CX + 66, -60);
     /* Narrows as it fires: a column, not a floodlight. */
-    ctx.lineTo(CX + 250 - L * 96, FLOOR);
-    ctx.lineTo(CX - 250 + L * 96, FLOOR);
+    ctx.lineTo(CX + 250 - K * 150, FLOOR);
+    ctx.lineTo(CX - 250 + K * 150, FLOOR);
     ctx.closePath();
     ctx.fill();
     ctx.restore();
@@ -227,7 +242,7 @@
        from bright — it sits behind a headline. */
     ctx.save();
     ctx.filter = 'blur(26px)';
-    const poolW = 300 + G * 46 - L * 70;
+    const poolW = 300 + G * 46 - K * 110;
     const pool = ctx.createRadialGradient(CX, FLOOR, 0, CX, FLOOR, poolW);
     /* Warm, not white. A white core reads as a lamp; the accent has to survive
        all the way into the brightest part of the frame or the palette breaks
@@ -288,8 +303,27 @@
       const a = p.alpha * edgeFade(y) * (0.28 + lit * 0.72) * (0.75 + breath * 0.25);
       if (a <= 0.004) continue;
       ctx.fillStyle = p.warm ? WARM(a) : PALE(a * 0.75);
+
+      /* STREAKING — the thing that makes it read as a hit rather than a
+         brightening. Real dust caught by a fast camera smears along its
+         travel, so at the punch each mote stretches vertically in proportion
+         to its own speed: the fast ones become lines, the slow ones stay
+         points, and the frame gains a texture it does not have at rest. It is
+         a shape change rather than another glow, which is why it survives
+         behind text that must stay readable. */
+      /* Nearly uniform across the frame, not concentrated at the column. The
+         first attempt scaled streaking with `lit`, so only dust near the light
+         smeared — and in the hero that is precisely the area the orbit diagram
+         covers, which meant the loudest moment of the film happened where
+         nothing could be seen. Now the whole field lifts at once and the punch
+         reads in the open dark as well as behind the artwork. */
+      const stretch = 1 + K * p.wraps * 7.5 * (0.78 + lit * 0.22);
       ctx.beginPath();
-      ctx.arc(x, y, p.size, 0, TAU);
+      if (stretch > 1.25) {
+        ctx.ellipse(x, y, p.size, p.size * stretch, 0, 0, TAU);
+      } else {
+        ctx.arc(x, y, p.size, 0, TAU);
+      }
       ctx.fill();
     }
 

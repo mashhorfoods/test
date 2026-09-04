@@ -92,6 +92,7 @@ function encode(dir) {
     '-profile:v', 'high', '-level', '4.0',
     '-preset', 'veryslow',              // build time is free; the visitor's bytes are not
     '-crf', String(SPEC.crf),
+    '-g', String(SPEC.fps * 2),         // a keyframe every 2s: seekable, and quicker to start
     '-pix_fmt', 'yuv420p',              // Safari will not decode yuv444
     '-movflags', '+faststart',          // metadata first, so it can start before it finishes
     mp4,
@@ -111,6 +112,11 @@ function encode(dir) {
     '-c:v', 'libvpx-vp9',
     '-crf', String(SPEC.crf + 12), // VP9's scale is not H.264's; this lands near the same quality
     '-b:v', '0',
+    /* Without this the file has almost no keyframes and no cues: it plays, but
+       it cannot be seeked — which cost an hour of chasing a screenshot that
+       silently showed frame 0 while reporting success. A background loop should
+       be scrubbable by whoever reviews it. */
+    '-g', String(SPEC.fps * 2),
     '-row-mt', '1',
     '-pix_fmt', 'yuv420p',
     webm,
