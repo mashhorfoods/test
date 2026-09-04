@@ -90,24 +90,31 @@
     50%      { opacity: .58; transform: scale(1.045); }
   }
 
-  /* Concentric rings, expanding from centre and fading — the orbit diagram's
-     geometry as atmosphere rather than as a second diagram. Radial, so it has
-     no reading direction. */
-  .ring {
+  /* NO RINGS. The first cut expanded concentric circles from centre, and in
+     the hero they vanished — the orbit diagram beside them is already made of
+     circles, so the eye merged the two layers and read neither. Turning the
+     film up would have put two ring systems in one frame. The atmosphere has
+     to do something the orbit does not: rise. Slow vertical drift reads as a
+     separate layer, and vertical has no reading direction, so Arabic is
+     unaffected. */
+  .motes {
     position: absolute;
-    left: 50%; top: 44%;
-    width: 320px; height: 320px;
-    translate: -50% -50%;
-    border: 1px solid rgba(244, 209, 63, .34);
-    border-radius: 50%;
-    animation-name: expand;
+    inset: -20% 0;
+    background-image:
+      radial-gradient(circle, rgba(244,209,63,.55) 1.6px, transparent 1.7px),
+      radial-gradient(circle, rgba(255,255,255,.30) 1.2px, transparent 1.3px);
+    background-size: 240px 190px, 170px 260px;
+    background-position: 30px 0, 120px 40px;
+    -webkit-mask-image: radial-gradient(ellipse 62% 58% at 50% 46%, #000 0%, transparent 78%);
+    mask-image: radial-gradient(ellipse 62% 58% at 50% 46%, #000 0%, transparent 78%);
+    animation-name: rise;
   }
-  .ring:nth-of-type(2) { animation-delay: calc(var(--t) + 4s); }
-  .ring:nth-of-type(3) { animation-delay: calc(var(--t) + 8s); }
-  @keyframes expand {
-    0%   { opacity: 0;   transform: scale(.34); }
-    12%  { opacity: .55; }
-    100% { opacity: 0;   transform: scale(3.1); }
+  @keyframes rise {
+    0%   { transform: translateY(0); opacity: 0; }
+    14%  { opacity: .85; }
+    86%  { opacity: .85; }
+    /* Exactly one tile height, so the loop seam is invisible. */
+    100% { transform: translateY(-190px); opacity: 0; }
   }
 
   /* One accent bloom, centred. The only warm light in the frame. */
@@ -137,9 +144,7 @@
   <div class="ground a"></div>
   <div class="field a"></div>
   <div class="bloom a"></div>
-  <div class="ring a"></div>
-  <div class="ring a"></div>
-  <div class="ring a"></div>
+  <div class="motes a"></div>
   <div class="scrim"></div>
 
 <script>
