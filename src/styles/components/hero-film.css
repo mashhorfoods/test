@@ -1,0 +1,76 @@
+/* =============================================================================
+   COMPONENT — HERO FILM
+   The atmospheric layer behind the hero. WEBSTART X, X06; budget in docs/53.
+
+   TWO ELEMENTS, ONE PICTURE. The still is always present and always painted.
+   The loop sits exactly on top of it and fades in only once it is playing, so
+   a video that never loads — phone, reduced motion, no JavaScript, a failed
+   request — leaves the still on screen and nothing about the layout moves.
+
+   IT IS DECORATION, and the CSS says so: aria-hidden in the markup,
+   pointer-events none here. Nothing in it carries meaning that the hero's own
+   text does not already carry.
+   ============================================================================= */
+
+@layer components {
+  .c-hero__film {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    /* The film is atmosphere, not subject. Held back so the headline stays the
+       brightest thing in the frame — the scrim is baked into the footage, this
+       is the second, adjustable half of the same decision. */
+    opacity: 0.62;
+  }
+
+  .c-hero__still,
+  .c-hero__loop {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    /* The composition is centred and radial, so the crop can bite anywhere
+       except the middle without losing anything. */
+    object-position: center;
+    display: block;
+  }
+
+  .c-hero__loop {
+    opacity: 0;
+    /* Not `visibility`: the fade must not be able to reveal a half-decoded
+       first frame under the still. */
+    transition: opacity 700ms ease-in-out;
+  }
+
+  /* Set by hero-film.js, and only once the loop is actually playing. */
+  .c-hero__film[data-film-playing] .c-hero__loop {
+    opacity: 1;
+  }
+
+  /* The hero's own children sit above the film. .c-hero is already
+     position:relative with overflow:hidden, so nothing else is needed. */
+  .c-hero__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* A phone is the one screen where this could cost something, and it is also
+     where the still does the whole job: less area, less time on screen, and a
+     visitor who is more likely to be paying for the bytes. */
+  @media (max-width: 47.99em) {
+    .c-hero__film {
+      opacity: 0.5;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-hero__loop {
+      /* Belt and braces: hero-film.js already declines to load the video, and
+         if some future change loads it anyway, it still never appears. */
+      display: none;
+    }
+  }
+}

@@ -262,6 +262,23 @@
            is forbidden. The slot for a real number is marked below.
            ============================================================= -->
       <section id="home" class="c-hero">
+        <!-- THE HERO FILM. The still is the design; the loop is the enhancement.
+             Every visitor gets the poster — phone, reduced-motion, no-JS, failed
+             load. Only a wide screen without a motion preference is ever given
+             the video, and hero-film.js attaches the source, so the phone does
+             not merely hide the file: it never requests it. docs/53. -->
+        <div class="c-hero__film" aria-hidden="true" data-hero-film>
+          <img class="c-hero__still" src="./src/assets/showpiece/hero-poster.webp" alt=""
+               width="1280" height="720" decoding="async" fetchpriority="low" />
+          <!-- No poster attribute, deliberately: the <img> above IS the poster,
+               it is inlined into the page, and it is painted before the video
+               element exists. A poster attribute here would be a second copy of
+               the same picture and a request nobody needs — and pointed at a
+               file the build inlines away, a 404. -->
+          <video class="c-hero__loop" preload="none" muted playsinline loop
+                 data-film-webm="./src/assets/showpiece/hero.webm"
+                 data-film-mp4="./src/assets/showpiece/hero.mp4"></video>
+        </div>
         <div class="l-container l-container--wide c-hero__inner">
           <div class="c-hero__content" data-reveal-group>
             <p class="t-label c-hero__eyebrow"><span data-lang-copy="en">Creative Digital Partner</span><span data-lang-copy="ar" lang="ar">شريكك الرقمي الإبداعي</span></p>

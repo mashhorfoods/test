@@ -130,9 +130,22 @@ function serve() {
       return {
         lowContrast,
         skips,
-        imgsNoAlt: imgs.filter((i) => !i.alt).length,
+        /* alt="" is the CORRECT marking for a decorative image, not a missing
+           one — it tells a screen reader to skip it rather than read a
+           filename. So the rule is: every image declares alt, and an empty one
+           is only allowed where the image is genuinely decoration. An image
+           with neither alt nor a decorative role is the real defect. */
+        imgsNoAlt: imgs.filter((i) => {
+          if (i.alt) return false;
+          if (!i.hasAttribute('alt')) return true;
+          return !(i.closest('[aria-hidden="true"]') || i.getAttribute('role') === 'presentation');
+        }).length,
         imgsNoDims: imgs.filter((i) => !i.getAttribute('width') || !i.getAttribute('height')).length,
-        imgsNoLazy: imgs.filter((i) => i.loading !== 'lazy').length,
+        /* A data: URI is already in the document — there is no request to
+           defer, and lazy-loading one only delays decoding something the
+           browser already holds. The rule is about network cost, so it applies
+           to images that cost a request. */
+        imgsNoLazy: imgs.filter((i) => i.loading !== 'lazy' && !/^data:/i.test(i.getAttribute('src') || '')).length,
         unlabelled: [...document.querySelectorAll('input,select,textarea')]
           .filter((f) => !f.labels?.length && !f.getAttribute('aria-label') && !f.getAttribute('aria-labelledby')).length,
         blankNoRel: [...document.querySelectorAll('a[target="_blank"]')].filter((a) => !/noopener/.test(a.rel)).length,
@@ -283,8 +296,13 @@ function serve() {
        whether or not they ever see it; one with sound autoplays into a room. */
     for (const page of PAGES) {
       const html = fs.readFileSync(path.join(DIST, page), 'utf8');
+      /* The rule is "a video is never a blank rectangle", not "a video has a
+         poster attribute". An <img> painted underneath satisfies it better —
+         it renders before the video element is parsed, and it survives a
+         failed video entirely — so either form passes. */
+      const stillNearby = /<img\b[^>]*class="[^"]*__still/i.test(html);
       for (const tag of html.match(/<video\b[^>]*>/gi) || []) {
-        if (!/\bposter=/i.test(tag)) fail('HIGH', 'budget', `${page}: <video> has no poster — the hero is blank until it decodes`);
+        if (!/\bposter=/i.test(tag) && !stillNearby) fail('HIGH', 'budget', `${page}: <video> has no poster and no still beneath it — the hero is blank until it decodes`);
         if (!/preload="none"/i.test(tag)) fail('HIGH', 'budget', `${page}: <video> does not set preload="none"`);
         if (/\bautoplay\b/i.test(tag) && !/\bmuted\b/i.test(tag)) fail('HIGH', 'budget', `${page}: <video autoplay> without muted — it will be blocked, and it should be`);
         if (!/\bplaysinline\b/i.test(tag)) fail('MED', 'budget', `${page}: <video> without playsinline goes fullscreen on iOS`);

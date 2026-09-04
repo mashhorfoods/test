@@ -350,6 +350,34 @@ for (const page of ['index.html', 'styleguide.html', 'story.html', 'about.html',
   );
 }
 
+/* The hero film. It is deliberately NOT in the markup as a src — hero-film.js
+   attaches it at runtime so a phone never requests it — which also means the
+   image pass above cannot see it. Copied explicitly, and rewritten to the
+   deployed path in the same breath so the two cannot disagree. */
+{
+  const assets = path.join(DIST, 'assets');
+  const page = path.join(DIST, 'index.html');
+  const shipped = [];
+
+  for (const name of ['hero.webm', 'hero.mp4']) {
+    const film = path.join(ROOT, 'src/assets/showpiece', name);
+    if (!fs.existsSync(film)) continue;
+    fs.mkdirSync(assets, { recursive: true });
+    fs.copyFileSync(film, path.join(assets, name));
+    fs.writeFileSync(
+      page,
+      fs.readFileSync(page, 'utf8').replace(`./src/assets/showpiece/${name}`, `./assets/${name}`),
+    );
+    shipped.push(`${name} ${kb(fs.statSync(film).size)}`);
+  }
+
+  if (shipped.length) {
+    console.log(`\nhero film       -> dist/assets/  ${shipped.join(', ')}  (desktop only, one of the two, attached at runtime)`);
+  } else {
+    console.log('\n  ! no hero film on disk — run node tools/build-showpiece.js');
+  }
+}
+
 if (missing.length) {
   console.log(`\n  ! ${missing.length} image(s) referenced but not on disk:`);
   [...new Set(missing)].forEach((u) => console.log(`      ${u}`));

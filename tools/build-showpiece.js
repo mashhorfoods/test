@@ -35,7 +35,7 @@ const SPEC = {
   width: 1280,
   height: 720,
   fps: 25,
-  seconds: 8,
+  seconds: 12,
   budgetBytes: 2 * 1024 * 1024,
   crf: 20, // quality knob: lower is better and heavier. Gradients band above ~24.
 };
@@ -80,6 +80,7 @@ async function frames(dir) {
 function encode(dir) {
   fs.mkdirSync(OUT, { recursive: true });
   const mp4 = path.join(OUT, 'hero.mp4');
+  const webm = path.join(OUT, 'hero.webm');
   const poster = path.join(OUT, 'hero-poster.webp');
 
   execFileSync(ffmpeg(), [
@@ -96,25 +97,45 @@ function encode(dir) {
     mp4,
   ]);
 
+  /* A SECOND ENCODING, not a second video. The browser downloads exactly one:
+     Safari and iOS take the MP4, everything else can take either. It is here
+     for a duller reason than compatibility — Playwright's Chromium ships
+     without proprietary codecs, so H.264 cannot be decoded in the harness, and
+     an MP4-only hero would be a feature nothing here could ever verify. A
+     showpiece that cannot be tested is a showpiece that quietly breaks. */
+  execFileSync(ffmpeg(), [
+    '-y', '-loglevel', 'error',
+    '-framerate', String(SPEC.fps),
+    '-i', path.join(dir, 'f%04d.png'),
+    '-an',
+    '-c:v', 'libvpx-vp9',
+    '-crf', String(SPEC.crf + 12), // VP9's scale is not H.264's; this lands near the same quality
+    '-b:v', '0',
+    '-row-mt', '1',
+    '-pix_fmt', 'yuv420p',
+    webm,
+  ]);
+
   /* The poster is not decoration — it is what the phone, reduced-motion, no-JS
      and failed-load visitors all see. It has to stand alone, so it is taken
      from the loop's most composed instant rather than from frame zero. */
   const best = path.join(dir, `f${String(Math.round(SPEC.fps * SPEC.seconds * 0.42)).padStart(4, '0')}.png`);
   execFileSync(ffmpeg(), ['-y', '-loglevel', 'error', '-i', best, '-c:v', 'libwebp', '-quality', '86', poster]);
 
-  return { mp4, poster };
+  return { mp4, webm, poster };
 }
 
 (async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'showpiece-'));
   try {
     const n = await frames(dir);
-    const { mp4, poster } = encode(dir);
+    const { mp4, webm, poster } = encode(dir);
     const bytes = fs.statSync(mp4).size;
     const kb = (b) => `${(b / 1024).toFixed(0)}KB`;
 
     console.log(`showpiece: ${n} frames -> ${SPEC.seconds}s @ ${SPEC.fps}fps, ${SPEC.width}x${SPEC.height}`);
     console.log(`  hero.mp4         ${kb(bytes)}   (budget ${kb(SPEC.budgetBytes)}, ${((bytes / SPEC.budgetBytes) * 100).toFixed(0)}% used)`);
+    console.log(`  hero.webm        ${kb(fs.statSync(webm).size)}   (the same loop; each visitor takes one or the other)`);
     console.log(`  hero-poster.webp ${kb(fs.statSync(poster).size)}`);
 
     if (bytes > SPEC.budgetBytes) {
@@ -123,7 +144,7 @@ function encode(dir) {
       console.error('    Raise SPEC.crf, shorten SPEC.seconds, or drop SPEC.fps. Do not raise the budget silently.');
       process.exit(1);
     }
-    console.log('\n  Not wired into the hero yet — that is X06, and it waits on the reference analysis.');
+    console.log('\n  Wired into the hero by index.html + src/scripts/hero-film.js. Desktop only.');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

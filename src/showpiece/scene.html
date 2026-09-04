@@ -4,46 +4,39 @@
 <meta charset="utf-8" />
 <title>Showpiece scene</title>
 <!--
-  THE SHOWPIECE SCENE — rendered to video by tools/build-showpiece.js.
+  THE SHOWPIECE SCENE — rendered to the hero film by tools/build-showpiece.js.
 
   NOT a page. It is a film set: 1280x720, no scrollbars, no interaction. The
   build opens it in headless Chromium, seeks frame by frame, and encodes what
   it sees. Editing this file changes the hero footage; nothing else does.
 
+  NO TEXT, DELIBERATELY — and this is the rule most likely to be broken later.
+  The first cut of this scene carried the PIXORA wordmark and four service
+  cards. It looked good alone and was wrong in the hero: the headline already
+  says the name, the sections already name the services, and baked-in English
+  labels cannot be translated — the Arabic reader would have got an image of
+  another language. Type in the hero belongs in the DOM, where it is
+  selectable, translatable and readable by a screen reader. The film carries
+  atmosphere only.
+
   DETERMINISTIC BY CONSTRUCTION. Every animation is paused and driven by one
   negative delay (--t), so frame N is identical on every run and on every
-  machine. Nothing here reads the clock, and nothing is random: a video built
-  twice from the same commit is byte-identical, which is what makes the budget
-  check meaningful.
+  machine. Nothing reads the clock, nothing is random: built twice from the
+  same commit it is byte-identical, which is what makes the budget check mean
+  something.
 
-  DIRECTION-NEUTRAL, deliberately. Motion is vertical, radial or centre-out,
-  never a left-to-right sweep — because this footage plays behind an Arabic
-  hero as well as an English one, and a sweep that reads as forward in English
-  reads as backwards in Arabic. One file, both languages. See docs/53 §5.
+  DIRECTION-NEUTRAL. Motion is radial, vertical or centre-out, never a
+  left-to-right sweep — this plays behind the Arabic hero as well as the
+  English one, and a sweep that reads as forward in one reads as backwards in
+  the other. One file, both languages. See docs/53 §5.
 -->
 <style>
-  @font-face {
-    font-family: 'Poppins';
-    src: url('../assets/fonts/poppins-latin-600.woff2') format('woff2');
-    font-weight: 600;
-    font-display: block;
-  }
-  @font-face {
-    font-family: 'Poppins';
-    src: url('../assets/fonts/poppins-latin-400.woff2') format('woff2');
-    font-weight: 400;
-    font-display: block;
-  }
-
   :root {
     --t: 0s;
-    --loop: 8s;
+    --loop: 12s;
     --charcoal-900: #0d0f12;
-    --charcoal-700: #16191e;
-    --charcoal-600: #1e2229;
+    --charcoal-800: #111418;
     --yellow: #f4d13f;
-    --white: #ffffff;
-    --muted: rgba(255, 255, 255, .48);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -55,173 +48,99 @@
     background: var(--charcoal-900);
   }
 
-  body {
-    font-family: 'Poppins', system-ui, sans-serif;
-    display: grid;
-    place-items: center;
-    position: relative;
-  }
+  body { position: relative; }
 
-  /* Every animated element shares one paused timeline. */
+  /* One paused timeline, shared. */
   .a {
     animation-duration: var(--loop);
     animation-iteration-count: infinite;
     animation-play-state: paused;
-    animation-timing-function: cubic-bezier(.22, .61, .36, 1);
+    animation-timing-function: ease-in-out;
     animation-fill-mode: both;
+    animation-delay: var(--t);
   }
 
-  /* ---- the ground: a dot field breathing outward from centre ---- */
+  /* A ground that is not flat black: the site's own two darkest surfaces,
+     drifting vertically so the frame is never quite static. */
+  .ground {
+    position: absolute;
+    inset: -6%;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 38%, var(--charcoal-800) 0%, transparent 70%),
+      var(--charcoal-900);
+    animation-name: drift;
+  }
+  @keyframes drift {
+    0%, 100% { transform: translateY(0) scale(1.00); }
+    50%      { transform: translateY(-14px) scale(1.03); }
+  }
+
+  /* The dot field — the site's grid, made visible and breathing. */
   .field {
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle, rgba(255,255,255,.14) 1.1px, transparent 1.1px);
-    background-size: 34px 34px;
-    -webkit-mask-image: radial-gradient(circle at 50% 46%, #000 0%, transparent 62%);
-    mask-image: radial-gradient(circle at 50% 46%, #000 0%, transparent 62%);
+    background-image: radial-gradient(circle, rgba(255,255,255,.13) 1.1px, transparent 1.1px);
+    background-size: 36px 36px;
+    -webkit-mask-image: radial-gradient(circle at 50% 44%, #000 0%, transparent 66%);
+    mask-image: radial-gradient(circle at 50% 44%, #000 0%, transparent 66%);
     animation-name: breathe;
-    animation-delay: var(--t);
   }
   @keyframes breathe {
-    0%, 100% { opacity: .30; transform: scale(1.00); }
-    50%      { opacity: .62; transform: scale(1.06); }
+    0%, 100% { opacity: .26; transform: scale(1.000); }
+    50%      { opacity: .58; transform: scale(1.045); }
   }
 
-  /* A single accent bloom, centred — no direction. */
+  /* Concentric rings, expanding from centre and fading — the orbit diagram's
+     geometry as atmosphere rather than as a second diagram. Radial, so it has
+     no reading direction. */
+  .ring {
+    position: absolute;
+    left: 50%; top: 44%;
+    width: 320px; height: 320px;
+    translate: -50% -50%;
+    border: 1px solid rgba(244, 209, 63, .34);
+    border-radius: 50%;
+    animation-name: expand;
+  }
+  .ring:nth-of-type(2) { animation-delay: calc(var(--t) + 4s); }
+  .ring:nth-of-type(3) { animation-delay: calc(var(--t) + 8s); }
+  @keyframes expand {
+    0%   { opacity: 0;   transform: scale(.34); }
+    12%  { opacity: .55; }
+    100% { opacity: 0;   transform: scale(3.1); }
+  }
+
+  /* One accent bloom, centred. The only warm light in the frame. */
   .bloom {
     position: absolute;
-    left: 50%; top: 46%;
-    width: 900px; height: 900px;
+    left: 50%; top: 44%;
+    width: 980px; height: 980px;
     translate: -50% -50%;
-    background: radial-gradient(circle, rgba(244,209,63,.16) 0%, transparent 58%);
+    background: radial-gradient(circle, rgba(244,209,63,.13) 0%, transparent 60%);
     animation-name: bloom;
-    animation-delay: var(--t);
   }
   @keyframes bloom {
-    0%, 100% { opacity: .25; transform: scale(.82); }
-    46%      { opacity: .85; transform: scale(1.04); }
+    0%, 100% { opacity: .30; transform: scale(.86); }
+    50%      { opacity: .80; transform: scale(1.06); }
   }
 
-  /* ---- the lockup ---- */
-  .stage { position: relative; text-align: center; z-index: 2; }
-
-  .word {
-    font-weight: 600;
-    font-size: 104px;
-    line-height: 1;
-    color: var(--white);
-    animation-name: word;
-    animation-delay: var(--t);
-  }
-  .word span { color: var(--yellow); }
-  @keyframes word {
-    0%   { opacity: 0; letter-spacing: .34em; transform: translateY(14px); }
-    16%  { opacity: 1; letter-spacing: .02em; transform: translateY(0); }
-    84%  { opacity: 1; letter-spacing: .02em; transform: translateY(0); }
-    100% { opacity: 0; letter-spacing: .34em; transform: translateY(14px); }
-  }
-
-  .rule {
-    height: 3px;
-    background: var(--yellow);
-    margin: 30px auto 0;
-    animation-name: rule;
-    animation-delay: var(--t);
-  }
-  @keyframes rule {
-    0%   { width: 0; opacity: 0; }
-    22%  { width: 168px; opacity: 1; }
-    82%  { width: 168px; opacity: 1; }
-    100% { width: 0; opacity: 0; }
-  }
-
-  .kicker {
-    margin-top: 26px;
-    font-weight: 400;
-    font-size: 19px;
-    letter-spacing: .28em;
-    text-transform: uppercase;
-    color: var(--muted);
-    animation-name: fade;
-    animation-delay: calc(var(--t) + .3s);
-  }
-  @keyframes fade {
-    0%   { opacity: 0; transform: translateY(10px); }
-    20%  { opacity: 1; transform: translateY(0); }
-    80%  { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(10px); }
-  }
-
-  /* ---- the four surfaces, rising vertically ---- */
-  .cards {
+  /* A scrim, so the hero's text sits on a predictable ground no matter which
+     instant of the loop is on screen. Contrast is not left to chance. */
+  .scrim {
     position: absolute;
-    left: 50%;
-    bottom: 74px;
-    translate: -50% 0;
-    display: flex;
-    gap: 18px;
-    z-index: 2;
-  }
-
-  .card {
-    width: 214px;
-    padding: 20px 22px 22px;
-    text-align: left;
-    background: var(--charcoal-600);
-    border: 1px solid rgba(255,255,255,.10);
-    border-radius: 3px;
-    animation-name: rise;
-  }
-  .card:nth-child(1) { animation-delay: calc(var(--t) + .10s); }
-  .card:nth-child(2) { animation-delay: calc(var(--t) + .22s); }
-  .card:nth-child(3) { animation-delay: calc(var(--t) + .34s); }
-  .card:nth-child(4) { animation-delay: calc(var(--t) + .46s); }
-  @keyframes rise {
-    0%   { opacity: 0; transform: translateY(26px); }
-    24%  { opacity: 1; transform: translateY(0); }
-    78%  { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(26px); }
-  }
-
-  .card b {
-    display: block;
-    font-weight: 600;
-    font-size: 16px;
-    color: var(--white);
-    margin-bottom: 5px;
-  }
-  .card i {
-    display: block;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 13px;
-    color: var(--muted);
-  }
-  .card u {
-    display: block;
-    width: 26px; height: 2px;
-    background: var(--yellow);
-    margin-bottom: 14px;
-    text-decoration: none;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(13,15,18,.42) 0%, rgba(13,15,18,.16) 46%, rgba(13,15,18,.58) 100%);
   }
 </style>
 </head>
 <body>
+  <div class="ground a"></div>
   <div class="field a"></div>
   <div class="bloom a"></div>
-
-  <div class="stage">
-    <p class="word a">PI<span>X</span>ORA</p>
-    <div class="rule a"></div>
-    <p class="kicker a">Creative Digital Partner</p>
-  </div>
-
-  <div class="cards">
-    <div class="card a"><u></u><b>Branding</b><i>Identity and design system</i></div>
-    <div class="card a"><u></u><b>Websites</b><i>Built for the phone first</i></div>
-    <div class="card a"><u></u><b>Social</b><i>Content with a calendar</i></div>
-    <div class="card a"><u></u><b>Marketing</b><i>Ads that report back</i></div>
-  </div>
+  <div class="ring a"></div>
+  <div class="ring a"></div>
+  <div class="ring a"></div>
+  <div class="scrim"></div>
 
 <script>
   /* The only entry point the renderer uses. `p` is 0..1 through the loop;
