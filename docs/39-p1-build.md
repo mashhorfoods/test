@@ -54,8 +54,8 @@ existence invites filling it dishonestly.
 
 | Wireframe | Waiting on |
 | --- | --- |
-| **W2 verification band** | The name and role to show, a response window you can actually keep (with working hours), and which links to offer as "check us" — Behance and LinkedIn already exist in the footer; a Google Business Profile and a directory listing do not yet |
-| **W5 About** | The four sections in `docs/33` §W5: who you work with, how remote actually works, what we charge and why, and what we will not do |
+| ~~W2 verification band~~ | **Shipped 4 Sep 2026.** Named person, role, the remote-work line, a reply window rendered from one string, and two links a stranger can check. A Google Business Profile and a directory listing are omitted until they exist — an empty proof slot is worse than none. **Confirm the name, the role and the reply window**; each is one edit |
+| ~~W5 About~~ | **Shipped 4 Sep 2026**, written from what the repository already establishes: who you work with, how remote actually works, why the prices are published, and four things we will not do. Nothing in it is invented — but read it, because it speaks for you |
 | **W6 `/pricing` guide** | The five price drivers (scale, content readiness, languages, integrations, turnaround) in your words, and the "How we bill" facts — which are the same ones as §1 |
 | **`/story` as a real case study** | The ten answers in `docs/35-case-studies.md` §4 |
 | **`/work`** | Two case studies. One project is a story, not a portfolio |

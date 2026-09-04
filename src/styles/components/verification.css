@@ -1,0 +1,82 @@
+/* =============================================================================
+   VERIFICATION BAND — wireframe W2, problem PS-01
+
+   The last thing read before the footer, and the answer to the only question
+   the price raises that the packages cannot: who is this?
+
+   Not a card. A band between the page and the footer, separated by rules
+   rather than boxed, because it is a statement of fact rather than an offer.
+   ============================================================================= */
+
+@layer components {
+  .c-verify {
+    border-block-start: 1px solid var(--color-border);
+    padding-block: var(--space-48);
+  }
+
+  .c-verify__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .c-verify__title {
+    color: var(--color-text-muted);
+  }
+
+  .c-verify__grid {
+    display: grid;
+    gap: var(--space-32);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 48em) {
+    .c-verify__grid {
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: var(--space-48);
+      align-items: start;
+    }
+  }
+
+  .c-verify__person,
+  .c-verify__promise,
+  .c-verify__links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .c-verify__name {
+    font-size: var(--text-lg, 1.125rem);
+    font-weight: var(--weight-semibold, 600);
+    color: var(--color-text);
+  }
+
+  .c-verify__role,
+  .c-verify__hours,
+  .c-verify__note,
+  .c-verify__check {
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--color-text-muted);
+  }
+
+  /* The promise is the differentiator, so it is the one line here that is
+     allowed to be emphatic. */
+  .c-verify__window {
+    font-size: var(--text-lg, 1.125rem);
+    font-weight: var(--weight-semibold, 600);
+    color: var(--color-accent);
+  }
+
+  .c-verify__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .c-verify__list a {
+    min-block-size: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+}

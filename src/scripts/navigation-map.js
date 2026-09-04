@@ -74,6 +74,10 @@ export const SECTIONS = [
      A page nothing links to from the navigation is a page nobody finds. */
   { id: 'story', label: 'Story', labelAr: 'القصة', href: './story.html' },
   { id: 'process', label: 'Process', labelAr: 'آلية العمل' },
+  /* A PAGE, like Story. Flow B — the buyer who verifies before enquiring —
+     had nowhere to land: no About meant no answer to "who are these people?",
+     which at these prices is the question asked before the price is. */
+  { id: 'about', label: 'About', labelAr: 'من نحن', href: './about.html' },
   // Reached through the primary CTA rather than a sixth nav link, so the
   // header keeps one unambiguous conversion action (§11, §19). It still
   // appears in the footer quick links.
@@ -167,6 +171,12 @@ export const STRINGS = {
     billingMonthly: 'Monthly',
     // Add-ons are quoted as starting prices, never as a final figure.
     priceFrom: 'From',
+    // The response promise lives here, once, so the verification band, the
+    // contact section and any future page cannot state different windows.
+    replyWindow: 'We reply within one working day',
+    replyHours: 'Sunday to Thursday',
+    verifyHeading: 'Who you are talking to',
+    verifyCheck: 'Check us:',
     contactChannels: 'Direct channels',
     contactElsewhere: 'Elsewhere',
     formAbout: 'About',
@@ -199,6 +209,10 @@ export const STRINGS = {
     billingOnce: 'لمرة واحدة',
     billingMonthly: 'شهريًا',
     priceFrom: 'يبدأ من',
+    replyWindow: 'نردّ خلال يوم عمل واحد',
+    replyHours: 'من الأحد إلى الخميس',
+    verifyHeading: 'من تتحدث إليه',
+    verifyCheck: 'تحقّق منّا:',
     contactChannels: 'قنوات التواصل',
     contactElsewhere: 'روابط أخرى',
     formAbout: 'بخصوص',
