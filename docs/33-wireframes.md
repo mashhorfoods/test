@@ -270,6 +270,12 @@ button (IA-5).
 
 ## 9. What each wireframe must prove (Phase 12 test plan)
 
+> **`docs/68` is how to run it — 5 September 2026.** The tasks and pass
+> criteria below are good and are unchanged; what was missing everywhere was
+> the moderation. Note two things there: task 5's "right answer" moved when
+> branding was repriced, and task 1 is only genuinely testable on a phone since
+> the hidden-CTA regression was fixed on 4 September.
+
 | Wireframe | Test with 5 users | Pass |
 | --- | --- | --- |
 | W1 | "Find the package you'd choose and start a conversation about it" | Reaches WhatsApp with the package named, no backtracking |
