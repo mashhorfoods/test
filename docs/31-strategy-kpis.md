@@ -144,6 +144,14 @@ supposed to sit at, and the ladder keeps the ×2 rhythm it already had:
 *(The old ladder stepped ×2.03 and ×2.03. The shape is unchanged; only the
 base moved.)*
 
+**The $490 was re-sourced afterwards rather than taken on trust.** It came from
+§5.3's Egypt column, which was written in one sitting and never checked. An
+independent 2026 Egyptian agency source gives branding "from 25,000 EGP for
+startup basics" — $490 at the rate §5.3 used. `docs/29` §12 has the working,
+and the warning that came with it: a first search on the same question returned
+freelance-marketplace numbers 30–100× lower, which would have argued the
+opposite conclusion.
+
 **Checks the new numbers pass:**
 
 - **Advanced now costs more than the Professional Website** ($1,990 vs

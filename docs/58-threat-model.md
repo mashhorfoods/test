@@ -139,11 +139,15 @@ the audit — publish SPF, DKIM and a DMARC policy at the same time, not later.
 URLs and the custom 404. It is a hidden file, control-panel file managers drop
 it, and **the site looks perfect without it**.
 
-*Current control:* `qa.js` verifies the policy is generated correctly; check 4
-in `docs/44` §2 verifies it is being served. `docs/57` schedules a monthly
+*Current control:* `qa.js` §11 now verifies the file's **contents** on every
+run — the CSP hashes against the shipped bytes in both directions, the 404
+target, the rewrite, HSTS against config, the analytics origin. Check 4 in
+`docs/44` §2 verifies it is being **served**. `docs/57` schedules a monthly
 re-check.
 
-*Gap:* that monthly check is a calendar reminder, not an alarm.
+*Gap:* the file being correct and the file being present are different
+questions, and only the first is automated. The monthly serve-check is still a
+calendar reminder, not an alarm.
 
 ### T7 — Denial of service · **low, and not ours**
 

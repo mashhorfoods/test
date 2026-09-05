@@ -365,9 +365,54 @@ rendered price against the source. That is AD-05 doing the job it exists for.
 
 **Limits, stated as §0 states them.** These are published *guide* prices from
 agency marketing content, which skews high — an agency publishing a pricing
-guide is also selling. They are directional, not quotes. And they are Saudi and
-UAE rates: Egypt, also in the target market, is materially cheaper and is not
-represented here.
+guide is also selling. They are directional, not quotes.
+
+---
+
+## 12. Egypt, and the number the reprice was standing on — 5 September 2026
+
+§11 closed by admitting Egypt was in the target market and in neither
+benchmark. That mattered more than it looked, because **the branding reprice
+was anchored on an Egyptian figure**: `docs/31` §5.3 put "startup basics from
+~$490" in its Egypt column, and $490 is exactly where Starter was moved to. The
+number was inherited, not sourced. So it was checked.
+
+**It holds.** An independent 2026 Egyptian agency source puts branding packages
+at **"25,000 EGP for startup basics"**, rising to 200,000+ EGP for corporate
+rebranding. At the rate `docs/31` used (~51 EGP/USD) that is **$490** — the
+same number, from a different source, two days later.
+
+The fuller Egyptian picture, which nothing here had before:
+
+| Egyptian agency work | EGP | ≈ USD |
+| --- | --- | --- |
+| Branding, startup basics | 25,000 | ~490 |
+| One agency's branding packages | 20,500–30,800 | ~400–600 |
+| A complete visual identity (cheaper end of the market) | 7,000–16,000 | ~140–310 |
+| Premium package, strategy + guidelines + mockups | 29,900–50,000 | ~585–980 |
+| **Full identity + strategy** | **40,000–200,000** | **~830–4,200** |
+
+**Pixora against that.** Starter at $490 is the startup-basics floor exactly.
+Advanced at $1,990 (~EGP 100,000) sits **inside** the full-identity band, in its
+middle. Neither is above the Egyptian market and neither is beneath it — which
+is the position `docs/31` §5.3 claims for every other category and which
+branding, before the reprice, was the only row not holding.
+
+### The caution, which is the more useful half
+
+**The first search for the same question returned numbers 30–100× lower**:
+logos at 250–500 EGP (~$5–10), a "mini identity" from 750 EGP (~$15). Taken at
+face value they would have said the new ladder was absurdly overpriced for
+Egypt — and they are not lies, they are the *freelance-marketplace* band, the
+same band §1 found Pixora's original prices sitting in by accident.
+
+Two searches, one question, answers three orders of magnitude apart. That is
+not a reason to distrust the method; it is the reason `docs/29` §0 separates
+marketplace pricing from agency pricing in the first place, and the reason a
+single search is evidence of nothing. **The rule this earns: a price band is
+only usable once you know which kind of seller it describes.**
+
+*Same limits as §11 — guide prices, directional, not quotes.*
 
 **Sources (2026 guides, retrieved 4 September 2026):** Digital Gravity KSA ·
 Neologix · Taqweed · Safwa Web · Albadr Systems · Digital Farm (Dubai) ·
