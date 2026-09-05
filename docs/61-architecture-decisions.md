@@ -138,11 +138,16 @@ URI is not a download, so there is nothing for the browser to skip, and every
 English visitor pays for the 30.9KB Arabic face on every page.
 
 `site.config.json` `build.fonts` now offers `linked`, which copies the faces to
-`assets/fonts/`. It is **not** a repeat-visit trade: a first-time English
-visitor reading one page sends 106,577 bytes instead of 139,946, 24% less, with
-no cache involved. Later pages cost 57–62% less. The cost is a flash of the
-fallback face, which inlining does not have — a brand judgement, so the default
-stays `inline` until the owner chooses. Numbers in `docs/43` §15.
+`assets/fonts/`, **and it is the default.** It is not a repeat-visit trade: a
+first-time English visitor reading one page sends 106,577 bytes instead of
+139,946, 24% less, with no cache involved. Later pages cost 57–62% less.
+
+The premise that separate files hurt first paint is **inverted here**, because
+the inlined font bytes were themselves render-blocking. On a simulated
+1.6Mbps / 150ms connection, first contentful paint is **440ms linked against
+648ms inline** on the homepage. The fallback-flash cost is answered by the
+preload tags `index.html` has carried all along and the build used to strip.
+`inline` remains available and tested. Numbers in `docs/43` §15.
 
 ## AD-07 · Manual deployment, automated verification
 

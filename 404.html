@@ -22,6 +22,24 @@
          copied to dist/assets/ rather than inlined: a data: URI here is
          silently ignored by Safari, which is the only reader that needs it. -->
     <link rel="apple-touch-icon" sizes="180x180" href="./src/assets/brand/apple-touch-icon.png" />
+    <!-- Same two faces the first screen of every other page preloads. In
+         inline mode the build strips these; in linked mode it repoints them
+         at assets/fonts/. -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./src/assets/fonts/poppins-latin-700.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./src/assets/fonts/poppins-latin-400.woff2"
+      crossorigin
+    />
+
     <link rel="stylesheet" href="./src/styles/main.css" />
 
     <script>

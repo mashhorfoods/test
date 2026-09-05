@@ -264,8 +264,28 @@ function buildPage(file) {
     for (const [tag] of sheets.slice(1)) html = html.replace(tag, '');
   }
 
-  // --- font preloads are pointless once the bytes are in the document -----
-  html = html.replace(/[ \t]*<link\s+rel="preload"[\s\S]*?\/>\n?/g, '');
+  /* --- font preloads --------------------------------------------------
+     Inline mode: pointless, because the bytes are already in the document.
+     Stripped, as they always were.
+
+     Linked mode: they are the answer to the mode's one real cost. A browser
+     does not fetch a face until layout proves a glyph needs it, so without
+     these the first paint is in the fallback and Poppins arrives after. The
+     source preloads the two faces the first screen uses; the href just has to
+     point at where the build actually put them. Cairo is deliberately NOT
+     preloaded — skipping it for English readers is the whole point (docs/43
+     §15). */
+  if ((cfg.build && cfg.build.fonts) === 'linked') {
+    html = html.replace(
+      /(<link\s+rel="preload"[\s\S]*?href=")\.\/src\/assets\/fonts\/([^"]+)(")/g,
+      (whole, head, file, tail) => {
+        if (!fs.existsSync(path.join(DIST, 'assets', 'fonts', file))) return '';
+        return `${head}assets/fonts/${file}${tail}`;
+      }
+    );
+  } else {
+    html = html.replace(/[ \t]*<link\s+rel="preload"[\s\S]*?\/>\n?/g, '');
+  }
 
   /* --- favicon -> data: URI -----------------------------------------------
      ANY local rel="icon", not one hardcoded path. The first version matched
