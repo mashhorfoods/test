@@ -111,7 +111,7 @@
                script replaces these with identical content from
                navigation-map.js on boot and on language change. A test
                asserts the seed and the map agree. -->
-          <ul class="c-nav__list" data-nav-render="nav">
+          <ul class="c-nav__list" data-nav-render="nav" role="list">
             <li><a class="c-nav__link" href="./#home" data-nav-link>Home</a></li>
             <li><a class="c-nav__link" href="./#services" data-nav-link>Services</a></li>
             <li><a class="c-nav__link" href="./#process" data-nav-link>Process</a></li>
@@ -190,8 +190,7 @@
           <ul
             class="c-drawer__list"
             data-nav-render="nav"
-            data-nav-style="drawer"
-          ></ul>
+            data-nav-style="drawer" role="list"></ul>
         </nav>
 
         <!-- Enters after the navigation rows (§16). -->
@@ -221,7 +220,7 @@
           <!-- Hidden until real profiles exist in navigation-map.js. -->
           <div data-social-block hidden>
             <p class="t-label u-mbe-16" data-i18n="followUs">Follow us</p>
-            <ul class="c-drawer__social" data-social-render></ul>
+            <ul class="c-drawer__social" data-social-render role="list"></ul>
           </div>
 
           <div class="c-drawer__utility">
@@ -440,7 +439,7 @@
 
           <nav class="c-footer__group" aria-label="Quick links" data-i18n-label="footerNav">
             <h2 class="t-label c-footer__heading" data-i18n="footerNav">Quick links</h2>
-            <ul class="c-footer__list" data-nav-render="footer">
+            <ul class="c-footer__list" data-nav-render="footer" role="list">
               <li><a class="c-link" href="./#home" data-nav-link>Home</a></li>
               <li><a class="c-link" href="./#services" data-nav-link>Services</a></li>
               <li><a class="c-link" href="./#process" data-nav-link>Process</a></li>
@@ -450,7 +449,7 @@
 
           <nav class="c-footer__group" aria-label="Services" data-i18n-label="footerServices">
             <h2 class="t-label c-footer__heading" data-i18n="footerServices">Services</h2>
-            <ul class="c-footer__list" data-nav-render="services">
+            <ul class="c-footer__list" data-nav-render="services" role="list">
               <li><a class="c-link" href="./#branding" data-nav-link><span data-lang-copy="en">Branding &amp; Design</span><span data-lang-copy="ar" lang="ar">الهوية والتصميم</span></a></li>
               <li><a class="c-link" href="./#websites" data-nav-link><span data-lang-copy="en">Websites</span><span data-lang-copy="ar" lang="ar">المواقع الإلكترونية</span></a></li>
               <li><a class="c-link" href="./#social" data-nav-link><span data-lang-copy="en">Social Media Management</span><span data-lang-copy="ar" lang="ar">إدارة وسائل التواصل</span></a></li>
@@ -477,7 +476,7 @@
                SOCIAL_LINKS on boot so the footer and the drawer can never
                drift apart. Off-site, so each opens in a new tab and says so. -->
           <nav aria-label="Elsewhere" data-i18n-label="footerElsewhere" data-social-block>
-            <ul class="c-footer__social" data-social-render>
+            <ul class="c-footer__social" data-social-render role="list">
               <li><a href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
               <li><a href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
               <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer">Founder's portfolio<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>

@@ -118,11 +118,7 @@
     transition: var(--transition-interactive);
   }
 
-  .c-choice__input[type="radio"] {
-    border-radius: var(--radius-circle);
-  }
-
-  .c-choice__input::before {
+    .c-choice__input::before {
     content: "";
     inline-size: 10px;
     block-size: 10px;
@@ -132,14 +128,7 @@
     transition: transform var(--duration-fast) var(--ease-out);
   }
 
-  .c-choice__input[type="radio"]::before {
-    clip-path: none;
-    border-radius: var(--radius-circle);
-    inline-size: 8px;
-    block-size: 8px;
-  }
-
-  .c-choice__input:hover {
+    .c-choice__input:hover {
     border-color: var(--color-accent);
   }
 

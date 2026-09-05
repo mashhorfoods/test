@@ -430,20 +430,4 @@
     }
   }
 
-  /* -----------------------------------------------------------------------
-     SECTION FOOT — the hand-off into the detailed service stages.
-     ----------------------------------------------------------------------- */
-  .c-services__foot {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-16) var(--space-32);
-    margin-block-start: var(--section-space-tight);
-    padding-block-start: var(--space-32);
-    border-block-start: var(--border-hairline);
-  }
-
-  .c-services__foot p {
-    max-inline-size: 46ch;
-  }
-}
+    }

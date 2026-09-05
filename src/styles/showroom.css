@@ -1,0 +1,32 @@
+/* =============================================================================
+   SHOWROOM — PRODUCT COMPONENTS THE SITE DOES NOT CURRENTLY USE
+
+   Loaded by styleguide.html only, and by nothing else. A visitor never
+   downloads it.
+
+   Distinct from styleguide.css, which styles the specimen PAGE — its swatch
+   tiles, spec frames and annotations. This file is the opposite: real product
+   CSS, written to the same standard as everything in components/, for
+   components the site has no markup for yet.
+
+   WHY IT EXISTS. `qa.js` §12 counts the selectors that style nothing a visitor
+   can see. On 5 September 2026 that was 163, and two whole files accounted for
+   10.2KB of it — card.css and disclosure.css, both with ZERO live rules across
+   all eight shipped pages and every rule exercised by /styleguide. They were
+   being inlined into all eight pages so that one undeployed page could demo
+   them.
+
+   Measured: removing every dead rule saved ~2.5KB gzipped per page, about 2%.
+   Small, which is why the answer here is to stop shipping the showroom rather
+   than to delete a documented design system. Nothing is lost — /styleguide
+   still demos every component, and the day the site grows a card or an
+   accordion, the import moves back to main.css and the markup is already
+   styled.
+
+   ADDING TO THIS FILE. If a component here gains real markup on a shipped
+   page, move its @import to main.css. If a component in main.css falls out of
+   use, qa.js §12 will say so on the next run, and it belongs here.
+   ============================================================================= */
+
+@import url("./components/card.css");
+@import url("./components/disclosure.css");

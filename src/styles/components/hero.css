@@ -183,11 +183,7 @@
   }
 
   .c-hero__action-arrow,
-  .c-hero__action-chevron {
-    flex-shrink: 0;
-  }
-
-  .c-hero__action-chevron {
+    .c-hero__action-chevron {
     inline-size: var(--icon-sm);
     block-size: var(--icon-sm);
   }

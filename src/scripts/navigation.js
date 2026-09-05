@@ -209,6 +209,10 @@ function renderSurfaces() {
           if (section.children?.length) {
             const list = document.createElement('ul');
             list.className = 'c-drawer__sub';
+            /* The stylesheet removes the marker, and Safari drops list
+               semantics with it — VoiceOver stops saying "list, 4 items".
+               `role="list"` is what the 01-reset.css idiom expects. */
+            list.setAttribute('role', 'list');
             list.append(...section.children.map((child) => {
               const row = document.createElement('li');
               row.append(buildDrawerSubLink(child));

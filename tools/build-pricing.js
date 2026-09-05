@@ -186,13 +186,13 @@ function renderCard(pkg, category, i) {
   const disclosure = more.length
     ? `
             <div data-expand data-expand-static-above="64em">
-              <ul class="c-tier__features">
+              <ul class="c-tier__features" role="list">
 ${vis.map(featureItem).join('\n')}
               </ul>
 
               <div class="c-tier__more" data-expand-panel>
                 <div class="c-tier__more-inner">
-                  <ul class="c-tier__more-list">
+                  <ul class="c-tier__more-list" role="list">
 ${more.map(featureItem).join('\n')}
                   </ul>
                 </div>
@@ -213,7 +213,7 @@ ${more.map(featureItem).join('\n')}
             </div>
 `
     : `
-            <ul class="c-tier__features">
+            <ul class="c-tier__features" role="list">
 ${pkg.features.map(featureItem).join('\n')}
             </ul>
 `;

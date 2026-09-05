@@ -103,7 +103,6 @@
     .c-skip-link,
     .c-header,
     .c-drawer,
-    .c-scrim,
     .c-hero__film,
     .c-hero__still,
     .c-hero__loop,
@@ -233,7 +232,7 @@
       line-height: 1.45;
     }
 
-    h1, .c-hero__headline, .c-page__headline {
+    h1, .c-hero__headline, .c-page__title {
       font-size: 22pt;
     }
 

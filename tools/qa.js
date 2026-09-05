@@ -707,15 +707,21 @@ function serve() {
      `.c-drawer.is-open` is tested as `.c-drawer`, so a class the scripts add
      is not mistaken for one that cannot exist. ---------------------------- */
   {
-    const STYLES = path.join(ROOT, 'src/styles');
+    /* The stylesheets a VISITOR actually gets, found by walking the @import
+       chain from the entry the shipped pages link — not by globbing
+       src/styles. showroom.css and the components it carries are linked only
+       by /styleguide, and reporting them here would be reporting CSS nobody
+       downloads. */
     const cssFiles = [];
-    (function walk(dir) {
-      for (const entry of fs.readdirSync(dir).sort()) {
-        const p = path.join(dir, entry);
-        if (fs.statSync(p).isDirectory()) walk(p);
-        else if (p.endsWith('.css')) cssFiles.push(p);
+    (function follow(file) {
+      const abs = path.resolve(file);
+      if (cssFiles.includes(abs) || !fs.existsSync(abs)) return;
+      cssFiles.push(abs);
+      const dir = path.dirname(abs);
+      for (const m of fs.readFileSync(abs, 'utf8').matchAll(/@import\s+url\(\s*["']([^"']+)["']\s*\)/g)) {
+        follow(path.join(dir, m[1]));
       }
-    })(STYLES);
+    })(path.join(ROOT, 'src/styles/main.css'));
 
     /* Blank comments in place so reported line numbers stay true. */
     const decomment = (css) => css.replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' '));
@@ -865,6 +871,7 @@ function serve() {
     const unparseable = new Set();
     const liveContext = new Set();
     const markupClasses = new Set();
+    const unroledLists = new Set();
     /* Two page sets, and the difference is the whole point.
 
        ALIVENESS is judged on the SHIPPED pages only. /styleguide is built
@@ -903,9 +910,21 @@ function serve() {
             if (r.context) { try { if (document.querySelector(r.context)) ctx.push(r.sel); } catch { /* judged unknowable below */ } }
           }
           for (const el of document.querySelectorAll('*')) el.classList.forEach((c) => classes.push(c));
-          return { hit, bad, ctx, classes };
+          /* A list whose marker CSS removes also loses its list semantics in
+             Safari/VoiceOver — it stops being announced as "list, 4 items".
+             `01-reset.css` carries the opt-in idiom `ul[role="list"]` for
+             exactly this, and for a long time no list in the markup opted in.
+             Every list that strips its marker must carry the role. */
+          const unroled = [];
+          for (const el of document.querySelectorAll('ul, ol')) {
+            if (getComputedStyle(el).listStyleType !== 'none') continue;
+            if (el.getAttribute('role') === 'list') continue;
+            unroled.push(el.getAttribute('class') || `<${el.tagName.toLowerCase()}> with no class`);
+          }
+          return { hit, bad, ctx, classes, unroled };
         }, probe);
         res.classes.forEach((c) => markupClasses.add(c));
+        if (!vocabOnly) for (const cls of res.unroled) unroledLists.add(`${page} (${lang}): ${cls}`);
         if (vocabOnly) continue;
         res.hit.forEach((s) => alive.add(s));
         res.bad.forEach((s) => unparseable.add(s));
@@ -947,6 +966,10 @@ function serve() {
         .map(([f, n]) => `${path.basename(f)} ${n}`)
         .join(', ');
       fail('LOW', 'css', `${inert.length} selector(s) style nothing any visitor can see — demoed on /styleguide or left behind, and inlined into every shipped page regardless: ${summary}`);
+    }
+    if (unroledLists.size) {
+      const shown = [...unroledLists].slice(0, 6).join(' · ');
+      fail('HIGH', 'a11y', `${unroledLists.size} list(s) remove their marker without \`role="list"\`, so Safari and VoiceOver stop announcing them as lists: ${shown}${unroledLists.size > 6 ? ' …' : ''} (docs/43 §14)`);
     }
     if (unparseable.size) {
       fail('LOW', 'css', `${unparseable.size} selector(s) this check could not evaluate: ${[...unparseable].slice(0, 4).join(' | ')}`);

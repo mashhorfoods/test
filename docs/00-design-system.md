@@ -210,6 +210,13 @@ One base (`.c-card`) and four roles:
 - `.c-card--feature` — borderless, top-rule only, for capability grids.
 - `.c-card--content` — media + copy, with a restrained image scale on hover.
 
+**Where the card CSS lives.** No shipped page uses a `.c-card` — the site's
+cards are `.c-tier`, `.c-service` and friends — so `components/card.css` and
+`components/disclosure.css` load from `src/styles/showroom.css`, which only
+`/styleguide` links. They are maintained as product CSS and demoed as before;
+they simply are not inlined into the eight pages a visitor downloads. The day a
+page grows one, move the `@import` back into `main.css` (`docs/43` §14).
+
 `.c-card__footer` uses `margin-block-start: auto` so CTAs align across a row of
 cards of differing heights.
 

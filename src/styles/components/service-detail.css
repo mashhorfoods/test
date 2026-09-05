@@ -1001,10 +1001,7 @@
      the next one. */
   @media (min-width: 48em) {
 
-    .c-tiers--pair > :last-child {
-      grid-column: auto;
-    }
-  }
+      }
 }
 
 /* ---------------------------------------------------------------------------
