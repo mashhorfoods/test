@@ -389,3 +389,64 @@ address for Al Mada is known. Two routes, either of which works:
 **Which questions this closes:** F1 (§1), F2 (§2), **F2a** (§3), and the
 missing result sentence (§4). F3 needs nothing — the quotation it was about is
 gone.
+
+
+---
+
+## Part 8 — the WhatsApp version, 5 September 2026
+
+Email is out: `madatravel@gmail.com` does not exist (Part 4). **WhatsApp is the
+route**, and the number is on Al Mada's own campaign posters — the one with the
+WhatsApp mark beside it, `+966 508531560`.
+
+**This session has no WhatsApp connector**, so it cannot send. What it can do
+is the same thing this site does twelve times on its own pricing cards: a
+`wa.me` link with the message already written. Opening it starts the chat with
+the text in the box; the owner presses send.
+
+**Shorter than the email deliberately.** A formal letter pasted into WhatsApp
+reads like a letter pasted into WhatsApp. This is 753 characters, keeps all
+four questions, and drops the paragraph of reassurance to one line.
+
+### The message
+
+```
+السلام عليكم ورحمة الله، معكم مهلب من بيكسورا.
+
+نشرنا صفحة تعرض العمل الذي أنجزناه لكم — الهوية، والموقع، وحملات العمرة، والملف التعريفي:
+https://mashhorfoods.github.io/test/story.html
+
+ليس فيها أي رقم أو نتيجة عن نشاطكم، وإن لم يناسبكم شيء فيها نعدّله أو نحذفها — القرار قراركم.
+
+وأربعة أسئلة قصيرة، سطر لكل منها:
+
+١) متى يسلّم المسافر مستنداته والمبلغ — عند الحجز أم لاحقًا؟
+
+٢) كيف تصفون نشاطكم بكلماتكم؟ نكتب حاليًا «رحلات العمرة وبرامج السفر».
+
+٣) إعلانات العمرة صمّمناها بين بورتسودان وجدة — فمن هم المسافرون عادةً؟ قادمون من السودان، أم مقيمون في السعودية، أم الاثنان؟
+
+٤) وإن كان لديكم جملة عمّا تغيّر بعد العمل، بكلماتكم، ننشرها منسوبة إليكم. وإن لم تكن، تبقى الصفحة كما هي.
+
+وأي تعديل على التصاميم بعد التسليم فهو علينا بلا كلفة. شكرًا لثقتكم.
+```
+
+### The link
+
+`https://wa.me/966508531560?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%20%D9%88%D8%B1%D8%AD%D9%85%D8%A9%20%D8%A7%D9%84%D9%84%D9%87%D8%8C%20%D9%85%D8%B9%D9%83%D9%85%20%D9%85%D9%87%D9%84%D8%A8%20%D9%85%D9%86%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7.%0A%0A%D9%86%D8%B4%D8%B1%D9%86%D8%A7%20%D8%B5%D9%81%D8%AD%D8%A9%20%D8%AA%D8%B9%D8%B1%D8%B6%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%20%D8%A7%D9%84%D8%B0%D9%8A%20%D8%A3%D9%86%D8%AC%D8%B2%D9%86%D8%A7%D9%87%20%D9%84%D9%83%D9%85%20%E2%80%94%20%D8%A7%D9%84%D9%87%D9%88%D9%8A%D8%A9%D8%8C%20%D9%88%D8%A7%D9%84%D9%85%D9%88%D9%82%D8%B9%D8%8C%20%D9%88%D8%AD%D9%85%D9%84%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B9%D9%85%D8%B1%D8%A9%D8%8C%20%D9%88%D8%A7%D9%84%D9%85%D9%84%D9%81%20%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%8A%D9%81%D9%8A%3A%0Ahttps%3A%2F%2Fmashhorfoods.github.io%2Ftest%2Fstory.html%0A%0A%D9%84%D9%8A%D8%B3%20%D9%81%D9%8A%D9%87%D8%A7%20%D8%A3%D9%8A%20%D8%B1%D9%82%D9%85%20%D8%A3%D9%88%20%D9%86%D8%AA%D9%8A%D8%AC%D8%A9%20%D8%B9%D9%86%20%D9%86%D8%B4%D8%A7%D8%B7%D9%83%D9%85%D8%8C%20%D9%88%D8%A5%D9%86%20%D9%84%D9%85%20%D9%8A%D9%86%D8%A7%D8%B3%D8%A8%D9%83%D9%85%20%D8%B4%D9%8A%D8%A1%20%D9%81%D9%8A%D9%87%D8%A7%20%D9%86%D8%B9%D8%AF%D9%91%D9%84%D9%87%20%D8%A3%D9%88%20%D9%86%D8%AD%D8%B0%D9%81%D9%87%D8%A7%20%E2%80%94%20%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D8%B1%20%D9%82%D8%B1%D8%A7%D8%B1%D9%83%D9%85.%0A%0A%D9%88%D8%A3%D8%B1%D8%A8%D8%B9%D8%A9%20%D8%A3%D8%B3%D8%A6%D9%84%D8%A9%20%D9%82%D8%B5%D9%8A%D8%B1%D8%A9%D8%8C%20%D8%B3%D8%B7%D8%B1%20%D9%84%D9%83%D9%84%20%D9%85%D9%86%D9%87%D8%A7%3A%0A%0A%D9%A1%29%20%D9%85%D8%AA%D9%89%20%D9%8A%D8%B3%D9%84%D9%91%D9%85%20%D8%A7%D9%84%D9%85%D8%B3%D8%A7%D9%81%D8%B1%20%D9%85%D8%B3%D8%AA%D9%86%D8%AF%D8%A7%D8%AA%D9%87%20%D9%88%D8%A7%D9%84%D9%85%D8%A8%D9%84%D8%BA%20%E2%80%94%20%D8%B9%D9%86%D8%AF%20%D8%A7%D9%84%D8%AD%D8%AC%D8%B2%20%D8%A3%D9%85%20%D9%84%D8%A7%D8%AD%D9%82%D9%8B%D8%A7%D8%9F%0A%0A%D9%A2%29%20%D9%83%D9%8A%D9%81%20%D8%AA%D8%B5%D9%81%D9%88%D9%86%20%D9%86%D8%B4%D8%A7%D8%B7%D9%83%D9%85%20%D8%A8%D9%83%D9%84%D9%85%D8%A7%D8%AA%D9%83%D9%85%D8%9F%20%D9%86%D9%83%D8%AA%D8%A8%20%D8%AD%D8%A7%D9%84%D9%8A%D9%8B%D8%A7%20%C2%AB%D8%B1%D8%AD%D9%84%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B9%D9%85%D8%B1%D8%A9%20%D9%88%D8%A8%D8%B1%D8%A7%D9%85%D8%AC%20%D8%A7%D9%84%D8%B3%D9%81%D8%B1%C2%BB.%0A%0A%D9%A3%29%20%D8%A5%D8%B9%D9%84%D8%A7%D9%86%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B9%D9%85%D8%B1%D8%A9%20%D8%B5%D9%85%D9%91%D9%85%D9%86%D8%A7%D9%87%D8%A7%20%D8%A8%D9%8A%D9%86%20%D8%A8%D9%88%D8%B1%D8%AA%D8%B3%D9%88%D8%AF%D8%A7%D9%86%20%D9%88%D8%AC%D8%AF%D8%A9%20%E2%80%94%20%D9%81%D9%85%D9%86%20%D9%87%D9%85%20%D8%A7%D9%84%D9%85%D8%B3%D8%A7%D9%81%D8%B1%D9%88%D9%86%20%D8%B9%D8%A7%D8%AF%D8%A9%D9%8B%D8%9F%20%D9%82%D8%A7%D8%AF%D9%85%D9%88%D9%86%20%D9%85%D9%86%20%D8%A7%D9%84%D8%B3%D9%88%D8%AF%D8%A7%D9%86%D8%8C%20%D8%A3%D9%85%20%D9%85%D9%82%D9%8A%D9%85%D9%88%D9%86%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9%D8%8C%20%D8%A3%D9%85%20%D8%A7%D9%84%D8%A7%D8%AB%D9%86%D8%A7%D9%86%D8%9F%0A%0A%D9%A4%29%20%D9%88%D8%A5%D9%86%20%D9%83%D8%A7%D9%86%20%D9%84%D8%AF%D9%8A%D9%83%D9%85%20%D8%AC%D9%85%D9%84%D8%A9%20%D8%B9%D9%85%D9%91%D8%A7%20%D8%AA%D8%BA%D9%8A%D9%91%D8%B1%20%D8%A8%D8%B9%D8%AF%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D8%8C%20%D8%A8%D9%83%D9%84%D9%85%D8%A7%D8%AA%D9%83%D9%85%D8%8C%20%D9%86%D9%86%D8%B4%D8%B1%D9%87%D8%A7%20%D9%85%D9%86%D8%B3%D9%88%D8%A8%D8%A9%20%D8%A5%D9%84%D9%8A%D9%83%D9%85.%20%D9%88%D8%A5%D9%86%20%D9%84%D9%85%20%D8%AA%D9%83%D9%86%D8%8C%20%D8%AA%D8%A8%D9%82%D9%89%20%D8%A7%D9%84%D8%B5%D9%81%D8%AD%D8%A9%20%D9%83%D9%85%D8%A7%20%D9%87%D9%8A.%0A%0A%D9%88%D8%A3%D9%8A%20%D8%AA%D8%B9%D8%AF%D9%8A%D9%84%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%AA%D8%B5%D8%A7%D9%85%D9%8A%D9%85%20%D8%A8%D8%B9%D8%AF%20%D8%A7%D9%84%D8%AA%D8%B3%D9%84%D9%8A%D9%85%20%D9%81%D9%87%D9%88%20%D8%B9%D9%84%D9%8A%D9%86%D8%A7%20%D8%A8%D9%84%D8%A7%20%D9%83%D9%84%D9%81%D8%A9.%20%D8%B4%D9%83%D8%B1%D9%8B%D8%A7%20%D9%84%D8%AB%D9%82%D8%AA%D9%83%D9%85.`
+
+**If the link is awkward on a phone**, the block above is the message — paste
+it into a normal chat with `+966 508531560`. The wording is what matters, not
+the mechanism.
+
+### What each question closes
+
+| | Question | Closes |
+| --- | --- | --- |
+| ١ | When documents and payment change hands | **F1** |
+| ٢ | How they describe the business in their own words | **F2** |
+| ٣ | Who actually travels, given Port Sudan ↔ Jeddah | **F2a** |
+| ٤ | One sentence about what changed | **the result sentence**, and chapter 05's number |
+
+**F3 is not asked**, because chapter 04 no longer quotes their section names.
+That is one fewer thing to ask a client, bought by fixing our own page.
