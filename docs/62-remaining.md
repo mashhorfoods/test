@@ -54,6 +54,16 @@ Ordered by what it costs to leave undone, not by effort.
 
 ### A — Owner, and nobody else can do these
 
+> **§A is complete.** A1–A9 were done on 4–5 September. **A10 is the only item
+> left, and it is deferred on purpose** — the domain email is not published
+> until deliverability is proven, which is the owner's call and is recorded
+> rather than drifted into.
+>
+> That has a consequence worth stating plainly: **nothing on this list is
+> waiting on me, and nothing left is catastrophic.** What remains is §B — six
+> items, every one of which needs a person who is not in this room — and §D,
+> which is four WEBSTART X stages behind a single recording.
+
 | # | Task | Why it is first | Time |
 | --- | --- | --- | --- |
 | ~~**A1**~~ | ~~2FA on the registrar, the host and GitHub, plus a registrar transfer lock.~~ **DONE 5 Sep 2026.** `docs/58` T1 updated — it had called this "the single most important unknown in this document" and it is no longer unknown | ✅ |
@@ -63,8 +73,8 @@ Ordered by what it costs to leave undone, not by effort.
 | ~~**A5**~~ | ~~Domain email, then SPF/DKIM/DMARC at the same moment.~~ **DONE 5 Sep 2026, and done that way round.** `docs/58` T5 and `docs/60` §3 updated | ✅ |
 | ~~**A6**~~ | ~~Search Console: verify + submit the sitemap.~~ **DONE 5 Sep 2026 — P1-8 is now fully closed** | ✅ |
 | ~~**A7**~~ | ~~Plausible: the four goals and custom properties.~~ **DONE 5 Sep 2026.** Phase 20 moves from *prepared* to *running*: the rulebook in `docs/45` has numbers to read for the first time. What is missing now is thirty days of them, which is a wait rather than a task | ✅ |
-| **A8** | **The 15-minute device pass** in `docs/59` §5. **← next** | Two real cross-engine defects were fixed blind — the iPhone header blur and a focus ring that vanished on Firefox. Nobody has confirmed either on a real device | 15 min |
-| **A9** | **The four post-upload checks** in `docs/44` §2, after the next upload | `.htaccess` correctness is now checked; `.htaccess` being *served* still is not | 10 min |
+| ~~**A8**~~ | ~~The 15-minute device pass.~~ **RUN 5 Sep 2026**, nothing reported wrong — recorded as *run* rather than *verified*, because the rows were not noted individually and `docs/59` exists to stop untested things being quoted as tested. **`docs/59` §5a reduces what is left to two thirty-second checks** — the iPhone header blur and the Firefox focus ring, the two fixes made blind | ✅ |
+| ~~**A9**~~ | ~~The four post-upload checks.~~ **RUN 5 Sep 2026**, nothing reported wrong. Same grade: good evidence `.htaccess` is being served, not a recorded pass of check 4. `docs/58` T6 updated, and names the five-minute way to turn the monthly reminder into an alarm | ✅ |
 | **A10** | **Publish the domain email in place of the Gmail** — `navigation-map.js` plus the prose of Privacy, Terms and Accessibility in both languages, then `contact.email` in `site.config.json` | **Deliberately deferred 5 Sep 2026, owner's decision:** prove deliverability first. Until it lands, the site publishes a personal address while a protected domain one exists, which is the remaining half of `docs/58` T5 and keeps `docs/60` §3's table literally true. **`qa.js` now fails on a partial swap** — change the declared address and it names every page that still disagrees | 15 min, once you say go |
 
 ### B — Needs a third party

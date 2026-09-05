@@ -157,8 +157,16 @@ target, the rewrite, HSTS against config, the analytics origin. Check 4 in
 re-check.
 
 *Gap:* the file being correct and the file being present are different
-questions, and only the first is automated. The monthly serve-check is still a
+questions, and only the first is automated. **The four post-upload checks were
+run on 5 September and nothing was reported wrong**, which is real evidence the
+file is being served — but the rows were not noted individually, so it is not a
+recorded pass of check 4 specifically. The monthly serve-check is still a
 calendar reminder, not an alarm.
+
+*The cheapest way to make it one*, whenever it is worth five minutes: point a
+second UptimeRobot keyword monitor at the site and have it watch a response
+**header** rather than the body. The uptime monitor from A3 already proves the
+page is there; nothing yet proves the headers came with it.
 
 ### T7 — Denial of service · **low, and not ours**
 

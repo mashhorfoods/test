@@ -8,7 +8,9 @@ outstanding on every status list since.
 
 ## 1. What this is, and what it is not
 
-**No second engine was run.** This environment has Chromium only, and the
+**No second engine was run *here*.** A person ran the §5 pass on real devices
+on 5 September and reported nothing wrong; §5 records what that is and is not
+worth. This environment has Chromium only, and the
 network policy blocks Playwright's browser downloads — `webkit` and `firefox`
 were attempted and refused at the proxy. So this document is **a static
 analysis of what the built site actually depends on**, plus a short manual pass
@@ -132,6 +134,15 @@ structural change.
 
 ## 5. What a person still has to do
 
+> **Run 5 September 2026 — and recorded at the grade it actually has.** The
+> owner went through this pass and reported nothing wrong, but did not note the
+> rows individually. That is *run*, not *verified*: it is good evidence against
+> anything obviously broken and no evidence at all about a specific row.
+>
+> The distinction matters here more than it usually would, because §1 of this
+> document exists to stop untested things being quoted as tested. So the table
+> below stays, and §5a names the two rows still worth thirty seconds each.
+
 Fifteen minutes, on real devices, once. Everything below is something static
 analysis cannot answer.
 
@@ -147,6 +158,21 @@ analysis cannot answer.
 
 If a page ever renders as unstyled HTML, do not debug the component. Check the
 browser version against §2 first — that is the one failure with a single cause.
+
+### 5a. The two worth thirty seconds each
+
+Five of the seven rows above check things that were already working and would
+have been obvious if they were not — a page that fails to mirror in Arabic, or
+prints blank, announces itself. **Two do not**, and both are fixes made blind,
+against defects found by reading rather than by seeing:
+
+| Thirty seconds | What you are looking for | If it is wrong |
+| --- | --- | --- |
+| **iPhone, Safari** — scroll the homepage down a little | The header should go *frosted*, not flat: the page content behind it stays faintly visible through the blur | §3's `-webkit-backdrop-filter` did not take. The header will look correct-but-opaque, which is the fallback, so this is invisible unless you look for it |
+| **Firefox, desktop** — press Tab repeatedly through the pricing cards | Every card must draw a visible ring around itself as focus reaches it | §4's `@supports` guard did not take, and keyboard users on Firefox have no focus indicator — WCAG 2.4.7 |
+
+Neither is urgent and neither is visible to a mouse user on Chrome, which is
+exactly why they are written down rather than remembered.
 
 ## 6. When to re-read this
 
