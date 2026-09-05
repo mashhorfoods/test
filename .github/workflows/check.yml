@@ -9,9 +9,15 @@
 # zero on the day someone ships without running them.
 #
 # This does not deploy anything. Deployment stays a deliberate manual upload —
-# `docs/44` — because one person owning the moment the site changes is a
-# feature at this size, not a gap. What CI owns is the question of whether the
-# thing being uploaded is sound.
+# `docs/44`, `docs/61` AD-07 — because one person owning the moment the site
+# changes is a feature at this size, not a gap. What CI owns is the question of
+# whether the thing being uploaded is sound.
+#
+# IT ALSO REBUILDS FOR DATA-ONLY EDITS. `docs/63` chose Option 0: the admin
+# dashboard is GitHub's own editor. That only works if editing
+# `src/data/*.json` in a browser produces a built site, because the person
+# doing it has no terminal — they may be on a phone. See "Rebuild" below for
+# what is deliberately narrow about it.
 # =============================================================================
 
 name: check
@@ -27,8 +33,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
+    # Needed only by the Rebuild step. Every other step is read-only.
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The rebuild step needs the previous commit to see what the push
+          # actually changed. Depth 2 is enough and stays cheap.
+          fetch-depth: 2
 
       - uses: actions/setup-node@v4
         with:
@@ -54,20 +68,62 @@ jobs:
 
       - run: npm run build
 
+      # --- Was this push nothing but data? ---------------------------------
+      # The answer decides whether a stale dist/ is a mistake to reject or an
+      # edit to finish. `src/data/*.json` is the only content a person can
+      # safely change without seeing the site build, which is exactly what
+      # `docs/63` Q2 measured: changing a VALUE needs no code, adding a KIND of
+      # information does. So the allowance is drawn at that line and no wider.
+      #
+      # lastmod.json is excluded from what counts as an edit: it is generated,
+      # so a push containing only it is not somebody editing content.
+      - name: Was this push data-only?
+        id: scope
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ] \
+             || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            # A new branch, a force-push, or a non-push event: no reliable
+            # previous commit, so claim nothing and let the strict check run.
+            echo "data_only=false" >> "$GITHUB_OUTPUT"
+            echo "no usable previous commit — treating as a normal push"
+            exit 0
+          fi
+          CHANGED="$(git diff --name-only "$BEFORE" "${{ github.sha }}")"
+          echo "changed by this push:"; echo "$CHANGED" | sed 's/^/  /'
+          # Every changed path must be a data file, a generated output, or a doc.
+          OFFENDERS="$(echo "$CHANGED" | grep -v '^$' \
+            | grep -vE '^src/data/[^/]+\.json$' \
+            | grep -vE '^dist/' \
+            | grep -vE '^docs/' \
+            | grep -vE '^(index|story|about|pricing|privacy|terms|accessibility|styleguide|404)\.html$' \
+            | grep -vE '^src/pages/' || true)"
+          EDITED_DATA="$(echo "$CHANGED" | grep -E '^src/data/[^/]+\.json$' | grep -v 'lastmod\.json' || true)"
+          if [ -z "$OFFENDERS" ] && [ -n "$EDITED_DATA" ]; then
+            echo "data_only=true" >> "$GITHUB_OUTPUT"
+            echo "-> data-only edit; a stale dist/ will be rebuilt and committed"
+          else
+            echo "data_only=false" >> "$GITHUB_OUTPUT"
+            [ -n "$OFFENDERS" ] && { echo "-> not data-only, because of:"; echo "$OFFENDERS" | sed 's/^/     /'; }
+          fi
+
       # THE COMMITTED dist/ IS WHAT SHIPS.
       # `pixora-site.zip` is built from `dist/`, and `dist/` is committed — so
       # editing `src/` and committing without rebuilding produces a repository
       # whose source and whose deployable disagree, silently, with the old
-      # version being the one that reaches visitors. Nothing else checks this.
+      # version being the one that reaches visitors.
       #
       # NOTHING IS EXCLUDED. sitemap.xml used to be, because its `lastmod` was
       # the build date and so differed on any day after the last commit. That
-      # was a symptom of a real bug — the sitemap claimed every page changed on
-      # every rebuild — and now that `lastmod` comes from the page's content
-      # hash the whole of dist/ is deterministic and the exclusion is gone.
-      # `src/data/lastmod.json` is the hash store and is checked with it: a
-      # rebuild that changed a page must commit the date that change earned.
+      # was a symptom of a real bug, and now that `lastmod` comes from the
+      # page's content hash the whole of dist/ is deterministic.
+      #
+      # THIS STILL RUNS FOR EVERY NON-DATA PUSH, unchanged. Somebody with a
+      # terminal who edits `src/` is expected to build and to watch the
+      # harnesses before pushing; having CI silently finish the job for them
+      # would remove the reason the check exists.
       - name: The committed dist must match a fresh build
+        if: steps.scope.outputs.data_only != 'true'
         run: |
           git diff --exit-code -- dist src/data/lastmod.json || {
             echo
@@ -79,4 +135,52 @@ jobs:
       # validate.js, qa.js, a11y.js. Each exits non-zero only on a HIGH finding;
       # MEDIUM and LOW print and pass, which is deliberate (docs/56 §3) — so
       # read the log rather than only the tick.
+      #
+      # DELIBERATELY BEFORE THE COMMIT BELOW. A build that has not been checked
+      # is not one to write back to the branch: if a price edit breaks a page,
+      # the right outcome is a red run and an unchanged repository, not a
+      # committed regression with a tick beside it.
       - run: npm run check
+
+      # --- Rebuild ----------------------------------------------------------
+      # `docs/63` Option 0. Somebody edits `src/data/pricing.json` in GitHub's
+      # web editor — possibly from a phone — and the build that turns it into a
+      # site happens here, after the harnesses have passed.
+      #
+      # Deliberately narrow, in three ways:
+      #   - only for pushes that changed nothing but data (see "scope" above);
+      #   - only after `npm run check` has passed;
+      #   - it commits the BUILD OUTPUT only. It never edits source.
+      #
+      # No loop: pushes made with GITHUB_TOKEN do not trigger workflows. Even if
+      # they did, the next run would find dist/ already matching and commit
+      # nothing.
+      - name: Rebuild dist for a data-only edit
+        if: steps.scope.outputs.data_only == 'true' && github.event_name == 'push'
+        run: |
+          if git diff --quiet -- dist src/data/lastmod.json; then
+            echo "dist/ already matches the data — nothing to commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist src/data/lastmod.json
+          git commit -m "Rebuild dist for ${GITHUB_SHA:0:7}
+
+          Data was edited without a local build — see .github/workflows/check.yml.
+          All three harnesses passed before this commit was made."
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "dist/ rebuilt and committed."
+
+      # --- The thing the owner actually uploads ------------------------------
+      # Option 0 is only usable if the person who edited a price can get the
+      # archive without a terminal. Deployment stays manual — this makes the
+      # manual step possible from a browser rather than automating it away.
+      - name: Attach the upload package
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pixora-site
+          path: pixora-site.zip
+          retention-days: 30
+          if-no-files-found: error
