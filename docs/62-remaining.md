@@ -13,8 +13,16 @@ forgotten, and nothing is added to it that is not real work.
 ## 1. Where the two workflows actually stand
 
 **WEBSTART — 11 of 21 complete, 9 partial, 1 out of scope.** All three gates
-held. Every partial is waiting on a named person or a named input; none is
-waiting on someone deciding what to do.
+held, and since 5 September **none of them is held on an open criterion**:
+A3 closed the uptime monitor, which was the one unmet Gate 03 acceptance
+criterion (`docs/46` §9). Every partial is waiting on a named person or a named
+input; none is waiting on someone deciding what to do.
+
+**Every catastrophic failure mode this project identified is now controlled.**
+A1–A4 shut them in two days: the domain cannot be silently transferred or lapse,
+GitHub is no longer the single copy, and the site cannot go down unnoticed.
+Nothing remaining on this list is of that kind — which changes what "urgent"
+means for everything below.
 
 **WEBSTART X — 1 of 11 complete.** This is the honest number, and it is low for
 one reason: X02 needs reference material this environment cannot fetch, and
@@ -49,10 +57,10 @@ Ordered by what it costs to leave undone, not by effort.
 | # | Task | Why it is first | Time |
 | --- | --- | --- | --- |
 | ~~**A1**~~ | ~~2FA on the registrar, the host and GitHub, plus a registrar transfer lock.~~ **DONE 5 Sep 2026.** `docs/58` T1 updated — it had called this "the single most important unknown in this document" and it is no longer unknown | ✅ |
-| **A2** | **A second git remote** (GitLab/Bitbucket/Codeberg), pushed to alongside GitHub. **← next** | `docs/57` §4, whose commands were verified 5 Sep and now carry the trap they hide: run only the second line and GitHub silently stops receiving pushes. `git remote -v \| grep push` must list **both** hosts. Losing the GitHub account today loses the project — and since `docs/63`, that account is also the CMS | 10 min |
-| **A3** | **UptimeRobot with a keyword check** on `One Partner` | `docs/57` §5. **The last unmet Gate 03 criterion.** Every failure this site has actually had would have returned HTTP 200 | 5 min |
-| **A4** | **Registrar auto-renew ON + a 30-day calendar reminder** | The most expensive failure and the one most often discovered by a customer | 5 min |
-| **A5** | **Domain email**, then SPF/DKIM/DMARC published *at the same moment* | `docs/60` §3 and `docs/58` T5. This is the first move on the identity gap, and it is worth more than incorporation | 1 hr |
+| ~~**A2**~~ | ~~A second git remote, pushed to alongside GitHub.~~ **DONE 5 Sep 2026.** `docs/57` §3 gap 1 closed | ✅ |
+| ~~**A3**~~ | ~~UptimeRobot with a keyword check.~~ **DONE 5 Sep 2026 — and this closed the last unmet Gate 03 criterion.** `docs/46` §9: the gate is now a plain go, and the WEBSTART cycle is complete with no gate held on an open criterion | ✅ |
+| ~~**A4**~~ | ~~Registrar auto-renew ON + a 30-day reminder.~~ **DONE 5 Sep 2026** | ✅ |
+| **A5** | **Domain email**, then SPF/DKIM/DMARC published *at the same moment*. **← next** | `docs/60` §3 and `docs/58` T5. With A1–A4 done this is the largest remaining risk on the list, and the first real move on the identity gap: the site publishes prices and asks a 50% deposit from a personal Gmail address | 1 hr |
 | **A6** | **Search Console: verify + submit the sitemap** | `docs/27` P1-8's last open item | 15 min |
 | **A7** | **Plausible: create the four goals and custom properties** | `docs/45`. Until this exists Phase 20 cannot start and no KPI has a number | 20 min |
 | **A8** | **The 15-minute device pass** in `docs/59` §5 | Two real cross-engine defects were fixed blind. Nobody has confirmed the fixes on an actual iPhone | 15 min |

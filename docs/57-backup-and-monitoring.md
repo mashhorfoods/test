@@ -43,7 +43,12 @@ in the repository, and none of them are what a "website backup" usually means.
 
 ## 3. The gaps, in the order they would hurt
 
-1. **One git remote, one account.** If the GitHub account is lost or the repo
+> **Three of these five closed on 5 September 2026** — the second remote, the
+> uptime monitor and the domain-expiry alarm. Left in place rather than deleted,
+> because the order they are in is the argument for doing them. Gaps 2 and 5
+> remain open and are `docs/62` B2 and the follow-on to A7.
+
+1. ~~**One git remote, one account.**~~ **Closed 5 Sep 2026.** If the GitHub account is lost or the repo
    is deleted, the project is gone: 29MB of source, twelve documents of
    reasoning, and every content decision made since the audit. `dist/` being
    committed means the *site* survives on the server, but the ability to change
@@ -51,9 +56,11 @@ in the repository, and none of them are what a "website backup" usually means.
 2. **Al Mada's images are not on disk.** Recorded in `docs/48` and still true.
    If that case study ever needs rebuilding, the artwork has to come from the
    client again.
-3. **No uptime monitoring.** The site could be down right now and nobody would
-   know until a client mentioned it. This is the Gate 03 criterion.
-4. **No domain-expiry alarm.** A lapsed domain is recoverable for a while and
+3. ~~**No uptime monitoring.**~~ **Closed 5 Sep 2026** — UptimeRobot, keyword
+   mode. This was the Gate 03 criterion, and closing it made that gate a plain
+   go (`docs/46` §9).
+4. ~~**No domain-expiry alarm.**~~ **Closed 5 Sep 2026** — auto-renew on, plus
+   the 30-day reminder. Originally: A lapsed domain is recoverable for a while and
    then is not, and it is the failure most often discovered by a customer.
 5. **No Plausible export.** The free tier keeps history, but the account is a
    single point of failure for the only numbers this project measures.
@@ -155,14 +162,14 @@ carry on. That difference is the whole argument for the ten-minute task.
 
 Everything above is either free or under twenty minutes. In order:
 
-1. **Add the second git remote.** Ten minutes, and it is the difference between
-   "annoying" and "unrecoverable".
-2. **Add the UptimeRobot monitor** with the keyword check. Five minutes, and it
-   closes the last open Gate 03 criterion.
-3. **Confirm registrar auto-renew is on**, and put a 30-day reminder in the
-   calendar.
+1. ~~**Add the second git remote.**~~ **Done 5 Sep 2026.**
+2. ~~**Add the UptimeRobot monitor** with the keyword check.~~ **Done 5 Sep
+   2026** — and it closed the last open Gate 03 criterion, as predicted.
+3. ~~**Confirm registrar auto-renew is on**, and put a 30-day reminder in the
+   calendar.~~ **Done 5 Sep 2026.**
 4. **Ask Al Mada for their four images** — the same message that asks for the
-   result sentence.
+   result sentence. **Still the only item here still open**, and the only
+   irreplaceable asset in `docs/57` §2 that is backed up nowhere.
 
 ## 8. Review
 
