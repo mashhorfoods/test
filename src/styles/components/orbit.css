@@ -249,13 +249,24 @@
       content: none;
     }
 
+    /* THE SERVICE NAMES, and they were the smallest text on the site.
+       Measured 5 September 2026 (`docs/75`): this clamp rendered them at 10px
+       on a 1024px laptop, 11px at 1440 — smaller on a desktop than the 12px
+       they get on a phone, because the unit is `cqw` and the orbit container
+       stops growing before the viewport does. The design system's smallest
+       declared step is `--text-label`; these sat two steps below it on raw
+       rem values that appear nowhere else.
+
+       Arabic already rendered them at 12-13px at every width, with no overlap
+       and no clipping — which is what made this safe to lift rather than a
+       guess. English now takes the same token. */
     .c-orbit__label {
-      font-size: clamp(0.5625rem, 1.9cqw, 0.6875rem);
+      font-size: var(--text-label);
       text-align: center;
     }
 
     .c-orbit__core-label {
-      font-size: 0.625rem;
+      font-size: var(--text-label);
     }
 
     /* [data-i18n-pending] makes untranslated copy an LTR island, which fixes
@@ -308,7 +319,7 @@
     }
 
     .c-orbit__core-label {
-      font-size: clamp(0.5625rem, 1.9cqw, 0.75rem);
+      font-size: var(--text-label);
     }
 
     /* --- Rings and connectors ------------------------------------------- */
@@ -413,7 +424,11 @@
 
     .c-orbit__card-label {
       font-family: var(--font-display);
-      font-size: 0.5rem;
+      /* 0.5rem — 8px — until 5 September 2026, the smallest text on the site.
+         Decorative and `aria-hidden`, but 8px is not a size anything should
+         render at. Arabic already used 0.625rem here and fits, which is the
+         evidence this is safe. */
+      font-size: 0.625rem;
       font-weight: var(--weight-medium);
       letter-spacing: 0.16em;
       text-transform: uppercase;

@@ -158,11 +158,13 @@
       opacity var(--duration-base) var(--ease-standard);
   }
 
-  @media (min-width: 48em) {
-    .c-brand__tagline {
-      font-size: 0.5625rem;
-    }
-  }
+  /* REMOVED 5 September 2026 — it shrank this to 9px above 48em, which
+     inverts the paragraph above. That comment says the tagline is "the only
+     place on the page that names what the business IS" and therefore "gets a
+     readable size" — and the desktop header, which has MORE room beside the
+     wordmark than the 360px phone the note measured, was giving it two
+     pixels less than the phone does. The one size now holds at every width
+     (`docs/75` §3). */
 
   /* Arabic has no letter case and its joins break under heavy tracking. */
   [dir="rtl"] .c-brand__tagline {
@@ -173,7 +175,8 @@
 
   @media (min-width: 48em) {
     [dir="rtl"] .c-brand__tagline {
-      font-size: 0.625rem;
+      /* Same as above: was 0.625rem, below the 0.75rem the phone gets. */
+      font-size: 0.75rem;
     }
   }
 

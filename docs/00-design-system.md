@@ -12,6 +12,26 @@ placeholders in `styleguide.html` are structural only (`Package name`, `0,000`,
 
 ---
 
+
+> **RECONCILED 5 September 2026 — `docs/75` (X09).** Five things in this file
+> were made untrue by P1-3 and E6 and are corrected here rather than left to
+> mislead:
+>
+> - **`--control-height-sm` is 44px**, not 40px. 40px was a size the site never
+>   rendered and could not: 44px is the touch floor, and a small button's icon
+>   made the old value unreachable (`docs/73`).
+> - **The control scale is 44 / 48 / 56**, and every button renders on it — in
+>   both languages, which was not true until `docs/73`.
+> - **`components/card.css` and `components/disclosure.css` load from
+>   `src/styles/showroom.css`**, which only `/styleguide` links. Neither has a
+>   live rule on any shipped page (`docs/43` §14).
+> - **The `.t-*` classes are the NOMINAL scale.** Components read the same
+>   `--text-*` tokens and then tune from them — `.c-detail__headline` resolves
+>   to 53.9px where `.t-h1` shows 62.4px. One source of truth, two expressions.
+> - **Type has a floor of 10px**, enforced by `qa.js` §16, along with a rule
+>   that nothing may render more than a pixel smaller on a desktop than on a
+>   phone.
+
 ## 1. Colour tokens
 
 Defined in `src/styles/02-tokens.css`.
