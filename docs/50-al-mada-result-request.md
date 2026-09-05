@@ -127,7 +127,28 @@ of those it optimises for.
 
 ---
 
-## Part 4 — status: sent (4 September 2026)
+## Part 4 — status: NOT DELIVERED (corrected 5 September 2026)
+
+> **THIS SECTION WAS WRONG.** It recorded the message as sent. It was sent and
+> **it bounced one second later**:
+>
+> > `550 5.1.1 The email account that you tried to reach does not exist.`
+> > — `madatravel@gmail.com`, 4 Sep 2026 02:47:28
+>
+> **Al Mada never received it.** The bounce sat unread in the inbox while
+> `docs/62`, then `docs/69`, carried B2 as *"sent, waiting on Al Mada"* for a
+> day. They were not slow to reply; there was nothing to reply to.
+>
+> The lesson is the one this project keeps relearning in other forms: **a
+> thing that reports success is not a thing that worked.** "Sent" was written
+> from the act of sending, not from a delivery receipt, and the receipt was
+> two inches away in the same mailbox.
+>
+> One accident worth noting: the bounced message asked Al Mada to confirm the
+> section names *«لماذا المدى»* — the exact quotation `docs/76` later found to
+> be wrong. Not sending it spared us asking a client to confirm our own error.
+
+## Part 4 (as originally written) — status: sent (4 September 2026)
 
 **Sent to madatravel@gmail.com on 4 September 2026**, Arabic first, with the two verification questions from Part 3 folded in so one
 send closes F1–F3 as well as the missing sentence. It also gained a paragraph
@@ -274,3 +295,97 @@ upscaled at 390, 768, 1440 or 1920, in both languages.
 
 **Still open with Al Mada:** the result sentence, F1, F2 and F2a. One reply
 closes all four.
+
+---
+
+## Part 7 — the message, ready to send
+
+Written 5 September 2026, after the bounce. **Shorter than the original**: F3
+is retired (chapter 04 no longer quotes the section names, so there is nothing
+to confirm), and F2a is added — the question the deliverables raised.
+
+**It has not been sent.** `madatravel@gmail.com` does not exist, and no other
+address for Al Mada is known. Two routes, either of which works:
+
+- **WhatsApp `+966 508531560`** — the number on their own campaign posters,
+  marked with the WhatsApp icon. In this market that is the normal way to
+  reach a travel agency, and it is the channel this entire site is built
+  around. Paste the Arabic below.
+- **A working email address**, if you have one. Say the word and it goes.
+
+### Subject
+
+> صفحة عن العمل الذي أنجزناه لوكالة المدى — أربعة أسئلة قصيرة
+
+### Arabic
+
+> السلام عليكم ورحمة الله وبركاته،
+>
+> نشرنا في موقع بيكسورا صفحة تعرض العمل الذي أنجزناه لوكالة المدى للسفر
+> والسياحة — الهوية البصرية، والموقع الإلكتروني، وحملات عروض العمرة، والملف
+> التعريفي:
+> https://mashhorfoods.github.io/test/story.html
+>
+> وقبل أي شيء: الصفحة لا تتضمن أي رقم أو نتيجة أو ادعاء عن نشاطكم. كل ما فيها
+> هو ما سُلِّم فعلًا، والأسعار الظاهرة في تصاميم الحملات مكتوب أنها تخصكم
+> أنتم. وإن رأيتم فيها ما لا يناسبكم، نعدّله أو نحذف الصفحة بالكامل — القرار
+> قراركم.
+>
+> وأربعة أسئلة قصيرة، يكفي سطر واحد لكل منها:
+>
+> **١)** عند الحجز، متى يسلّم المسافر مستنداته ومواعيده والمبلغ — في لحظة
+> الحجز نفسها، أم في مرحلة لاحقة؟
+>
+> **٢)** كيف تصفون نشاطكم بكلماتكم أنتم؟ نكتب حاليًا «رحلات العمرة وبرامج
+> السفر»، فإن كان الأدق غير ذلك فلنكتبه كما تقولونه.
+>
+> **٣)** في إعلانات العمرة التي صمّمناها، الرحلات بين بورتسودان وجدة ذهابًا
+> وإيابًا. فمن هم المسافرون عادةً — قادمون من السودان، أم مقيمون في السعودية،
+> أم الاثنان معًا؟ كنا قد كتبنا «لعملاء في السعودية» ثم حذفناها، لأننا لا نريد
+> أن نصف عملكم بما لم تقولوه.
+>
+> **٤)** وإن كان لديكم جملة واحدة عمّا تغيّر بعد العمل، بكلماتكم أنتم، ننشرها
+> منسوبة إليكم كما كتبتموها. وإن لم تكن هناك جملة، تبقى الصفحة كما هي، ولا
+> مشكلة إطلاقًا.
+>
+> ومن جانبنا: نحن نعتبر أنفسنا مسؤولين عن هذا العمل بعد تسليمه. إن احتجتم
+> مقاسًا جديدًا لإعلان، أو تعديلًا في الملف التعريفي، أو نسخة من ملفات الهوية،
+> راسلونا — التعديلات الصغيرة من هذا النوع لا كلفة عليها.
+>
+> شكرًا لثقتكم بنا في هذا العمل.
+>
+> مهلب صلاح
+> بيكسورا
+
+### English, for the record
+
+> We have published a page on the Pixora site showing the work we delivered for
+> Al Mada Travel & Tourism — the visual identity, the website, the Umrah offer
+> campaigns and the company profile.
+>
+> Before anything else: the page carries no figure, no result and no claim
+> about your business. It shows only what was delivered, and the prices in the
+> campaign artwork are marked as yours. If anything on it does not suit you, we
+> change it or take it down — that is your call.
+>
+> Four short questions, one line each is plenty:
+>
+> **1)** At booking, when does a traveller hand over documents, dates and
+> payment — at the booking itself, or later?
+> **2)** How do you describe the business in your own words? We currently write
+> "Umrah trips and travel programmes."
+> **3)** The Umrah campaigns we designed route Port Sudan to Jeddah and back.
+> Who usually travels — people coming from Sudan, people resident in Saudi
+> Arabia, or both? We had written "for Saudi customers" and removed it, because
+> we do not want to describe your business in words you did not use.
+> **4)** If you have one sentence about what changed after the work, in your
+> words, we publish it attributed to you. If there is no sentence, the page
+> stays as it is.
+>
+> And from our side: we consider ourselves responsible for this work after
+> handover. A new ad size, a change to the profile, a copy of the identity
+> files — write to us, small changes carry no charge.
+
+**Which questions this closes:** F1 (§1), F2 (§2), **F2a** (§3), and the
+missing result sentence (§4). F3 needs nothing — the quotation it was about is
+gone.

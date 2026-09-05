@@ -158,7 +158,7 @@ Parallel with P1. Nothing here waits on anything else here.
 | **B3** | An Arabic speaker | One hour, `docs/66`. `/terms` first — 670 Arabic words in a contract nobody has reviewed | B4's first question |
 | **B4** | A lawyer | `docs/65`. The governing-language gap is the headline | Legal risk |
 | **B6** | Any VoiceOver user | 30–40 minutes, `docs/67` | `/accessibility` stops saying no person has tried |
-| **B2a** | Al Mada | Their result sentence, and F1–F3. **Sent 4 Sep, waiting** | Chapter 05 gets its number |
+| **B2a** | **You, then Al Mada** | **BLOCKED ON AN ADDRESS, not on them.** The 4 Sep message bounced — `550 5.1.1 … does not exist` for `madatravel@gmail.com` — so Al Mada never received it and has never been waiting. **A working address or a WhatsApp number is needed.** The posters carry `+966 508531560` marked WhatsApp and `+966 0580790186`. The message is written and ready in `docs/50` Part 7, covering F1, F2, F2a and the result sentence | Chapter 05 gets its number |
 | ~~**B2b**~~ | ~~You~~ | **DONE 5 Sep 2026.** The four deliverables are in the repository — originals at full resolution in `src/assets/originals/` (3.1MB, now on both remotes, closing `docs/57` §2's only irreplaceable-and-unbacked row) and WebP derivatives at 34–85KB shipped. **The case study now shows the work it describes:** the identity sheet in chapter 02, the website in 04, the campaign and profile in 05. The five SVG sketches stay — sketch carries the argument, photograph carries the artefact | ✅ |
 | **A10** | You | The email swap, when deliverability is proven | `docs/58` T5's second half |
 
