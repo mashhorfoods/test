@@ -450,3 +450,29 @@ the mechanism.
 
 **F3 is not asked**, because chapter 04 no longer quotes their section names.
 That is one fewer thing to ask a client, bought by fixing our own page.
+
+
+---
+
+## Part 9 — sent by WhatsApp, 5 September 2026
+
+**The owner reports sending it** to `+966 508531560`.
+
+That sentence is worded carefully, and Part 4 is why. *"Sent"* was written there
+from the act of sending and turned out to mean *bounced one second later*. This
+record has no delivery receipt either — WhatsApp's are in the owner's hand, not
+in this repository — so what is recorded is **what the owner reports**, not a
+confirmed delivery.
+
+What would upgrade it: a WhatsApp tick, or a reply. Either is worth noting here
+when it happens.
+
+**Open, and now genuinely waiting on Al Mada rather than on an address:**
+F1, F2, F2a and the result sentence. When a reply comes back:
+
+- **F1, F2, F2a** → `story.json` chapter 01, and `docs/48`'s table.
+- **The result sentence** → chapter 05, attributed by name and role, **in the
+  language they write it in**, with a translation beside it — never a
+  translation alone presented as the quote (Part 3).
+- **If they decline, or never reply**, the page stays exactly as it is. Part 3
+  settled that and it has not changed.
