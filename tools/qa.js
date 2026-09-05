@@ -1037,6 +1037,66 @@ function serve() {
     }
   }
 
+  /* ---- 15 the control scale, and both languages on it ------------------
+     `docs/70` §4 measured the button system against its own tokens and found
+     the tokens were not deciding: the scale declared 40/44/48/56 and the site
+     rendered 44/46/48/54/56, with 40 unreachable because a 20px icon in a
+     small button was taller than its 14px label.
+
+     `docs/73` then found the larger half: EVERY button on the site was taller
+     in Arabic than in English — seven classes of seven on desktop, +15px on
+     `.c-final__cta` — because the label is a span, the span carries
+     `lang="ar"`, and the generic `:lang(ar)` rule gave it body leading over
+     the button's own `line-height: 1`. Nothing looked broken. The buttons were
+     simply a different size in half the site's language.
+
+     Both are now structural, so both get a guard: every button must render at
+     a declared size, and must render at the SAME size in both languages. */
+  {
+    const SCALE = [44, 48, 56];   // --touch-target-min / --control-height / --control-height-lg
+    const heights = new Map();    // "class|width" -> { en, ar }
+    for (const page of ['index.html', 'pricing.html']) {
+      if (!fs.existsSync(path.join(DIST, page))) continue;
+      for (const width of [390, 1440]) {
+        const p = await browser.newPage({ viewport: { width, height: 900 } });
+        await p.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+        for (const lang of ['en', 'ar']) {
+          if (lang === 'ar') {
+            const ok = await p.evaluate(() => {
+              const el = document.querySelector('[data-lang="ar"]');
+              if (!el) return false;
+              el.click();
+              return true;
+            });
+            if (!ok) continue;
+            await p.waitForTimeout(150);
+          }
+          const rows = await p.evaluate(() => [...document.querySelectorAll('.c-btn')]
+            .filter((el) => el.getBoundingClientRect().height > 0)
+            .map((el) => ({ cls: el.className.replace(/\s+/g, '.'), h: Math.round(el.getBoundingClientRect().height) })));
+          for (const r of rows) {
+            const key = `${r.cls}|${width}`;
+            const rec = heights.get(key) || {};
+            rec[lang] = r.h;
+            heights.set(key, rec);
+          }
+        }
+        await p.close();
+      }
+    }
+    for (const [key, rec] of heights) {
+      const [cls, width] = key.split('|');
+      for (const lang of ['en', 'ar']) {
+        if (rec[lang] !== undefined && !SCALE.includes(rec[lang])) {
+          fail('MED', 'controls', `.${cls} renders ${rec[lang]}px at ${width}px in ${lang} — not one of the declared control heights ${SCALE.join('/')} (docs/73)`);
+        }
+      }
+      if (rec.en !== undefined && rec.ar !== undefined && rec.en !== rec.ar) {
+        fail('HIGH', 'controls', `.${cls} is ${rec.en}px in English and ${rec.ar}px in Arabic at ${width}px — the same button is a different size in each language (docs/73)`);
+      }
+    }
+  }
+
   /* ---- 13 fonts, whichever way they are carried ------------------------
      `site.config.json` build.fonts chooses between a data URI per face and a
      file in assets/fonts/. The linked mode is worth ~46% of a page's gzipped

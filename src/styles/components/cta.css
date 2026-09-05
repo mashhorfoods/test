@@ -113,6 +113,10 @@
      moment where that is correct. Full width below 30em (rule 23), where a
      centred pill wastes the row and is harder to hit one-handed. */
   .c-final__cta {
+    /* Was reaching for the large size through its own padding and landing on
+       54px, two short of the 56px token (`docs/70` §5 item 1). Named now, so
+       the site's most important button is a size the system declares. */
+    min-block-size: var(--control-height-lg);
     padding-block: var(--space-16);
     padding-inline: var(--space-32);
     font-size: var(--text-body-lg);

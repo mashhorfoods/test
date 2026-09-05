@@ -38,6 +38,24 @@
     transition: var(--transition-interactive);
   }
 
+  /* THE LABEL IS A SPAN, AND THE SPAN IS WHAT CARRIES `lang="ar"`.
+     `line-height: 1` above is set on the button; the generic `:lang(ar)` rule
+     in 03-base.css gives the span body leading, and the span is where the
+     text actually is — so the button's own line-height never reached it.
+
+     Measured 5 September 2026: EVERY button on the site was taller in Arabic
+     than in English. Seven classes of seven on desktop — +4px typically, and
+     +15px on `.c-final__cta`, which went 54px to 69px. Nothing looked broken,
+     which is why it survived: the buttons were simply a different size in
+     half the site's language.
+
+     Third time this project has hit this exact shape. `docs/43` §12 was the
+     Arabic headings, `docs/72` §2 the phone header CTA. Fixed here at the
+     component root so there is not a fourth. */
+  .c-btn * {
+    line-height: 1;
+  }
+
   /* --- Primary ---------------------------------------------------------- */
   .c-btn--primary {
     --_bg: var(--color-accent);
@@ -104,10 +122,19 @@
   }
 
   /* --- Sizes ------------------------------------------------------------ */
+  /* The small size carries the SMALL icon. With `--icon-md` at 20px against a
+     14px label, the icon was taller than the text and set the height itself:
+     the button rendered 46px and `--control-height-sm` never applied
+     (`docs/70` §4). The icon now fits inside the line, so the token decides. */
   .c-btn--sm {
     min-block-size: var(--control-height-sm);
     padding-inline: var(--space-24);
     font-size: var(--text-small);
+  }
+
+  .c-btn--sm .c-btn__icon {
+    inline-size: var(--icon-sm);
+    block-size: var(--icon-sm);
   }
 
   /* The compact size buys density on a mouse-driven screen, but it must never

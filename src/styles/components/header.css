@@ -254,22 +254,6 @@
       padding-inline: var(--space-16);
       font-size: var(--text-body-sm);
       white-space: nowrap;
-      /* Single line, centred by flex — so the line box does not need to carry
-         leading. Without this the Arabic face's taller metrics inflated the
-         same button to 52px against English's 44px, which is `docs/70` §4's
-         finding in miniature: min-block-size is a FLOOR, and once the content
-         exceeds it the token stops deciding the height.
-
-         Set on the DESCENDANT too, and that half is the one that works. The
-         label is a span, the span is what carries `lang="ar"`, and so the
-         span is what `:lang(ar)` gives body leading to — telling the button
-         alone changed nothing, measurably: 52px before, 52px after. Same trap
-         as the Arabic heading rule in `docs/43` §12. */
-      line-height: 1;
-    }
-
-    .c-header.is-scrolled.is-cta-away .c-header__cta * {
-      line-height: 1;
     }
 
     /* The arrow is the first thing to go. At this width the LABEL is what has

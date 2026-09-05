@@ -262,7 +262,12 @@
        10 — SIZING
        --------------------------------------------------------------------- */
     --touch-target-min: 44px; /* mobile-first, non-negotiable */
-    --control-height-sm: 40px;
+    /* 40px until 5 September 2026, when it was measured and found to be a
+       size this site never renders and cannot: 44px is the touch floor above,
+       described there as non-negotiable, and every control already clears it
+       (`docs/70` §4). The small size IS the touch minimum — a real step below
+       the 48px default, and an honest one. */
+    --control-height-sm: 44px;
     --control-height: 48px;
     --control-height-lg: 56px;
     --header-height: 72px;
