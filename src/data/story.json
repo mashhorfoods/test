@@ -17,6 +17,25 @@
     "is that nothing is invented. When Al Mada gives us a number we can stand",
     "behind, chapter 05 gains it -- and not before.",
     "",
+    "CHECKED AGAINST THE DELIVERABLES (5 September 2026, docs/76). The four",
+    "deliverables arrived and chapter 05 was checked against the work rather than",
+    "against memory. The logo construction, the six colours and their values, the",
+    "typeface, the six icons and the hero promise all hold to the word.",
+    "",
+    "TWO THINGS CHANGED AS A RESULT:",
+    "  Chapter 01 said the agency books for 'Saudi customers'. Every poster in",
+    "  the campaign routes Port Sudan to Jeddah and back, by air at 3400 SAR or",
+    "  by ferry at 3200. Whatever the customer base is, that phrase did not",
+    "  describe it, and both languages carried the same wrong claim. The clause",
+    "  is REMOVED rather than replaced: only Al Mada can say who travels, and",
+    "  guessing a second time would repeat the error. Open as F2a.",
+    "",
+    "  Chapter 04 quoted six section names in Arabic. The website deliverable",
+    "  reads 'لماذا وكالة المدى؟' where we quoted 'لماذا المدى', and its",
+    "  navigation carries eight items, not six. The Arabic now PARAPHRASES, as",
+    "  the English always did. The hero promise stays in quotation marks because",
+    "  it was verified against the deliverable exactly.",
+    "",
     "UNCONFIRMED WITH THE CLIENT (docs/48, F1-F3). Three statements here were",
     "written from the deliverables and have not been checked against Al Mada:",
     "  F1  chapter 01, that a traveller hands over documents, dates and money at",
@@ -54,8 +73,8 @@
         "ar": "وكالة السفر تبيع الثقة قبل أن تبيع الرحلة."
       },
       "lead": {
-        "en": "Al Mada Travel & Tourism Agency books Umrah journeys and travel packages for Saudi customers. A traveller handing over documents, dates and money to a name they have not used before is making a decision about trust, not about price — and every surface the agency owns is either helping them make it or getting in the way.",
-        "ar": "تحجز وكالة المدى للسفر والسياحة رحلات العمرة وبرامج السفر لعملاء في السعودية. والمسافر الذي يسلّم مستنداته ومواعيده وأمواله لاسم لم يتعامل معه من قبل يتخذ قرار ثقة، لا قرار سعر — وكل واجهة تملكها الوكالة إمّا أن تعينه على اتخاذه أو أن تقف في طريقه."
+        "en": "Al Mada Travel & Tourism Agency books Umrah journeys and travel packages. A traveller handing over documents, dates and money to a name they have not used before is making a decision about trust, not about price — and every surface the agency owns is either helping them make it or getting in the way.",
+        "ar": "تحجز وكالة المدى للسفر والسياحة رحلات العمرة وبرامج السفر. والمسافر الذي يسلّم مستنداته ومواعيده وأمواله لاسم لم يتعامل معه من قبل يتخذ قرار ثقة، لا قرار سعر — وكل واجهة تملكها الوكالة إمّا أن تعينه على اتخاذه أو أن تقف في طريقه."
       },
       "aside": {
         "en": "Identity, website, campaigns, company profile. Four surfaces, usually four suppliers.",
@@ -118,7 +137,7 @@
       },
       "lead": {
         "en": "The site is built right-to-left because that is how its readers read, not as a mirrored afterthought. One promise carries the first screen — رحلتك تبدأ بثقة, your journey begins with confidence — and the pages behind it answer the questions a traveller asks in order: who you are, why you, what you do, how you work, what you stand for, how to reach you. Designed for the phone as carefully as for the desktop.",
-        "ar": "بُني الموقع من اليمين إلى اليسار لأن هذه هي طريقة قرّائه، لا كنسخة معكوسة أُضيفت لاحقًا. وعدٌ واحد يتصدّر الشاشة الأولى — «رحلتك تبدأ بثقة» — والصفحات خلفه تجيب أسئلة المسافر بترتيبها: «من نحن»، و«لماذا المدى»، و«خدماتنا»، و«كيف نعمل»، و«قيمنا»، و«تواصل معنا». مصمَّم للهاتف بالعناية نفسها التي صُمِّم بها لسطح المكتب."
+        "ar": "بُني الموقع من اليمين إلى اليسار لأن هذه هي طريقة قرّائه، لا كنسخة معكوسة أُضيفت لاحقًا. وعدٌ واحد يتصدّر الشاشة الأولى — «رحلتك تبدأ بثقة» — والصفحات خلفه تجيب أسئلة المسافر بترتيبها: من هم، ولماذا هم، وماذا يقدّمون، وكيف يعملون، وما الذي يؤمنون به، وكيف يُتواصل معهم. مصمَّم للهاتف بالعناية نفسها التي صُمِّم بها لسطح المكتب."
       },
       "aside": {
         "en": "A bilingual studio building an Arabic-first site is not a compromise. It is the point.",

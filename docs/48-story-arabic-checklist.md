@@ -115,6 +115,25 @@ carrying more confidence than their sourcing supports.
 
 ---
 
+### UPDATED 5 September 2026 — the deliverables arrived (`docs/76`)
+
+The four deliverables can now be read directly, which changes three of these
+rows and adds one.
+
+| | Status now |
+| --- | --- |
+| **F1** | **Still open.** Only Al Mada can say when documents change hands |
+| **F2** | **Still open, and now sharper.** Their own lockup reads `المدى للسفر والسياحة`, and the campaign sells `عروض العمرة`. Neither confirms nor refutes `رحلات العمرة وبرامج السفر` as *their* description of themselves |
+| **F3** | **RETIRED, by removing the risk rather than confirming the fact.** The quotation is gone: chapter 04's Arabic now paraphrases, as its English always did. It matters that the check failed — the deliverable reads `لماذا وكالة المدى؟` where we quoted `لماذا المدى`, and its navigation carries eight items, not six. **A quotation nobody can verify should not have been in quotation marks.** The hero promise stays quoted, because it was verified to the character |
+| **F2a** | **NEW, and the most consequential of the four.** Chapter 01 said the agency books for *"Saudi customers"*. Every poster routes **Port Sudan ↔ Jeddah**, by air at 3400 SAR or by ferry at 3200. The clause is **removed, not replaced** — only Al Mada can say who travels, and this project's rule is that nothing is invented. Both languages carried the same wrong claim, so it was never a translation problem |
+
+**What is left on the page is now sourced or absent.** Every remaining
+quotation on the Arabic story page is either the brand name `«المدى»` or
+`«رحلتك تبدأ بثقة»`, which appears on the website deliverable exactly as
+quoted.
+
+---
+
 ## Part 3 — what will still be missing afterwards
 
 Separate from F1–F3, and larger than all of them: no amount of language review

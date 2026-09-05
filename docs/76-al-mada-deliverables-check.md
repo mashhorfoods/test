@@ -76,7 +76,11 @@ the whole chapter's argument rests on."**
 
 **This is not a translation problem.** Both languages say the same wrong thing.
 
-**Not corrected here, deliberately.** The right sentence depends on a fact only
+**APPLIED 5 September 2026:** the clause is now removed from both languages —
+`"books Umrah journeys and travel packages."` / `تحجز وكالة المدى للسفر
+والسياحة رحلات العمرة وبرامج السفر.` — and `F2a` is open for the real answer.
+
+**Removed rather than rewritten, deliberately.** The right sentence depends on a fact only
 Al Mada can give: whether these are Sudanese pilgrims travelling from Port
 Sudan, Sudanese residents in Saudi Arabia, or both. Guessing a second time
 would repeat the error rather than fix it. **It goes into the open message as
@@ -104,8 +108,15 @@ Two differences from what chapter 04 carries:
 
 Read off a mockup at small size, so **medium confidence rather than high** —
 but it is the second time this quotation has failed a check, and F3 was already
-open. The safest fix is the one `docs/48` implies: **stop quoting and
-paraphrase**, unless someone opens the live site and reads the navigation.
+open. **APPLIED:** chapter 04's Arabic now paraphrases — *من هم، ولماذا هم، وماذا
+يقدّمون، وكيف يعملون، وما الذي يؤمنون به، وكيف يُتواصل معهم* — as the English
+always did. **The hero promise stays in quotation marks**, because it was
+verified to the character.
+
+Every remaining quotation on the Arabic story page is now either the brand name
+`«المدى»` or that verified promise. F3 is retired by removing the risk rather
+than by confirming the fact, which is the better outcome: a quotation nobody
+could verify should not have been in quotation marks.
 
 ## 4. Getting the files into the repository
 
