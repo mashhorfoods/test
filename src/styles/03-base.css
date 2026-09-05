@@ -252,12 +252,21 @@
     font-weight: var(--weight-semibold);
   }
 
-  /* Prices and figures stay LTR even inside an RTL paragraph — numerals and
-     currency read left-to-right in Arabic typesetting. */
-  :lang(ar) :is(.t-price, .t-price-sm, .t-stat),
-  [dir="rtl"] :is(.t-price, .t-price-sm, .t-stat) {
-    letter-spacing: var(--tracking-normal);
-  }
+  /* REMOVED 5 September 2026 — a second rule that had never fired.
+     It read:
+
+       :lang(ar) :is(.t-price, .t-price-sm, .t-stat) { letter-spacing: … }
+
+     and, like the heading rule above it, keyed on `.t-*` classes that exist
+     only on /styleguide. Found by `qa.js` §12 once that section was taught to
+     judge aliveness on shipped pages alone.
+
+     Deleted rather than re-keyed, because unlike the heading rule its intent
+     is already met. Measured on /pricing in Arabic: every price renders at
+     `letter-spacing: normal`, which is what the rule asked for, and the parts
+     order correctly right-to-left — "يبدأ من 490 دولار" puts the amount
+     before the currency as Arabic requires. Re-keying it onto the real
+     classes would restate what is already true. */
 
   .u-bidi-isolate {
     unicode-bidi: isolate;

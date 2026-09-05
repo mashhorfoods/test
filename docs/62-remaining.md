@@ -35,7 +35,7 @@ X03 and X04 sit behind X02.
 | X03 | Experience Deconstruction | ⛔ Not started, behind X02 |
 | X04 | Reference-Driven Redesign | ⛔ Not started, behind X03 |
 | X05 | Redesign Direction | 🟡 **Partial.** The one decision that could be made without references was made and shipped — the showpiece budget, `docs/53`. The full direction statement needs X04 |
-| X06 | High-Impact Upgrade | 🟡 **Partial.** Phone CTA regression, width parity, homepage proof, section banding, the hero and **Arabic heading leading** all shipped — the last of those was an RTL rule that had never fired, leaving the Arabic hero CTA below the fold on desktop (`docs/43` §12). Navigation, density and the four-block structural repetition need X03 |
+| X06 | High-Impact Upgrade | 🟡 **Partial.** Phone CTA regression, width parity, homepage proof, section banding, the hero, **Arabic heading leading** and **package-button alignment** all shipped — the last of those was an RTL rule that had never fired, leaving the Arabic hero CTA below the fold on desktop (`docs/43` §12); the last was a comment that closed early and made the browser discard `.c-tier__cta`, leaving the three package buttons in each grid up to 252px apart (`docs/43` §13). Navigation, density and the four-block structural repetition need X03 |
 | X07 | Interaction & Motion | 🟡 **Partial.** The hero film ships with reduced-motion guards. No systematic motion pass |
 | X08 | Mobile Excellence | ❌ Not started. X01's phrase still holds: mobile is *verified*, not *designed* |
 | X09 | Design System Refinement | ❌ Not started |
@@ -148,6 +148,7 @@ doing before A1–A4.**
 | ~~**E3**~~ | ~~Social/ads ladder — the top tier sits below the market floor.~~ **CHECKED 5 Sep 2026, no change needed — `docs/29` §13.** §11 had compared against one band while the same source published a tiered ladder; against that, and against Egypt (which neither benchmark had), all three social tiers land inside published bands in both markets. §11 corrected in place. **What survives is a product question, not a price one:** there is nothing above $650/month, so the Saudi standard band and the top of the Egyptian one have no Pixora product. Optional, and not urgent — a tier nobody has asked for is a worse use of a week than anything in §A |
 | **E4** | Split-bundle option for repeat visits, alongside the single file (`docs/61` AD-06's revisit trigger) |
 | **E5** | An FAQ section, if the sales conversation turns out to repeat questions |
+| **E6** | **Prune the CSS that ships to nobody.** `qa.js` §12 now reports it every run: **163 selectors style nothing a visitor can see** — `card.css` 33, `disclosure.css` 30, `04-layout.css` 24 — mostly a design system larger than the site has ordered, demoed on `/styleguide` and inlined into all eight shipped pages anyway. Not a defect, which is why it is here and not in §A. The number is now visible on every run, so this is a choice rather than a discovery |
 
 ---
 

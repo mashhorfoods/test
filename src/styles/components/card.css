@@ -199,6 +199,11 @@
     border-radius: var(--radius-xs);
   }
 
+  /* qa:allow-dead — the ribbon is documented (`docs/00` §Cards) and demoed
+     on /styleguide, and appears in no shipped page. /styleguide has no
+     language toggle, so its RTL half cannot be exercised there and reads as
+     dead. Kept: it is the design system's answer for a recommended card, and
+     the day one ships it must mirror. */
   [dir="rtl"] .c-card__ribbon {
     text-transform: none;
     letter-spacing: var(--tracking-normal);
@@ -287,6 +292,8 @@
     background-color: var(--color-accent-subtle);
   }
 
+  /* qa:allow-dead — same as the ribbon above: `.c-tag` is a styleguide-only
+     component, so its RTL rule has nothing to match while nothing ships it. */
   [dir="rtl"] .c-tag {
     text-transform: none;
     letter-spacing: var(--tracking-normal);

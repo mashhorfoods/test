@@ -119,17 +119,6 @@
     justify-content: center;
   }
 
-  /* The secondary action is a text link, which at body size measured 26px
-     tall — under the 44px floor on touch. Padding would push it off the
-     baseline it shares with the button, so it gets a minimum height and
-     centres inside it, exactly as the pricing jump link does. */
-  .c-final__actions .c-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-block-size: 44px;
-  }
-
   /* Departure: the rule the footer picks up from. */
   .c-final__depart {
     position: relative;
