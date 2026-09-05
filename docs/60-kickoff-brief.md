@@ -63,11 +63,18 @@ human, a face, and two profiles a stranger can check. `docs/30` PS-01 argued it
 as a conversion feature and `docs/58` counts it as a security control. But it
 is a mitigation for a missing entity, not a substitute for one.
 
+> **Progress, 5 September 2026.** Item 1 is done: domain email exists and SPF,
+> DKIM and DMARC were published with it rather than after it. Item 2 is
+> therefore also done. The site still *displays* the Gmail while deliverability
+> is proven — `docs/62` A10 — so §3's table above is still literally true of
+> what a visitor sees, and stops being true the day A10 lands.
+
 **What closes it,** in the order that pays:
 
-1. Domain email — `hello@` on the domain the site already runs on. Hours, not
-   weeks, and it retires half of T5 immediately.
-2. SPF, DKIM and DMARC published *at the same moment*, not later (`docs/58` §5).
+1. ~~Domain email — `hello@` on the domain the site already runs on. Hours, not
+   weeks, and it retires half of T5 immediately.~~ **Done 5 Sep 2026.**
+2. ~~SPF, DKIM and DMARC published *at the same moment*, not later.~~ **Done
+   5 Sep 2026, at the same moment.**
 3. A Google Business Profile and one directory listing — P1-1, and the two
    cheapest third-party confirmations that exist.
 4. The legal entity, when there is a reason for one. **CR and Maroof only if

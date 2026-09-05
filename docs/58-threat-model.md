@@ -134,12 +134,15 @@ Quotes and invoices travel by email. Without SPF, DKIM and DMARC on the sending
 domain, anyone can send mail that appears to come from the studio — and the
 usual target is a client, with changed bank details.
 
-*Current control:* none known. Mail currently goes from a personal Gmail
-address, which carries Google's own authentication for `gmail.com` but says
-nothing for the studio's domain.
+*Current control:* **domain email exists, and SPF, DKIM and DMARC were
+published with it — owner, 5 September 2026.** This section previously said to
+do those three "at the same time, not later"; they were.
 
-*What to do:* when domain email is set up — which C-6 has been open on since
-the audit — publish SPF, DKIM and a DMARC policy at the same time, not later.
+*What is left of T5:* the site still **publishes** the personal Gmail while the
+domain address is being proven deliverable (`docs/62` A10, an owner decision
+recorded rather than drifted into). So the spoofing protection now exists for
+the domain, and the address a client sees is not yet the protected one. That is
+a smaller and temporary version of the risk, and it ends when A10 does.
 
 ### T6 — Loss of the security headers · **medium, and it nearly happened**
 
@@ -176,8 +179,8 @@ this scale.
 
 1. ~~**2FA on the registrar, the host and GitHub**, plus a registrar transfer
    lock.~~ **DONE 5 September 2026.** This was T1, and T1 was the whole model.
-2. **SPF, DKIM and DMARC**, at the moment domain email is created rather than
-   after.
+2. ~~**SPF, DKIM and DMARC**, at the moment domain email is created rather than
+   after.~~ **DONE 5 September 2026, and done that way round.**
 3. **A quarterly search for a cloned site.** Five minutes, and the verification
    band is what makes the clone lose.
 

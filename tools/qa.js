@@ -642,6 +642,36 @@ function serve() {
       }
     }
 
+    /* ONE PUBLISHED EMAIL ADDRESS, AND IT IS THE DECLARED ONE.
+       The address appears in `navigation-map.js` (the contact block and the
+       form target) and again in the prose of Privacy, Terms and Accessibility
+       in BOTH languages. Five places, no generator — because an address inside
+       a bilingual sentence cannot be templated without turning the sentence
+       into a template, which is worse.
+
+       So the guard is a check rather than a build step: `site.config.json`
+       declares the address, and no shipped page may publish a different one.
+       The failure this prevents is specific and is coming — `docs/62` A10 has
+       the Gmail being replaced by a domain address once deliverability is
+       proven, and a partial swap would leave two live addresses on one site
+       with nothing saying so. */
+    const declared = cfg.contact && cfg.contact.email;
+    if (!declared) {
+      fail('MED', 'contact', 'site.config.json declares no contact.email, so nothing checks the address the site publishes');
+    } else {
+      const EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
+      for (const page of SHIPPED) {
+        const file = path.join(DIST, page);
+        if (!fs.existsSync(file)) continue;
+        const found = new Set(fs.readFileSync(file, 'utf8').match(EMAIL) || []);
+        for (const addr of found) {
+          if (addr !== declared) {
+            fail('HIGH', 'contact', `${page} publishes ${addr}, but site.config.json declares ${declared}`);
+          }
+        }
+      }
+    }
+
     const wantsAnalytics = !!(cfg.analytics && cfg.analytics.provider);
     if (wantsAnalytics && !csp.includes('plausible.io')) {
       fail('HIGH', 'csp', 'analytics is on but the policy does not allow its origin — the tag will be blocked');

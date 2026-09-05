@@ -81,7 +81,20 @@
   ],
   "contact": {
     "_comment": "WhatsApp number in wa.me form (digits only, country code first). One place: build-pricing.js renders every package CTA from it.",
-    "whatsapp": "249962672192"
+    "whatsapp": "249962672192",
+    "_emailComment": [
+      "The address the SITE publishes. It is declared here so that qa.js can",
+      "assert no page publishes any other one — the address is written into",
+      "navigation-map.js AND into the prose of Privacy, Terms and Accessibility",
+      "in both languages, which is five places and no generator.",
+      "",
+      "It is NOT a source that generates those pages: an address inside a",
+      "bilingual sentence cannot be templated without making the sentence a",
+      "template. So this is the declared truth and the check is what keeps the",
+      "copies honest. Change this field and qa.js names every page that still",
+      "disagrees."
+    ],
+    "email": "muhalabsalah@gmail.com"
   },
   "analytics": {
     "_comment": [
