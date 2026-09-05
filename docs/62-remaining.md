@@ -1,6 +1,15 @@
 # The remaining list
 
-Written 5 September 2026. **This is the working list until the project is
+> **SUPERSEDED 5 September 2026 by `docs/69-roadmap.md`**, which is now the
+> working list. This file stays as the record of how §A and §C were closed and
+> why each item on them is finished. Its §B is carried into `docs/69` P2
+> unchanged.
+>
+> It was replaced because it under-scoped the redesign: it parked four
+> WEBSTART X stages behind one recording, and **two of them — X08 mobile and
+> X09 design system — never needed it.** `docs/69` §1 has the correction.
+
+Written 5 September 2026. **This was the working list until the project is
 finished.** Everything else in `docs/` is a record of a decision or a
 measurement; this is the only file that says what is left.
 
