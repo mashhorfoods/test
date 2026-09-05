@@ -31,6 +31,11 @@
   ],
   "url": "https://zaokalyamamah.online",
   "hsts": true,
+  "_build": "fonts: 'inline' ships each face in the document as a data URI (AD-06, one request paints the page). 'linked' copies the .woff2 files to assets/fonts/ and points at them: the homepage drops from 134.8KB to 73.0KB gzipped, fonts cache once for the whole site, and unicode-range starts working so an English visitor never downloads the 30.9KB Arabic face. The cost is a brief flash of the fallback face, which inlining does not have. See docs/43 §15.",
+  "build": {
+    "fonts": "inline"
+  },
+
   "pages": [
     {
       "file": "index.html",

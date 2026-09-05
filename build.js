@@ -24,6 +24,7 @@ const ROOT = __dirname;
 const DIST = path.join(ROOT, 'dist');
 const ASSETS_DIR = path.join(DIST, 'assets');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
+const cfg = JSON.parse(read('site.config.json'));
 
 /* ------------------------------------------------------------------ CSS -- */
 
@@ -84,6 +85,32 @@ function embedFonts(css, chars) {
   let dropped = 0;
   let droppedBytes = 0;
 
+  /* LINKED MODE — site.config.json `build.fonts`.
+     `inline` (the default, AD-06) puts each face in the document as a data
+     URI: one request paints the page.
+
+     `linked` copies the .woff2 files to dist/assets/fonts/ and points at
+     them. Measured on the homepage, 5 September 2026:
+
+       inline   491.8KB raw / 134.8KB gzipped, one request
+       linked   410.7KB raw /  73.0KB gzipped, plus 4-5 font files
+
+     Two things it buys that inline cannot. Fonts are cached ONCE for the
+     whole site instead of riding inside all eight pages. And `unicode-range`
+     starts working: a data URI is not a download, so there is nothing for the
+     browser to skip, and every English visitor pays for the 30.9KB Arabic
+     face they never see. Verified with a real browser against the linked
+     build: an English page fetches 4 files and 30.7KB, and Cairo arrives only
+     when the visitor switches to Arabic.
+
+     What it costs is the reason inline is still the default: every face is
+     `font-display: swap`, and with the bytes already in the document that
+     swap is instant. Linked, there is a real flash of the fallback face
+     first — the page paints sooner, but what paints is not yet Poppins. */
+  const linked = (cfg.build && cfg.build.fonts) === 'linked';
+  const fontDir = path.join(DIST, 'assets', 'fonts');
+  if (linked) fs.mkdirSync(fontDir, { recursive: true });
+
   // Split into @font-face blocks so a face can be removed whole.
   const out = css.replace(/@font-face\s*\{[^}]*\}/g, (block) => {
     const url = block.match(/url\(\s*["']?([^"')]+\.woff2)["']?\s*\)/);
@@ -104,6 +131,13 @@ function embedFonts(css, chars) {
 
     count += 1;
     bytes += buf.length;
+    if (linked) {
+      const name = path.basename(file);
+      fs.writeFileSync(path.join(fontDir, name), buf);
+      /* Relative to the page, which always sits at the site root — the same
+         base the image URLs already resolve against. */
+      return block.replace(/url\(\s*["']?[^"')]+\.woff2["']?\s*\)/, `url(assets/fonts/${name})`);
+    }
     return block.replace(/url\(\s*["']?[^"')]+\.woff2["']?\s*\)/,
       `url(data:font/woff2;base64,${buf.toString('base64')})`);
   });

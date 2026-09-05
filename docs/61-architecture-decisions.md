@@ -131,6 +131,19 @@ ignores it silently.
 **Revisit when** repeat-visit traffic matters more than first paint — the
 split-bundle option in `docs/27` P2.
 
+**AMENDED 5 September 2026.** That trigger asks the wrong question, and
+measuring it showed why. `@font-face` data is **46% of every gzipped page**,
+and inlining it defeats the `unicode-range` written into `00-fonts.css`: a data
+URI is not a download, so there is nothing for the browser to skip, and every
+English visitor pays for the 30.9KB Arabic face on every page.
+
+`site.config.json` `build.fonts` now offers `linked`, which copies the faces to
+`assets/fonts/`. It is **not** a repeat-visit trade: a first-time English
+visitor reading one page sends 106,577 bytes instead of 139,946, 24% less, with
+no cache involved. Later pages cost 57–62% less. The cost is a flash of the
+fallback face, which inlining does not have — a brand judgement, so the default
+stays `inline` until the owner chooses. Numbers in `docs/43` §15.
+
 ## AD-07 · Manual deployment, automated verification
 
 **Context.** One person, one host, a control-panel file manager.
