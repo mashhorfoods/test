@@ -284,6 +284,44 @@ function renderStrings() {
 }
 
 /* -------------------------------------------------------------------------
+   REACH — is the visitor ever without a call to action?
+
+   On desktop the fixed header carries one at every scroll position. On a
+   phone it was hidden, and `docs/71` §3 measured what that cost: 4,660px of
+   the homepage and 80% of /story with nothing to press.
+
+   The header CTA now appears on a phone once the page's own first call to
+   action has scrolled out of view — never alongside it, so the hero is not
+   doubled. A page with no hero CTA gets the class immediately and
+   `.is-scrolled` alone decides.
+
+   CSS does the hiding; this only reports where the first CTA is.
+   ------------------------------------------------------------------------- */
+
+function initReach() {
+  const header = document.querySelector('[data-header]');
+  if (!header) return;
+
+  const own = document.querySelector('.c-hero__action, [data-reach-anchor]');
+  if (!own) {
+    header.classList.add('is-cta-away');
+    return;
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    // No observer: show it rather than hide it. Being early is a smaller
+    // failure than a page with nothing to press.
+    header.classList.add('is-cta-away');
+    return;
+  }
+
+  new IntersectionObserver(
+    ([entry]) => header.classList.toggle('is-cta-away', !entry.isIntersecting),
+    { threshold: 0 }
+  ).observe(own);
+}
+
+/* -------------------------------------------------------------------------
    HEADER — sticky separation + compact on scroll-down
    ------------------------------------------------------------------------- */
 
@@ -591,4 +629,5 @@ export function initNavigation() {
 
   initLanguage(() => drawer?.refreshLabel());
   initScrollSpy();
+  initReach();
 }
