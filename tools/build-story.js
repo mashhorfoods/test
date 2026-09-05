@@ -251,7 +251,58 @@ const FIGURE_ALT = {
   },
 };
 
+/* THE WORK ITSELF, beside the drawing of it.
+
+   Until 5 September 2026 this page carried five schematic sketches and no
+   photograph of anything delivered — a case study about visual identity work
+   showing none of it (`docs/50` Part 5). The four deliverables are now in the
+   repository, and each sits in the chapter that describes it.
+
+   The sketches STAY. They are not placeholders that the photographs replace:
+   the sketch carries the argument (four boxes searching for each other, then
+   aligned) and the photograph carries the artefact. They answer different
+   questions and `docs/50` Part 5 argued for keeping both.
+
+   Alt text is written per image in `story.json`, in both languages, and
+   describes what is in the picture rather than naming it — a screen reader
+   user should learn what the mark looks like, not that a mark exists. */
+/* Natural size, read off the file. Two things depend on it: the browser can
+   reserve the right box before the bytes arrive (no layout shift), and the
+   image can be stopped from being displayed LARGER than it is. The campaign
+   sheet is 900px wide and the desktop column is 1192 — without this it was
+   upscaled 1.32x and went soft. */
+function webpSize(file) {
+  const b = fs.readFileSync(file);
+  if (b.toString('ascii', 0, 4) !== 'RIFF' || b.toString('ascii', 8, 12) !== 'WEBP') return null;
+  const fourcc = b.toString('ascii', 12, 16);
+  if (fourcc === 'VP8X') return { w: (b.readUIntLE(24, 3) & 0xffffff) + 1, h: (b.readUIntLE(27, 3) & 0xffffff) + 1 };
+  if (fourcc === 'VP8 ') return { w: b.readUInt16LE(26) & 0x3fff, h: b.readUInt16LE(28) & 0x3fff };
+  if (fourcc === 'VP8L') {
+    const n = b.readUInt32LE(21);
+    return { w: (n & 0x3fff) + 1, h: ((n >> 14) & 0x3fff) + 1 };
+  }
+  return null;
+}
+
+function deliverables(c) {
+  if (!Array.isArray(c.deliverable) || c.deliverable.length === 0) return '';
+  return `          <div class="c-chapter__work">
+${c.deliverable.map((d) => {
+    const size = webpSize(path.join(ROOT, d.src.replace(/^\.\//, '')));
+    const dims = size ? ` width="${size.w}" height="${size.h}"` : '';
+    const cap = size ? ` style="max-inline-size:min(100%, ${size.w}px)"` : '';
+    return `            <figure class="c-work">
+              <img class="c-work__image" src="${esc(d.src)}" alt="${esc(d.alt.en)}"
+                data-alt-en="${esc(d.alt.en)}" data-alt-ar="${esc(d.alt.ar)}"${dims}${cap}
+                loading="lazy" decoding="async" />
+            </figure>`;
+  }).join('\n')}
+          </div>`;
+}
+
+
 function renderChapter(c, i, last) {
+
   strokeSeq = 0; // restart the stagger for each drawing
   const art = SKETCH[c.sketch]();
   return `        <article class="c-chapter" id="story-${c.id}"
@@ -275,6 +326,7 @@ function renderChapter(c, i, last) {
             </svg>
             <figcaption class="u-visually-hidden">${pair(FIGURE_ALT[c.sketch])}</figcaption>
           </figure>
+${deliverables(c)}
         </article>
 ${last ? '' : `
         <div class="c-chapter__joint" aria-hidden="true">

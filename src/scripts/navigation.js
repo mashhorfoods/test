@@ -270,6 +270,17 @@ function renderStrings() {
     el.setAttribute('aria-label', t(el.dataset.i18nLabel));
   });
 
+  /* ALT TEXT FOLLOWS THE LANGUAGE.
+     Every image on this site carried an English `alt` in both languages until
+     5 September 2026 — a bilingual site reading its pictures out in one
+     language. Any image with `data-alt-en` / `data-alt-ar` now switches with
+     the page. The four Al Mada deliverables use it; the twelve service images
+     still carry a single English alt and could adopt the same pair. */
+  document.querySelectorAll('[data-alt-en][data-alt-ar]').forEach((el) => {
+    const next = currentLang() === 'ar' ? el.dataset.altAr : el.dataset.altEn;
+    if (next) el.setAttribute('alt', next);
+  });
+
   document.querySelectorAll('[data-cta-label]').forEach((el) => {
     el.textContent = labelFor(PRIMARY_CTA);
   });

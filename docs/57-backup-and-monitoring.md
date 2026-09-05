@@ -31,7 +31,7 @@ is not code.
 | Built site | `dist/`, committed, and Hostinger | Yes, twice over | Nothing — rebuildable in minutes |
 | The 12 service images | `src/assets/`, committed | Yes | — |
 | Hero film, share card | Committed, **and regenerable** | Yes, twice | — |
-| **Al Mada's four deliverable images** | **Nowhere** | **No** | Already lost once. They were pasted into chat, never uploaded |
+| ~~**Al Mada's four deliverable images**~~ | **The repository, and both remotes** | **Yes** | **CLOSED 5 September 2026.** Uploaded to `src/assets/originals/` at full resolution — 3.1MB across four files — and mirrored by A2's second remote. The shipped `.webp` derivatives live in `src/assets/images/`. This was the only row here whose asset was both irreplaceable and unbacked |
 | Domain registration | Registrar account | N/A | The address. The single most expensive failure here |
 | Hosting account | Hostinger | N/A | A weekend, and the site is down meanwhile |
 | Plausible account and its history | Plausible | No export scheduled | Every measurement Phase 20 is built on |
@@ -169,7 +169,7 @@ Everything above is either free or under twenty minutes. In order:
    calendar.~~ **Done 5 Sep 2026.**
 4. **Ask Al Mada for their four images** — the same message that asks for the
    result sentence. **Still the only item here still open**, and the only
-   irreplaceable asset in `docs/57` §2 that is backed up nowhere.
+   irreplaceable asset in `docs/57` §2 that is backed up nowhere. **Closed 5 Sep 2026** — the files are in the repository and on both remotes.
 
 ## 8. Review
 

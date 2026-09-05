@@ -228,3 +228,49 @@ why this is filed as an owner task rather than left implicit.
 `Part 3` already argued that a case study which shows the work and admits it
 has no result is the honest trade this project keeps choosing. But losing them
 twice would be a different thing from choosing not to show them.
+
+
+---
+
+## Part 6 — B2b closed, 5 September 2026
+
+The four files arrived. What was done with them:
+
+| | |
+| --- | --- |
+| **Originals** | `src/assets/originals/`, full resolution, 3.1MB. Never shipped — the build only processes images referenced in markup. This is the archive `docs/57` §2 was missing |
+| **Shipped** | `src/assets/images/al-mada-{identity,campaign,profile,website}.webp`, 34–85KB, matching the 14–61KB band the other images already use |
+| **Placed** | Identity in chapter 02, website in 04, campaign and profile in 05. Chapters 01 and 03 keep their sketch alone |
+| **Alt text** | Written per image in both languages, describing what is in the picture rather than naming it |
+
+**The sketches stay.** They are not placeholders the photographs replace: the
+sketch carries the argument — four boxes searching for each other, then aligned
+— and the photograph carries the artefact. `Part 5` argued for both and both
+are there.
+
+**Three things the measurement caught before they shipped:**
+
+1. **The deliverables rendered 70px wide on desktop.** The markup made them a
+   third child of the chapter's twelve-column grid, so they fell into an
+   implicit column. They now span the full twelve on their own row.
+2. **The campaign sheet was upscaled 1.32×** — 900px of image in a 1192px
+   column, which goes soft. `build-story.js` now reads each WebP's real
+   dimensions from its header and emits `width`, `height` and a cap, so
+   nothing is ever displayed larger than it is. The `width`/`height` pair also
+   removes the layout shift as each image loads.
+3. **Alt text was English in both languages** — as it is for the twelve
+   service images, and as it had been everywhere on this site. Any image with
+   `data-alt-en` / `data-alt-ar` now switches with the page. **The twelve
+   service images still carry a single English alt** and could adopt the same
+   pair; that is a real remaining gap, recorded rather than quietly widened
+   into.
+
+Weight: `/story` is **492KB total transfer** against `qa.js` §9's 1MB budget,
+and the HTML itself grew 196.7KB → 202.4KB, because images above 12KB are
+copied to `assets/` and cached rather than inlined.
+
+`validate: 0 · qa: 0 high · a11y: 0`, alt present on every image, nothing
+upscaled at 390, 768, 1440 or 1920, in both languages.
+
+**Still open with Al Mada:** the result sentence, F1, F2 and F2a. One reply
+closes all four.

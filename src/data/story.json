@@ -101,7 +101,16 @@
         "en": "A mark whose construction can be explained is a mark a client can defend internally.",
         "ar": "العلامة التي يمكن شرح بنائها هي علامة يستطيع صاحبها أن يشرحها لغيره."
       },
-      "source": "Brand identity sheet — logo construction"
+      "source": "Brand identity sheet — logo construction",
+      "deliverable": [
+        {
+          "src": "./src/assets/images/al-mada-identity.webp",
+          "alt": {
+            "en": "The Al Mada brand identity sheet. The mark fills the centre — an aeroplane inside a circle, its flight path curving into the letter M above the Arabic wordmark المدى. A construction panel on the left labels each part: letter M formed by the flight path, circle for completeness, aeroplane for travel, flight path for journey. To the right, six colour swatches with their hex values and Cairo shown in bold and regular.",
+            "ar": "لوحة الهوية البصرية لوكالة المدى. العلامة في المنتصف — طائرة داخل دائرة، ومسارها ينحني ليكوّن حرف الميم فوق كلمة «المدى». وإلى اليسار لوحة بناء تشرح كل عنصر: الميم من مسار الطيران، والدائرة للاكتمال، والطائرة للسفر، والمسار للرحلة. وإلى اليمين ست درجات لونية بقيمها، وخط القاهرة بوزنيه العريض والعادي."
+          }
+        }
+      ]
     },
     {
       "id": "idea",
@@ -143,7 +152,16 @@
         "en": "A bilingual studio building an Arabic-first site is not a compromise. It is the point.",
         "ar": "أن يبني استوديو ثنائي اللغة موقعًا عربيًا أولًا ليس تنازلًا، بل هو المقصد."
       },
-      "source": "Website — madatravel.github.io/madatravel"
+      "source": "Website — madatravel.github.io/madatravel",
+      "deliverable": [
+        {
+          "src": "./src/assets/images/al-mada-website.webp",
+          "alt": {
+            "en": "The Al Mada website on a desktop screen, a tablet and a phone. All three are Arabic and read right to left, with the navigation running from the right. The first screen carries one promise over a photograph of a coastal town at sunset, with two buttons beneath it.",
+            "ar": "موقع وكالة المدى على شاشة مكتبية ولوح وهاتف. الثلاثة بالعربية وتُقرأ من اليمين إلى اليسار، والقائمة تبدأ من اليمين. تحمل الشاشة الأولى وعدًا واحدًا فوق صورة لمدينة ساحلية عند الغروب، وتحته زرّان."
+          }
+        }
+      ]
     },
     {
       "id": "impact",
@@ -164,7 +182,23 @@
         "en": "Prices on the campaign artwork are Al Mada's own. We do not publish results we cannot prove: this chapter stops at what was delivered. Any number that joins it later will come from Al Mada, and you will be able to check it.",
         "ar": "الأسعار الظاهرة في تصاميم الحملات تخصّ «المدى». ونحن لا ننشر نتائج لا نستطيع إثباتها: يقف هذا الفصل عند ما سُلِّم. وأي رقم يُضاف إليه لاحقًا سيأتي من «المدى» نفسها، ويمكنك التحقق منه."
       },
-      "source": "Campaign set and company profile, 2026"
+      "source": "Campaign set and company profile, 2026",
+      "deliverable": [
+        {
+          "src": "./src/assets/images/al-mada-campaign.webp",
+          "alt": {
+            "en": "Five Umrah offer posters in the same blue identity, each with the Al Mada mark, a curved panel carrying a photograph, the offer in large Arabic numerals, the itinerary beneath it and a booking button. The photographs change from poster to poster; nothing else does.",
+            "ar": "خمسة إعلانات لعروض العمرة بالهوية الزرقاء نفسها، يحمل كلٌّ منها علامة المدى، ولوحة منحنية فيها صورة، والعرض بأرقام عربية كبيرة، وتفاصيل الرحلة تحته، وزر للحجز. تتغيّر الصور من إعلان لآخر، ولا يتغيّر شيء سواها."
+          }
+        },
+        {
+          "src": "./src/assets/images/al-mada-profile.webp",
+          "alt": {
+            "en": "The Al Mada company profile, printed. Three panels: a cover carrying the mark and the promise over an airport window, an inside spread introducing the agency, and a further panel answering why the agency.",
+            "ar": "الملف التعريفي لوكالة المدى مطبوعًا. ثلاث لوحات: غلاف يحمل العلامة والوعد فوق نافذة مطار، وصفحة داخلية تعرّف بالوكالة، ولوحة أخرى تجيب عن سؤال: لماذا الوكالة."
+          }
+        }
+      ]
     }
   ],
   "close": {
