@@ -175,6 +175,8 @@ Every string above lives in one of four files, and changing it is one edit plus
 | UI strings — buttons, labels, the reply promise | `src/scripts/navigation-map.js` |
 | Everything else on the homepage | `index.html`, both language spans |
 | About, Pricing, Privacy | `src/pages/*.html` |
+| **Terms** | **`src/pages/terms.html`** — written after this checklist and **never reviewed**. `docs/66` §1 |
+| **Accessibility** | **`src/pages/accessibility.html`** — same: written later, never reviewed |
 
 Marking a printout is fine — send it back and I will apply it. The three
 changes above are already in these files; the nine "keep" answers changed

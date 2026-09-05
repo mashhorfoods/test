@@ -90,6 +90,16 @@ This pass fixed what is verifiably wrong. It cannot settle what is merely
 on a phone, with permission to change any wording they want. Nothing above is
 load-bearing enough to argue over.
 
+> **Superseded in one respect, 5 September 2026 — `docs/66`.** That last
+> sentence is no longer true of the whole site. `terms.html` and
+> `accessibility.html` were written *after* this review and were never covered
+> by it: 1,170 Arabic words, unreviewed, one of them a contract stating a
+> non-refundable deposit. For `/terms` the request is not "does this read well"
+> but **"does the Arabic say the same thing as the English"** — a discrepancy
+> there is a defect, not a preference, and `docs/65` §2 has just asked a lawyer
+> which language governs when they disagree. `docs/66` reorders the hour
+> accordingly.
+
 ---
 
 ## 6. Verified after the changes
