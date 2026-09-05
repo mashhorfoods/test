@@ -69,12 +69,20 @@ Ranked by expected cost, which is not the same as likelihood.
 Registrar, hosting, or GitHub. Any one of them lets an attacker replace what
 visitors see; the registrar lets them take the address permanently.
 
-*Current control:* whatever passwords are on those accounts.
-**Unverified — I cannot see whether two-factor authentication is enabled on
-any of them, and that is the single most important unknown in this document.**
+*Current control:* **2FA on the registrar, the host and GitHub, plus the
+registrar's transfer lock — confirmed done by the owner, 5 September 2026.**
 
-*What to do:* 2FA on all three, plus the registrar's transfer lock. Twenty
-minutes, and it is the highest-value security work available on this project.
+This section previously read *"Unverified — I cannot see whether two-factor
+authentication is enabled on any of them, and that is the single most important
+unknown in this document."* It is no longer unknown, and T1 drops from the
+largest open risk to a controlled one.
+
+**Still true, and worth keeping in view:** these remain personal accounts
+(`docs/60` §3), so account recovery still runs through one person's email and
+phone. 2FA protects the front door; it does not change who owns the building.
+And since `docs/63` chose Option 0, **the GitHub account is now also the
+content management system** — which raises what that one login is worth, and is
+another reason the second remote in `docs/57` §4 is not optional.
 
 ### T2 — Build-machine compromise · **high impact, low likelihood**
 
@@ -166,8 +174,8 @@ infrastructure, because we do not have any.
 Everything else above is either already controlled or not worth the effort at
 this scale.
 
-1. **2FA on the registrar, the host and GitHub**, plus a registrar transfer
-   lock. Twenty minutes. This is T1, and T1 is the whole model.
+1. ~~**2FA on the registrar, the host and GitHub**, plus a registrar transfer
+   lock.~~ **DONE 5 September 2026.** This was T1, and T1 was the whole model.
 2. **SPF, DKIM and DMARC**, at the moment domain email is created rather than
    after.
 3. **A quarterly search for a cloned site.** Five minutes, and the verification

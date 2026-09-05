@@ -48,8 +48,8 @@ Ordered by what it costs to leave undone, not by effort.
 
 | # | Task | Why it is first | Time |
 | --- | --- | --- | --- |
-| **A1** | **2FA on the registrar, the host and GitHub, plus a registrar transfer lock** | `docs/58` T1. The only item on this whole list whose downside is losing the domain permanently | 20 min |
-| **A2** | **A second git remote** (GitLab/Bitbucket/Codeberg), pushed to alongside GitHub | `docs/57` §4. Today, losing the GitHub account loses the project — 29MB of source and every recorded decision. The deployed site survives; the ability to change it does not | 10 min |
+| ~~**A1**~~ | ~~2FA on the registrar, the host and GitHub, plus a registrar transfer lock.~~ **DONE 5 Sep 2026.** `docs/58` T1 updated — it had called this "the single most important unknown in this document" and it is no longer unknown | ✅ |
+| **A2** | **A second git remote** (GitLab/Bitbucket/Codeberg), pushed to alongside GitHub. **← next** | `docs/57` §4, whose commands were verified 5 Sep and now carry the trap they hide: run only the second line and GitHub silently stops receiving pushes. `git remote -v \| grep push` must list **both** hosts. Losing the GitHub account today loses the project — and since `docs/63`, that account is also the CMS | 10 min |
 | **A3** | **UptimeRobot with a keyword check** on `One Partner` | `docs/57` §5. **The last unmet Gate 03 criterion.** Every failure this site has actually had would have returned HTTP 200 | 5 min |
 | **A4** | **Registrar auto-renew ON + a 30-day calendar reminder** | The most expensive failure and the one most often discovered by a customer | 5 min |
 | **A5** | **Domain email**, then SPF/DKIM/DMARC published *at the same moment* | `docs/60` §3 and `docs/58` T5. This is the first move on the identity gap, and it is worth more than incorporation | 1 hr |

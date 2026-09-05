@@ -73,6 +73,33 @@ git remote set-url --add --push origin <the second remote>
 After that, `git push` writes to both. One command, two providers, and the
 project stops depending on one company's account recovery process.
 
+**Both lines, in that order — and the first one is not redundant.** Verified 5
+September 2026 in a throwaway repository, because these are commands the owner
+runs rather than ones any harness covers.
+
+Adding a push URL *replaces* the implicit one. So running only the second line
+leaves `origin` pushing to the new host **and to nothing else**:
+
+```
+$ git remote set-url --add --push origin <the second remote>   # second line only
+$ git remote -v | grep push
+origin  <the second remote> (push)          <-- GitHub is gone
+```
+
+`git push` then succeeds, says nothing, and quietly stops sending anything to
+GitHub. That is the worst shape a backup mistake can take: it looks like it
+worked, and it is discovered when you go looking for the thing you thought was
+being backed up.
+
+**Check it once, straight after setting it up:**
+
+```
+git remote -v | grep push      # must list BOTH hosts
+```
+
+Two lines out means it is working. One line out means the first command was
+skipped, and whichever host is missing has been receiving nothing.
+
 **Monthly, manual — the things git cannot hold.** Fifteen minutes, into
 whatever cloud drive is already in use:
 
