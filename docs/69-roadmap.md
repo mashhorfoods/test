@@ -158,7 +158,8 @@ Parallel with P1. Nothing here waits on anything else here.
 | **B3** | An Arabic speaker | One hour, `docs/66`. `/terms` first — 670 Arabic words in a contract nobody has reviewed | B4's first question |
 | **B4** | A lawyer | `docs/65`. The governing-language gap is the headline | Legal risk |
 | **B6** | Any VoiceOver user | 30–40 minutes, `docs/67` | `/accessibility` stops saying no person has tried |
-| **B2** | Al Mada | Their result sentence and four images | Chapter 05 gets its number |
+| **B2a** | Al Mada | Their result sentence, and F1–F3. **Sent 4 Sep, waiting** | Chapter 05 gets its number |
+| **B2b** | **You** | **The four deliverable images — ours, not theirs.** `docs/50` Part 5: the case study is 33% illustration and **none of it is the work.** No picture of the logo, the kit, the Arabic site or the poster, on a design agency's flagship proof. `docs/57` §2 has them as the one asset that is irreplaceable and unbacked — *"already lost once"*. Any resolution beats none; a screenshot of Al Mada's live site covers one of the four today | Chapter 05 shows what it describes |
 | **A10** | You | The email swap, when deliverability is proven | `docs/58` T5's second half |
 
 ### P3 — The X stages that genuinely need P2

@@ -158,3 +158,73 @@ anyone here.
 **Open until Al Mada replies:** the missing sentence, and F1-F3. If the reply
 answers any of them, the edits go into `src/data/story.json` and
 `docs/48-story-arabic-checklist.md`.
+
+---
+
+## Part 5 — B2 is two tasks with two different owners, 5 September 2026
+
+Checked while the owner was recording the reference material. **B2 has been
+carried on `docs/69` as one item owned by Al Mada. Half of it is not theirs.**
+
+| | What | Owner | Status |
+| --- | --- | --- | --- |
+| **B2a** | The result sentence, and F1–F3 | **Al Mada** | **Sent 4 Sep.** Waiting. Nothing to do |
+| **B2b** | **The four deliverable images** | **The owner — we made them** | **Not sent, not asked for, not in the repository** |
+
+Al Mada will never deliver B2b, because Al Mada did not make those files. We
+did. `docs/57` §2 records them as *"Nowhere. No. Already lost once. They were
+pasted into chat, never uploaded."* — the only row in that table whose asset is
+both irreplaceable and unbacked.
+
+**So B2b has been sitting behind a reply that cannot contain it.** That is
+`docs/69` §6's rule failing in the other direction: a task filed under the
+wrong blocker.
+
+### What the case study shows today, measured
+
+The page is **fully illustrated** — and it is worth being precise, because a
+first look for `<img>` elements returns zero and that is misleading:
+
+| | |
+| --- | --- |
+| Figures | **5**, one per chapter |
+| Each | 580×435px, inline SVG, 20–23 drawn shapes |
+| Share of the page | **33% of 6,525px** |
+| Photographs or screenshots of the work | **0** |
+
+The five sketches are good and deliberate: hand-drawn schematics that carry
+meaning without images, in a screen reader, and under reduced motion
+(`build-story.js` §25). They are not a defect and they should stay.
+
+**What they illustrate is the argument, not the artefact.** The figures are
+*"Four separate boxes, tilted at different angles"*, *"The same four boxes,
+with dashed lines searching between them"*, *"The four boxes aligned in a
+row"*. Beside them, the chapter headings promise:
+
+> *"The flight path draws the letter."*
+> *"Not a logo. A kit that survives the next designer."*
+> *"Arabic first, on the screen the customer actually uses."*
+> *"The same brand, on the poster and in the brochure."*
+
+**A case study about visual identity work, on a design agency's site, contains
+no picture of the logo, the kit, the website or the poster.** A third of the
+page is illustration and none of it is the work.
+
+### What to do
+
+**Find the four files.** They are the logo/identity, the brand kit, the Arabic
+website, and the poster or company profile — our own deliverables, so they may
+still exist in the design tool that made them, in the handover sent to Al Mada,
+or in the chat they were pasted into. **Any resolution is better than none**,
+and a screenshot of the live Al Mada site covers one of the four immediately.
+
+Once they exist as files, placing them is not a redesign: `story.json`'s
+chapters already carry a `sketch` field per chapter, and adding a photograph
+alongside it is a schema addition rather than a layout change. That work is
+mine and it is small — **but it cannot start until the files exist**, which is
+why this is filed as an owner task rather than left implicit.
+
+**If they are genuinely gone**, say so and the page stays exactly as it is —
+`Part 3` already argued that a case study which shows the work and admits it
+has no result is the honest trade this project keeps choosing. But losing them
+twice would be a different thing from choosing not to show them.
