@@ -80,9 +80,12 @@ questions that decide its shape. They have never been answered:
 
 | # | Task |
 | --- | --- |
-| **C1** | **Answer the four questions in `docs/36` §4** — who logs in and from where; whether it edits prices or pages; whether it can trigger a build; where it is hosted. Each one changes what gets built, and answering them is an hour of conversation, not a project |
-| **C2** | **Price the cheap version against the real one.** `docs/36` §4 already names it: *the cheapest honest version is not a dashboard at all* — a form that edits `pricing.json` and commits it, letting the existing build do the rest. A weekend, no login, no server. Worth costing before assuming a dashboard is the thing being asked for |
-| **C3** | **Then scope it properly** — requirements, and a decision on the architecture |
+| ~~**C1**~~ | ~~Answer the four questions in `docs/36` §4.~~ **DONE 5 Sep 2026 — `docs/63`.** Three answered from evidence, one needs you. Headline: **6 of 121 commits in this project's history were data-only, and all six were on one day.** The recommendation is Option 0 — GitHub's own editor is already a working dashboard, at zero cost and zero new attack surface — plus ~10 lines of CI |
+| **C1a** | **OWNER: answer Q1.** *Is a second person going to edit content, and should they be kept out of the repository?* Everything else turns on it. `docs/63` Q1 |
+| **C1b** | **OWNER: confirm or reject the recommendation** in `docs/63`. Option 0 makes C2 already answered; Option 1 makes C2 a real costing; Option 2 makes C3 a scoping engagement |
+| **C2** | **Price the cheap version against the real one** — only if C1b lands on Option 1. `docs/63` Q4 has the shape of both |
+| **C3** | **Scope it properly** — only if C1b lands on Option 2. Rewrite `docs/58` and `docs/57` with it, per their own §7 and §8 |
+| **C4** | **The ten lines of CI**: build *and commit* `dist/` for data-only commits. Needed by every option including Option 0 — verified today that a commit changing only `pricing.json` goes red on the staleness check. Small, and I can do it as soon as C1b says the route is wanted |
 
 **What it costs, stated plainly so the decision is made with it in view.** A
 real dashboard ends AD-01, the zero-backend decision that most of this
@@ -148,8 +151,9 @@ If the goal is to close both workflows rather than to keep improving:
 3. **A5 → A9, and B2.** The items that turn measurements into numbers and
    claims into confirmations.
 4. **D1 → D7**, in order, as B1 allows.
-5. **C1 → C2** whenever you want the dashboard conversation. It does not block
-   anything above it, and nothing above it blocks it.
+5. **C1a → C1b** whenever you want the dashboard conversation — two questions,
+   not a project. C1 itself is done (`docs/63`). Nothing above blocks it and it
+   blocks nothing above.
 
 **B3, B4, B5 and B6 run in parallel with all of it** and need no code from
 anyone. They are also the four that find the class of defect no harness on this

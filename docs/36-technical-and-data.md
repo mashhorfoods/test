@@ -111,6 +111,10 @@ day it was made. So this section is a live question, not a closed one — and th
 four triggers stop being the only route back. If the owner returns to it, the
 argument to have is the one below, not a fresh start.
 
+**These four were answered on 5 September 2026 — `docs/63`.** Three from
+evidence in this repository, one (who logs in) still needs the owner. The table
+below is left as written, because it is what the answers answer.
+
 **What would actually need answering**, whenever that conversation happens:
 
 | Question | Why it decides the shape |

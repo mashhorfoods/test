@@ -181,7 +181,14 @@ const robots = () => {
 
    The hash is taken AFTER every injection, which is why this runs late in
    run(): canonical, og, JSON-LD and the analytics stub are all page content,
-   and a change to any of them is a real change to the page. */
+   and a change to any of them is a real change to the page.
+
+   ONE KNOWN IMPRECISION, left deliberately. Only the latest hash is stored, so
+   editing a page, building, reverting the edit and building again moves the
+   date even though the bytes ended up identical. Fixing it would mean keeping
+   history for a field whose worst error is now a date one day newer than
+   strictly necessary — which is a very long way from where this started, when
+   the date was always today. */
 const lastmodMap = (stamp) => {
   let store = {};
   try {
