@@ -153,6 +153,17 @@ deployable disagree — silently, with the stale one being what reaches visitors
 **Revisit when** more than one person can deploy, or when uploads become
 frequent enough that the manual step is the error source rather than the guard.
 
+**One correction this made possible.** CI originally excluded `dist/sitemap.xml`
+from the staleness check because its `lastmod` was the build date and therefore
+differed on any day after the last commit. That exclusion was a symptom, not a
+workaround: the sitemap was telling crawlers that all seven pages changed on
+every rebuild, including the many rebuilds that changed nothing — and a
+`lastmod` that always says "today" is discounted by search engines, so the
+field was spending exactly the credibility it exists to earn. `lastmod` now
+comes from a hash of each page's built bytes (`src/data/lastmod.json`), the
+whole of `dist/` is deterministic, and **the exclusion is gone** — a stale
+sitemap is now caught like anything else.
+
 ## AD-08 · Staging — the decision Phase 14 asked for
 
 **Context.** Phase 14's required action was "choose staging vs production

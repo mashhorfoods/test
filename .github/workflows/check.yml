@@ -60,14 +60,19 @@ jobs:
       # whose source and whose deployable disagree, silently, with the old
       # version being the one that reaches visitors. Nothing else checks this.
       #
-      # sitemap.xml is excluded because it carries the build date and therefore
-      # differs on any day after the last commit. Nothing else in dist/ does.
+      # NOTHING IS EXCLUDED. sitemap.xml used to be, because its `lastmod` was
+      # the build date and so differed on any day after the last commit. That
+      # was a symptom of a real bug — the sitemap claimed every page changed on
+      # every rebuild — and now that `lastmod` comes from the page's content
+      # hash the whole of dist/ is deterministic and the exclusion is gone.
+      # `src/data/lastmod.json` is the hash store and is checked with it: a
+      # rebuild that changed a page must commit the date that change earned.
       - name: The committed dist must match a fresh build
         run: |
-          git diff --exit-code -- dist ':(exclude)dist/sitemap.xml' || {
+          git diff --exit-code -- dist src/data/lastmod.json || {
             echo
             echo "dist/ is stale — src/ was changed without running 'npm run build'."
-            echo "Run 'npm run release' and commit dist/."
+            echo "Run 'npm run release' and commit dist/ (and src/data/lastmod.json)."
             exit 1
           }
 

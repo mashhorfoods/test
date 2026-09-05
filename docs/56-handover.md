@@ -170,6 +170,10 @@ own card.
 ## 7. Things that will bite
 
 - **Do not edit `dist/`.** The next build overwrites it.
+- **Do not hand-edit `src/data/lastmod.json`.** It is generated, and committed
+  on purpose: it records when each page's content last actually changed, so the
+  sitemap can tell search engines the truth instead of claiming everything
+  changed every time you rebuild. Commit it alongside `dist/`.
 - **`.htaccess` is a hidden file.** File managers lose it silently.
 - **The hero film is desktop-only by design.** A phone gets the still image and
   requests no video at all. If you ever see a phone downloading `hero.mp4`,

@@ -320,9 +320,14 @@ budget can choose.
 > is now **$490 / $990 / $1,990**, and the table below is left at the numbers
 > that produced that decision rather than rewritten to agree with it — the
 > finding is the record. `docs/31` §5.5 has the change request and the checks
-> the new ladder passes; the row that follows now reads 0.9×–4.5× below the
-> full-identity band rather than 2.2×–11×, which is the same shape of discount
-> the website tiers carry.
+> the new ladder passes; the row that follows now reads **1.3×–6.7×** below the
+> full-identity band rather than 2.2×–11×, and Starter **2.7×–8.4×** rather than
+> 4.6×–14×.
+>
+> *(Corrected 5 September 2026. This note first said 0.9×–4.5×, which was plain
+> bad arithmetic: $1,990 is SAR 7,463, and 10,000 ÷ 7,463 is 1.34, not 0.9. It
+> understated the remaining gap — the one number here that says whether the fix
+> went far enough — so it is corrected in place rather than left standing.)*
 
 | Pixora, now | USD | ≈ SAR | Published Saudi range, 2026 |
 | --- | ---: | ---: | --- |
