@@ -197,6 +197,11 @@ that were uploaded, never observed. See §6, BLOCKER-1.
 - P1-12 Gate 02 held 4 Sep 2026. **The five moderated sessions with real buyers remain outstanding** and cannot be run from here — the risk was accepted knowingly, which is not the same as retired.
 - ~~P1-13 Owner handover document~~ **DONE** — `docs/56`, with npm scripts so it has short commands to describe. Every command in it was run before it was written down.
 
+> **The working list is now `docs/62-remaining.md`.** This audit stays the
+> record of what was found and what was done; `docs/62` is the only file that
+> says what is left, and it is the one being worked from. The P1/P2/P3 lists
+> below remain the reasoning behind those items.
+
 ### P2 — Enhancement
 
 - Per-service inner pages once the IA justifies them.

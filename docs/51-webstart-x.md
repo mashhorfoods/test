@@ -89,6 +89,11 @@ references actually say:
 
 ## 6. Status
 
-**Received, read, not activated.** Say `WEBSTART X` to begin, and name the
-references at the same time — X02 is the first stage that needs anything from
-outside this repository.
+**Activated. X01 complete, X05–X07 partial, X02–X04 blocked.** The current
+state of all eleven stages, and what unblocks them, is in
+**`docs/62-remaining.md` §1** — the single working list. This document stays
+the description of the framework.
+
+The original note here read *"received, read, not activated"*. That stopped
+being true on 4 September 2026, when the owner supplied the reference brief and
+X01 was run against the live site.

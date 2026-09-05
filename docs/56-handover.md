@@ -219,6 +219,7 @@ than the code if you ever hand this to another studio.
 | `docs/55` | The quality baseline — what is good, what is not, measured |
 | `docs/59` | Which browsers this works in, and what breaks below that |
 | `docs/61` | Why the code is built the way it is, and what should make you change it |
+| **`docs/62`** | **What is left. The working list — start here** |
 | `docs/56` | This document |
 
 If a future decision contradicts one of these, that is allowed. Contradicting

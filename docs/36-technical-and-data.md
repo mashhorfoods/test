@@ -99,6 +99,11 @@ surface and a hosting bill to solve a problem nobody has.
 Recorded here so a future "we should have a dashboard" has to argue against a
 written reason rather than fill a gap.
 
+**Update, 5 September 2026.** The owner has put it back on the working list —
+`docs/62` §C — as three tasks: answer the four questions below, price the cheap
+version against the real one, then scope it. Nothing is being built until C1 is
+answered, and the reasoning below is what C1 argues with.
+
 **Update, 4 September 2026.** The owner is reconsidering, and has asked that it
 stay out of scope for now. Both halves matter: the decision above still stands
 and nothing is being built, but it is no longer settled the way it was on the
