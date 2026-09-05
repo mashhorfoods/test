@@ -81,7 +81,7 @@ Ordered by what it costs to leave undone, not by effort.
 
 | # | Task | Waiting on |
 | --- | --- | --- |
-| **B1** | **The PixVerse recording** — or any replacement reference material | You. **Unblocks X02, X03, X04 and X10** |
+| **B1** | **The reference recording** — being recorded 5 Sep 2026. **`docs/64` says what to capture**: a steady full-page scroll at desktop *and* phone, plus ten seconds parked on the hero. Full-page screenshots are an acceptable substitute; a partial video is not. **Still missing and separate: one Arabic-first site you respect** (`docs/52` §3) — a URL is enough, and it is the most load-bearing gap in the set | You. **Unblocks X02, X03, X04 and X10** |
 | **B2** | **Al Mada's result sentence + F1–F3 + their four deliverable images** | Al Mada. `docs/50`. Chapter 05 stays without a number until then, and `docs/57` §2 records the images as the one irreplaceable asset backed up nowhere |
 | **B3** | **Native-speaker Arabic review** for register and terminology | An Arabic speaker. The harnesses prove the Arabic *exists*; they cannot tell you it reads like a translation |
 | **B4** | **A lawyer's read of the Terms**, especially cancellation | A lawyer |
@@ -128,7 +128,7 @@ the price is paid knowingly rather than discovered afterwards.
 
 | # | Task |
 | --- | --- |
-| **D1** | **X02 Global Benchmark** — analyse the reference material for transferable strengths |
+| **D1** | **X02 Global Benchmark** — analyse the reference material for transferable strengths. **Method and measurements defined in advance: `docs/64`.** The same table X01 produced for Pixora, produced for the reference, so X03 compares like with like rather than impressions |
 | **D2** | **X03 Experience Deconstruction** — why each reference works, and what transfers to a bilingual RTL site. `docs/52` §3 already names the gap: no reference in the set is Arabic |
 | **D3** | **X04 Reference-Driven Redesign** — preserve / borrow / adapt / improve / reject, against the guardrails |
 | **D4** | **X05 direction statement** — Current → Desired → Why → What changes → What stays |

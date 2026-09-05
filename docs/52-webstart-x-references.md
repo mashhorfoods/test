@@ -127,3 +127,11 @@ decision shaping everything downstream, and it is now made.
 
 Reference set named. **X02 is not complete** until the recordings arrive or the
 owner replaces the list. X03 has not started.
+
+**Update, 5 September 2026.** The owner is recording. `docs/64` was written
+before the recording rather than after it, and says what a usable capture
+contains — a steady full-page scroll at both widths, because X01 measured
+Pixora's rhythm in screens per section and the comparison is worthless unless
+the same measurement can be taken off the reference. §3's Arabic-first site is
+still missing and is still the gap that decides whether X03 is analysis or
+recitation.
