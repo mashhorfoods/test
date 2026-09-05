@@ -35,7 +35,7 @@ X03 and X04 sit behind X02.
 | X03 | Experience Deconstruction | ⛔ Not started, behind X02 |
 | X04 | Reference-Driven Redesign | ⛔ Not started, behind X03 |
 | X05 | Redesign Direction | 🟡 **Partial.** The one decision that could be made without references was made and shipped — the showpiece budget, `docs/53`. The full direction statement needs X04 |
-| X06 | High-Impact Upgrade | 🟡 **Partial.** Phone CTA regression, width parity, homepage proof, section banding and the hero all shipped. Navigation, density and the four-block structural repetition need X03 |
+| X06 | High-Impact Upgrade | 🟡 **Partial.** Phone CTA regression, width parity, homepage proof, section banding, the hero and **Arabic heading leading** all shipped — the last of those was an RTL rule that had never fired, leaving the Arabic hero CTA below the fold on desktop (`docs/43` §12). Navigation, density and the four-block structural repetition need X03 |
 | X07 | Interaction & Motion | 🟡 **Partial.** The hero film ships with reduced-motion guards. No systematic motion pass |
 | X08 | Mobile Excellence | ❌ Not started. X01's phrase still holds: mobile is *verified*, not *designed* |
 | X09 | Design System Refinement | ❌ Not started |

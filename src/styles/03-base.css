@@ -210,8 +210,35 @@
     letter-spacing: var(--tracking-normal);
   }
 
-  :lang(ar) :is(.t-display-xl, .t-display-l, .t-h1, .t-h2, .t-h3, .t-h4),
-  [dir="rtl"] :is(.t-display-xl, .t-display-l, .t-h1, .t-h2, .t-h3, .t-h4) {
+  /* HEADINGS. The element selectors are the load-bearing half, and they were
+     missing until 5 September 2026.
+
+     This rule originally listed only the `.t-*` utility classes — and NOT ONE
+     OF THEM APPEARS ANYWHERE IN THE MARKUP. The site styles headings through
+     component classes (`.c-hero__headline`, `.c-detail__headline`, …), so the
+     rule matched nothing and had never once fired. Every Arabic heading fell
+     through to the generic `:lang(ar)` rule above and took `--leading-relaxed`
+     — body leading, 1.75 — while the intent written right here was 1.18.
+
+     Measured before the fix: the Arabic hero headline was 532px tall against
+     the English 218px, four lines of near-detached words. Arabic does need
+     more leading than Latin, which is why 1.18 sits above the Latin display
+     value of 1.02 — but 1.75 is a paragraph, not a headline.
+
+     Keyed on the ELEMENTS as well, so a component added tomorrow inherits it
+     without anyone remembering this rule exists. The utility classes stay for
+     the styleguide, which does use them.
+
+     AND ON THEIR DESCENDANTS, which is the half that actually fixes it. Every
+     bilingual string is a pair of spans, and it is the SPAN that carries
+     `lang="ar"` — so the span matches the generic `:lang(ar)` rule above and
+     takes body leading regardless of what the heading around it says. Fixing
+     the heading alone changed nothing, measurably: 532px before, 532px after.
+     The text is in the span, so the span is what has to be told. */
+  :lang(ar) :is(h1, h2, h3, h4, .t-display-xl, .t-display-l, .t-h1, .t-h2, .t-h3, .t-h4),
+  [dir="rtl"] :is(h1, h2, h3, h4, .t-display-xl, .t-display-l, .t-h1, .t-h2, .t-h3, .t-h4),
+  :lang(ar) :is(h1, h2, h3, h4) *,
+  [dir="rtl"] :is(h1, h2, h3, h4) * {
     font-family: var(--font-arabic);
     letter-spacing: var(--tracking-normal);
     line-height: var(--leading-heading);
