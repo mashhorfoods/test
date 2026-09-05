@@ -126,7 +126,7 @@ doing before A1–A4.**
 | --- | --- |
 | **E1** | A second case study — opens `/work`, and turns the homepage's one proof sentence into a list. `docs/56` §5 calls it the outstanding item most worth paying for |
 | **E2** | Per-service inner pages, once the IA justifies them |
-| **E3** | Social/ads ladder: `docs/29` §11 found the top tier still sits below the bottom of the market's basic band, so no tier suits a buyer with a real budget. One question, then possibly one field each |
+| ~~**E3**~~ | ~~Social/ads ladder — the top tier sits below the market floor.~~ **CHECKED 5 Sep 2026, no change needed — `docs/29` §13.** §11 had compared against one band while the same source published a tiered ladder; against that, and against Egypt (which neither benchmark had), all three social tiers land inside published bands in both markets. §11 corrected in place. **What survives is a product question, not a price one:** there is nothing above $650/month, so the Saudi standard band and the top of the Egyptian one have no Pixora product. Optional, and not urgent — a tier nobody has asked for is a worse use of a week than anything in §A |
 | **E4** | Split-bundle option for repeat visits, alongside the single file (`docs/61` AD-06's revisit trigger) |
 | **E5** | An FAQ section, if the sales conversation turns out to repeat questions |
 

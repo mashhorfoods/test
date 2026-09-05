@@ -314,6 +314,13 @@ The **top** social tier is below the **bottom** of the basic band. Roughly
 still under the market floor, which means there is no tier a buyer with a real
 budget can choose.
 
+> **Overstated. Corrected in §13, 5 September 2026.** That last sentence
+> compared the top tier against **one** band — the 3,000–5,000 SAR "basic
+> package" — while the same source also published tiered offers at 1,500 /
+> 2,500 / 4,500 SAR, against which Pixora's ladder sits mid-range rather than
+> beneath. The residual point survives in a narrower form and the conclusion
+> does not: **no reprice is needed.** §13 has the working.
+
 ### Branding — the one that did not move far enough
 
 > **Acted on, 4 September 2026.** The owner's decision was to fix it. Branding
@@ -417,3 +424,86 @@ only usable once you know which kind of seller it describes.**
 **Sources (2026 guides, retrieved 4 September 2026):** Digital Gravity KSA ·
 Neologix · Taqweed · Safwa Web · Albadr Systems · Digital Farm (Dubai) ·
 Arnit · Qemma Soft · Art Molham · GoSocial · Masarib KSA.
+
+
+---
+
+## 13. Social and ads — checked, and no change needed · 5 September 2026
+
+`docs/62` E3, opened because §11 said the monthly ladder's ceiling sat under
+the market floor. Checked properly, against both markets this time, that is not
+true — and the error in §11 is worth naming because it is the second instance
+of the same mistake.
+
+### The numbers
+
+| Pixora, monthly | USD | ≈ SAR | ≈ EGP |
+| --- | ---: | ---: | ---: |
+| Social Starter | 250 | 938 | 12,750 |
+| Social Growth | 400 | 1,500 | 20,400 |
+| Social Pro | 650 | 2,438 | 33,150 |
+| Ads Starter | 250 | 938 | 12,750 |
+| Ads Growth | 400 | 1,500 | 20,400 |
+| Ads Performance | 600 | 2,250 | 30,600 |
+
+**Saudi Arabia**, from the same 2026 sources §11 used:
+
+| Published | Where Pixora lands |
+| --- | --- |
+| Tiered offers at **1,500 / 2,500 / 4,500 SAR** | **Growth is 1,500 exactly. Pro at 2,438 is the 2,500 tier.** Mid-ladder, not beneath it |
+| "Basic package" band, 3,000–5,000 SAR | Pro sits under this — the comparison §11 made, and the only one it made |
+| Standard 6,000–8,000, premium 9,000–12,000 | No Pixora product at all — see below |
+
+**Egypt**, which neither §1 nor §11 had:
+
+| Published band, EGP/month | Where Pixora lands |
+| --- | --- |
+| Budget / basic **5,000–15,000** | Starter at 12,750 sits inside it |
+| Entry agency **12,000–50,000** | Starter and Growth both inside |
+| Mid **20,400–46,000** | **Growth at 20,400 is the floor of this band exactly** |
+| Standard **30,000–70,000** | **Pro at 33,150 is inside it** |
+
+**All three social tiers land inside published bands in both markets.** Growth
+hitting two different market floors on the nose in two currencies is a
+coincidence, but a reassuring one.
+
+### So the conclusion is: leave it
+
+Unlike branding, there is no even-ness argument to make here. Branding was
+discounted about five times harder than websites and that asymmetry was the
+finding. The monthly ladder carries the same shape of discount the rest of the
+site does, in both markets, at all three tiers.
+
+**No reprice. E3 closes without a code change.**
+
+### What survives, in a narrower form: a missing tier, not a wrong price
+
+There is nothing above $650/month. The Saudi standard band (6,000–8,000 SAR ≈
+$1,600–2,130) and the upper half of the Egyptian standard band (to 70,000 EGP ≈
+$1,370) have no Pixora product in them at all.
+
+That is **a product question, not a pricing one**, and it is optional:
+
+> Is there a fourth monthly tier worth defining — and would it be sold, given
+> that `docs/31` G2 already names *project → retainer* as the goal the site
+> does nothing to serve?
+
+Listed in `docs/62` E3 as exactly that. It needs no urgency: a tier nobody has
+asked for is a worse use of a week than the items in §A of that list.
+
+### The error in §11, and why it is the same error twice
+
+§11 compared the top tier against the 3,000–5,000 SAR "basic package" band and
+concluded there was no tier a serious buyer could choose. The same source also
+listed 1,500 / 2,500 / 4,500 SAR tiered packages. **Picking one band and
+treating it as the market is what produced the wrong conclusion.**
+
+§12 recorded the same failure from the other direction: a first Egyptian search
+returned freelance-marketplace logo prices 30–100× below the agency band, and
+taking those as "the market" would have argued the opposite of what was true.
+
+Two instances, one lesson, and §12 already stated it — **a price band is only
+usable once you know which kind of seller it describes.** The addition §13
+makes is that this is not only about *marketplace versus agency*: **one seller
+publishes several bands, and choosing among them is itself an analytical act.**
+Quote the ladder, not the rung that suits the argument.
