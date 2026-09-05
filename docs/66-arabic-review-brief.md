@@ -48,6 +48,17 @@ So the request for `/terms` is different from the rest of the site:
 The English is in the same file beside every Arabic string, so the comparison
 is possible without switching pages.
 
+> **UPDATED 5 September 2026 — `docs/77`.** §1's meaning-against-the-English
+> check on `/terms` and `/accessibility` **has been done**: all 67 bilingual
+> pairs compared clause by clause, every number checked, no dropped clauses,
+> **no substantive discrepancy found.** Neither version carries a
+> governing-language clause, and the absence is symmetrical.
+>
+> That was the mechanical half and it is spent. **§2's reading order below is
+> superseded** — start with the homepage, then `/pricing`, then `/story`, and
+> read `/terms` last and only for register. §3's seven open decisions are
+> untouched and are now the whole hour.
+
 ## 2. Reading order
 
 Ordered by what a wrong word costs, not by length.

@@ -46,6 +46,21 @@ there is no discrepancy.
 
 This was found while preparing this brief and is the reason it exists.
 
+> **UPDATED 5 September 2026 — `docs/77`.** The second half of this concern is
+> resolved. Both versions have now been **compared in full, clause by clause**:
+> 67 bilingual pairs, every number checked, no dropped clauses, **no
+> substantive discrepancy**. The cancellation, liability, ownership,
+> no-result-promised and governing-law clauses each say the same thing in both
+> languages.
+>
+> So the question narrows to one part, and it is entirely a lawyer's:
+> **should a governing-language clause be added, and which language should it
+> name?** The two versions do not currently disagree — confirmed, not assumed —
+> and neither contains such a clause, symmetrically.
+>
+> The Arabic has still had **no native-speaker review for register** (`docs/69`
+> B3 remains open). That matters for tone, not for meaning.
+
 ## 3. The clauses that carry real risk, and what each is meant to do
 
 Stated as intent, so the reviewer can say whether the wording achieves it.
