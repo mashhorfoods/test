@@ -81,11 +81,15 @@ questions that decide its shape. They have never been answered:
 | # | Task |
 | --- | --- |
 | ~~**C1**~~ | ~~Answer the four questions in `docs/36` §4.~~ **DONE 5 Sep 2026 — `docs/63`.** Three answered from evidence, one needs you. Headline: **6 of 121 commits in this project's history were data-only, and all six were on one day.** The recommendation is Option 0 — GitHub's own editor is already a working dashboard, at zero cost and zero new attack surface — plus ~10 lines of CI |
-| **C1a** | **OWNER: answer Q1.** *Is a second person going to edit content, and should they be kept out of the repository?* Everything else turns on it. `docs/63` Q1 |
-| **C1b** | **OWNER: confirm or reject the recommendation** in `docs/63`. Option 0 makes C2 already answered; Option 1 makes C2 a real costing; Option 2 makes C3 a scoping engagement |
-| **C2** | **Price the cheap version against the real one** — only if C1b lands on Option 1. `docs/63` Q4 has the shape of both |
-| **C3** | **Scope it properly** — only if C1b lands on Option 2. Rewrite `docs/58` and `docs/57` with it, per their own §7 and §8 |
-| **C4** | **The ten lines of CI**: build *and commit* `dist/` for data-only commits. Needed by every option including Option 0 — verified today that a commit changing only `pricing.json` goes red on the staleness check. Small, and I can do it as soon as C1b says the route is wanted |
+| ~~**C1a**~~ | ~~Q1: is a second content editor coming?~~ **ANSWERED 5 Sep 2026: no — one person only.** |
+| ~~**C1b**~~ | ~~Confirm or reject the recommendation.~~ **ANSWERED: Option 0.** GitHub's own editor is the dashboard. No login, no server, no new attack surface, AD-01 intact |
+| ~~**C2**~~ | ~~Price the cheap version against the real one.~~ **Not needed** — C1b chose Option 0, which is cheaper than the cheap version because there is nothing to build |
+| ~~**C3**~~ | ~~Scope a real dashboard.~~ **Not needed** under Option 0. `docs/36` §4's four triggers are still the route back, and `docs/63` maps each to the option it would move to |
+| ~~**C4**~~ | ~~CI must build *and commit* `dist/` for data-only commits.~~ **DONE 5 Sep 2026** — and tested end to end on the live branch, not reasoned about: a price edited and pushed with no local build, CI classified it data-only, ran all three harnesses, rebuilt and committed `dist/` back, then did it again on the revert. `pixora-site.zip` is now attached to every run so the archive is reachable without a terminal |
+
+**§C is closed.** The admin dashboard exists: it is GitHub's editor plus this
+workflow. What would reopen it is unchanged and written down — `docs/36` §4's
+four triggers, each mapped in `docs/63` to the option it would move to.
 
 **What it costs, stated plainly so the decision is made with it in view.** A
 real dashboard ends AD-01, the zero-backend decision that most of this
@@ -151,9 +155,8 @@ If the goal is to close both workflows rather than to keep improving:
 3. **A5 → A9, and B2.** The items that turn measurements into numbers and
    claims into confirmations.
 4. **D1 → D7**, in order, as B1 allows.
-5. **C1a → C1b** whenever you want the dashboard conversation — two questions,
-   not a project. C1 itself is done (`docs/63`). Nothing above blocks it and it
-   blocks nothing above.
+5. ~~**C1a → C1b**, the dashboard conversation.~~ **Done 5 September 2026.**
+   Option 0, one editor. §C is closed and nothing in it is outstanding.
 
 **B3, B4, B5 and B6 run in parallel with all of it** and need no code from
 anyone. They are also the four that find the class of defect no harness on this

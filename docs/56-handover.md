@@ -82,9 +82,21 @@ This is the table to keep. Everything on the site comes from one of these.
 
 ### Change a price
 
+**From a terminal:**
+
 1. Open `src/data/pricing.json`, find the package, change `price`.
 2. `npm run release`
 3. Upload.
+
+**From a browser or a phone — no terminal at all** (`docs/63`, Option 0):
+
+1. Open `src/data/pricing.json` on GitHub, edit the number, commit.
+2. Wait ~3 minutes. CI runs all three harnesses, then rebuilds and commits
+   `dist/` for you. **If the run goes red, nothing was committed** — read the
+   log rather than assuming it worked.
+3. Download `pixora-site` from that run's Artifacts, and upload it.
+
+Both routes end at the same manual upload, on purpose — `docs/61` AD-07.
 
 The price changes on the homepage card, the pricing page, the WhatsApp message
 that button sends, and the sitemap's date. You changed one number.

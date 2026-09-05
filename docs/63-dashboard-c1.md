@@ -188,7 +188,29 @@ rests on.
 | Enquiries outgrow a WhatsApp inbox and need a record with a status | **Option 2** — and note that is a CRM, not a CMS |
 | Something becomes genuinely dynamic — bookings, stock, accounts | **Option 2**, and `docs/58` §7 fires |
 
-## What is still needed from the owner
+## Decided, 5 September 2026
+
+**Option 0, one person only.** The owner answered Q1 — no second content
+editor — and took the recommendation.
+
+**What that means in practice.** Edit `src/data/*.json` in GitHub's web editor,
+from anything including a phone. CI classifies the push as data-only, runs all
+three harnesses, and only then rebuilds and commits `dist/` back. The upload
+archive is attached to the run, so it can be downloaded without a terminal.
+Deployment stays a manual upload — `docs/61` AD-07 — which is the one step that
+was never meant to be automated.
+
+**It was tested rather than reasoned about**, on the live branch: a price
+edited and pushed with no local build, then reverted. Both pushes produced a
+bot commit carrying a correct rebuild, and the price is back where it started.
+The commit-back is the part that could not be verified any other way, and it is
+the part that would next have run when the owner edited a price from a phone.
+
+**Nothing else in §C is outstanding.** C2 and C3 are moot under Option 0;
+`docs/36` §4's four triggers remain the route back, and each is mapped above to
+the option it would move to.
+
+## What was still needed from the owner
 
 Two things, and they are both short:
 
