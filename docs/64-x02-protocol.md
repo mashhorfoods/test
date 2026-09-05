@@ -6,6 +6,22 @@ This exists for one reason: **a recording that misses something costs a round
 trip.** `docs/52` named the reference set and the Arabic gap; it never said what
 a usable recording actually contains. This does, and it is deliberately short.
 
+> **UPDATED 5 September 2026, after P1.** Phase 1 of `docs/69` answered the
+> measurable half of X02 without any reference material — `docs/70` held our
+> spacing ladder, type ramp, control heights and target sizes against the
+> published specifications of Linear, Stripe and Vercel and found this site
+> already inside the band, ahead on two axes.
+>
+> **So the recording no longer has to answer any of that.** Do not film for
+> spacing, type sizes, button dimensions or colour. Those are measured.
+>
+> What is left is the half a spec sheet cannot carry: **motion, sequencing,
+> and how one section hands over to the next** — R5 in `docs/52` §1, which was
+> the actual brief. Everything below is now pointed only at that.
+>
+> §5's running order has also changed: **X09 is delivered** (`docs/75`) and
+> **X08's largest item is done** (`docs/72`).
+
 ---
 
 ## 1. What to capture — the short version
@@ -24,6 +40,21 @@ as this site's biggest experience gap.
 
 If any of it is easier as screenshots, screenshots are fine — **a full-page
 screenshot at each width is worth more than a partial video.**
+
+## 1a. One question P1 added, and it is cheap to capture
+
+`docs/71` measured every call to action on this site and found that on a phone
+a visitor scrolled up to 5.5 screens with nothing to press, while the desktop
+header carried one at every scroll position. That is fixed (`docs/72`), and it
+raised a question the reference can answer better than we can reason about:
+
+> **On the phone recording, is there a call to action permanently in view?**
+> A sticky header button, a bottom bar, a floating action — or nothing, and the
+> page relies on the visitor scrolling to the next one.
+
+It costs nothing extra: it is visible in recording #2 as long as the scroll is
+steady. It matters because this site now uses the header, and a bottom bar is
+the alternative it did not choose.
 
 ## 2. Worth capturing if it is no trouble
 
@@ -79,8 +110,12 @@ In order, and each is a document rather than a change to the site:
 3. **X04** — preserve / borrow / adapt / improve / reject, against the
    guardrails.
 4. **X05** — the direction statement `docs/53` is currently one decision of.
-5. **X06 remainder, X07, X08, X09** — the work itself, in that order, because
-   X01 already established that navigation and hero were not the place to start.
+5. **X06 remainder and X07** — the work itself. ~~X08, X09~~ **X09 is
+   delivered** (`docs/75`: one control scale honoured in both languages, a
+   10px type floor with a guard, and a written decision on every unused
+   selector), and **X08's largest item is done** — a phone visitor now has a
+   call to action in view for 96–100% of every page (`docs/72`), against
+   6% of `/story` before it.
 6. **X10** then **X11** — comparative validation, then the gate.
 
 **No site change happens before X04.** That is the framework's rule and it is

@@ -115,6 +115,22 @@ Four phases. **P1 starts immediately and needs nothing from anyone.**
 
 ### P1 — The redesign work that was never actually blocked
 
+> **✅ COMPLETE, 5 September 2026.** All six, each with measured before/after
+> numbers and a guard where a guard could fail correctly.
+>
+> | | | Outcome |
+> | --- | --- | --- |
+> | P1-1 | `docs/70` | The token layer already sits inside the reference band, and is ahead on target sizes and fluid rhythm. **The gap is not in the numbers** |
+> | P1-2 | `docs/71` | A phone visitor had no call to action for up to 5.5 screens; 12 of 23 CTAs open WhatsApp and none says so |
+> | P1-3 | `docs/73` | **Every button on the site was a different size in Arabic.** Rendered heights 5 → 3, all on scale, both languages identical |
+> | P1-4 | `docs/74` | No spacing drift — 85% on the ladder and every exception traced. Six consecutive sections share one rhythm: a number for B5 |
+> | P1-5 | `docs/72` | The phone CTA gap closed: `/story` went from a CTA in view 6% of the scroll to 99% |
+> | P1-6 | `docs/75` | **X09 delivered.** Text below 10px, shrinking as the screen grew — including the four service names at 10px on a laptop |
+>
+> Four new `qa.js` sections came out of it — reach, control scale, type floor,
+> and CSS that can never apply — each verified by reintroducing the defect it
+> was written for.
+
 Mine. In order. Each ends in measured before/after numbers and a commit, the
 way §12–§15 of `docs/43` did.
 
