@@ -105,6 +105,18 @@
      soft (docs/76). Above 1672px it simply stops growing and stays centred. */
   .c-page__figure {
     margin: var(--space-40) 0 var(--space-48);
+    /* The drift below moves the image inside its frame. Without this the
+       oversized image would push the page instead of moving within it. */
+    overflow: hidden;
+    border-radius: var(--radius-md);
+  }
+
+  /* The two later figures breathe wider than the reading measure, so the page
+     alternates between text width and image width as you go down it. */
+  @media (min-width: 64em) {
+    .c-page__figure--wide {
+      margin-inline: calc(var(--space-48) * -1);
+    }
   }
 
   .c-page__figure-image {
@@ -119,5 +131,38 @@
        edge reads as a hole cut in the surface, the same reason .c-work__image
        and .c-gallery__image take a hairline. */
     background-color: var(--color-surface);
+  }
+}
+
+@layer motion {
+  /* SCROLL-DRIVEN DRIFT — /about's images move within their frames as the page
+     goes past them. Pure CSS, on a view timeline: no script, nothing to fail,
+     and no work at all in browsers that do not support it.
+
+     WHY IT IS GUARDED SEPARATELY rather than relying on 01-reset.css.
+     That universal guard stops motion by flattening `animation-duration` and
+     `animation-iteration-count`. A scroll-driven animation uses NEITHER — its
+     progress comes from the scroll position, not from a clock — so the guard
+     that covers every other animation on this site does not reach this one.
+     Measured before writing this comment, not assumed. Hence the explicit
+     `no-preference` gate: the rule is never installed for anyone who asked for
+     less motion.
+
+     The transform is a scale plus a small vertical shift. Scale first so the
+     image always over-fills its frame and no edge can be exposed mid-drift. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .c-page__figure-image {
+        animation: figure-drift linear both;
+        animation-timeline: view();
+        animation-range: entry 0% exit 100%;
+        will-change: transform;
+      }
+
+      @keyframes figure-drift {
+        from { transform: scale(1.07) translateY(-1.8%); }
+        to   { transform: scale(1.07) translateY(1.8%); }
+      }
+    }
   }
 }
