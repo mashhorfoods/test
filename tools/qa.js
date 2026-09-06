@@ -447,28 +447,112 @@ function serve() {
        feature, not a demand to undo the last two. Moving it is a decision to
        take in a commit message, which is the point. */
     const FIRST_SCREEN_BUDGET = 480 * 1024;
+    /* `first` IS DEFINED BY LAYOUT, NOT BY A CLOCK.
+
+       It used to be "everything fetched by load + 900ms", which made it a
+       measure of how fast the machine was: a lazy image that finished inside
+       the window counted, the same image on a slower runner did not. The same
+       code reported 418KB in the dev container and 450KB in CI — 32KB apart
+       on identical bytes — so a budget on it could pass in one place and fail
+       in the other for no reason anyone could act on.
+
+       Now an image is counted if its box overlaps the first viewport, and
+       excluded if it does not. Whether a below-fold image happened to load is
+       no longer a question the number can be sensitive to, because it is
+       excluded either way. The waits below are conditions, not timeouts.
+
+       Known approximation: a CSS background image is not in document.images,
+       so it counts as first-screen wherever it sits. This site does not use
+       any for content; if that changes, this counts high rather than low,
+       which is the safe direction for a budget. */
     const weigh = async (page, width, height, scroll) => {
       const c = await browser.newContext({ viewport: { width, height }, isMobile: width < 700, hasTouch: width < 700 });
       const pg = await c.newPage();
       const seen = [];
       pg.on('response', (r) => seen.push(r.body().then((b) => [r.url(), b.length]).catch(() => null)));
       await pg.goto(`${BASE}/${page}`, { waitUntil: 'load' });
-      await pg.waitForTimeout(900);
+
+      /* Every URL each image could resolve to (src and every srcset
+         candidate), absolute, split by whether the element overlaps the first
+         viewport. Read from attributes rather than currentSrc: a lazy image
+         that has not started loading has no currentSrc, and missing it here
+         is exactly how its bytes would leak back into `first`. */
+      const imgs = await pg.evaluate(() => {
+        const abs = (u) => { try { return new URL(u, location.href).href; } catch { return null; } };
+        const urlsOf = (el) => {
+          const out = [];
+          if (el.getAttribute('src')) out.push(abs(el.getAttribute('src')));
+          for (const part of (el.getAttribute('srcset') || '').split(',')) {
+            const u = part.trim().split(/\s+/)[0];
+            if (u) out.push(abs(u));
+          }
+          return out.filter(Boolean);
+        };
+        const all = new Set(); const firstScreen = new Set();
+        const h = window.innerHeight;
+        for (const img of document.images) {
+          const r = img.getBoundingClientRect();
+          const overlaps = r.top < h && r.bottom > 0;
+          const urls = [...urlsOf(img), ...[...(img.parentElement?.tagName === 'PICTURE'
+            ? img.parentElement.querySelectorAll('source') : [])].flatMap(urlsOf)];
+          for (const u of urls) { all.add(u); if (overlaps) firstScreen.add(u); }
+        }
+        return { all: [...all], firstScreen: [...firstScreen] };
+      });
+      const belowFold = new Set(imgs.all.filter((u) => !imgs.firstScreen.includes(u)));
+
+      /* Two conditions rather than a fixed wait: the images that DO overlap
+         the first viewport have finished, and font loading has settled. Both
+         are async and both would otherwise be a race against the clock. */
+      await pg.waitForFunction(() => {
+        const h = window.innerHeight;
+        return [...document.images]
+          .filter((i) => { const r = i.getBoundingClientRect(); return r.top < h && r.bottom > 0; })
+          .every((i) => i.complete);
+      }, null, { timeout: 20000 }).catch(() => {});
+      await pg.evaluate(() => document.fonts.ready).catch(() => {});
+
       const settle = async () => (await Promise.all(seen)).filter(Boolean);
       const sum = (rows, film) => rows.filter(([u]) => /hero\.(mp4|webm)$/.test(u) === film)
         .reduce((n, [, b]) => n + b, 0);
-      const firstRows = await settle();
-      const first = sum(firstRows, false);
+
+      const firstRows = (await settle()).filter(([u]) => !belowFold.has(u) && !/hero\.(mp4|webm)$/.test(u));
+      const first = firstRows.reduce((n, [, b]) => n + b, 0);
+
+      /* WHERE THE BYTES WENT, not just how many.
+
+         This measurement reads 418KB in the dev container and 450KB on the CI
+         runner, and neither of the obvious explanations survived being tested:
+         throttling the network to a quarter of its speed moved the number not
+         at all, and waiting on document.fonts.ready instead of a timer fetched
+         the same five files. The remaining difference between the two is the
+         browser build itself, which cannot be reproduced from here.
+
+         Rather than guess a third time, the number now carries its own
+         composition. A 32KB disagreement that names a font is a different
+         problem from one that names an image or the document, and the log line
+         says which without anyone having to reproduce anything. */
+      const bucket = (u) => (/\.woff2?$/.test(u) ? 'fonts'
+        : /\.(webp|png|jpe?g|svg|avif|gif)$/.test(u) ? 'img'
+        : /\.html?$|\/$/.test(u) ? 'html' : 'other');
+      const parts = {};
+      for (const [u, b] of firstRows) parts[bucket(u)] = (parts[bucket(u)] || 0) + b;
+      const firstBreakdown = ['html', 'fonts', 'img', 'other']
+        .filter((k) => parts[k]).map((k) => `${k} ${(parts[k] / 1024).toFixed(0)}`).join(' + ');
+
       if (scroll) {
         const H = await pg.evaluate(() => document.documentElement.scrollHeight);
         for (let y = 0; y < H; y += height) {
           await pg.evaluate((v) => window.scrollTo(0, v), y);
           await pg.waitForTimeout(60);
         }
-        await pg.waitForTimeout(1200);
+        /* Again a condition rather than a fixed wait: every image on the page
+           has settled, however long that took. */
+        await pg.waitForFunction(() => [...document.images].every((i) => i.complete),
+          null, { timeout: 30000 }).catch(() => {});
       }
       const rows = await settle();
-      const out = { first, full: sum(rows, false), film: sum(rows, true) };
+      const out = { first, firstBreakdown, full: sum(rows, false), film: sum(rows, true) };
       await c.close();
       return out;
     };
@@ -513,7 +597,7 @@ function serve() {
 
       const line = varies
         ? `phone ${(phone.full / 1024).toFixed(0)}KB · desktop ${(desktop.full / 1024).toFixed(0)}KB` +
-          ` (first screen ${(phone.first / 1024).toFixed(0)}KB)` + (desktop.film ? ` + ${(desktop.film / 1024).toFixed(0)}KB showpiece` : '')
+          ` (first screen ${(phone.first / 1024).toFixed(0)}KB = ${phone.firstBreakdown})` + (desktop.film ? ` + ${(desktop.film / 1024).toFixed(0)}KB showpiece` : '')
         : `${(phone.full / 1024).toFixed(0)}KB, one file`;
       console.log(`  ·  ${page.padEnd(14)} ${line}`);
     }

@@ -169,17 +169,66 @@ finding. **The same §9 code reports 418KB in this container and 450KB on the
 CI runner** — a 32KB spread on identical bytes, while `full` differs by only
 3KB.
 
-`first` is everything the page has fetched by `load` plus 900ms. That makes it
-timing-dependent: whether a particular lazy image finishes inside the window
-depends on how fast the machine is, not on what the page costs. So the honest
-statement of today's figure is **418–450KB depending on where it is measured**,
-not a single number.
+The obvious explanation was that `first` counted everything fetched by `load`
+plus 900ms, making it a measure of machine speed: a lazy image that finished
+inside the window counted, the same image on a slower runner did not.
 
-The budget is set at 480KB against the *higher* end, so it cannot pass locally
-and fail in CI. But it should be read as having roughly 30KB of measurement
-noise in it, and a future breach within that band means "look again", not
-"regressed". Tightening it would mean making `first` deterministic first —
-worth doing before the budget is ever moved down.
+**That explanation was tested and it is wrong.** Throttling the network to a
+quarter of its throughput moved the number by 0KB. Replacing the timer with
+`document.fonts.ready` fetched the same five files. The first screen turns out
+to fetch **no images at all** — it is the HTML plus five font files:
+
+| | |
+| --- | ---: |
+| `index.html` | 356.8KB |
+| four Poppins Latin faces | 30.7KB |
+| `cairo-arabic-var.woff2` | 30.2KB |
+| **total** | **417.7KB** |
+
+So the gap is not font timing, and it is not a lazy image *in this container*
+— nothing below the fold loads here at all inside the window.
+
+But the sizes point somewhere specific. The first two below-fold images are
+`B1.webp` at **29.9KB** and `B2.webp` at **31.7KB**, and the gap is 32KB.
+Chromium decides how far below the fold to start a lazy image using a distance
+threshold that varies by browser version and by effective connection type — so
+on the runner, one of those very plausibly begins and finishes inside the
+window, and here it never starts.
+
+That is a prediction, not a conclusion: it was not reproduced, it was inferred
+from two numbers matching. What makes it worth acting on is that the fix is
+the same either way — an image that does not overlap the first viewport is now
+excluded whether or not it loaded. **The next CI run tests it.** If the runner
+reports `first screen 418KB = html 357 + fonts 61`, matching this container,
+the cause was a below-fold image and it is now closed. If it still reports
+450KB, the breakdown names which category the extra bytes are in and the guess
+was wrong again.
+
+**Two changes came out of the attempt anyway**, both worth keeping:
+
+- `first` is now defined by **layout** rather than by a clock — an image counts
+  if its box overlaps the first viewport and is excluded if it does not, so
+  whether a below-fold image happened to load is no longer a question the
+  number can be sensitive to. That removes a real class of nondeterminism,
+  even though it was not today's.
+- The waits are conditions (in-viewport images complete, `document.fonts.ready`)
+  rather than fixed timeouts.
+
+**And the number now carries its own composition** — `first screen 418KB =
+html 357 + fonts 61` — because a 32KB disagreement that names a font is a
+different problem from one that names an image or the document. The next CI
+run says which, without anyone having to reproduce anything.
+
+Until it does, the figure is honestly **418–450KB depending on where it is
+measured**. The budget stays at 480KB, set against the higher end so it cannot
+pass locally and fail in CI, and a breach inside that band means "look at the
+breakdown", not "regressed".
+
+One thing the breakdown already shows, unrelated to the discrepancy: the
+English homepage fetches the **30KB Arabic font** on its first screen. Whether
+that is necessary is worth asking — it is 7% of the budget — but it is a
+question for a separate pass, not something to change while chasing a
+measurement bug.
 
 > The rule, stated so it survives this document: **a budget nobody measures is
 > a budget that grows.** That sentence was already written in `qa.js` §7 about
