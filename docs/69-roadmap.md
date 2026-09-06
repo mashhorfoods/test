@@ -170,7 +170,7 @@ Parallel with P1. Nothing here waits on anything else here.
 | **P3-1a** | ~~**X03 Experience Deconstruction**~~ | ✅ **Done 6 Sep — `docs/80`** §2–§3 |
 | **P3-1b** | **X02 second half** — the measurable benchmark against the reference | Two `reference-probe.js` runs (B1) |
 | **P3-2** | **X04 Reference-Driven Redesign** — preserve / borrow / adapt / improve / reject. **Unblocked, three proposals already tabled** by `docs/80` §6 | ~~P3-1~~ — can start |
-| **P3-3** | **X05 direction statement** in full | P3-2 |
+| ~~**P3-3**~~ | ~~**X05 direction statement** in full~~ | ✅ **DONE 6 Sep — `docs/98`.** Current → Desired → Why → What changes → What stays. **Found on the way: the phone's first screen went 314KB → 418KB across two features and nothing measured it** — `docs/53` budgeted the video and nothing budgeted anything else. `qa.js` §29 now holds a 460KB first-screen budget and HIGHs a phone that requests the film |
 | **P3-4** | **X06 structural remainder** — the four-block question | B5 + P3-2 |
 | **P3-5** | **X07 systematic motion pass** | P3-2 |
 | **P3-6** | **X10 comparative validation** | P3-2 **+ P3-1b** — comparison needs the numbers |
@@ -222,9 +222,9 @@ site, with full repository access.**
 
 | # | Work | Blocked by |
 | --- | --- | --- |
-| **R1** | **Section-by-section redesign**, everything except naming and order: how each section opens and closes, internal hierarchy, rhythm against neighbours, one CTA per surface, the hand-off between them | **Nothing** |
-| **R2** | **The way into Services & Pricing.** The tiers are right and match the field; the problem is **17.7 screenfuls on a phone** past twelve packages with no service-level entry. Measured, not asserted | **Nothing** |
-| **R3** | **The scroll-snap gallery** — case-study deliverables first, reusable for a portfolio. No JS required, no auto-advance, RTL for free. **Never the hero:** `docs/83` measured 132 blocks stranded when script-hidden content loses its script, and a carousel is that pattern by design | **Nothing** |
+| ~~**R1**~~ | ~~Section-by-section redesign~~ | ✅ **DONE 6 Sep — `docs/88`.** How each section opens and closes, internal hierarchy, rhythm against neighbours, one CTA per surface. **Found on the way: a copy of the catalogue nobody had counted** |
+| ~~**R2**~~ | ~~The way into Services & Pricing~~ | ✅ **DONE 6 Sep — `docs/87`.** 17.7 screenfuls past twelve packages with no service-level entry became a service index |
+| ~~**R3**~~ | ~~The scroll-snap gallery~~ | ✅ **DONE 6 Sep — `docs/86`.** No JS required, no auto-advance, RTL for free, and never the hero — a carousel is the stranding pattern `docs/83` measured at 132 blocks |
 | **R4** | Section **naming and order** — outcome-named vs feature-named, `docs/80` §3.1 | **B5** |
 | **R5** | Five **regional** competitors probed — Pro Branding, Infinity Corp, Emirates Graphic, Prism Digital, Upscale Digital. All bilingual, which no reference has covered. `docs/70` benchmarked SaaS products, right for craft and wrong for market | **B1 probe runs** |
 
