@@ -202,7 +202,7 @@ site, with full repository access.**
 
 | # | Work | State |
 | --- | --- | --- |
-| **D1** | **Owner:** establish a default branch, protect it, require `check`, then invite | **Blocking — do first** |
+| **D1** | **Half done — `docs/85` §6.** `main` created at the verified head `7627b6d`; the old default was a strict ancestor (96 ahead, 0 behind) so nothing was lost, and CI already triggers on `pull_request` so a required check will actually fire. **Found on the way: the default branch was another session's working branch, and the repository has never had a single pull request.** What remains is two repository *settings* no tool here can reach — make `main` default, add the ruleset. `docs/85` §6.3 is the click path, ~3 minutes | **Owner — before the invitation** |
 | ~~**D2**~~ | ~~The operator runbook~~ | ✅ **DONE 6 Sep — `docs/89`.** Nine sections: the one bilingual rule, what to edit where, the browser-only data path CI rebuilds for you, what will bite you, how to read the harnesses (and the one LOW that is expected), what not to touch, and what to do when the live site looks wrong |
 
 ---
