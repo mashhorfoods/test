@@ -189,6 +189,10 @@
           "alt": {
             "en": "Five Umrah offer posters in the same blue identity, each with the Al Mada mark, a curved panel carrying a photograph, the offer in large Arabic numerals, the itinerary beneath it and a booking button. The photographs change from poster to poster; nothing else does.",
             "ar": "خمسة إعلانات لعروض العمرة بالهوية الزرقاء نفسها، يحمل كلٌّ منها علامة المدى، ولوحة منحنية فيها صورة، والعرض بأرقام عربية كبيرة، وتفاصيل الرحلة تحته، وزر للحجز. تتغيّر الصور من إعلان لآخر، ولا يتغيّر شيء سواها."
+          },
+          "label": {
+            "en": "The campaign set",
+            "ar": "مجموعة الحملة"
           }
         },
         {
@@ -196,6 +200,10 @@
           "alt": {
             "en": "The Al Mada company profile, printed. Three panels: a cover carrying the mark and the promise over an airport window, an inside spread introducing the agency, and a further panel answering why the agency.",
             "ar": "الملف التعريفي لوكالة المدى مطبوعًا. ثلاث لوحات: غلاف يحمل العلامة والوعد فوق نافذة مطار، وصفحة داخلية تعرّف بالوكالة، ولوحة أخرى تجيب عن سؤال: لماذا الوكالة."
+          },
+          "label": {
+            "en": "The company profile",
+            "ar": "الملف التعريفي"
           }
         }
       ]

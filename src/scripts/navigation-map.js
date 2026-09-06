@@ -138,6 +138,10 @@ export const STRINGS = {
     footerElsewhere: 'Elsewhere',
     opensNewTab: '(opens in a new tab)',
     backToTop: 'Back to top',
+    // Names the scroll-snap gallery (gallery.css). It is a focusable scroll
+    // region, so it needs a name a screen reader can announce before the
+    // visitor decides whether to enter it.
+    galleryScroller: 'The work delivered — scroll for more',
     rights: 'All rights reserved.',
     // Currency SYMBOL only — the price figure itself is business data and is
     // authored in the markup, never here.
@@ -180,6 +184,7 @@ export const STRINGS = {
     footerElsewhere: 'مواقع أخرى',
     opensNewTab: '(يفتح في نافذة جديدة)',
     backToTop: 'العودة إلى الأعلى',
+    galleryScroller: 'الأعمال المسلَّمة — مرّر للمزيد',
     rights: 'جميع الحقوق محفوظة.',
     currency: 'دولار',
     billingOnce: 'لمرة واحدة',

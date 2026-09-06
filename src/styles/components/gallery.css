@@ -1,0 +1,143 @@
+/* =============================================================================
+   GALLERY — a slideshow that works before any script does
+
+   WHY SCROLL-SNAP AND NOT A CAROUSEL.
+   docs/83 measured what happens when content is hidden behind JavaScript and
+   the script fails: 132 blocks across four pages, invisible permanently. A
+   carousel is that pattern on purpose — every slide but one hidden, only
+   script to bring them back. This hides nothing. It is a scrolling row that
+   comes to rest on each item, so with no JavaScript at all it is still a
+   gallery you can use, and there is nothing for a failure to strand.
+
+   It also inherits three things this site already decided:
+     - RTL comes free. Logical properties and the document's own direction
+       reverse the track; there is no second implementation and no arrow whose
+       meaning has to be flipped.
+     - Reduced motion needs no special case, because NOTHING MOVES ON ITS OWN.
+       There is no auto-advance to stop. 01-reset.css's universal guard covers
+       the smooth-scroll behaviour and that is the whole of it.
+     - One CTA per surface survives, because the gallery carries no CTA.
+
+   USED WHERE IT EARNS ITS PLACE. Two or more items. build-story.js emits a
+   plain figure for a single deliverable — a one-slide slideshow is a picture
+   with extra controls, and worse than the picture.
+   ============================================================================= */
+
+@layer components {
+  .c-gallery {
+    /* The scroller itself. Not a grid: the whole point is one axis that
+       overflows and settles. */
+    display: flex;
+    gap: var(--space-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    /* Start, not stretch: with a fixed image height the captions already line
+       up, and stretching would pull short items to the tallest one's height. */
+    align-items: start;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    /* Logical, so the resting edge is the left in English and the right in
+       Arabic without a [dir] rule anywhere. */
+    scroll-padding-inline-start: 0;
+    overscroll-behavior-inline: contain;
+
+    /* A touch scroller with no visible bar tells a mouse user nothing, so the
+       bar stays — styled to belong rather than hidden. */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-strong) transparent;
+  }
+
+  .c-gallery::-webkit-scrollbar {
+    block-size: 6px;
+  }
+
+  .c-gallery::-webkit-scrollbar-thumb {
+    background-color: var(--color-border-strong);
+    border-radius: 999px;
+  }
+
+  .c-gallery__item {
+    /* Each slide is most of the measure, with the next one deliberately
+       peeking. The peek is the affordance: it is what tells a visitor there
+       is more without a caption saying so. */
+    flex: 0 0 min(100%, 42rem);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    margin: 0;
+    min-inline-size: 0;
+  }
+
+  @media (min-width: 48em) {
+    .c-gallery__item {
+      flex-basis: min(86%, 46rem);
+    }
+  }
+
+  /* ONE HEIGHT FOR EVERY SLIDE, AND NOTHING CROPPED.
+     Rendered first with block-size:auto and the result was the defect this
+     replaces: the campaign sheet is portrait and the company profile is
+     landscape, so at a shared width they came out roughly 1035px and 400px
+     tall. Side by side that is not a gallery, it is two pictures that fell
+     over — and the captions landed 600px apart.
+
+     `contain` rather than `cover` because these are DELIVERABLES. Cropping to
+     fill a uniform box would cut the work being shown, which is the one thing
+     this component exists to display. So the box is uniform, the artwork is
+     whole, and the leftover is the page's own surface. */
+  .c-gallery__image {
+    inline-size: 100%;
+    block-size: min(68vh, 32rem);
+    object-fit: contain;
+    object-position: center;
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    /* Same reason as .c-work__image: light artwork on a dark page needs an
+       edge, or it reads as a hole cut in the ground. */
+    background-color: var(--color-surface);
+  }
+
+  /* A caption per slide, because a gallery of four artefacts with no names is
+     four pictures. Kept quiet — it labels, it does not narrate. */
+  .c-gallery__caption {
+    margin-block-start: var(--space-12);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+  }
+
+  .c-gallery__count {
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    /* The number is a position, always read left-to-right, in both languages. */
+    direction: ltr;
+    unicode-bidi: isolate;
+    margin-inline-end: var(--space-8);
+  }
+
+  /* Keyboard reachability. The scroller is focusable (tabindex="0" in the
+     markup) so it can be paged with the arrow keys like any scroll region;
+     without a visible ring that focus is invisible. */
+  .c-gallery:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  /* PRINT. A horizontal scroller on paper shows one slide and silently drops
+     the rest — the same stranding this component exists to avoid, just in a
+     different medium. On paper it becomes a stack. */
+  @media print {
+    .c-gallery {
+      display: block;
+      overflow: visible;
+    }
+
+    .c-gallery__item {
+      break-inside: avoid;
+      margin-block-end: var(--space-16);
+    }
+  }
+}

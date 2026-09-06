@@ -284,19 +284,75 @@ function webpSize(file) {
   return null;
 }
 
+/* ONE IMAGE IS A FIGURE; TWO OR MORE IS A GALLERY.
+   A one-slide slideshow is a picture wearing controls, so a single deliverable
+   keeps the plain figure it always had. The gallery (gallery.css) is a
+   scroll-snap track — it hides nothing, needs no script, and reverses under
+   RTL on its own. docs/86. */
 function deliverables(c) {
-  if (!Array.isArray(c.deliverable) || c.deliverable.length === 0) return '';
-  return `          <div class="c-chapter__work">
-${c.deliverable.map((d) => {
+  const items = Array.isArray(c.deliverable) ? c.deliverable : [];
+  if (items.length === 0) return '';
+
+  /* Intrinsic width and height on every image, so the page reserves the space
+     before the bytes arrive. Without them a lazy image is zero-high until it
+     loads and the text below it jumps. */
+  const dimsOf = (d) => {
     const size = webpSize(path.join(ROOT, d.src.replace(/^\.\//, '')));
-    const dims = size ? ` width="${size.w}" height="${size.h}"` : '';
-    const cap = size ? ` style="max-inline-size:min(100%, ${size.w}px)"` : '';
-    return `            <figure class="c-work">
-              <img class="c-work__image" src="${esc(d.src)}" alt="${esc(d.alt.en)}"
-                data-alt-en="${esc(d.alt.en)}" data-alt-ar="${esc(d.alt.ar)}"${dims}${cap}
-                loading="lazy" decoding="async" />
-            </figure>`;
+    return size ? { attr: ` width="${size.w}" height="${size.h}"`, w: size.w } : { attr: '', w: 0 };
+  };
+
+  const img = (d, cls) => {
+    const { attr } = dimsOf(d);
+    return `<img class="${cls}" src="${esc(d.src)}" alt="${esc(d.alt.en)}"
+                data-alt-en="${esc(d.alt.en)}" data-alt-ar="${esc(d.alt.ar)}"${attr}
+                loading="lazy" decoding="async" />`;
+  };
+
+  if (items.length === 1) {
+    const d = items[0];
+    const { w } = dimsOf(d);
+    /* Never displayed above its natural width: upscaling a 1200px sheet to fill
+       a 1320px column is how the campaign sheet came out soft (docs/76). */
+    const cap = w ? ` style="max-inline-size:min(100%, ${w}px)"` : '';
+    return `          <div class="c-chapter__work">
+            <figure class="c-work">
+              ${img(d, 'c-work__image').replace('loading=', `${cap ? cap.trim() + ' ' : ''}loading=`)}
+            </figure>
+          </div>`;
+  }
+
+  /* A real list, so a screen reader announces how many there are before the
+     visitor commits to scrolling one at a time. tabindex makes the scroller
+     reachable by keyboard — a scroll region that cannot be focused cannot be
+     paged with the arrow keys. */
+  /* BOTH: a literal name AND data-i18n-label. navigation.js swaps aria-label
+     from STRINGS on every language change, which covers Arabic — but it is
+     script, and this component's whole argument is that it works without any.
+     Measured with JS off: the label came back null, leaving a focusable scroll
+     region with no name at all. So the English name ships in the markup and
+     the swap improves it, exactly as the WhatsApp href does in docs/82. */
+  return `          <div class="c-chapter__work">
+            <ul class="c-gallery" role="list" tabindex="0"
+              aria-label="The work delivered — scroll for more" data-i18n-label="galleryScroller">
+${items.map((d, n) => {
+    /* The caption is a LABEL; alt is the description. Repeating alt here would
+       print a 300-character sentence under the picture and read it twice to a
+       screen reader — once as the image, once as the caption. A deliverable
+       with no label gets no caption rather than a bad one. */
+    const label = d.label
+      ? `<figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">${n + 1}/${items.length}</span>
+                    <span data-lang-copy="en">${esc(d.label.en)}</span><span data-lang-copy="ar" lang="ar">${esc(d.label.ar)}</span>
+                  </figcaption>`
+      : '';
+    return `              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  ${img(d, 'c-gallery__image')}
+                  ${label}
+                </figure>
+              </li>`;
   }).join('\n')}
+            </ul>
           </div>`;
 }
 
