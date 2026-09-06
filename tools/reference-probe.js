@@ -86,6 +86,20 @@
   const sections = [...root.children].filter(vis).map((el) => {
     const r = el.getBoundingClientRect();
     const cs = getComputedStyle(el);
+    /* THE SECTION-BY-SECTION FIELDS.
+       Order, height and rhythm were always here. What a design comparison
+       also needs is what each section is DOING: does it ask for anything,
+       does it carry evidence, how much reading does it cost. The hero is
+       excluded from the comparison deliberately — it is the one section this
+       project has already settled (docs/53, docs/80 §2.3) and the one where
+       every agency site looks the same. Everything after it is where the
+       differences live. */
+    const words = (el.innerText || '').trim().split(/\s+/).filter(Boolean).length;
+    const ctas = [...el.querySelectorAll('a,button')].filter((c) => {
+      if (!vis(c)) return false;
+      const cr = c.getBoundingClientRect();
+      return cr.height >= 32 && (c.innerText || '').trim().length > 0;
+    });
     return {
       tag: el.tagName.toLowerCase(),
       cls: (el.getAttribute('class') || '').slice(0, 44),
@@ -94,6 +108,19 @@
       padY: `${px(cs.paddingTop)}/${px(cs.paddingBottom)}`,
       bg: cs.backgroundColor,
       heading: (el.querySelector('h1,h2,h3')?.innerText || '').trim().slice(0, 70),
+      /* --- added for the section-by-section pass --- */
+      words,
+      /* Reading cost at roughly 200 wpm, in seconds — a section that takes
+         90 seconds to read is a decision, not an accident. */
+      readSec: Math.round((words / 200) * 60),
+      ctaCount: ctas.length,
+      ctaLabels: ctas.slice(0, 3).map((c) => (c.innerText || '').trim().slice(0, 28)),
+      imgs: el.querySelectorAll('img,picture,svg').length,
+      video: el.querySelectorAll('video,iframe').length,
+      /* A horizontal scroller or a slide container, which is the question
+         docs/86 answered for us and worth asking of everyone else. */
+      slider: !!el.querySelector('[class*="slid"],[class*="carousel"],[class*="swiper"],[class*="marquee"]'),
+      listItems: el.querySelectorAll('li').length,
     };
   });
 

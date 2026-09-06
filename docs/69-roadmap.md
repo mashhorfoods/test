@@ -234,6 +234,66 @@ review can be *sourced* here but never *verified* — `docs/84` §0.
 
 ---
 
+## 5c. The competitive pass, and two queued additions — opened 6 September
+
+### R5 extended: ten competitors, section by section, hero excluded
+
+`docs/70` benchmarked SaaS products — right for craft, wrong for market. The
+comparison the owner asked for is against **agencies in this market**, and the
+hero is deliberately out of scope: it is already settled (`docs/53`,
+`docs/80` §2.3) and it is the section where every agency site looks alike.
+Everything after it is where the differences are.
+
+The set, search-sourced 6 Sep (see §0 note below):
+
+| | | |
+| --- | --- | --- |
+| 1 | **RAM** `ram.sa` | Riyadh — strategic branding, corporate identity |
+| 2 | **PrezLab** `prezlab.com` | KSA — branding, bilingual by default |
+| 3 | **Rabeez** `rabeez.com` | Riyadh — 12 years, enterprise and government |
+| 4 | **Teryaq** `teryaq.media` | Jeddah — branding |
+| 5 | **SRMG Labs** | Riyadh — backed by the region's largest media group |
+| 6 | **Digital Gravity KSA** | Riyadh — web design, UI/UX, e-commerce |
+| 7 | **Prism Digital** `prismdigital.ae` | Dubai |
+| 8 | **Pro Branding** | Gulf |
+| 9 | **Emirates Graphic** | UAE |
+| 10 | **Upscale Digital** | Gulf |
+
+**Our own row is measured — `docs/100` §3**, and it already found three things
+before any competitor was seen: a section asking ten times in 1.5 screenfuls, the
+longest section on the site offering one way out, and a 42-second section with no
+call to action at all.
+
+**Blocked on observation, not analysis.** `tools/reference-probe.js` now
+reports, per section: order, height in screenfuls, padding rhythm, reading
+cost in seconds, CTA count and labels, images, video, whether a slider is
+present, and list density. One phone-width run per site produces the row.
+
+> **§0, restated because it keeps mattering.** WebSearch works from this
+> container; fetching any specific page returns `EGRESS_BLOCKED` — re-confirmed
+> 6 Sep against `prismdigital.ae`. The names above are therefore *sourced* and
+> not *verified*: nothing here has seen one of these sites. A comparison
+> written without the probe runs would be an assertion wearing a table's
+> clothes.
+
+### Two additions, deliberately queued last
+
+The owner asked for a slideshow and a video, **to be placed at the end of the
+redesign process** rather than now. Recorded so they are not lost, with what
+already exists noted so the ask is not accidentally satisfied twice:
+
+| # | Work | Already on the site | State |
+| --- | --- | --- | --- |
+| **C1** | A slideshow somewhere new | `docs/86` — scroll-snap gallery, currently on `/story`. No JS required, no auto-advance, RTL for free | **Queued — after the redesign.** The component exists; the open question is *where a second one earns its place*, which the competitive pass should inform |
+| **C2** | A video somewhere new | The hero showpiece — one budgeted clip, desktop only, phone gets a still (`docs/53`) | **Queued — after the redesign.** Any second video re-opens the weight question `docs/98` §5 just closed, so it needs a budget line before it needs a player |
+
+**Neither starts before the redesign work above it is done** — that is the
+owner's instruction and it is also the right order: both are placement
+decisions, and placement is what the section pass and the buyer sessions are
+for.
+
+---
+
 ## 5b. Interactive marketing features — opened 6 September
 
 Requested as briefs, not as roadmap items, and recorded here so they leave the
