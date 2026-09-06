@@ -93,3 +93,31 @@
     margin-block-start: var(--space-16);
   }
 }
+
+@layer components {
+  /* PAGE FIGURE — one image on a prose page.
+     /about had no visual at all: a title, a lead, four prose sections. This
+     sits between the lead and the first heading, so it sets the tone before
+     the reading starts rather than interrupting an argument halfway through.
+
+     Full measure and never upscaled: the source is 1672px wide, and stretching
+     it past that on a wide screen is how the Al Mada campaign sheet came out
+     soft (docs/76). Above 1672px it simply stops growing and stays centred. */
+  .c-page__figure {
+    margin: var(--space-40) 0 var(--space-48);
+  }
+
+  .c-page__figure-image {
+    display: block;
+    inline-size: 100%;
+    max-inline-size: min(100%, 1672px);
+    block-size: auto;
+    margin-inline: auto;
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    /* The image carries its own light ground. On this dark page an unbordered
+       edge reads as a hole cut in the surface, the same reason .c-work__image
+       and .c-gallery__image take a hairline. */
+    background-color: var(--color-surface);
+  }
+}

@@ -179,7 +179,7 @@ Parallel with P1. Nothing here waits on anything else here.
 
 | # | | State |
 | --- | --- | --- |
-| **L1** | **THE DOMAIN.** Every canonical, the sitemap, the share tags and Plausible all name `zaokalyamamah.online`. `docs/28` §C-5 asked whether that was staging or permanent and it was never answered. One field — `site.config.json` `url`, plus `analytics.domain`. **The only thing in the pass that should stop an upload** | **Owner — decide** |
+| ~~**L1**~~ | ~~THE DOMAIN~~ | ✅ **CONFIRMED 6 Sep — `zaokalyamamah.online` is correct and stays.** `docs/28` §C-5's open question, answered at last. Canonicals, sitemap, share tags and the Plausible key all already name it, so nothing changes. **The pre-launch pass has no blockers left** |
 | ~~L2~~ | ~~Production headers verified~~ | ✅ All nine pages served with the real `.htaccess` headers: **0 CSP violations, 0 page errors**. Never tested before — every harness serves without headers |
 | ~~L3~~ | ~~Structure, meta, weight, film behaviour~~ | ✅ 32 page/language/width combinations clean; meta complete; 404 `noindex` and out of the sitemap; phone first screen **314KB**; the film provably desktop-only and reduced-motion-aware |
 | **L4** | The four post-upload checks — HTTPS/HSTS, the rewrite, Search Console, uptime. `docs/44` §2 | **Owner — first hour after upload** |
