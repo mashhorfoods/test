@@ -10,10 +10,18 @@
    beneath a panel that reads "One brief. One schedule. One set of files."
    They were removed rather than reworded.
 
-   THE DEVICE IS A CONTRAST OF ARRANGEMENTS: the same five services, once as
-   five detached boxes and once as five rows of one box. The argument is made
-   by structure, so it needs no arrows, no colour coding and no claim about
-   anybody's work — and it mirrors under RTL for free.
+   THE DEVICE WAS A CONTRAST OF ARRANGEMENTS: the same services, once as
+   detached boxes and once as rows of one box. Both lists were removed on
+   6 September 2026 — the owner counted the four service names three times in
+   one screen, once in the ecosystem cards immediately above and twice more
+   here, and repetition was doing more damage than the structural argument was
+   doing good. See docs/81.
+
+   WHAT ARGUES NOW IS THE COST, not the shape: four briefs against one, four
+   schedules against one, four sets of files against one. That contrast was
+   always the concrete half, it never repeated anything, and it needs no
+   arrows, no colour coding and no claim about anybody's work — and it mirrors
+   under RTL for free.
    ============================================================================= */
 
 @layer components {
@@ -82,72 +90,6 @@
     margin-inline-start: auto;
     direction: ltr;
     unicode-bidi: isolate;
-  }
-
-  /* --- Five detached boxes ---------------------------------------------- */
-  .c-compare__scatter {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-8);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .c-compare__scatter > li {
-    padding: var(--space-12) var(--space-16);
-    border: var(--border-hairline);
-    border-radius: var(--radius-xs);
-    font-size: var(--text-body-sm);
-    color: var(--color-text-secondary);
-    /* Service names mix Arabic and Latin; isolate each so a run cannot
-       reorder against its neighbours in the grid. */
-    unicode-bidi: isolate;
-  }
-
-  /* The odd one out sits alone on the last row — five things do not divide
-     into two columns, and letting that show is the point. */
-  .c-compare__scatter > li:last-child {
-    grid-column: 1 / -1;
-  }
-
-  /* --- The same five, joined -------------------------------------------- */
-  .c-compare__stack {
-    position: relative;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    border: var(--border-hairline);
-    border-radius: var(--radius-xs);
-    overflow: hidden;
-  }
-
-  /* ONE continuous edge running the whole height — the visual difference
-     between "five things" and "one thing with five parts". Drawn on the list,
-     not on each row: per-row segments were interrupted by the dividers and
-     rendered as five separate bars, which argued the opposite point. */
-  .c-compare__stack::before {
-    content: "";
-    position: absolute;
-    inset-block: 0;
-    inset-inline-start: 0;
-    inline-size: 2px;
-    background-color: var(--color-accent);
-  }
-
-  .c-compare__stack > li {
-    display: flex;
-    align-items: center;
-    gap: var(--space-12);
-    padding: var(--space-12) var(--space-16);
-    padding-inline-start: calc(var(--space-16) + 2px);
-    font-size: var(--text-body-sm);
-    color: var(--color-text-primary);
-    unicode-bidi: isolate;
-  }
-
-  .c-compare__stack > li + li {
-    border-block-start: var(--border-hairline);
   }
 
   /* --- The three facts under each panel ---------------------------------- */
