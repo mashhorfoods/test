@@ -311,3 +311,114 @@ was never given a home. It now has one: `docs/69` P2, **B7**.
 **Not on the list: removing it.** Blur, patch or crop is circumventing the
 licence condition, section 8 already rejected it, and `delogo` left a grey
 smudge beside the headline when it was tried.
+
+---
+
+## 10. Closed — the drawn film ships, 6 September 2026
+
+**B7 is done.** The owner chose option 1 from section 9: revert to the drawn
+scene. `npm run film`, one command, exactly as section 8 said it would be.
+
+Note the wording of the request — *remove or cover the watermark*. **Neither
+happened, and that is the point.** There was nothing to remove: the drawn film
+replaces the footage outright, so no mark is being edited out and no licence
+condition is being circumvented. Section 8's objection stands untouched; it
+simply no longer applies to anything.
+
+### 10.1 Verified by reading frames, not by trusting the command
+
+The same method that found the watermark, pointed at the new files:
+
+| | |
+| --- | --- |
+| `hero.webm` | **9 frames sampled** across the loop, cropped to the exact region the logo occupied, brightened and contrast-boosted. Drawn particles only |
+| `hero.mp4` | same crop at 3s. Clean |
+| `hero-poster.webp` | same crop. Clean — and this is the one that matters most, being what every phone, reduced-motion and no-JS visitor sees |
+
+Rendered in the browser with autoplay forced and a **4.2s** settle, because the
+first investigation measured nothing at 1200ms — the film had not attached yet:
+
+- **English desktop** — video playing, `hero.webm`, headline on clean dark
+  ground, the glow pooling behind the orbit at right.
+- **Arabic desktop** — `dir="rtl"`, the film mirrored, dark side now on the
+  right under the Arabic headline, glow behind the orbit at left. Section 8's
+  rule holding without a second implementation.
+- **Phone** — poster only; the film is desktop-only by design.
+
+### 10.2 One number corrected
+
+Section 8 recorded the drawn film at **657 KB MP4 / 211 KB WebM**. It now
+renders at **963 KB / 403 KB** — the film gained the three-act structure and
+the launch streaks in the commits after that table was written, and the table
+was never updated.
+
+Still **47% of the 2048 KB budget**, and still well under the watermarked
+footage's 878 KB / 720 KB — but the figure in section 8 was stale, which is the
+same failure as section 8's conclusion being stale. **Recorded here rather than
+edited there**, so the history stays readable.
+
+The poster is **10 KB**, under the 12 KB inline limit, so it still inlines and
+no phone gains a request.
+
+### 10.3 The guard this needed
+
+The watermark shipped for two days because **nothing in the repository recorded
+what the hero was made from.** The decision was sound and its second half —
+*"replace them with clean exports later"* — lived in a commit message.
+
+Two builders write these same three files, and their outputs are hard to tell
+apart at a glance. So each now signs its work: `provenance.json` naming the
+generator, the tool, the time, and for clips the filenames.
+
+`qa.js` **§23** reads it. It cannot see a watermark — that needs eyes, and the
+frames above are the record of that. What it does is make the question
+answerable, and fail three states that are not:
+
+| Mutation | |
+| --- | --- |
+| provenance deleted — a hero of unknown origin | **caught** (HIGH) |
+| assets replaced by something that did not sign | **caught** (HIGH) |
+| hero rebuilt from supplied footage | **caught** (MED — a prompt to check, not a refusal) |
+
+**3 of 3.** The clips path stays available and is not treated as wrong; it is
+treated as the path that needs a look before shipping, which is precisely what
+was missing in September.
+
+`validate.js` **0** · `qa.js` **0 high, 0 medium** · `a11y.js` **0**.
+
+### 10.4 What the size check turned up
+
+The two posters disagreed — `src/assets/showpiece/hero-poster.webp` at 10,628
+bytes, `dist/assets/hero-poster.webp` at 14,530. An unexplained difference is
+the kind of thing this project has been punished for accepting, so it was
+chased rather than shrugged at.
+
+**`build.js` never emptied `dist/`.** The image pipeline inlines anything under
+12KB and copies anything above, never both. The poster is 10.6KB, so it was
+inlined and not copied — the 14.5KB file in `dist/assets` was a **leftover**
+from when the poster was over the limit. Deleting it and rebuilding proved it:
+it did not come back.
+
+It had been shipping ever since. `build-zip.js` carries `SHIP_DIRS =
+['assets']` **whole**, so an orphan is uploaded to the server and downloaded by
+nobody — and `index.html` carries a comment explaining that a second copy of
+the poster is exactly what must not exist:
+
+> *"No poster attribute, deliberately: the `<img>` above IS the poster… A
+> poster attribute here would be a second copy of the same picture and a
+> request nobody needs."*
+
+The copy existed anyway, by a different route, for weeks.
+
+**Fixed at the cause:** `build.js` now clears `dist/` before writing. A build
+output directory that accumulates is not a build output directory — and it
+makes CI's *"the committed dist must match a fresh build"* mean what it says,
+since until now a stale file passed that check by being present in both.
+
+**And at the effect:** `qa.js` §24 fails any file in `dist/assets` that no
+shipped page references. Proved by dropping a 19.5KB stray in and watching it
+fire, then removing it and watching qa return to zero. Fonts are exempt — they
+are named inside `@font-face` in the inlined CSS, and subsetting means a face
+may legitimately serve one page only.
+
+`dist/assets`: **22 files → 21**.

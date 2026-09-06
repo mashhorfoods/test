@@ -1525,6 +1525,75 @@ function serve() {
     }
   }
 
+  /* ---- 23 what the hero was made from ------------------------------------
+     WHY THIS EXISTS. A Pika watermark sat on the hero of every page for two
+     days — on hero.webm, hero.mp4 AND hero-poster.webp, which is what every
+     phone, reduced-motion and no-JS visitor sees instead of the film. It was a
+     deliberate decision with sound licence reasoning, and the second half of
+     that decision — "replace them with clean exports later" — lived in a
+     commit message and nowhere else (docs/54 §9, docs/89).
+
+     Two builders write these same three files. `npm run film` draws the scene
+     and owns it outright; `npm run film:clips` wraps generated footage, which
+     is where a third party's mark can arrive. The outputs are hard to tell
+     apart at a glance, and nothing recorded which had run.
+
+     This cannot see a watermark — that needs eyes, and docs/89 records the
+     frames that were read. What it can do is make the QUESTION answerable:
+     the hero must carry a provenance file naming its generator, and that file
+     must be newer than the assets it describes. A hero of unknown origin is
+     the state that let this ship. */
+  {
+    const dir = path.join(ROOT, 'src/assets/showpiece');
+    const assets = ['hero.webm', 'hero.mp4', 'hero-poster.webp']
+      .map((f) => path.join(dir, f)).filter((f) => fs.existsSync(f));
+    const prov = path.join(dir, 'provenance.json');
+
+    if (assets.length && !fs.existsSync(prov)) {
+      fail('HIGH', 'hero', 'the hero film ships with no provenance.json — nothing records which builder made it, which is exactly how a watermark shipped for two days');
+    } else if (assets.length) {
+      const p = JSON.parse(fs.readFileSync(prov, 'utf8'));
+      const signedAt = new Date(p.at).getTime();
+      const newest = Math.max(...assets.map((f) => fs.statSync(f).mtimeMs));
+      /* A minute of slack: the encoder writes the files, then the signature. */
+      if (newest > signedAt + 60000) {
+        fail('HIGH', 'hero', `the hero assets are newer than provenance.json (${p.generator}) — they were replaced by something that did not sign its work`);
+      }
+      if (p.generator === 'clips') {
+        fail('MED', 'hero', `the hero is wrapped from supplied footage (${(p.clips || []).join(', ') || 'unnamed clips'}) — check it carries no watermark before shipping; docs/54 §9 is why`);
+      }
+    }
+  }
+
+  /* ---- 24 bytes uploaded for nobody ---------------------------------------
+     build-zip.js ships SHIP_DIRS = ['assets'] WHOLE, so anything sitting in
+     that directory reaches the server whether or not a page asks for it. Until
+     today build.js never emptied dist/, and a 14.2KB hero-poster.webp had been
+     uploaded ever since the poster dropped under the 12KB inline limit and the
+     build switched from copying it to inlining it. Nothing referenced it and
+     nothing would ever have removed it.
+
+     build.js now clears dist/ first, which fixes the cause. This checks the
+     effect, because the cause can come back: any build step that writes an
+     unreferenced file into assets/ is shipping bytes to people who will never
+     download them, on a site whose whole argument is that it is light.
+
+     Fonts are exempt: they are named inside @font-face in the inlined CSS, and
+     subsetting means a face may legitimately be present for one page only. */
+  {
+    const dir = path.join(DIST, 'assets');
+    if (fs.existsSync(dir)) {
+      const pages = SHIPPED.map((f) => fs.readFileSync(path.join(DIST, f), 'utf8')).join('\n');
+      for (const name of fs.readdirSync(dir)) {
+        const file = path.join(dir, name);
+        if (!fs.statSync(file).isFile()) continue;
+        if (pages.includes(name)) continue;
+        const kb = (fs.statSync(file).size / 1024).toFixed(1);
+        fail('MED', 'weight', `dist/assets/${name} (${kb}KB) is referenced by no shipped page, and build-zip ships assets/ whole — it uploads and nobody downloads it`);
+      }
+    }
+  }
+
   await browser.close();
   server.close();
 

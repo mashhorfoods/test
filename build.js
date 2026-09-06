@@ -402,6 +402,19 @@ console.log('');
 
 /* ------------------------------------------------------------------ run -- */
 
+/* CLEAN FIRST. dist/ was never emptied, so anything that stopped being
+   referenced simply stayed and kept shipping: SHIP_DIRS carries assets/ whole,
+   so an orphan is uploaded to the server and downloaded by nobody. Found while
+   verifying the hero swap — a 14.2KB hero-poster.webp that no page references,
+   left behind when the poster dropped under the 12KB inline limit and the
+   build switched from copying it to inlining it. The copy was never deleted,
+   and nothing would ever have deleted it.
+
+   A build output directory that accumulates is not a build output directory.
+   Removing it wholesale also makes CI's "the committed dist must match a fresh
+   build" mean what it says — until now a stale file passed that check by being
+   present in both. */
+fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
 
 const kb = (n) => `${(n / 1024).toFixed(1)}KB`;

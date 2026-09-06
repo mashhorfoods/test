@@ -29,6 +29,21 @@ const ROOT = path.join(__dirname, '..');
 const SCENE = path.join(ROOT, 'src/showpiece/scene.html');
 const OUT = path.join(ROOT, 'src/assets/showpiece');
 
+/* PROVENANCE. The Pika watermark shipped on every page for two days because
+   nothing in the repository recorded what the hero was made from: the decision
+   lived in a commit message, and a commit message is not a tracker (docs/54
+   §9). Two builders write these same three files, and at a glance the outputs
+   are hard to tell apart — so from here each one signs its work and qa.js §23
+   reads the signature. */
+function signHero(generator, extra) {
+  fs.writeFileSync(path.join(OUT, 'provenance.json'), `${JSON.stringify({
+    generator,
+    tool: path.basename(__filename),
+    at: new Date().toISOString(),
+    ...extra,
+  }, null, 2)}\n`);
+}
+
 /* docs/53 §2. Changing a number here is changing the decision — say so in the
    commit message. */
 const SPEC = {
@@ -150,6 +165,7 @@ function encode(dir) {
       console.error('    Raise SPEC.crf, shorten SPEC.seconds, or drop SPEC.fps. Do not raise the budget silently.');
       process.exit(1);
     }
+    signHero('drawn', { frames: n, seconds: SPEC.seconds, fps: SPEC.fps });
     console.log('\n  Wired into the hero by index.html + src/scripts/hero-film.js. Desktop only.');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });

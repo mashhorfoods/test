@@ -29,6 +29,21 @@ const { execFileSync } = require('child_process');
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'src/assets/showpiece');
 
+/* PROVENANCE. The Pika watermark shipped on every page for two days because
+   nothing in the repository recorded what the hero was made from: the decision
+   lived in a commit message, and a commit message is not a tracker (docs/54
+   §9). Two builders write these same three files, and at a glance the outputs
+   are hard to tell apart — so from here each one signs its work and qa.js §23
+   reads the signature. */
+function signHero(generator, extra) {
+  fs.writeFileSync(path.join(OUT, 'provenance.json'), `${JSON.stringify({
+    generator,
+    tool: path.basename(__filename),
+    at: new Date().toISOString(),
+    ...extra,
+  }, null, 2)}\n`);
+}
+
 const SPEC = {
   width: 1280,
   height: 720,
@@ -202,6 +217,7 @@ try {
     console.error(`\n  ! over budget — deleted rather than shipped. Raise SPEC.crf or shorten the clips.`);
     process.exit(1);
   }
+  signHero('clips', { clips: process.argv.slice(2) });
 } finally {
   fs.rmSync(dir, { recursive: true, force: true });
 }
