@@ -59,6 +59,28 @@ function showPane(root, name) {
   };
   Object.entries(panes).forEach(([key, el]) => { if (el) el.hidden = key !== name; });
   root.dataset.challengeState = name;
+  showStep(root, name);
+}
+
+/* THE STEP TRACK. Five panes, three steps: the wrong-answer pane is still the
+   answer step (you are being sent back to it), and both endings are the reward
+   step. `aria-current` is what a screen reader reads, `data-challenge-at` is
+   what the stylesheet colours — neither is inferred from the other, because a
+   visual state that only exists in CSS is a state a screen reader cannot see. */
+const CHALLENGE_STEPS = ['brief', 'answer', 'reward'];
+const CHALLENGE_STEP_OF = {
+  intro: 'brief', quiz: 'answer', wrong: 'answer', spent: 'reward', won: 'reward',
+};
+
+function showStep(root, paneName) {
+  const at = CHALLENGE_STEP_OF[paneName] || 'brief';
+  const reached = CHALLENGE_STEPS.indexOf(at);
+  root.querySelectorAll('[data-challenge-step]').forEach((el) => {
+    const i = CHALLENGE_STEPS.indexOf(el.dataset.challengeStep);
+    el.dataset.challengeAt = i < reached ? 'done' : i === reached ? 'now' : 'ahead';
+    if (i === reached) el.setAttribute('aria-current', 'step');
+    else el.removeAttribute('aria-current');
+  });
 }
 
 function sweep(root) {
@@ -73,7 +95,10 @@ function sweep(root) {
 function showReward(root, tierId) {
   const tiers = [...root.querySelectorAll('[data-challenge-tier]')];
   const tier = tiers.find((el) => el.dataset.challengeTier === tierId) || tiers[0];
-  tiers.forEach((el) => { el.hidden = el !== tier; });
+  /* The whole ladder stays; the drawn rung is marked. Hiding the other four
+     left the winner with one figure and a footnote, which is the same
+     information with none of the sense that anything was drawn at all. */
+  tiers.forEach((el) => { el.dataset.challengeDrawn = el === tier ? 'yes' : 'no'; });
 
   /* The slot has its own attribute name. It first shared data-challenge-code
      with the tier elements, so querySelector found a tier <p> and the code was
@@ -86,6 +111,11 @@ function showReward(root, tierId) {
   const number = root.dataset.challengeWhatsapp;
   const claim = root.querySelector('[data-challenge-claim]');
   const percent = (tier.querySelector('.c-challenge__percent')?.textContent || '').trim();
+
+  /* The headline figure is written from the drawn rung rather than typed
+     twice, so the prize and the ladder can never disagree. */
+  const prize = root.querySelector('[data-challenge-prize]');
+  if (prize) prize.textContent = percent;
   if (claim && number && code) {
     const say = (lang) => (lang === 'ar'
       ? `مرحبًا بيكسورا — حللت تحدي العلامة وفزت بخصم ${percent}. الرمز: ${code}.`
@@ -158,6 +188,7 @@ export function initChallenge(scope = document) {
     const answer = root.dataset.challengeAnswer || '';
     const max = Number(root.dataset.challengeAttempts) || 2;
     const remainingSlot = root.querySelector('[data-challenge-remaining]');
+    const dots = [...root.querySelectorAll('[data-challenge-dot]')];
 
     initChallengeCopy(root);
 
@@ -166,7 +197,13 @@ export function initChallenge(scope = document) {
 
     /* Declared before the early returns below, so a restored 'spent' state
        shows 0 attempts left rather than the initial count. */
-    const setRemaining = () => { if (remainingSlot) remainingSlot.textContent = String(Math.max(0, max - used)); };
+    const setRemaining = () => {
+      if (remainingSlot) remainingSlot.textContent = String(Math.max(0, max - used));
+      /* The dots are aria-hidden and the count beside them is not, so the
+         number stays the thing that is announced and the dots are the thing
+         that is seen. */
+      dots.forEach((dot, i) => { dot.dataset.challengeDot = i < used ? 'spent' : 'left'; });
+    };
 
     /* ALREADY FINISHED. Solved shows the same reward, not a new draw; spent
        stays spent. A different challenge id retires the old state. */
@@ -177,6 +214,10 @@ export function initChallenge(scope = document) {
     if (saved && saved.id === id && used >= max) { setRemaining(); showPane(root, 'spent'); return; }
 
     setRemaining();
+    /* The markup ships on step one, but say so from the script too: the two
+       restore paths above return before this line, so reaching it means this
+       visitor really is at the beginning. */
+    showPane(root, 'intro');
 
     const start = root.querySelector('[data-challenge-start]');
     if (start) {

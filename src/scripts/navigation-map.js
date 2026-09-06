@@ -126,6 +126,7 @@ export const STRINGS = {
   en: {
     brandHome: 'Pixora, Digital Agency — home',
     primaryNav: 'Primary',
+    challengeSteps: 'Challenge progress',
     menuNav: 'Menu',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
@@ -174,6 +175,7 @@ export const STRINGS = {
   ar: {
     brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
     primaryNav: 'التنقل الرئيسي',
+    challengeSteps: 'مسار التحدي',
     menuNav: 'القائمة',
     openMenu: 'فتح القائمة',
     closeMenu: 'إغلاق القائمة',
