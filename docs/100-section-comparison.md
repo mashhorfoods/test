@@ -52,22 +52,55 @@ completeness.
 | 12 | Let's build your digital presence. | 0.62 | 7s | 1 | 1 | no |
 | 13 | Let's talk. Let's build it. | 2.08 | 43s | 8 | 7 | no |
 
-### Three things this says about our own page, before any competitor is seen
+### Three things this said about our own page — and only one survived
 
-**§1 asks ten times in one and a half screens.** Sixty-six seconds of reading
-and ten calls to action in 1.54 screenfuls is the densest ask on the page, and
-it arrives before the visitor has been given a reason. `docs/81` already
-removed one repetition here; the count says the section is still doing too much
-at once.
+The first version of this section listed three findings. Acting on them meant
+looking at each one properly, and **two did not survive that.** Both are left
+here rather than deleted, because the way they failed is the useful part.
 
-**§9 is the longest section on the site and offers one way out.** 3.22
-screenfuls, fifty seconds of reading, a single CTA. Add-ons are the least
-committed thing a buyer reads and they are given the most page.
+**RETRACTED — "§1 asks ten times in one and a half screens."** It does not. The
+services section is a five-item accordion, and the ten controls counted were
+five disclosure triggers plus five "See what it covers" links, **four of them
+inside collapsed panels a visitor cannot see or press.** At rest the section
+offers exactly one ask, the same as most others on the page.
 
-**§11 asks for nothing at all.** Forty-two seconds explaining the process, zero
-calls to action, no images. `docs/71` found a phone visitor with no CTA for up
-to 5.5 screens and P1-5 closed it; this is the same shape at section scale and
-it survived that pass.
+The fault was in the probe: a control inside a collapsed panel keeps a
+perfectly good bounding rect, because the panel clips it with `overflow` and a
+zero track rather than removing it. `vis()` asked the element about itself and
+never asked whether anything above it was hiding it. **That would have
+overcounted every competitor using an accordion or tabs**, which is most of
+them, so it is fixed before the rows are collected rather than after.
+
+The probe now also separates **asks** from **controls**: a disclosure trigger
+opens something on the page it is already on, and counting the two together
+makes a five-item accordion look like a page begging.
+
+**WITHDRAWN — "§11 asks for nothing at all."** True as a count, not true as a
+problem. The process section carries no CTA, but it is 1.95 screenfuls and is
+followed immediately by a dedicated CTA band, and P1-5 added a scroll-triggered
+header CTA above it. `qa.js` §14 measures reach by actually scrolling and
+passes with no findings. A visitor is never stranded, which is the thing that
+mattered in `docs/71` — the count was real and the inference from it was not.
+
+**STANDS — §9 was the longest section on the site and offered one way out.**
+3.22 screenfuls and fifty seconds of reading, against services that top out at
+2.69. The least committed content on the page was taking the most of it — while
+the actual offer above it was already collapsed behind an accordion whose lead
+reads *"Five services. Open any one to see what it covers."*
+
+Fixed by giving add-ons the same treatment, as native `<details>` so it needs
+no script at all. Measured, same probe, same width:
+
+| | before | after |
+| --- | ---: | ---: |
+| Add-ons section | 3.22 sf | **2.03 sf** |
+| Reading cost | 50s | **36s** |
+| Whole homepage | 25.09 sf | **23.89 sf** |
+
+Nothing was removed — 9 prices and 12 names before and after — and the first
+category ships open, so a visitor still lands on real prices rather than five
+shut doors. Verified with JavaScript disabled: one group open on arrival,
+clicking a second opens it, six prices visible without a line of script.
 
 **And no slider anywhere on the homepage** — `docs/86`'s gallery lives only on
 `/story`. That is the honest starting point for the queued C1 question of where
