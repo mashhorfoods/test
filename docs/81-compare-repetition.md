@@ -132,3 +132,78 @@ briefs / one brief contrast, which is the only thing here that quantifies
 anything.
 
 Not done, because it was not what was asked.
+
+---
+
+## 6. The wider reading, taken — 6 September 2026
+
+Asked for immediately after section 5 was written: **remove the whole block.**
+
+Done. What went:
+
+| | |
+| --- | --- |
+| `index.html` | the entire `.c-compare` div — both panels, both labels, both counts, both fact lists |
+| `src/styles/components/value.css` | **deleted**, all 131 lines. Every rule in it was `.c-compare*`; nothing else lived there |
+| `src/styles/main.css` | its `@import` |
+| `src/data/i18n-ar.json` | 9 orphaned translations |
+
+### 6.1 The section is better for it
+
+The ecosystem diagram now runs straight into its own conclusion. Four service
+cards, wired to a hub that says *"One connected digital presence — planned
+together, delivered together, and answerable to one team."* Then the story
+link. That was always the argument; the compare block restated it in a second
+grammar and made the reader do the work twice.
+
+Section 3 defended keeping the four-briefs-against-one contrast as the only
+thing that quantified anything. That was worth saying and it was overruled on
+good grounds: a section that argues its point once, well, beats one that argues
+it twice with a number attached.
+
+### 6.2 What the harness caught that I had not
+
+`build-i18n.js` reported one translation matching nothing — **"Marketing &
+Ads"** — and it was orphaned by the *previous* commit, not this one. I removed
+the two name lists there without re-running the i18n build, so a dead key sat
+in the dictionary for one commit.
+
+It needed a second look before deleting, because the string is genuinely still
+on `/pricing` — as a heading, and in `pricing.json`. But `build-i18n.js` only
+ever scans `index.html`, and `/pricing` carries its Arabic inline and in the
+package data. So the key was dead **as dictionary input** while the Arabic it
+held survives in two other places. Removed; nothing lost; the harness is silent
+again.
+
+**The lesson is the ordering:** `build-i18n.js` is the only thing that knows
+whether the dictionary still matches the page, and it has to run *after* markup
+is removed, not only after Arabic is added. It was run this time because the
+edit touched the JSON. Last time it was not.
+
+One self-inflicted stumble worth recording: the key I removed was the file's
+last entry, so deleting its line left a trailing comma and broke the JSON. The
+`json.load` assertion caught it on the same run — but only *after* the file had
+already been written, so the repo held invalid JSON for one command. **Validate
+before writing, not after.**
+
+### 6.3 Verified, not assumed
+
+Rendered at 1366×768 and 390×844 in both languages, and measured with motion
+settled rather than mid-flight:
+
+- **The gap the block used to fill is not a hole.** `.c-detail__more` carries
+  its own `margin-block-start: 88px`, and the measured hub-to-link distance is
+  **88px in both languages** — the element's own margin, nothing collapsed and
+  nothing doubled.
+- My first measurement said **112px English against 88px Arabic** and that
+  difference was not real. It was the reveal animation caught mid-transform in
+  one capture and settled in the other. Re-measured under `reducedMotion:
+  'reduce'`: identical. **A layout measured during an animation is a
+  measurement of the animation.**
+- `.c-compare__side` was a flex column whose fact list bottom-pinned with
+  `margin-block-start: auto`. That rule is gone with the file, so there is no
+  orphaned auto-margin left to strand anything.
+
+`build-i18n` clean · `build.js` · `validate.js` **0** · `qa.js` **0 high, 0
+medium** · dead-CSS count **held at 91** — `value.css` never contributed to it,
+because every selector in it was live right up until the markup went.

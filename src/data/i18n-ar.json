@@ -77,14 +77,6 @@
   "Integrated Digital Solutions": "الحلول الرقمية المتكاملة",
   "One connected digital presence.": "حضور رقمي واحد متصل.",
   "Connecting these services into one complete digital presence — planned together, delivered together, and answerable to one team.": "نربط هذه الخدمات في حضور رقمي واحد متكامل — يُخطَّط معًا، ويُسلَّم معًا، ومسؤوليته على فريق واحد.",
-  "Separate providers": "مزوّدون منفصلون",
-  "Four briefs to write.": "أربعة ملخصات تكتبها.",
-  "Four schedules to align.": "أربعة جداول توائم بينها.",
-  "Four sets of files to keep in sync.": "أربع مجموعات ملفات تبقيها متطابقة.",
-  "One partner": "شريك واحد",
-  "One brief.": "ملخص واحد.",
-  "One schedule.": "جدول واحد.",
-  "One set of files.": "مجموعة ملفات واحدة.",
   "Add-Ons": "إضافات",
   "Need something extra? Add it when you need it.": "تحتاج شيئًا إضافيًا؟<br /> <span class=\"c-detail__accent\">أضفه حين تحتاجه.</span>",
   "Individual services you can add to any package. Prices start from the figures below; work quoted by quantity or by project is priced once we know the scope.": "خدمات مفردة يمكن إضافتها إلى أي باقة. الأسعار تبدأ من الأرقام أدناه؛ وما يُسعَّر حسب العدد أو حسب المشروع يُحدَّد بعد معرفة النطاق.",
@@ -160,6 +152,5 @@
   "2 add-ons": "إضافتان",
   "3 add-ons": "ثلاث إضافات",
   "Performance": "الأداء",
-  "Traffic": "الزيارات",
-  "Marketing & Ads": "التسويق والإعلانات"
+  "Traffic": "الزيارات"
 }
