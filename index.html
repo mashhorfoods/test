@@ -71,6 +71,22 @@
     <script>
       document.documentElement.classList.remove('no-js');
       document.documentElement.classList.add('js');
+
+      /* THE FAILSAFE. 05-motion.css hides every [data-reveal] once this class
+         is on <html>, and only motion.js takes that back. This script is
+         inline, so it cannot fail to arrive; motion.js is a module, so it can.
+         Rule 13 promised content survives JavaScript "failing or disabled" —
+         disabled was true, failing was not: with the class set and the module
+         broken, 132 blocks across four pages stayed invisible permanently.
+         If the reveal has not reported for duty, drop the class and every
+         hidden thing is simply visible again. Later than any real boot, so a
+         slow connection is never punished; if the module arrives afterwards it
+         only adds is-revealed to things already shown, which changes nothing. */
+      setTimeout(function () {
+        if (!document.documentElement.hasAttribute('data-motion-ready')) {
+          document.documentElement.classList.remove('js');
+        }
+      }, 4000);
     </script>
     <script type="module" src="./src/scripts/main.js"></script>
   </head>

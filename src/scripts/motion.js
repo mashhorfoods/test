@@ -112,5 +112,21 @@ function initCounters() {
 
 export function initMotion() {
   initReveal();
+
+  /* THE FAILSAFE'S OTHER HALF (index.html, the inline bootstrap).
+     The `js` class is set inline and always lands; the code that undoes the
+     opacity:0 it enables is here, in a module. If anything in between throws,
+     content stays invisible for good — 132 blocks across four pages, measured.
+     The bootstrap arms a timer; this disarms it.
+
+     AFTER initReveal(), never inside it. The first attempt set this on entry,
+     reasoning that every path below left content visible anyway. It does not:
+     `new IntersectionObserver` throws on the line after, so the flag said
+     ready while the observer never existed, and the failsafe stood down for
+     the exact failure it was written for. 132 became 29 rather than 0, and
+     only the footer's own group gave it away. The flag has to mean the reveal
+     COMPLETED, not that it started. */
+  document.documentElement.setAttribute('data-motion-ready', '');
+
   initCounters();
 }
