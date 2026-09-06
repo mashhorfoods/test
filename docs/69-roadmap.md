@@ -203,7 +203,7 @@ site, with full repository access.**
 | # | Work | State |
 | --- | --- | --- |
 | **D1** | **Owner:** establish a default branch, protect it, require `check`, then invite | **Blocking — do first** |
-| **D2** | The operator runbook — `docs/85` §4. The blunt version of `docs/56` for someone who does not already know why the site is the way it is | Unblocked |
+| ~~**D2**~~ | ~~The operator runbook~~ | ✅ **DONE 6 Sep — `docs/89`.** Nine sections: the one bilingual rule, what to edit where, the browser-only data path CI rebuilds for you, what will bite you, how to read the harnesses (and the one LOW that is expected), what not to touch, and what to do when the live site looks wrong |
 
 ---
 

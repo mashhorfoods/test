@@ -4,6 +4,14 @@ Written 5 September 2026. `docs/62` B5, and WEBSTART Phase 12's outstanding half
 
 **Five people, twenty minutes each, on their own phone.**
 
+> **REVISED 6 September 2026 — read §9 before running these.** The site changed
+> under this brief. R1 moved the twelve packages off the homepage and R2 built
+> a service index on `/pricing`, so **task 1 now crosses a page boundary** and
+> **§5's "sixth thing" describes repetition that no longer exists.** §9 replaces
+> both and adds the question these sessions now most need to answer.
+>
+> Everything else here — the rules, the moderation, task 4 — stands unchanged.
+
 `docs/33` §9 already has the tasks and the pass criteria and they are good —
 they are kept verbatim below. What has never been written is **how to run the
 session**, which is where these usually go wrong: a moderator who helps turns a
@@ -118,3 +126,92 @@ who believes they sent a message that does not exist is a lost client.
 risk, which is not the same as retiring it. **This is what retires it**, and
 `docs/62` B5 closes when the findings are applied rather than when the sessions
 are run.
+
+
+---
+
+## 9. Revised for the site as it is — 6 September 2026
+
+Measured on the current build, on a phone, so the tasks describe what a
+participant will actually meet:
+
+| | Homepage | `/pricing` |
+| --- | ---: | ---: |
+| Length | **24 screenfuls** (was 35.1) | 18.2 |
+| Package cards | **0** | 12 |
+| Service index | — | 4 links |
+| WhatsApp CTAs | 5 | 12 |
+| Contact form | **yes** | no |
+| First price appears at | **4.9 screenfuls** | **1.5** |
+
+### 9.1 Task 1 replaces the old task 1
+
+> *"Find the package you would choose, and start a conversation about it."*
+
+**The words do not change. What passes does.** The packages are no longer on
+the homepage, so this is now a two-page task, and there are three routes to
+them:
+
+1. the **Pricing** link in the navigation;
+2. a service block's **"See all Branding & Design packages"** link;
+3. the **service index** at the top of `/pricing`, once they arrive.
+
+**It passes if** they reach WhatsApp with the package named, without
+backtracking.
+
+**Record which route they took.** That is the single most useful new
+observation in these sessions: route 2 and route 3 are both things built this
+week on reasoning rather than evidence, and five people will say more about
+whether they work than any amount of further argument.
+
+### 9.2 The sixth thing, replaced
+
+§5 asked whether four near-identical service sections orient or exhaust the
+reader. **That structure is gone** — the sections now carry a heading, the work
+samples, one price line, one action and one link. The question it was asking no
+longer has a subject.
+
+The question that replaces it comes from `docs/80` §3.1, and it is sharper:
+
+> **Do our four services name what the buyer wants, or what we make?**
+
+Branding & Design · Websites · Social Media · Marketing & Ads. Every one names
+an output. The reference set names outcomes instead — *Ad Magic*, *Viral Case*,
+*Education & Learning* — a person who needs an advert, a person who wants
+reach, a person with something to teach.
+
+**Watch for, do not ask about:** a participant who reads all four and still
+cannot tell which one is theirs; who picks one and then changes their mind
+after opening it; or who describes their own need in words none of the four
+use. Note the words they use. **Those words are the finding**, and they are
+worth more than any preference they could state.
+
+### 9.3 The seventh thing — the change these sessions can overturn
+
+Be direct about this one, because it is the newest and least evidenced.
+
+**Until today the homepage carried all twelve packages.** It was removed
+because it was a byte-for-byte duplicate of `/pricing` and cost 11.1 screenfuls
+— 32% of the page (`docs/88`). The homepage keeps a price floor per service,
+so *"prices published in full"* still holds. **But the reasoning was structural,
+not observed.**
+
+So: **does anyone fail to find a price at all?** On the homepage the first
+figure is now 4.9 screenfuls down. If a participant gives up before it, or asks
+*"where are the prices"*, that is R1 being wrong, and R1 should be reverted for
+the homepage rather than defended.
+
+**One command reverts it:** `renderBlock(c, full)` in `build-pricing.js` — pass
+`true` for every target instead of only the guide.
+
+`docs/88` is a judgement made on a measurement. These sessions are the only
+thing that can check the judgement.
+
+### 9.4 Task 4 is unchanged and still the one to watch hardest
+
+The contact form is on the **homepage only**. A participant who is on
+`/pricing` when you read task 4 has to get back, which is part of the task —
+note it if they cannot.
+
+Everything §4 says about task 4 stands: *nobody may believe they sent something
+that did not send.* One participant is enough to make it a defect.
