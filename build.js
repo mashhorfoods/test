@@ -342,13 +342,34 @@ function buildPage(file) {
   const INLINE_LIMIT = 12 * 1024;
   const ASSETS = ASSETS_DIR;
 
+  /* SIZE IS NOT THE ONLY REASON TO COPY RATHER THAN INLINE.
+
+     The limit above asks "is this small?". The question that matters as much
+     is "does the visitor need it to see the first screen?" — and the markup
+     already answers that, on every image, with `loading="lazy"`.
+
+     Inlining a lazy image is self-defeating: `lazy` means "do not fetch this
+     until it is near the viewport", and base64 in the HTML means "every
+     visitor downloads it before the page renders". Two small galleries of
+     below-fold placeholders added 34KB to the homepage that way — under the
+     limit individually, a third of the first-screen budget's headroom
+     together, for pictures nobody had scrolled to yet.
+
+     So a lazy image is always copied, whatever its size. */
+  const lazySrcs = new Set(
+    [...html.matchAll(/<img\b[^>]*>/gi)]
+      .filter((m) => /\bloading=["']?lazy/i.test(m[0]))
+      .map((m) => (m[0].match(/src="(\.\/[^"]+)"/) || [])[1])
+      .filter(Boolean)
+  );
+
   html = html.replace(/src="(\.\/[^"]+\.(?:png|jpe?g|gif|svg|webp))"/gi, (m, rel) => {
     const abs = path.join(ROOT, rel.slice(2));
     if (!fs.existsSync(abs)) { stats.imagesMissing.push(rel); return m; }
     const buf = fs.readFileSync(abs);
     const ext = rel.split('.').pop().toLowerCase();
 
-    if (buf.length > INLINE_LIMIT) {
+    if (buf.length > INLINE_LIMIT || lazySrcs.has(rel)) {
       fs.mkdirSync(ASSETS, { recursive: true });
       const name = path.basename(abs);
       fs.writeFileSync(path.join(ASSETS, name), buf);
@@ -461,7 +482,12 @@ for (const page of ['index.html', 'styleguide.html', 'story.html', 'about.html',
     console.log('\n  ! no share card — run node tools/build-share-card.js');
   }
 
-  for (const name of ['hero.webm', 'hero.mp4']) {
+  /* The showreel placeholder travels the same road as the hero films: it is
+     referenced from the markup rather than attached at runtime, but it lives
+     in showpiece/ and must land in assets/ with its reference rewritten, and
+     the image pass above only knows about images. Replacing the file and
+     keeping the name is the whole handover. */
+  for (const name of ['hero.webm', 'hero.mp4', 'reel-placeholder.webm', 'reel-still.svg']) {
     const film = path.join(ROOT, 'src/assets/showpiece', name);
     if (!fs.existsSync(film)) continue;
     fs.mkdirSync(assets, { recursive: true });

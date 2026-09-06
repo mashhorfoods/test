@@ -1724,6 +1724,171 @@
         </div>
       </section>
 
+      <!-- =============================================================
+           THE WORK BEHIND THE LIST.
+           A scroll-snap gallery, the same component /story uses (docs/86):
+           no script required, no auto-advance, no dot navigation, and RTL
+           for free because it scrolls on the inline axis. It is never the
+           hero — docs/83 measured 132 blocks stranded when script-hidden
+           content loses its script, and a carousel is that pattern by
+           design.
+
+           EVERY IMAGE HERE IS A PLACEHOLDER. src/assets/placeholders/ holds
+           generated artwork at the right dimensions; replace the files and
+           the alt text, keep the names, and nothing else has to change.
+           ============================================================= -->
+      <section id="work" class="l-section c-showcase" aria-labelledby="work-title">
+        <div class="l-container">
+          <header class="c-showcase__head" data-reveal-group>
+            <p class="t-label c-showcase__eyebrow"><span data-lang-copy="en">Selected Work</span><span data-lang-copy="ar" lang="ar">أعمال مختارة</span></p>
+            <h2 class="c-showcase__headline" id="work-title"><span data-lang-copy="en">The work behind the list.</span><span data-lang-copy="ar" lang="ar">العمل خلف القائمة.</span></h2>
+            <p class="t-body-lg c-showcase__lead"><span data-lang-copy="en">Ten pieces from recent projects — identity, campaigns and the pages they lead to. Scroll sideways.</span><span data-lang-copy="ar" lang="ar">عشرة أعمال من مشاريع حديثة — هوية وحملات والصفحات التي تقود إليها. مرّر جانبًا.</span></p>
+          </header>
+
+          <!-- THE SHOWREEL — a real player, a placeholder file.
+
+               preload="none" so nothing downloads until the visitor presses
+               play; no autoplay, so nothing plays into a room; playsinline so
+               iOS does not take over the screen; controls so it is operable
+               by keyboard and by a screen reader without a line of script.
+               The poster is painted before any of that, so the block is never
+               a black rectangle.
+
+               TO REPLACE: drop the real file over
+               src/assets/showpiece/reel-placeholder.webm and the real still
+               over reel-still.svg, keeping both names. Nothing else changes.
+               docs/53 budgets video at 2MB across the whole site and qa.js §7
+               enforces it — the hero pair is 1.6MB of that, so a replacement
+               reel has roughly 400KB before the check fails. -->
+          <figure class="c-reel" data-reveal-group>
+            <video class="c-reel__video" controls preload="none" playsinline
+              poster="./src/assets/showpiece/reel-still.svg"
+              aria-describedby="reel-caption">
+              <source src="./src/assets/showpiece/reel-placeholder.webm" type="video/webm" />
+              <p class="c-reel__fallback"><span data-lang-copy="en">Your browser cannot play this video.</span><span data-lang-copy="ar" lang="ar">متصفحك لا يستطيع تشغيل هذا الفيديو.</span></p>
+            </video>
+            <figcaption class="c-reel__caption" id="reel-caption">
+              <span data-lang-copy="en">A sixty-second pass through recent work. Placeholder footage — the real reel replaces it.</span><span data-lang-copy="ar" lang="ar">جولة من ستين ثانية في أعمال حديثة. لقطات مؤقتة — يحلّ محلها الفيلم الحقيقي.</span>
+            </figcaption>
+          </figure>
+
+          <ul class="c-gallery c-showcase__gallery" role="list" tabindex="0"
+            aria-label="Selected work — scroll for more" data-i18n-label="galleryScroller">
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/work-01.svg"
+                    alt="Work sample 1 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 1 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 1 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">01/10</span>
+                    <span data-lang-copy="en">Work sample 1</span><span data-lang-copy="ar" lang="ar">نموذج عمل 1</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/work-02.svg"
+                    alt="Work sample 2 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 2 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 2 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">02/10</span>
+                    <span data-lang-copy="en">Work sample 2</span><span data-lang-copy="ar" lang="ar">نموذج عمل 2</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/work-03.svg"
+                    alt="Work sample 3 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 3 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 3 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">03/10</span>
+                    <span data-lang-copy="en">Work sample 3</span><span data-lang-copy="ar" lang="ar">نموذج عمل 3</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/work-04.svg"
+                    alt="Work sample 4 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 4 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 4 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">04/10</span>
+                    <span data-lang-copy="en">Work sample 4</span><span data-lang-copy="ar" lang="ar">نموذج عمل 4</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/work-05.svg"
+                    alt="Work sample 5 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 5 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 5 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">05/10</span>
+                    <span data-lang-copy="en">Work sample 5</span><span data-lang-copy="ar" lang="ar">نموذج عمل 5</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/work-06.svg"
+                    alt="Work sample 6 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 6 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 6 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">06/10</span>
+                    <span data-lang-copy="en">Work sample 6</span><span data-lang-copy="ar" lang="ar">نموذج عمل 6</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/work-07.svg"
+                    alt="Work sample 7 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 7 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 7 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">07/10</span>
+                    <span data-lang-copy="en">Work sample 7</span><span data-lang-copy="ar" lang="ar">نموذج عمل 7</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/work-08.svg"
+                    alt="Work sample 8 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 8 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 8 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">08/10</span>
+                    <span data-lang-copy="en">Work sample 8</span><span data-lang-copy="ar" lang="ar">نموذج عمل 8</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/work-09.svg"
+                    alt="Work sample 9 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 9 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 9 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">09/10</span>
+                    <span data-lang-copy="en">Work sample 9</span><span data-lang-copy="ar" lang="ar">نموذج عمل 9</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/work-10.svg"
+                    alt="Work sample 10 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 10 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 10 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">10/10</span>
+                    <span data-lang-copy="en">Work sample 10</span><span data-lang-copy="ar" lang="ar">نموذج عمل 10</span>
+                  </figcaption>
+                </figure>
+              </li>
+          </ul>
+        </div>
+      </section>
+
+
             <!-- =============================================================
            08 — ADD-ONS (Stage 11)
            The twelve additional services from the Services & Pricing
@@ -2176,6 +2341,122 @@
            leading edge, continuing Process; the other sits on the rule it
            departs on, at the trailing edge, leading into the footer.
            ============================================================= -->
+
+      <!-- =============================================================
+           CAMPAIGNS, AS THEY RAN.
+           A scroll-snap gallery, the same component /story uses (docs/86):
+           no script required, no auto-advance, no dot navigation, and RTL
+           for free because it scrolls on the inline axis. It is never the
+           hero — docs/83 measured 132 blocks stranded when script-hidden
+           content loses its script, and a carousel is that pattern by
+           design.
+
+           EVERY IMAGE HERE IS A PLACEHOLDER. src/assets/placeholders/ holds
+           generated artwork at the right dimensions; replace the files and
+           the alt text, keep the names, and nothing else has to change.
+           ============================================================= -->
+      <section id="campaigns" class="l-section c-showcase" aria-labelledby="campaigns-title">
+        <div class="l-container">
+          <header class="c-showcase__head" data-reveal-group>
+            <p class="t-label c-showcase__eyebrow"><span data-lang-copy="en">In Market</span><span data-lang-copy="ar" lang="ar">في السوق</span></p>
+            <h2 class="c-showcase__headline" id="campaigns-title"><span data-lang-copy="en">Campaigns, as they ran.</span><span data-lang-copy="ar" lang="ar">حملات كما ظهرت.</span></h2>
+            <p class="t-body-lg c-showcase__lead"><span data-lang-copy="en">Eight pieces of social and advertising work in the format the audience actually saw them in.</span><span data-lang-copy="ar" lang="ar">ثمانية أعمال إعلانية واجتماعية بالشكل الذي رآه الجمهور فعلًا.</span></p>
+          </header>
+
+          <ul class="c-gallery c-showcase__gallery" role="list" tabindex="0"
+            aria-label="Campaigns — scroll for more" data-i18n-label="galleryScroller">
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-01.svg"
+                    alt="Campaign piece 1 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 1 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 1 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">01/08</span>
+                    <span data-lang-copy="en">Campaign piece 1</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 1</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-02.svg"
+                    alt="Campaign piece 2 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 2 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 2 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">02/08</span>
+                    <span data-lang-copy="en">Campaign piece 2</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 2</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-03.svg"
+                    alt="Campaign piece 3 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 3 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 3 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">03/08</span>
+                    <span data-lang-copy="en">Campaign piece 3</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 3</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-04.svg"
+                    alt="Campaign piece 4 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 4 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 4 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">04/08</span>
+                    <span data-lang-copy="en">Campaign piece 4</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 4</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-05.svg"
+                    alt="Campaign piece 5 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 5 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 5 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">05/08</span>
+                    <span data-lang-copy="en">Campaign piece 5</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 5</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-06.svg"
+                    alt="Campaign piece 6 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 6 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 6 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">06/08</span>
+                    <span data-lang-copy="en">Campaign piece 6</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 6</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-07.svg"
+                    alt="Campaign piece 7 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 7 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 7 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">07/08</span>
+                    <span data-lang-copy="en">Campaign piece 7</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 7</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-08.svg"
+                    alt="Campaign piece 8 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 8 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 8 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">08/08</span>
+                    <span data-lang-copy="en">Campaign piece 8</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 8</span>
+                  </figcaption>
+                </figure>
+              </li>
+          </ul>
+        </div>
+      </section>
+
       <section id="start" class="c-detail" aria-labelledby="final-title">
         <div class="l-container">
           <div class="c-final">
