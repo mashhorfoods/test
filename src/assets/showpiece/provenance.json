@@ -2,6 +2,11 @@
   "generator": "clips",
   "tool": "build-hero-from-clips.js",
   "at": "2026-09-06T13:07:58.755352Z",
+  "sha256": {
+    "hero.webm": "7c3b10be8dbe1f756b62adbc0781ad63fda21c9c66d15ed530e60aa344b3bd29",
+    "hero.mp4": "c46cd767b0ec32b8a3be6a4464b97b63de7b0b9a5805673596f66f8bd6f4fcd2",
+    "hero-poster.webp": "5d7fa1fdd0e52169d1d2d3d4586b04e4a2b2705f85e8150231eb342dc5c47b9d"
+  },
   "clips": [
     "clipA.mp4",
     "clipB.mp4"
@@ -14,5 +19,6 @@
     "acceptedOn": "2026-09-06",
     "note": "Decision reaffirmed after docs/54 §9 laid out the three options. The mark stays visible because on a free tier it is the licence condition; stripping it was the only option ruled out. Replace with a clean export when one exists — npm run film:clips — or npm run film for the drawn scene."
   },
-  "_at": "When this signature was written — it must not predate the files it describes. The footage itself is older; restoredFrom names the commit it came back from."
+  "_at": "When this signature was written — it must not predate the files it describes. The footage itself is older; restoredFrom names the commit it came back from.",
+  "_sha256": "The bytes each asset had when it was signed. Checked by qa.js §23 instead of mtimes, which git does not preserve — see docs/99."
 }

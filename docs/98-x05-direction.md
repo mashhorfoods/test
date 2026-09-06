@@ -118,13 +118,29 @@ It budgets **video**. Nothing budgeted anything else.
 | After Feature 02 — The Brand Challenge | 356KB |
 
 And what a phone pays before it scrolls: **314KB on 6 September** (`docs/92`
-§3.1) → **418KB now**. A third more, in two days, for two features.
+§3.1) → **450KB now**. Nearly half as much again, in two days, for two
+features.
 
 Neither feature was wrong to build; both were asked for, and both are honest
-about what they are. The problem is that **the number the entire positioning
-rests on moved 33% and nothing said a word.** The per-page check that exists
-is a 600KB *ceiling* measured on a 1280px context — the desktop path — so it
-would not have noticed the homepage doubling.
+about what they are. The problem is what was watching, and the first version
+of this section got that wrong.
+
+**It is not that nothing measured it.** `qa.js` §9 has measured the phone's
+first screen all along, and *printed it on every single run*:
+
+```
+·  index.html   phone 829KB · desktop 829KB (first screen 450KB) + 720KB showpiece
+```
+
+That line was on screen while the number went from 314KB to 450KB. §9 budgets
+`full` at 1MB — a different promise to a different person, the reader who
+scrolls rather than the buyer deciding whether to stay — and printed `first`
+with no threshold on it at all.
+
+So the failure is worse than an absent measurement and more ordinary: **a
+number nobody acts on is not a guard.** The fix is therefore not a new check
+but a threshold on the existing one — 480KB, in §9, beside the measurement
+that was already there.
 
 Two smaller facts fall out of the same measurement:
 
@@ -136,10 +152,34 @@ Two smaller facts fall out of the same measurement:
 - `docs/92` §3.2 verified once that a phone never requests the film. Nothing
   kept it verified, and it is the reason the phone number is affordable at all.
 
-**`qa.js` §29** now measures the homepage at 390px with no scroll, budgets it
-at **460KB**, and fails HIGH if a phone ever requests the film. The budget sits
-above today's 418KB deliberately: it is a ratchet against the next unbudgeted
-feature, not a demand to undo the last two.
+**`qa.js` §9** now fails MED when the homepage's first screen exceeds
+**480KB**, and HIGH if a phone requests any of the showpiece — §9 already had
+that number too, and it was likewise unread. The budget sits above today's
+450KB deliberately: a ratchet against the next unbudgeted feature, not a
+demand to undo the last two.
+
+I first wrote this as a new §29 with its own browser pass. That was wrong: it
+duplicated a measurement that already existed. §29 is gone; the budget lives
+beside the measurement.
+
+### 5.2 The number is noisier than it looks
+
+Removing §29 did not remove the disagreement, which is the more useful
+finding. **The same §9 code reports 418KB in this container and 450KB on the
+CI runner** — a 32KB spread on identical bytes, while `full` differs by only
+3KB.
+
+`first` is everything the page has fetched by `load` plus 900ms. That makes it
+timing-dependent: whether a particular lazy image finishes inside the window
+depends on how fast the machine is, not on what the page costs. So the honest
+statement of today's figure is **418–450KB depending on where it is measured**,
+not a single number.
+
+The budget is set at 480KB against the *higher* end, so it cannot pass locally
+and fail in CI. But it should be read as having roughly 30KB of measurement
+noise in it, and a future breach within that band means "look again", not
+"regressed". Tightening it would mean making `first` deterministic first —
+worth doing before the budget is ever moved down.
 
 > The rule, stated so it survives this document: **a budget nobody measures is
 > a budget that grows.** That sentence was already written in `qa.js` §7 about
@@ -149,8 +189,8 @@ feature, not a demand to undo the last two.
 
 | Mutation | Result |
 | --- | --- |
-| Budget lowered to 300KB | fires — MED, names the real 418KB |
-| §29's viewport widened to 1440 so the film loads | fires — HIGH, names `hero.webm`; bytes jump to 1138KB |
+| Budget lowered below the real figure | fires — MED, naming the actual first-screen number |
+| Viewport widened so the film loads on the "phone" pass | fires — HIGH, naming the showpiece bytes |
 
 The second row also caught a defect in the guard's own reporting: the summary
 line printed *"film not requested"* unconditionally, so a run that had just
@@ -158,8 +198,11 @@ raised a HIGH about the film still said the film was not requested underneath
 it. Fixed — but worth noting that only a negative test could have found it,
 because on a passing run the sentence is true.
 
-The second row took two attempts, and the first attempt is worth recording
-because it is the **third** appearance of this project's signature failure.
+Both rows were proved against the §29 draft before that draft was withdrawn;
+the assertions moved unchanged into §9, which computes the same two quantities
+more accurately. The second row took two attempts, and the first attempt is
+worth recording because it is the **third** appearance of this project's
+signature failure.
 
 I widened the viewport with a string replacement limited to the first match.
 Three lines in `qa.js` set a 390px viewport, and the one I meant was the

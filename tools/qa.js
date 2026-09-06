@@ -443,6 +443,10 @@ function serve() {
      reported the homepage at 510KB — wrong by 408KB, and confident about it. */
   {
     const BUDGET = 1024 * 1024;
+    /* Above today's 450KB on purpose: a ratchet against the next unbudgeted
+       feature, not a demand to undo the last two. Moving it is a decision to
+       take in a commit message, which is the point. */
+    const FIRST_SCREEN_BUDGET = 480 * 1024;
     const weigh = async (page, width, height, scroll) => {
       const c = await browser.newContext({ viewport: { width, height }, isMobile: width < 700, hasTouch: width < 700 });
       const pg = await c.newPage();
@@ -483,6 +487,28 @@ function serve() {
           fail('MED', 'budget', `${page} @${label}: ${(m.full / 1024).toFixed(0)}KB excluding the showpiece, over the ${BUDGET / 1024}KB budget`);
         }
         if (!varies) break; // one measurement, one verdict
+      }
+
+      /* THE FIRST SCREEN HAS ITS OWN BUDGET, and it is the homepage's that
+         matters: docs/52 stakes the whole positioning on a buyer in the Gulf
+         on mobile data, and `full` at 1MB is a different promise to a
+         different person — the reader who scrolls, not the one deciding
+         whether to stay.
+
+         This number was already measured and printed on every run. What it
+         never had was a threshold, so it moved 314KB → 450KB across two
+         interactive features (docs/92 §3.1, docs/98 §5) with nobody reading
+         the line it was printed on. A number nobody acts on is not a guard. */
+      if (page === 'index.html') {
+        if (phone.first > FIRST_SCREEN_BUDGET) {
+          fail('MED', 'budget', `the homepage costs a phone ${(phone.first / 1024).toFixed(0)}KB before it scrolls, over the ${FIRST_SCREEN_BUDGET / 1024}KB first-screen budget (docs/98 §5) — either the budget moves deliberately or the page comes back under it`);
+        }
+        /* docs/92 §3.2 verified once that a phone never requests the film, and
+           nothing kept it verified. It is the reason the number above is
+           affordable at all. */
+        if (phone.film > 0) {
+          fail('HIGH', 'budget', `a 390px phone requested ${(phone.film / 1024).toFixed(0)}KB of showpiece — the film is desktop-only (docs/53), and a phone paying for it breaks the one promise the budget exists to keep`);
+        }
       }
 
       const line = varies
@@ -1553,11 +1579,31 @@ function serve() {
       fail('HIGH', 'hero', 'the hero film ships with no provenance.json — nothing records which builder made it, which is exactly how a watermark shipped for two days');
     } else if (assets.length) {
       const p = JSON.parse(fs.readFileSync(prov, 'utf8'));
-      const signedAt = new Date(p.at).getTime();
-      const newest = Math.max(...assets.map((f) => fs.statSync(f).mtimeMs));
-      /* A minute of slack: the encoder writes the files, then the signature. */
-      if (newest > signedAt + 60000) {
-        fail('HIGH', 'hero', `the hero assets are newer than provenance.json (${p.generator}) — they were replaced by something that did not sign its work`);
+
+      /* HASHES, NOT MTIMES. This compared the assets' modification times
+         against the signature's timestamp, which cannot work anywhere the
+         repository is cloned: git does not preserve mtimes, so a fresh CI
+         checkout stamps every file with the checkout time and the comparison
+         reported "replaced by something that did not sign its work" on every
+         single run. It passed locally only because these files happened to
+         predate the signature on this disk — the check was measuring the
+         working copy, not the repository.
+
+         A content hash travels through a clone and answers the sharper
+         question anyway: are these the exact bytes that were signed? */
+      const sig = p.sha256 || {};
+      if (!Object.keys(sig).length) {
+        fail('HIGH', 'hero', `provenance.json (${p.generator}) records no sha256 for the hero assets, so nothing can tell whether the shipped bytes are the signed ones — re-run the builder that made them`);
+      } else {
+        for (const f of assets) {
+          const name = path.basename(f);
+          const actual = crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
+          if (!sig[name]) {
+            fail('HIGH', 'hero', `${name} ships but provenance.json (${p.generator}) does not sign it — re-run the builder`);
+          } else if (sig[name] !== actual) {
+            fail('HIGH', 'hero', `${name} does not match the hash in provenance.json (${p.generator}) — it was replaced by something that did not sign its work`);
+          }
+        }
       }
       /* A KNOWN WATERMARK IS NOT A FINDING; AN UNKNOWN ONE IS.
          The owner reaffirmed shipping the Pika mark on 6 Sep after docs/54 §9
@@ -1832,53 +1878,6 @@ function serve() {
         }
       });
     }
-  }
-
-  /* ---- 29 the phone's first screen has a budget ---------------------------
-     docs/53 budgeted the ONE thing anyone thought would grow — the video
-     showpiece — and §7 enforces it. Nothing budgeted anything else, and the
-     per-page check above is a 600KB *ceiling* measured on a 1280px context,
-     which is the desktop path and would not notice the homepage doubling.
-
-     So this ran unnoticed: docs/92 measured the phone's first screen at 314KB
-     on 6 September; two interactive features later it is over 400KB. Both
-     were asked for and neither was wrong to build — but the site's whole
-     position (docs/52) is that a buyer in the Gulf on mobile data gets the
-     fast page, and that number had no guard on it at all.
-
-     Measured the way a phone actually pays: 390px, no scroll, everything the
-     page requests up to load. Lazy images below the fold are not in it, which
-     is the point. MED, not HIGH — a budget breach is a decision to take, not
-     a defect to block on, and qa otherwise reports no MEDs so it will be seen. */
-  {
-    const BUDGET_KB = 460;
-    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
-    const p = await ctx.newPage();
-    let bytes = 0;
-    const film = [];
-    p.on('response', async (r) => {
-      const u = r.url();
-      if (/\.(webm|mp4|mov)$/i.test(u)) film.push(u.split('/').pop());
-      let len = Number(r.headers()['content-length'] || 0);
-      if (!len) { try { len = (await r.body()).length; } catch { len = 0; } }
-      bytes += len;
-    });
-    await p.goto(`${BASE}/index.html`, { waitUntil: 'load' });
-    await p.waitForTimeout(900);
-    const kb = bytes / 1024;
-
-    if (kb > BUDGET_KB) {
-      fail('MED', 'budget', `the homepage costs a phone ${kb.toFixed(0)}KB before it scrolls, over the ${BUDGET_KB}KB first-screen budget — docs/98 §5. Either the budget moves deliberately or the page comes back under it`);
-    }
-
-    /* docs/92 §3.2 verified once that a phone never requests the film. Nothing
-       kept it verified, and it is the reason the phone number is affordable. */
-    if (film.length) {
-      fail('HIGH', 'budget', `a 390px phone requested ${film.join(', ')} — the showpiece is desktop-only (docs/53), and a phone paying for it breaks the one promise the budget exists to keep`);
-    }
-
-    console.log(`  ·  phone first screen  ${kb.toFixed(0)}KB of ${BUDGET_KB}KB budget, ${film.length ? `FILM REQUESTED: ${film.join(', ')}` : 'film not requested'}`);
-    await ctx.close();
   }
 
   await browser.close();

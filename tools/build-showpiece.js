@@ -35,11 +35,26 @@ const OUT = path.join(ROOT, 'src/assets/showpiece');
    §9). Two builders write these same three files, and at a glance the outputs
    are hard to tell apart — so from here each one signs its work and qa.js §23
    reads the signature. */
+/* The signature carries a HASH of each asset, not just a timestamp. An
+   mtime cannot do this job: git does not preserve mtimes, so on a fresh CI
+   checkout every file carries the checkout time and a freshness comparison
+   is meaningless — it read as "the assets were replaced" on every run. A
+   content hash travels with the file, through a clone, and answers the
+   sharper question anyway: are these the exact bytes that were signed? */
 function signHero(generator, extra) {
+  const crypto = require('crypto');
+  const sha256 = {};
+  for (const f of ['hero.webm', 'hero.mp4', 'hero-poster.webp']) {
+    const p = path.join(OUT, f);
+    if (fs.existsSync(p)) {
+      sha256[f] = crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+    }
+  }
   fs.writeFileSync(path.join(OUT, 'provenance.json'), `${JSON.stringify({
     generator,
     tool: path.basename(__filename),
     at: new Date().toISOString(),
+    sha256,
     ...extra,
   }, null, 2)}\n`);
 }
