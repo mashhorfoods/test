@@ -288,6 +288,56 @@
     grid-template-rows: 0fr;
   }
 
+  /* THE CLOSED ROW USED TO SAY NOTHING.
+
+     Four of the five services were a name and a plus sign. A visitor scanning
+     the list could learn what one of them covered; for the other four they had
+     to click, and a list you have to open to read is a list most people do not
+     read. Competitors in this market describe what is covered rather than
+     naming a category (docs/101) — that is the behaviour borrowed here, at one
+     line rather than a paragraph.
+
+     SHOWN ONLY WHEN THE ROW IS COLLAPSED, and the condition does the work in
+     all three states the page has:
+       · script, collapsed  → aria-expanded="false" → the summary shows
+       · script, open       → aria-expanded="true"  → the panel's fuller
+                              description supersedes it, so it hides
+       · no script at all   → the attribute is absent and every panel is open,
+                              so it stays hidden and nothing is said twice
+     Hidden is the default, so a browser without :has() shows the page it
+     always showed rather than a duplicated sentence. */
+  .c-service__summary {
+    display: none;
+    margin-block: calc(var(--space-8) * -1) var(--space-24);
+    /* A MARGIN, NOT PADDING. The box is border-box, so an indent expressed as
+       padding is eaten out of max-inline-size: 46ch of measure minus 167px of
+       padding left 265px of text, and a one-line summary wrapped to two with
+       most of the row empty beside it. */
+    margin-inline-start: var(--space-32);
+    max-inline-size: 46ch;
+    color: var(--color-text-secondary);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+  }
+
+  /* `:has([aria-expanded="false"])` rather than `:has(> h3 > [...])`. The
+     trigger is the only element inside a service that carries the attribute,
+     so the child path buys nothing — and qa.js neutralises state attributes
+     before testing whether a selector is dead, which turned the longer form
+     into `:has(> h3 > )` and made the rule unevaluable rather than checked.
+     A selector the guard cannot read is a selector nothing is guarding. */
+  .c-service:has([aria-expanded="false"]) .c-service__summary {
+    display: block;
+  }
+
+  @media (min-width: 48em) {
+    .c-service__summary {
+      /* Same indent as .c-service__content, so the summary sits exactly where
+         the description it stands in for will appear. */
+      margin-inline-start: calc(var(--space-48) + 2.5ch + var(--space-32));
+    }
+  }
+
   .c-service__panel-inner {
     overflow: hidden;
     min-block-size: 0;
