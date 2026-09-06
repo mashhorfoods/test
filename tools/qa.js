@@ -536,9 +536,20 @@ function serve() {
         : /\.(webp|png|jpe?g|svg|avif|gif)$/.test(u) ? 'img'
         : /\.html?$|\/$/.test(u) ? 'html' : 'other');
       const parts = {};
-      for (const [u, b] of firstRows) parts[bucket(u)] = (parts[bucket(u)] || 0) + b;
+      const otherUrls = new Set();
+      for (const [u, b] of firstRows) {
+        const k = bucket(u);
+        parts[k] = (parts[k] || 0) + b;
+        /* `other` is the bucket for things we did not anticipate, so it is the
+           one that has to name itself. A 3KB "other" that turns out to be a
+           data: URI is a non-finding; the same 3KB against a real request is
+           a page fetching something nobody meant it to. */
+        if (k === 'other') otherUrls.add(u.startsWith('data:') ? 'data:' : u.split('/').pop().slice(0, 24));
+      }
       const firstBreakdown = ['html', 'fonts', 'img', 'other']
-        .filter((k) => parts[k]).map((k) => `${k} ${(parts[k] / 1024).toFixed(0)}`).join(' + ');
+        .filter((k) => parts[k])
+        .map((k) => `${k} ${(parts[k] / 1024).toFixed(0)}${k === 'other' ? ` [${[...otherUrls].join(' ')}]` : ''}`)
+        .join(' + ');
 
       if (scroll) {
         const H = await pg.evaluate(() => document.documentElement.scrollHeight);

@@ -195,14 +195,30 @@ threshold that varies by browser version and by effective connection type — so
 on the runner, one of those very plausibly begins and finishes inside the
 window, and here it never starts.
 
-That is a prediction, not a conclusion: it was not reproduced, it was inferred
-from two numbers matching. What makes it worth acting on is that the fix is
-the same either way — an image that does not overlap the first viewport is now
-excluded whether or not it loaded. **The next CI run tests it.** If the runner
-reports `first screen 418KB = html 357 + fonts 61`, matching this container,
-the cause was a below-fold image and it is now closed. If it still reports
-450KB, the breakdown names which category the extra bytes are in and the guess
-was wrong again.
+That was a prediction rather than a conclusion — inferred from two numbers
+matching, not reproduced. **The next CI run settled it.**
+
+| | dev container | CI runner |
+| --- | ---: | ---: |
+| `index.html` | 418KB = html 357 + fonts 61 | 420KB = html 357 + fonts 61 + other 3 |
+| `story.html` | 288KB = html 227 + fonts 61 | 291KB = html 227 + fonts 61 + other 3 |
+| `about.html` | 382KB = html 207 + fonts 31 + img 145 | 385KB = same + other 3 |
+
+**The 32KB is gone.** It was a below-fold image loading early on the runner and
+counting as first-screen; defining `first` by layout excludes it whether or not
+it loads. Every category that describes the page — html, fonts, img — now
+agrees exactly across both environments.
+
+What is left is **3KB, constant on every page, in `other` on CI only**. Being
+constant across three pages of very different composition, it is an artefact of
+the environment rather than anything about the site, and it is inside a budget
+with 60KB of headroom. It is not worth another round of guessing — so the
+`other` bucket now names its own URLs, and the next run says what it is without
+anyone reproducing anything.
+
+The residual is recorded rather than chased, but the useful number is the one
+that changed: **the disagreement went from 32KB to 3KB, and from unexplained to
+categorised.**
 
 **Two changes came out of the attempt anyway**, both worth keeping:
 
@@ -219,10 +235,11 @@ html 357 + fonts 61` — because a 32KB disagreement that names a font is a
 different problem from one that names an image or the document. The next CI
 run says which, without anyone having to reproduce anything.
 
-Until it does, the figure is honestly **418–450KB depending on where it is
-measured**. The budget stays at 480KB, set against the higher end so it cannot
-pass locally and fail in CI, and a breach inside that band means "look at the
-breakdown", not "regressed".
+The figure is now **418KB here and 420KB in CI** — one number, within 3KB,
+rather than a 32KB range. The budget stays at 480KB: there is no longer a
+reason to keep it loose, but moving it down is a separate decision from fixing
+the measurement, and doing both in one pass is how a budget change gets
+smuggled in as a bug fix.
 
 One thing the breakdown already shows, unrelated to the discrepancy: the
 English homepage fetches the **30KB Arabic font** on its first screen. Whether
