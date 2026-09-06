@@ -24,6 +24,35 @@ a usable recording actually contains. This does, and it is deliberately short.
 
 ---
 
+## 0. SCREENSHOTS, NOT VIDEO — corrected 5 September 2026
+
+This document asked for **screen recordings**, and it should not have. **A
+video cannot be read here.** Images can — anything pasted into the
+conversation is looked at directly — but a `.mp4` or `.mov` is not something
+this session can open, frame or measure. Asking for one would have cost a
+round trip after the recording was already made.
+
+**What to send instead, and it is easier:**
+
+| | |
+| --- | --- |
+| **Full-page screenshots**, desktop and phone width | The primary ask. One image per site per width, top to bottom |
+| **The hero, as its own screenshot** | So the first screen can be looked at without scrolling past it |
+| **Motion, described in a sentence** | The one thing a still cannot carry. *"The hero video loops about 6 seconds and cuts hard"* is worth more than a video I cannot open |
+
+A full-page screenshot is in fact **better** than the recording this document
+originally asked for: `docs/55` §2 measured Pixora's rhythm in *screens per
+section*, and a full-page image gives exact pixel heights rather than a scroll
+speed to estimate from.
+
+**Do not commit these to the repository.** They are someone else's design work
+and this repo is public. **Paste them into the conversation** — that is enough
+for X02 and X03, because the reference material is analysed and never shipped.
+That is the opposite of the Al Mada deliverables, which had to be files
+because they appear on the site.
+
+---
+
 ## 1. What to capture — the short version
 
 **Two recordings of `pixverse.ai`, and one still.**
