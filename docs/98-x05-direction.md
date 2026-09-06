@@ -209,12 +209,26 @@ counting as first-screen; defining `first` by layout excludes it whether or not
 it loads. Every category that describes the page — html, fonts, img — now
 agrees exactly across both environments.
 
-What is left is **3KB, constant on every page, in `other` on CI only**. Being
-constant across three pages of very different composition, it is an artefact of
-the environment rather than anything about the site, and it is inside a budget
-with 60KB of headroom. It is not worth another round of guessing — so the
-`other` bucket now names its own URLs, and the next run says what it is without
-anyone reproducing anything.
+What was left was **3KB, constant on every page, in `other` on CI only**. I
+called it an artefact of the environment. **That was wrong, and the bucket that
+names its own URLs said so on the next run:**
+
+```
+first screen 420KB = html 357 + fonts 61 + other 3 [script.js]
+```
+
+It is `https://plausible.io/js/script.js` — the analytics tag, `defer`, on
+every page. It is invisible in the dev container for the same reason the
+competitive review is impossible there: **the egress proxy blocks it.** So the
+unrepresentative environment was the local one, and every local first-screen
+figure in this document under-reports the real cost by 3KB plus a DNS lookup
+and a TLS handshake to a third-party origin.
+
+That is a genuine property of the site, not noise: a real visitor pays it, and
+it is the only third-party request on the first screen. Whether 3KB of
+analytics is worth a cross-origin connection on a page whose whole argument is
+weight is a real question — but it is a decision the owner has already made
+(`docs/58`), so it is recorded here rather than reopened.
 
 The residual is recorded rather than chased, but the useful number is the one
 that changed: **the disagreement went from 32KB to 3KB, and from unexplained to

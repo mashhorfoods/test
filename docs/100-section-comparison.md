@@ -93,3 +93,16 @@ numbers rather than from impressions.
 
 Until then §3 stands on its own — it is a measured critique of our own page,
 which is worth having whether or not the other ten ever arrive.
+
+---
+
+## 5. One thing measuring from here hides
+
+The same egress block that stops the competitor rows also hides part of our own
+page. CI's first-screen breakdown names a 3KB `script.js` this container never
+sees: the Plausible tag, on every page, the only third-party request on the
+first screen (`docs/98` §5.2).
+
+Worth carrying into the comparison: **when the ten rows arrive from a real
+browser, they will include third-party weight that our local numbers do not.**
+Compare CI's figures with theirs, not this container's.
