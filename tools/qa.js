@@ -1649,6 +1649,14 @@ function serve() {
          inside parentheses; an @supports condition always is. */
       let depth = 0; let paren = 0; const guards = [];
       for (let i = 0; i < css.length; i += 1) {
+        /* Skip comments. The first version did not, and flagged the comment in
+           page.css that explains this very rule — the word appears in prose
+           describing the check as often as in code breaking it. */
+        if (css.startsWith('/*', i)) {
+          const close = css.indexOf('*/', i + 2);
+          i = close === -1 ? css.length : close + 1;
+          continue;
+        }
         if (css[i] === '(') paren += 1;
         else if (css[i] === ')') paren = Math.max(0, paren - 1);
         if (css[i] === '{') {

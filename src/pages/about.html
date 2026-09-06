@@ -25,15 +25,29 @@
                the homepage's ecosystem diagram than here. The fourth matches
                the palette better and shows its subject from behind, faceless —
                handsome, and the opposite of what this page claims. docs/93. -->
-          <figure class="c-page__figure" data-reveal>
-            <img class="c-page__figure-image" src="./src/assets/images/about1.webp"
+          <!-- PAIRED ROWS, from 48em up. Each image sits beside the section it
+               belongs to rather than above it, and the sides alternate: the
+               figure takes the second grid track on every even row. That
+               mirrors on its own under RTL, because a grid's inline axis
+               follows the document direction — no [dir] rule anywhere.
+
+               Below 48em the grid collapses to one column and each pair stacks
+               image-then-text, which is the order they read in.
+
+               The motion lives in page.css: as a row crosses the viewport its
+               figure and its text drift past each other by a few pixels, so the
+               pair reads as one object moving rather than two sitting still.
+               docs/95. -->
+          <div class="c-split">
+          <div class="c-split__row">
+            <figure class="c-split__figure">
+            <img class="c-split__image" src="./src/assets/images/about1.webp"
               alt="A studio at work across distance: one person at a laptop, and around them the people a project passes through — a designer, a developer, an editor, a social manager — each on their own screen, connected across a map of the region."
               data-alt-en="A studio at work across distance: one person at a laptop, and around them the people a project passes through — a designer, a developer, an editor, a social manager — each on their own screen, connected across a map of the region."
               data-alt-ar="استوديو يعمل عبر المسافات: شخص أمام حاسوبه، وحوله من يمرّ بهم المشروع — مصمّم ومطوّر ومحرّر ومسؤول تواصل — كلٌّ على شاشته، متصلين عبر خريطة المنطقة."
               width="1672" height="940" loading="lazy" decoding="async" />
-          </figure>
-
-          <div class="c-prose">
+            </figure>
+            <div class="c-split__text c-prose">
             <h2 data-reveal><span data-lang-copy="en">Who you work with</span><span data-lang-copy="ar" lang="ar">مع من تعمل</span></h2>
             <p data-reveal><span data-lang-copy="en">Pixora is run by <strong>Muhalab Salah</strong>, who designs the brands and builds the sites.
               You deal with the person doing the work, not an account manager relaying messages to someone you never
@@ -41,18 +55,18 @@
               and <a class="c-link" href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"> (opens in a new tab)</span></a>.</span><span data-lang-copy="ar" lang="ar">يدير بيكسورا <strong>مهلب صلاح</strong>، وهو من يصمّم الهويات ويبني المواقع. تتعامل مع من ينفّذ العمل، لا مع مسؤول حساب ينقل الرسائل إلى شخص لا تراه. والعمل منشور:
               <a class="c-link" href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"> (يفتح في نافذة جديدة)</span></a>
               و<a class="c-link" href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"> (يفتح في نافذة جديدة)</span></a>.</span></p>
-
+            </div>
           </div>
 
-          <figure class="c-page__figure c-page__figure--wide" data-reveal>
-            <img class="c-page__figure-image" src="./src/assets/images/about4.webp"
+          <div class="c-split__row">
+            <figure class="c-split__figure">
+            <img class="c-split__image" src="./src/assets/images/about4.webp"
               alt="Working across distance after hours: one person at a lit desk seen from behind, and around them the screens of the people a project passes through — a designer, an editor, a developer — each in their own place, joined by light across a map of the region."
               data-alt-en="Working across distance after hours: one person at a lit desk seen from behind, and around them the screens of the people a project passes through — a designer, an editor, a developer — each in their own place, joined by light across a map of the region."
               data-alt-ar="العمل عبر المسافات في ساعة متأخرة: شخص أمام مكتبه المضاء من الخلف، وحوله شاشات من يمرّ بهم المشروع — مصمّم ومحرّر ومطوّر — كلٌّ في مكانه، تربطهم خيوط ضوء عبر خريطة المنطقة."
               width="1672" height="940" loading="lazy" decoding="async" />
-          </figure>
-
-          <div class="c-prose">
+            </figure>
+            <div class="c-split__text c-prose">
             <h2 data-reveal><span data-lang-copy="en">How remote actually works</span><span data-lang-copy="ar" lang="ar">كيف يعمل العمل عن بُعد فعليًا</span></h2>
             <p data-reveal><span data-lang-copy="en">There is no office to visit, and that is the point: it is why one studio can serve Riyadh, Dubai
               and Cairo at the same price. The process on the homepage is what a project actually feels like —
@@ -64,12 +78,30 @@
             <p data-reveal><span data-lang-copy="en">Conversations happen on WhatsApp or by email, in Arabic or English, whichever suits you. Both
               languages are first-class here — every word of this site exists in each of them, which is the same
               standard your project gets.</span><span data-lang-copy="ar" lang="ar">تجري المحادثات عبر واتساب أو البريد، بالعربية أو الإنجليزية، كما يناسبك. واللغتان هنا متساويتان — كل كلمة في هذا الموقع موجودة بهما، وهو المعيار نفسه الذي يحصل عليه مشروعك.</span></p>
+            </div>
+          </div>
 
+          <div class="c-split__row">
+            <figure class="c-split__figure">
+            <img class="c-split__image" src="./src/assets/images/about2.webp"
+              alt="The shape of the arrangement: one lit core on a platform, with five workstations around it, each joined to the centre by a single line of light. Five services, one place they meet."
+              data-alt-en="The shape of the arrangement: one lit core on a platform, with five workstations around it, each joined to the centre by a single line of light. Five services, one place they meet."
+              data-alt-ar="شكل الترتيب: نواة مضيئة على منصّة، وحولها خمس محطات عمل، تصل كلٌّ منها بالمركز خيط ضوء واحد. خمس خدمات، ومكان واحد تلتقي فيه."
+              width="1672" height="940" loading="lazy" decoding="async" />
+            </figure>
+            <div class="c-split__text c-prose">
             <h2 data-reveal><span data-lang-copy="en">What we charge, and why it is published</span><span data-lang-copy="ar" lang="ar">ماذا نتقاضى، ولماذا الأسعار منشورة</span></h2>
             <p data-reveal><span data-lang-copy="en">Every package and every price is on the homepage. Most studios in this region ask you to request a
               quote; we would rather you could decide whether we are worth a conversation before having one. We are new
               in these markets and priced accordingly — that is a deliberate position, not a discount that expires.</span><span data-lang-copy="ar" lang="ar">كل باقة وكل سعر موجود في الصفحة الرئيسية. معظم الاستوديوهات في المنطقة تطلب منك طلب عرض سعر؛ ونحن نفضّل أن تقرّر بنفسك ما إذا كنّا نستحق المحادثة قبل أن تبدأها. نحن جدد في هذه الأسواق وسعّرنا على هذا الأساس — وهذا موقف مقصود، لا خصم ينتهي.</span></p>
+            </div>
+          </div>
+          </div>
 
+          <!-- The fourth section has no image and takes the full measure. It is
+               a list of refusals, and it closes the page better standing alone
+               than paired with a picture that would have to be found for it. -->
+          <div class="c-prose c-split__coda">
             <h2 data-reveal><span data-lang-copy="en">What we will not do</span><span data-lang-copy="ar" lang="ar">ما لا نفعله</span></h2>
             <ul>
               <li><span data-lang-copy="en">We do not publish numbers we cannot prove. There is no invented statistic, client or testimonial anywhere on this site — and there will not be one on yours.</span><span data-lang-copy="ar" lang="ar">لا ننشر أرقامًا لا نستطيع إثباتها. لا توجد إحصائية أو عميل أو شهادة مُختلقة في أي مكان بهذا الموقع — ولن توجد في موقعك.</span></li>
@@ -78,13 +110,5 @@
               <li><span data-lang-copy="en">We do not publish a client's work without their permission.</span><span data-lang-copy="ar" lang="ar">لا ننشر عمل أي عميل دون إذنه.</span></li>
             </ul>
           </div>
-
-          <figure class="c-page__figure c-page__figure--wide" data-reveal>
-            <img class="c-page__figure-image" src="./src/assets/images/about2.webp"
-              alt="The shape of the arrangement: one lit core on a platform, with five workstations around it, each joined to the centre by a single line of light. Five services, one place they meet."
-              data-alt-en="The shape of the arrangement: one lit core on a platform, with five workstations around it, each joined to the centre by a single line of light. Five services, one place they meet."
-              data-alt-ar="شكل الترتيب: نواة مضيئة على منصّة، وحولها خمس محطات عمل، تصل كلٌّ منها بالمركز خيط ضوء واحد. خمس خدمات، ومكان واحد تلتقي فيه."
-              width="1672" height="940" loading="lazy" decoding="async" />
-          </figure>
         </div>
       </section>
