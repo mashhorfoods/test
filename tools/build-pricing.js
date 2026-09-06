@@ -358,17 +358,36 @@ ${data.map((c) => {
 }
 
 
-function renderBlock(c) {
+/* `full` DECIDES WHETHER THE TIERS THEMSELVES ARE EMITTED.
+   The loop below already said "the guide and the homepage may diverge in what
+   they include, but never in what a package says" — this is that divergence,
+   finally used.
+
+   THE HOMEPAGE WAS CARRYING A BYTE-FOR-BYTE COPY OF /pricing: 12 tiers, 12
+   CTAs, 12 disclosures, 110 feature items, identical names. Measured at 11.1
+   screenfuls on a phone, 32% of the homepage — and /pricing, the destination
+   the nav offers, showed a visitor exactly what they had just scrolled past.
+
+   What the homepage keeps is everything that carries the promise: the service,
+   its lead, the price floor with its billing period, and the WhatsApp action.
+   "Prices published in full on this site" survives intact — only the feature
+   lists and the exclusion disclosures move to the page built to hold them,
+   which docs/87 just gave a door. */
+function renderBlock(c, full = true) {
   const floor = c.packages.reduce((a, p) => (num(p.price) < num(a.price) ? p : a));
   const monthly = c.packages[0].billing === 'billingMonthly';
   const word = COUNT_WORD[c.packages.length] || String(c.packages.length);
   const pairClass = c.packages.length === 2 ? ' c-tiers--pair' : '';
 
-  return `<!-- PACKAGES:${c.id}:START -->
-          <div class="c-tiers${pairClass}" data-reveal-group>
+  const tiers = full
+    ? `          <div class="c-tiers${pairClass}" data-reveal-group>
 ${c.packages.map((p, i) => renderCard(p, c, i)).join('\n\n')}
           </div>
-${renderNote(c)}
+${renderNote(c)}`
+    : '';
+
+  return `<!-- PACKAGES:${c.id}:START -->
+${tiers}
           <p class="c-detail__packages" data-reveal id="${c.id}-packages">
             <span class="c-detail__packages-count">${pair({ en: `${word} packages, from`, ar: `${COUNT_AR[c.packages.length] || `${c.packages.length} باقة`}، تبدأ من` })}</span>
             <span class="c-detail__packages-price">
@@ -384,11 +403,36 @@ ${renderNote(c)}
             data-about="${c.id}"
             ${WHATSAPP ? 'target="_blank" rel="noopener noreferrer"' : ''}
             data-reveal aria-describedby="${c.id}-packages">
-            <span><span data-lang-copy="en">Ask about this service</span><span data-lang-copy="ar" lang="ar">اسأل عن هذه الخدمة</span></span>
+            <!-- NAMES THE SERVICE. These four were display:none until docs/88
+                 gave them a block with no cards, so qa.js §18 had never seen
+                 them: four controls announcing "Ask about this service" and
+                 opening four different conversations. The WhatsApp message
+                 always named the service; the button a screen reader reads
+                 did not. -->
+            <span><span data-lang-copy="en">Ask about ${esc(c.label)}</span><span data-lang-copy="ar" lang="ar">اسأل عن ${esc(c.labelAr)}</span></span>
             <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
             </svg>
           </a>
+${full ? '' : `
+          <!-- One quiet text link, not a second CTA — the same device the story
+               section uses, and §11 of the CTA hierarchy allows one action per
+               surface. The action above is the conversion; this is a route to
+               the detail that used to sit here. -->
+          <p class="c-detail__more" data-reveal>
+            <a class="c-link" href="./pricing#${c.id}">
+              <!-- NAMES ITS SERVICE. The first version said "See the three
+                   packages in full" on all four links, and qa.js §18 failed the
+                   build: four controls announcing an identical name and leading
+                   to four different places is what a screen-reader user cannot
+                   tell apart. The count is already in the summary line directly
+                   above, so the service name is the half worth keeping. -->
+              <span data-lang-copy="en">See all ${esc(c.label)} packages</span><span data-lang-copy="ar" lang="ar">اطّلع على باقات ${esc(c.labelAr)}</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="u-flip-rtl">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none" />
+              </svg>
+            </a>
+          </p>`}
           <!-- PACKAGES:${c.id}:END -->`;
 }
 
@@ -426,6 +470,9 @@ ${groups}
 const TARGETS = [HTML, path.join(ROOT, 'src/pages/pricing.html')].filter(fs.existsSync);
 
 TARGETS.forEach((file) => {
+/* The guide is the page that holds the catalogue; every other target gets the
+   summary and a link to it. */
+const isGuide = path.basename(file) === 'pricing.html';
 let html = fs.readFileSync(file, 'utf8');
 const before = html;
 
@@ -444,7 +491,7 @@ data.forEach((c) => {
   // this block — the guide and the homepage may diverge in what they include,
   // but never in what a package says.
   if (!html.includes(a) || !html.includes(b)) return;
-  html = html.replace(new RegExp(`${a}[\\s\\S]*?${b}`), () => renderBlock(c));
+  html = html.replace(new RegExp(`${a}[\\s\\S]*?${b}`), () => renderBlock(c, isGuide));
 });
 
 {

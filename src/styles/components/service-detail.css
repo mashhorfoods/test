@@ -566,9 +566,23 @@
      this would be a fourth button under three, asking a vaguer version of the
      question the cards already ask precisely. Kept in the markup and hidden
      everywhere, because it is still the right answer for a service block that
-     has no packages under it — and one is coming. */
+     has no packages under it — and one is coming.
+
+     IT CAME, 6 September 2026. docs/88 moved the twelve tiers off the homepage
+     to the guide, so every homepage service block is now exactly the case this
+     comment was holding the markup for: a service, its price floor, and no
+     cards to carry the conversion. Hidden, those four sections offered a
+     desktop visitor no action at all — only a quiet link to another page.
+
+     Keyed on the absence of the cards rather than on a page or a builder flag,
+     so the rule states its own condition: wherever a service block has
+     packages, the cards convert; wherever it does not, this does. */
   .c-detail__action {
     display: none;
+  }
+
+  .c-detail:not(:has(.c-tiers)) .c-detail__action {
+    display: inline-flex;
   }
 
   /* On the narrowest phones the card cannot hold 32px of padding and a

@@ -99,7 +99,23 @@ const fail = (sev, flow, text) => { findings.push({ sev, flow, text }); console.
   for (const [width, label] of [[1280, 'desktop'], [390, 'mobile']]) {
     const ctx = await browser.newContext({ viewport: { width, height: 900 }, isMobile: width < 500, hasTouch: width < 500 });
     const p = await ctx.newPage();
+    /* THE JOURNEY NOW STARTS ONE PAGE EARLIER. The homepage used to carry a
+       byte-for-byte copy of the catalogue; docs/88 moved the tiers to the
+       guide and left the homepage a summary and a link. So this walks the
+       route a buyer actually walks — homepage, follow the service's link,
+       choose the package there — which tests more than the old version did:
+       if that link ever breaks, this journey stops before it starts. */
     await p.goto(`${BASE}/index.html`, { waitUntil: 'load' }); await p.waitForTimeout(600);
+    const route = await p.evaluate(() => {
+      const a = [...document.querySelectorAll('a[href*="pricing#"]')]
+        .find((x) => /pricing#social/.test(x.getAttribute('href')));
+      return a ? a.getAttribute('href') : null;
+    });
+    if (!route) {
+      fail('HIGH', 'A', `${label}: the homepage offers no route from Social Media to its packages`);
+    } else {
+      await p.goto(`${BASE}/pricing.html#social`, { waitUntil: 'load' }); await p.waitForTimeout(600);
+    }
     const cta = await p.evaluate(() => {
       const a = document.querySelector('[data-about="social:soc-growth"]');
       return a ? decodeURIComponent(a.getAttribute('href')) : null;
@@ -115,7 +131,10 @@ const fail = (sev, flow, text) => { findings.push({ sev, flow, text }); console.
       return card ? card.querySelectorAll('.c-tier__facts dd').length : 0;
     });
     if (facts < 3) fail('MED', 'A', `${label}: the card shows ${facts} scope facts, expected 3`);
-    await p.evaluate(() => { const a = document.querySelector('[data-about="social:soc-growth"]'); a.addEventListener('click', (e) => e.preventDefault(), { capture: true }); a.click(); });
+    await p.evaluate(() => { const a = document.querySelector('[data-about="social:soc-growth"]'); if (!a) return; a.addEventListener('click', (e) => e.preventDefault(), { capture: true }); a.click(); });
+    /* The choice is remembered in sessionStorage and the form lives on the
+       homepage, so the return leg is the same as it always was — what changed
+       is only where the choice was made. */
     await p.goto(`${BASE}/index.html`, { waitUntil: 'load' }); await p.waitForTimeout(600);
     const pre = await p.evaluate(() => document.querySelector('[data-contact-about]')?.value);
     if (pre !== 'social:soc-growth') fail('HIGH', 'A', `${label}: the form forgot the package (got "${pre}")`);
@@ -159,14 +178,31 @@ const fail = (sev, flow, text) => { findings.push({ sev, flow, text }); console.
       await p.goto(`${BASE}/${page}`, { waitUntil: 'load' }); await p.waitForTimeout(200);
       const r = await p.evaluate(() => ({
         nav: document.querySelectorAll('.c-header a[href]').length,
-        prices: document.querySelectorAll('.c-tier__amount').length,
+        /* Two shapes of price, because the two pages carry different ones:
+           the guide holds the twelve tier amounts, the homepage holds one
+           floor per service. Both are static markup either way. */
+        tierPrices: document.querySelectorAll('.c-tier__amount').length,
+        floorPrices: document.querySelectorAll('.c-detail__packages-amount').length,
         wa: [...document.querySelectorAll('[data-wa]')].filter((a) => /^https:\/\/wa\.me/.test(a.getAttribute('href'))).length,
         details: document.querySelectorAll('.c-tier__terms').length,
+        routes: document.querySelectorAll('a[href*="pricing#"]').length,
       }));
+      const guide = page === 'pricing.html';
       if (r.nav < 4) fail('HIGH', 'nojs', `${page}: navigation missing (${r.nav} links)`);
-      if (r.prices < 12) fail('HIGH', 'nojs', `${page}: prices missing`);
       if (r.wa < 1) fail('HIGH', 'nojs', `${page}: WhatsApp CTAs are not real links`);
-      if (r.details < 1) fail('MED', 'nojs', `${page}: the scope-fact disclosure is missing`);
+
+      /* THE PROMISE UNDER TEST IS "prices published in full on this site",
+         and docs/88 moved where they live rather than whether they exist.
+         So each page is checked for the prices IT is meant to show — a blanket
+         "twelve everywhere" only ever passed because the homepage duplicated
+         the guide, and would now pass a homepage with no prices at all. */
+      if (guide) {
+        if (r.tierPrices < 12) fail('HIGH', 'nojs', `${page}: ${r.tierPrices} of 12 tier prices render without JavaScript`);
+        if (r.details < 1) fail('MED', 'nojs', `${page}: the scope-fact disclosure is missing`);
+      } else {
+        if (r.floorPrices < 4) fail('HIGH', 'nojs', `${page}: ${r.floorPrices} of 4 service prices render without JavaScript — the page names services it will not price`);
+        if (r.routes < 4) fail('HIGH', 'nojs', `${page}: ${r.routes} of 4 links to the full packages — a service whose detail cannot be reached is a dead end`);
+      }
     }
     await ctx.close();
   }
