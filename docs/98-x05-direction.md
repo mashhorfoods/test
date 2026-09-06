@@ -118,8 +118,14 @@ It budgets **video**. Nothing budgeted anything else.
 | After Feature 02 — The Brand Challenge | 356KB |
 
 And what a phone pays before it scrolls: **314KB on 6 September** (`docs/92`
-§3.1) → **450KB now**. Nearly half as much again, in two days, for two
-features.
+§3.1) → **389KB now**.
+
+That figure read 450KB for most of the day, and 61KB of it was a measurement
+chasing a defect rather than a cost. See §5.3 — a stylesheet that never closed
+a block was renesting the whole utilities layer, which both rendered Arabic on
+the English homepage and made it fetch a 30KB Arabic font to do so. Fixing the
+cascade removed the font and 31KB with it. The honest growth from two features
+is **314KB → 389KB**, not 450.
 
 Neither feature was wrong to build; both were asked for, and both are honest
 about what they are. The problem is what was watching, and the first version
@@ -296,6 +302,47 @@ happened, but on code that had not been changed. Both produce the same
 artefact: **a green result that proves nothing.** The tell in both cases was a
 number that did not move when it should have. That, not the pass itself, is
 what to read.
+
+### 5.3 The 30KB Arabic font was a cascade bug wearing a font's clothes
+
+The first-screen breakdown showed `fonts 61` on the English homepage, of which
+30.2KB was `cairo-arabic-var.woff2`. An Arabic font, on an English page, on the
+screen the whole performance argument rests on.
+
+It was not a font decision. The font already carries a `unicode-range`
+restricted to Arabic, and nothing preloads it — a browser fetches it only if it
+has Arabic glyphs to paint. **It had four of them**: the orbit's four service
+labels were rendering in both languages at once, so the English homepage read
+
+> BRANDING & DESIGN الهوية والتصميم
+
+The cause was one duplicated `@layer components {` in `page.css`, which left
+the file with an unclosed block. The build concatenates stylesheets, so
+everything after it nested *inside* components — including the whole utilities
+layer. `html:not([lang|="ar"]) [data-lang-copy="ar"] { display: none }` became
+a sub-layer of components and lost to `.c-orbit__label span { display: block }`.
+
+`06-utilities.css` carries a comment saying this exact failure happened once
+before, to this exact component, and that the rule was moved to `utilities` to
+stop it. The rule was in the right layer. The layer was in the wrong place.
+
+**I introduced it**, in the `/about` split commit, and it shipped for the rest
+of the day. Nothing could see it: the bilingual guard counts strings and both
+were present, axe had no violation, and an unclosed block is not a CSS syntax
+error — it is a nesting instruction, silently obeyed.
+
+`qa.js` §29 now fails HIGH when any stylesheet does not close what it opens,
+because the symptom appeared as a font, the cause was in a different file, and
+the only thing common to both was a brace.
+
+| | before | after |
+| --- | ---: | ---: |
+| Homepage first screen | 420KB | **389KB** |
+| — of which fonts | 61KB | **31KB** |
+| Full phone page | 828KB | **797KB** |
+
+`/story` still loads the Arabic face and should: it displays Arabic inside
+English prose, which is the font doing its job.
 
 ---
 

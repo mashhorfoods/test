@@ -95,7 +95,6 @@
 }
 
 @layer components {
-@layer components {
   /* SPLIT — image beside the section it belongs to.
      /about used to run full-measure images stacked between blocks of prose. On
      a wide screen that left a 672px reading column next to 550px of nothing,
