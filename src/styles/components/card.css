@@ -11,12 +11,12 @@
     flex-direction: column;
     gap: var(--space-16);
     padding: var(--space-32);
-    background-color: var(--color-surface);
-    border: var(--border-hairline);
-    border-radius: var(--radius-md);
+    background-color: var(--card-surface);
+    border: var(--border-width) solid var(--card-border);
+    border-radius: var(--card-radius);
     transition: border-color var(--duration-base) var(--ease-standard),
       background-color var(--duration-base) var(--ease-standard),
-      transform var(--duration-base) var(--ease-out);
+      translate var(--duration-base) var(--ease-out);
   }
 
   .c-card__title {
@@ -36,13 +36,17 @@
   /* Interactive card — the whole surface is clickable via __link, which
      stretches over the card while leaving real text selectable. */
   .c-card--interactive:hover {
-    border-color: var(--color-border-strong);
-    background-color: var(--color-surface-hover);
+    border-color: var(--card-border-hover);
+    background-color: var(--card-surface-hover);
   }
 
-  @media (prefers-reduced-motion: no-preference) {
+  /* The lift is offered only where there is a pointer to lift under, and
+     `translate` rather than `transform` so it composes with anything else the
+     card is doing rather than replacing it — the same fix the buttons needed
+     when a hover and a press fought over one property. */
+  @media (any-hover: hover) and (prefers-reduced-motion: no-preference) {
     .c-card--interactive:hover {
-      transform: translateY(-4px);
+      translate: 0 var(--card-lift);
     }
   }
 

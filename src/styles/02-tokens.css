@@ -243,6 +243,41 @@
       0 12px 32px -16px rgba(244, 209, 63, 0.45);
 
     /* ---------------------------------------------------------------------
+       THE CARD CONTRACT
+       Named once, because the site had twenty-three card surfaces and no
+       card: four different radii, seven different grounds, and a `.c-card`
+       component that gets every one of them right and appears on no shipped
+       page.
+
+       WHY THERE IS NO CARD SHADOW, WHICH IS THE FIRST THING ASKED FOR.
+       A drop shadow is a dark smudge, and this interface is already dark. Over
+       #202020 it is close to invisible — you can spend the paint and buy no
+       depth. On a dark surface elevation is carried by GROUND: a raised thing
+       is lighter than what it sits on. That is not this project being
+       contrarian; it is where the field went. Linear, Vercel, Stripe and
+       Anthropic all moved to hairline borders and away from soft shadows
+       through 2025 and 2026, and shadow-heavy cards now read the way
+       skeuomorphic buttons read by 2014.
+
+       So depth here is two steps and a hairline:
+         a band            #141414 / #1a1a1a / #202020
+         a card at rest    #262626  — lighter than every band above it
+         a card under the  #2e2e2e  — one more step, plus a brighter edge
+           pointer                    and a small lift
+
+       --------------------------------------------------------------------- */
+    --card-surface: var(--color-surface);
+    --card-surface-hover: var(--color-surface-hover);
+    --card-border: var(--color-border);
+    --card-border-hover: var(--color-border-strong);
+    --card-radius: var(--radius-md);
+    /* Media-led cards — a tile that is mostly picture — take the larger of
+       the two, which is where current practice puts them: 12px for a card
+       carrying an image, 8px for a compact one carrying text. */
+    --card-radius-media: var(--radius-lg);
+    --card-lift: -4px;
+
+    /* ---------------------------------------------------------------------
        08 — MOTION
        --------------------------------------------------------------------- */
     --duration-instant: 100ms;

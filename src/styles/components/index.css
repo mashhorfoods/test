@@ -62,7 +62,8 @@
   }
 
   .c-index__link:hover {
-    border-color: var(--color-border-accent);
+    border-color: var(--card-border-hover);
+    background-color: var(--card-surface-hover);
   }
 
   .c-index__link:focus-visible {

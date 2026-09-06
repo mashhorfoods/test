@@ -231,15 +231,26 @@
     }
   }
 
+  /* THE PRICING CARD WAS THE ONE CARD THAT WAS NOT RAISED.
+
+     Measured across four pages, twenty-two card surfaces sat between +6 and
+     +18 lighter than the band behind them. `.c-tier` sat at **+0.0** — the
+     same #202020 as the band it is on — so it was an outline drawn on the
+     page rather than a card resting on it. Its hover DID step to #262626, so
+     the card only became a card when you pointed at it, and a phone visitor,
+     who never points at anything, never saw it happen at all. That is the
+     surface where the money decision is made.
+
+     Rest is now the card ground and hover is the step above it. */
   .c-tier {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--space-24);
     padding: var(--space-32);
-    background-color: var(--color-bg);
-    border: var(--border-hairline);
-    border-radius: var(--radius-md);
+    background-color: var(--card-surface);
+    border: var(--border-width) solid var(--card-border);
+    border-radius: var(--card-radius);
     transition: border-color var(--duration-base) var(--ease-standard),
       background-color var(--duration-base) var(--ease-standard);
   }
@@ -255,20 +266,43 @@
   }
 
   .c-tier:hover {
-    border-color: var(--color-border-strong);
-    background-color: var(--color-surface);
+    border-color: var(--card-border-hover);
+    background-color: var(--card-surface-hover);
   }
 
   /* --- Recommended -------------------------------------------------------
      Marked four ways — a text label, an accent border, a raised surface and
-     a primary CTA — so the recommendation never rests on colour alone. */
+     a primary CTA — so the recommendation never rests on colour alone.
+
+     THE THIRD OF THOSE NEARLY DIED IN THIS PASS. "Raised surface" meant
+     #262626 while an ordinary tier sat at #202020. Raising every tier to the
+     card ground put the ordinary ones at #262626 too, and the recommendation
+     silently dropped to three signals — at rest AND on hover, since both
+     landed on the same two values.
+
+     So the featured tier moves up a rung rather than sharing one. Ordinary
+     rests at #262626 and hovers to #2e2e2e; recommended rests at #2e2e2e and
+     hovers to #383838. Four values, one ladder, and the gap between an
+     ordinary card and the recommended one is the same step at either end. */
   .c-tier--featured {
     border-color: var(--color-border-accent);
-    background-color: var(--color-surface);
+    background-color: var(--card-surface-hover);
   }
 
+  /* THE ACCENT BORDER HAS TO SURVIVE THE POINTER, and it did not.
+
+     `.c-tier:hover` is a class plus a pseudo-class; `.c-tier--featured` is a
+     class. The hover rule is therefore MORE specific whatever the source
+     order, so pointing at the recommended package replaced its yellow edge
+     with the ordinary white one — the recommendation lost a signal at the
+     exact moment a visitor was engaging with it. Measured at rest
+     rgb(244,209,63) and hovered rgba(255,255,255,0.2).
+
+     Pre-existing, and only visible because this pass measured the ladder rung
+     by rung rather than looking at it. */
   .c-tier--featured:hover {
-    background-color: var(--color-surface-hover);
+    border-color: var(--color-border-accent);
+    background-color: var(--color-surface-active);
   }
 
   .c-tier__ribbon {
@@ -722,6 +756,7 @@
     }
   }
 
+  /* Also flat against its band at +0.0, and for the same reason. */
   .c-device {
     display: flex;
     flex-direction: column;
@@ -730,9 +765,9 @@
     min-block-size: 7rem;
     margin: 0;
     padding: var(--space-16);
-    background-color: var(--color-bg);
-    border: var(--border-hairline);
-    border-radius: var(--radius-md);
+    background-color: var(--card-surface);
+    border: var(--border-width) solid var(--card-border);
+    border-radius: var(--card-radius);
     transition: border-color var(--duration-base) var(--ease-standard),
       transform var(--duration-base) var(--ease-out);
   }

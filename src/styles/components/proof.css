@@ -152,7 +152,7 @@
     aspect-ratio: 4 / 3;
     overflow: hidden;
     border: var(--border-hairline);
-    border-radius: var(--radius-lg, var(--radius-md));
+    border-radius: var(--card-radius-media);
     background-color: var(--color-surface);
     color: var(--color-text-primary);
     text-decoration: none;
@@ -173,7 +173,8 @@
   }
 
   .c-bento__link:hover {
-    border-color: var(--color-border-accent);
+    border-color: var(--card-border-hover);
+    background-color: var(--card-surface-hover);
   }
 
   /* --focus-ring is a box-shadow value; `outline:` would be dropped in

@@ -157,14 +157,14 @@
     padding: var(--space-24);
     background-color: var(--color-bg);
     border: var(--border-hairline);
-    border-radius: var(--radius-sm);
+    border-radius: var(--card-radius);
     transition: border-color var(--duration-fast) var(--ease-standard),
       background-color var(--duration-fast) var(--ease-standard);
   }
 
   .c-addon:hover {
-    border-color: var(--color-border-accent);
-    background-color: var(--color-surface);
+    border-color: var(--card-border-hover);
+    background-color: var(--card-surface-hover);
   }
 
   .c-addon__index {
