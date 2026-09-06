@@ -1,7 +1,7 @@
 # WEBSTART X — where the eleven stages actually stand
 
-**6 September 2026.** `docs/62` still reads *"1 of 11 complete"*. That was true
-when it was written and has been wrong for about a week. This is the current
+**6 September 2026.** `docs/62` read *"1 of 11 complete"* until this document replaced it. That was true
+when it was written on 5 September and was out of date within a day. This is the current
 state, each row traced to the document that closed it.
 
 ---

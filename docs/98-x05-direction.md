@@ -359,7 +359,36 @@ Not by default — each of these was re-examined and kept.
 | **One showpiece, desktop only** | `docs/53`. Re-affirmed, and now joined by a second budget rather than replaced |
 | **Dark side left** | `docs/80` §2.3 — held against the reference's opposite choice, because bilingual decides it and a bright region cannot be mirrored into safety |
 | **The token layer** | `docs/70` — inside the reference band, ahead on target sizes. The gap was never in the numbers |
+| **The 91 selectors that style nothing** | Examined one by one, §6.1. Almost all of them have a reason |
 | **No carousel in the hero** | `docs/86`. A scroll-snap gallery is script-optional; a carousel is the stranding pattern by design |
+
+### 6.1 The dead selectors are mostly not dead
+
+`qa.js` has reported ~94 selectors that match nothing on any page, in either
+language, and inlines them into all nine. The number sounds like waste. Split
+by *why each one exists*, it mostly is not:
+
+| | | |
+| --- | ---: | --- |
+| Reset rules for elements the site has not used yet | 9 | `h4`–`h6`, `table`, `th`, `hr`, `picture`, `canvas`. **Keep.** A reset exists so that the day someone adds a table it is already normalised — deleting it is a saving that spends itself the first time the operator writes one (`docs/89`) |
+| `/styleguide` vocabulary | 47 | The page exists to demo a design system larger than the site has ordered. **Keep** — removing them empties the page they were written for |
+| `.l-*` / `.u-*` layout and utility vocabulary | 35 | Explicitly held back from E6 for X09 (`docs/69` P1-6). **Keep** — a vocabulary you delete the unused half of is not a vocabulary |
+| **Unreachable rules that were simply wrong** | **3** | **Removed** |
+
+Those last three were mine, from today. Both interactive features had entrance
+animations keyed on `data-reward-state` / `data-challenge-state` attributes
+that **nothing ever set** — the scripts toggle `hidden` on panes instead — so
+the rules and the two `@keyframes` blocks they named could never apply.
+
+Removed rather than wired up: wiring them would be adding motion to a shipped
+component under cover of a cleanup. If those reveals should animate, that is a
+change to ask for on its own terms.
+
+94 → 91, about 1KB off every page, and both features verified unchanged
+afterwards — the reward still reveals a code, the challenge still shows its won
+pane. The rest of the count is not debt, and the honest way to shrink it is a
+build that stops inlining `/styleguide`'s vocabulary into the other eight
+pages, not a delete key.
 
 ---
 

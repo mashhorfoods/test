@@ -33,27 +33,24 @@ GitHub is no longer the single copy, and the site cannot go down unnoticed.
 Nothing remaining on this list is of that kind — which changes what "urgent"
 means for everything below.
 
-**WEBSTART X — 1 of 11 complete.** This is the honest number, and it is low for
-one reason: X02 needs reference material this environment cannot fetch, and
-X03 and X04 sit behind X02.
-
-| | Stage | Status |
-| --- | --- | --- |
-| X01 | Baseline Audit | ✅ **Done** — `docs/55`. Every item on its own KEEP/IMPROVE/ADD list is now closed or explicitly withdrawn |
-| X02 | Global Benchmark | ⛔ **Blocked.** Reference set named (`docs/52` §2), not analysed. Page fetches return `EGRESS_BLOCKED` — re-confirmed twice on 5 Sep |
-| X03 | Experience Deconstruction | ⛔ Not started, behind X02 |
-| X04 | Reference-Driven Redesign | ⛔ Not started, behind X03 |
-| X05 | Redesign Direction | 🟡 **Partial.** The one decision that could be made without references was made and shipped — the showpiece budget, `docs/53`. The full direction statement needs X04 |
-| X06 | High-Impact Upgrade | 🟡 **Partial.** Phone CTA regression, width parity, homepage proof, section banding, the hero, **Arabic heading leading** and **package-button alignment** all shipped — the last of those was an RTL rule that had never fired, leaving the Arabic hero CTA below the fold on desktop (`docs/43` §12); the last was a comment that closed early and made the browser discard `.c-tier__cta`, leaving the three package buttons in each grid up to 252px apart (`docs/43` §13). Navigation, density and the four-block structural repetition need X03 |
-| X07 | Interaction & Motion | 🟡 **Partial.** The hero film ships with reduced-motion guards. No systematic motion pass |
-| X08 | Mobile Excellence | ❌ Not started. X01's phrase still holds: mobile is *verified*, not *designed* |
-| X09 | Design System Refinement | ❌ Not started |
-| X10 | Validation & Comparative Review | ❌ Not started — needs a baseline to compare against, which is X04 |
-| X11 | World-Class Gate | ❌ Not started |
-
-**One input unblocks four stages.** The PixVerse recording (or any replacement
-reference material) turns X02 → X03 → X04 → X10 from blocked into work. It is
-the single highest-leverage thing outstanding on either workflow.
+> **SUPERSEDED — see `docs/99`.**
+>
+> This section read *"WEBSTART X — 1 of 11 complete"* and carried a stage
+> table to match. That was accurate when written and stopped being
+> accurate within a day, as stages closed one after another inside work that
+> was named something else — X08 by a phone CTA gap, X09 by 10px type,
+> X07 by 132 stranding blocks, X04 by a contact claim that was never true.
+>
+> **The current count is 7 complete, 2 partial, 2 not started**, each row
+> traced to the document that closed it, in `docs/99`. The stale table has been
+> removed rather than annotated, because a superseded number that is still
+> legible is a number someone will quote.
+>
+> What has not changed is the shape of the blockage, and it is worth keeping
+> here: **one input still unblocks the most.** Reference measurements —
+> `tools/reference-probe.js`, pasted into a browser console on a machine that
+> can reach the open web — turn X02's second half and X10 from blocked into
+> work, and now the ten competitor rows of `docs/100` with them.
 
 ---
 

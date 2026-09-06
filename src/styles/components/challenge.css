@@ -381,14 +381,13 @@
     100% { opacity: 0; transform: translateX(calc(100cqw - 2px)); }
   }
 
-  [data-challenge-state='won'] .c-challenge__won {
-    animation: challenge-in var(--duration-base) var(--ease-out) both;
-  }
+  /* An entrance animation for the won pane lived here, keyed on a
+     `data-challenge-state` attribute that nothing ever set — the script
+     toggles `hidden` on the panes instead, so neither the rule nor the
+     keyframes it named could ever apply. Removed rather than wired up:
+     wiring it would be adding motion to a shipped component under cover of a
+     cleanup. Same story as reward.css. */
 
-  @keyframes challenge-in {
-    from { opacity: 0; transform: translateY(var(--reveal-distance, 12px)); }
-    to { opacity: 1; transform: none; }
-  }
 
   @media print {
     .c-challenge__actions,

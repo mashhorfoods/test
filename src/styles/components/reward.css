@@ -207,13 +207,16 @@
      viewport width instead of the panel's. */
   .c-reward__panel { container-type: inline-size; }
 
-  [data-reward-state='revealing'] .c-reward__intro { opacity: 0; transition: opacity var(--duration-base) var(--ease-out); }
-  [data-reward-state='revealed'] .c-reward__result { animation: reward-in var(--duration-base) var(--ease-out) both; }
+  /* An entrance animation for the result lived here, keyed on a
+     `data-reward-state` attribute. Nothing ever set that attribute: the script
+     toggles `hidden` on the panes instead, so the rule could never apply and
+     the keyframes it named were unreachable. qa.js reports selectors that
+     style nothing, which is how this surfaced.
 
-  @keyframes reward-in {
-    from { opacity: 0; transform: translateY(var(--reveal-distance, 12px)); }
-    to { opacity: 1; transform: none; }
-  }
+     Removed rather than wired up, because wiring it would be adding motion to
+     a shipped component under the guise of a cleanup. If the reveal should
+     animate, that is a change to ask for on its own terms. */
+
 
   /* PRINT. A promotional code is worth keeping on paper; the button that
      copies it is not. */
