@@ -66,8 +66,10 @@
   }
 
   .c-index__link:focus-visible {
-    outline: var(--focus-ring);
-    outline-offset: var(--focus-ring-offset);
+    /* --focus-ring is a box-shadow value; `outline:` would parse as invalid
+       and be dropped. The base :focus-visible rule already draws this, but
+       state it here so the intent survives a refactor. */
+    box-shadow: var(--focus-ring);
   }
 
   .c-index__name {

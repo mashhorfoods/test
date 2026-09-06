@@ -234,6 +234,19 @@ review can be *sourced* here but never *verified* — `docs/84` §0.
 
 ---
 
+## 5b. Interactive marketing features — opened 6 September
+
+Requested as briefs, not as roadmap items, and recorded here so they leave the
+same way everything else does.
+
+| # | Work | State |
+| --- | --- | --- |
+| ~~**F1**~~ | ~~Mystery Reward~~ | ✅ **DONE 6 Sep — `docs/96`.** Weighted pool of seven, one JSON source, reveal → code → WhatsApp |
+| ~~**F2**~~ | ~~The Brand Challenge~~ | ✅ **DONE 6 Sep — `docs/97`.** Diagnostic quiz, two attempts, salted answer digest, weighted reward tiers. Surfaced and fixed a real keyboard-focus failure in three stylesheets; added `qa.js` §27 and §28 |
+| **F3+** | Further interactive features | **Held at the owner's instruction** — *"Do not implement any additional interactive marketing features yet."* Nothing starts here without a new brief |
+
+---
+
 ## 6. The rule for this file
 
 Same as `docs/62`: an item leaves by being **done and verified** or

@@ -398,6 +398,7 @@ require('./tools/build-pricing.js');
 require('./tools/build-i18n.js');
 require('./tools/build-story.js');
 require('./tools/build-rewards.js');
+require('./tools/build-challenge.js');
 require('./tools/build-pages.js');
 console.log('');
 
