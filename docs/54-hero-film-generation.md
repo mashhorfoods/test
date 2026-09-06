@@ -256,3 +256,58 @@ with the bright half behind the orbit and the headline on clean ground.
 scene would not exist without them — and `tools/build-hero-from-clips.js`
 remains, working and proven. If a watermark-free export ever arrives, it is one
 command, and the two approaches can be compared honestly.
+
+---
+
+## 9. What actually ships — and the open item section 8 leaves untracked
+
+**Section 8 is out of date, and it is the last thing this file said.** It ends
+"the generated clips are not being used"; the very next commit
+(`f098fa8`, 4 September) put them back:
+
+> Asked to use A and B as they are and replace them with clean exports later.
+> The watermark staying visible is the point rather than a compromise: on a
+> free tier it is the licence condition, so leaving it on screen honours the
+> terms, and stripping it was the only thing I objected to.
+
+That reasoning still holds. What went wrong is that the *second half* of it —
+"replace them with clean exports later" — was written into a commit message
+and nowhere else. It is in no roadmap, no handover table, no open-items list.
+A commit message is not a tracker.
+
+**Verified today, on the files in the repository:**
+
+| File | Watermark |
+| --- | --- |
+| `src/assets/showpiece/hero.webm` (720 KB) | Present in **all 9 frames sampled** across the 8.88 s loop |
+| `src/assets/showpiece/hero.mp4` (878 KB) | Present |
+| `src/assets/showpiece/hero-poster.webp` (8 KB) | **Present** |
+
+The poster is the sharp end. It is the only thing every phone visitor, every
+`prefers-reduced-motion` visitor and every no-JS visitor sees — the film never
+plays for them. So the mark is not "faintly behind the headline while the video
+loads"; for a large share of visitors it is the hero, permanently.
+
+Rendered at 1366×768 with autoplay forced and read back: the mark sits upper
+left, in the same band as the headline. It is the grey shape visible behind
+*"Your Brand."* in any screenshot of the homepage.
+
+**This is not a defect report.** The decision was made deliberately, with the
+licence reasoning stated, and it is the owner's to make. The defect is that it
+was never given a home. It now has one: `docs/69` P2, **B7**.
+
+**Three ways to close it**, in the order they cost:
+
+1. **Revert to the drawn film** — `npm run film`. Zero licence question, 211 KB
+   WebM instead of 720 KB, sharp at any size, and it is already built and
+   proven. One command, today, no third party.
+2. **A watermark-free export** of clips A and B from the paid tier — then
+   `npm run film:clips -- clipA.mp4 clipB.mp4`. Also one command. Keeps the
+   photographic look, which is the reason the clips were chosen.
+3. **Ship as is** — a deliberate, recorded choice rather than an oversight, on
+   the understanding that another company's wordmark sits on the hero of a
+   digital agency that sells brand identity.
+
+**Not on the list: removing it.** Blur, patch or crop is circumventing the
+licence condition, section 8 already rejected it, and `delogo` left a grey
+smudge beside the headline when it was tried.
