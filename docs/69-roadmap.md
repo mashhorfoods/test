@@ -175,6 +175,17 @@ Parallel with P1. Nothing here waits on anything else here.
 | **P3-5** | **X07 systematic motion pass** | P3-2 |
 | **P3-6** | **X10 comparative validation** | P3-2 **+ P3-1b** — comparison needs the numbers |
 
+### P3.5 — The pre-launch pass, run early — `docs/92`
+
+| # | | State |
+| --- | --- | --- |
+| **L1** | **THE DOMAIN.** Every canonical, the sitemap, the share tags and Plausible all name `zaokalyamamah.online`. `docs/28` §C-5 asked whether that was staging or permanent and it was never answered. One field — `site.config.json` `url`, plus `analytics.domain`. **The only thing in the pass that should stop an upload** | **Owner — decide** |
+| ~~L2~~ | ~~Production headers verified~~ | ✅ All nine pages served with the real `.htaccess` headers: **0 CSP violations, 0 page errors**. Never tested before — every harness serves without headers |
+| ~~L3~~ | ~~Structure, meta, weight, film behaviour~~ | ✅ 32 page/language/width combinations clean; meta complete; 404 `noindex` and out of the sitemap; phone first screen **314KB**; the film provably desktop-only and reduced-motion-aware |
+| **L4** | The four post-upload checks — HTTPS/HSTS, the rewrite, Search Console, uptime. `docs/44` §2 | **Owner — first hour after upload** |
+
+---
+
 ### P4 — Delivery
 
 | # | Work |
