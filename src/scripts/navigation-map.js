@@ -88,7 +88,7 @@ export const SECTIONS = [
   /* Reached through the primary CTA in the header, and now ALSO a labelled
      destination in the drawer (IA-5): a button is not a way-finding target, and
      a returning visitor looking for a phone number had nothing to scan for. */
-  { id: 'contact', label: 'Contact', labelAr: 'تواصل معنا', inNav: false, inMenu: true },
+  { id: 'contact', label: 'Contact', labelAr: 'تواصل معنا', inNav: true, inMenu: true },
 ];
 
 /**

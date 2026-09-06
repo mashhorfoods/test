@@ -295,41 +295,50 @@ function renderStrings() {
 }
 
 /* -------------------------------------------------------------------------
-   REACH — is the visitor ever without a call to action?
+   PHONE ACTION — shown only when the page has nothing else to press.
 
-   On desktop the fixed header carries one at every scroll position. On a
-   phone it was hidden, and `docs/71` §3 measured what that cost: 4,660px of
-   the homepage and 80% of /story with nothing to press.
+   This replaces initReach(), which watched ONE element (the page's own first
+   call to action) and toggled a class on the header. The header no longer
+   carries a button, so the question changed with it: not "has the hero's
+   button gone?" but "is there any button on screen at all?".
 
-   The header CTA now appears on a phone once the page's own first call to
-   action has scrolled out of view — never alongside it, so the hero is not
-   doubled. A page with no hero CTA gets the class immediately and
-   `.is-scrolled` alone decides.
+   One observer, every candidate as a target. The set is the source of truth
+   rather than a counter — an IntersectionObserver may report the same target
+   twice, and a counter that goes to -1 shows the bar over a visible button.
 
-   CSS does the hiding; this only reports where the first CTA is.
+   Failure is toward showing it: no observer, or no candidates to watch, and
+   the action stays on. Being early is a smaller failure than a page with
+   nothing to press, which is the whole reason this exists.
    ------------------------------------------------------------------------- */
 
-function initReach() {
-  const header = document.querySelector('[data-header]');
-  if (!header) return;
+function initPhoneAction() {
+  const bar = document.querySelector('[data-phone-cta]');
+  if (!bar) return;
 
-  const own = document.querySelector('.c-hero__action, [data-reach-anchor]');
-  if (!own) {
-    header.classList.add('is-cta-away');
+  /* The bar's own button is not a candidate, and neither is the drawer's:
+     one would watch itself, the other is behind a tap. */
+  const targets = [
+    ...document.querySelectorAll('#main .c-btn, .c-footer .c-btn'),
+  ];
+
+  if (!('IntersectionObserver' in window) || !targets.length) {
+    bar.classList.add('is-on');
     return;
   }
 
-  if (!('IntersectionObserver' in window)) {
-    // No observer: show it rather than hide it. Being early is a smaller
-    // failure than a page with nothing to press.
-    header.classList.add('is-cta-away');
-    return;
-  }
-
-  new IntersectionObserver(
-    ([entry]) => header.classList.toggle('is-cta-away', !entry.isIntersecting),
+  const onScreen = new Set();
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) onScreen.add(entry.target);
+        else onScreen.delete(entry.target);
+      }
+      bar.classList.toggle('is-on', onScreen.size === 0);
+    },
     { threshold: 0 }
-  ).observe(own);
+  );
+
+  targets.forEach((el) => observer.observe(el));
 }
 
 /* -------------------------------------------------------------------------
@@ -341,28 +350,43 @@ function initHeader() {
   if (!header) return;
 
   let lastY = window.scrollY;
-  let compact = false;
+  let hidden = false;
   let ticking = false;
 
+  /* EACH CLASS NOW MEANS ONE THING.
+
+     `is-compact` used to be direction-driven — set scrolling down, cleared
+     scrolling up — and `is-scrolled` position-driven, which made the header's
+     height a function of which way you last moved. Adding hide-on-scroll-down
+     made that untenable: a header that is off-screen while you scroll down
+     can never be seen in its compact state, so the compact height would have
+     become a state nothing renders.
+
+     So they split by what they answer. `is-compact` is POSITION: past the
+     threshold the header is the short one, whichever way you are going.
+     `is-hidden` is DIRECTION: scrolling down puts it away, and any upward
+     movement brings it back. Scroll up and you get the compact header
+     immediately; scroll to the top and it grows back to full. */
   const update = () => {
     ticking = false;
     const y = window.scrollY;
-
-    header.classList.toggle('is-scrolled', y > SCROLL_THRESHOLD);
-
     const delta = y - lastY;
 
+    header.classList.toggle('is-scrolled', y > SCROLL_THRESHOLD);
+    header.classList.toggle('is-compact', y > COMPACT_THRESHOLD);
+
     if (Math.abs(delta) > SCROLL_DELTA) {
-      // Down past the threshold compacts; any upward movement restores the
-      // full header immediately, so navigation is never hunted for (§08).
-      if (delta > 0 && y > COMPACT_THRESHOLD) compact = true;
-      else if (delta < 0) compact = false;
+      if (delta > 0 && y > COMPACT_THRESHOLD) hidden = true;
+      else if (delta < 0) hidden = false;
       lastY = y;
     }
 
-    if (y <= COMPACT_THRESHOLD) compact = false;
+    /* Near the top there is nothing to gain by hiding, and a header that
+       flickers away on the first flick of a short page is worse than one that
+       stays. */
+    if (y <= COMPACT_THRESHOLD) hidden = false;
 
-    header.classList.toggle('is-compact', compact);
+    header.classList.toggle('is-hidden', hidden);
   };
 
   window.addEventListener(
@@ -378,11 +402,12 @@ function initHeader() {
   update();
 
   return {
-    /** Menu open/close must not leave the header stuck in a compact state. */
+    /** Opening the menu must not leave the header stuck away up the page:
+        the drawer's close control lives inside it. */
     reset() {
-      compact = false;
+      hidden = false;
       lastY = window.scrollY;
-      header.classList.remove('is-compact');
+      header.classList.remove('is-hidden');
     },
   };
 }
@@ -640,5 +665,5 @@ export function initNavigation() {
 
   initLanguage(() => drawer?.refreshLabel());
   initScrollSpy();
-  initReach();
+  initPhoneAction();
 }

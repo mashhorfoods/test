@@ -160,24 +160,6 @@
             </button>
           </div>
 
-          <a class="c-btn c-btn--primary c-header__cta" href="./#contact" data-cta-link>
-            <span data-cta-label>Start Your Project</span>
-            <svg
-              class="c-btn__icon u-flip-rtl"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path
-                d="M5 12h13M13 6l6 6-6 6"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="square"
-              />
-            </svg>
-          </a>
-
           <button
             class="c-menu-trigger"
             type="button"
@@ -496,5 +478,26 @@
         </div>
       </div>
     </footer>
+  
+    <!-- =================================================================
+         PHONE ACTION — deliberately NOT in the header.
+
+         The header carries no call to action at any width; that was the
+         instruction and it holds. What it cannot do is take the conversion
+         path with it: `docs/71` measured 4,660px of the homepage and 80% of
+         /story with nothing to press once the phone header was bare, and the
+         reach guard exists so that cannot ship twice.
+
+         So the action lives here instead — its own component, at the foot of
+         the phone viewport, shown by navigation.js only when NOTHING else on
+         the page is pressable. It is not a second CTA: it is the one that
+         appears when the page has run out of its own.
+         ================================================================= -->
+    <div class="c-phone-cta" data-phone-cta>
+      <a class="c-btn c-btn--primary" href="./#contact" data-cta-link>
+        <span data-cta-label>Start Your Project</span>
+      </a>
+    </div>
+
   </body>
 </html>

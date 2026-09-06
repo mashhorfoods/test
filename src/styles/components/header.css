@@ -55,9 +55,49 @@
     }
   }
 
-  /* --- Compact: set while scrolling down, cleared on any upward scroll --- */
+  /* --- Compact: a position, not a direction ------------------------------ */
   .c-header.is-compact {
     block-size: var(--header-height-compact);
+  }
+
+  /* -----------------------------------------------------------------------
+     SMART STICKY — away on the way down, back on the way up.
+
+     A fixed header is worth its space only while it is worth more than the
+     content it covers, and on the way down it is not: the visitor has chosen
+     a direction and the bar is in front of what they chose. The pattern that
+     answers this — hide on scroll down, return on scroll up — is the one that
+     keeps the navigation one flick away while giving the whole viewport back
+     to the page. It matters more here than it did this morning, because the
+     header no longer carries a call to action that had to stay in view.
+
+     THREE THINGS KEEP IT FROM BECOMING A TRAP:
+
+     `:focus-within` — a keyboard visitor tabbing into the header must not be
+     tabbing into something off the top of the screen. Focus overrides the
+     hide, in CSS, with nothing for the script to remember.
+
+     `prefers-reduced-motion` — the whole behaviour is a moving bar, so where
+     motion is not wanted the header simply stays. This is not a slower
+     animation; it is the feature declining to run.
+
+     The menu — `reset()` in navigation.js clears the class on open, because
+     the drawer's close control is inside the header. */
+  @media (prefers-reduced-motion: no-preference) {
+    .c-header {
+      transition: block-size var(--duration-base) var(--ease-standard),
+        background-color var(--duration-base) var(--ease-standard),
+        border-color var(--duration-base) var(--ease-standard),
+        translate var(--duration-base) var(--ease-out);
+    }
+
+    .c-header.is-hidden {
+      translate: 0 -100%;
+    }
+
+    .c-header.is-hidden:focus-within {
+      translate: 0 0;
+    }
   }
 
   /* --- Zones ------------------------------------------------------------
@@ -208,64 +248,19 @@
   }
 
   /* -----------------------------------------------------------------------
-     HEADER CTA
-     Desktop only. Below 1024px the header is logo + menu trigger (§12) and
-     the CTA lives at the foot of the menu instead.
+     THE HEADER CTA IS GONE, AND SO IS THE MACHINERY BEHIND IT.
+
+     Removed at the owner's instruction. Recorded here because the decision it
+     reverses was a measured one: `docs/71` §3 found that with no CTA on the
+     phone header, the homepage ran 4,660px — five and a half screens — with
+     nothing to press, and /story 80% of its length. That is the cost being
+     accepted, and the mitigation is that Contact is now a navigation item in
+     its own right rather than something only the button reached.
+
+     Three things left with it: the desktop rule, the `.is-cta-away` phone
+     rule, and `initReach()` in navigation.js — an IntersectionObserver whose
+     only job was to toggle a class that now nothing reads.
      ----------------------------------------------------------------------- */
-  .c-header__cta {
-    display: none;
-  }
-
-  @media (min-width: 64em) {
-    .c-header__cta {
-      display: inline-flex;
-    }
-  }
-
-  /* The compact header keeps a comfortable target while shedding height. */
-  .is-compact .c-header__cta {
-    min-block-size: var(--control-height-sm);
-  }
-
-  /* -----------------------------------------------------------------------
-     PHONE — A CALL TO ACTION WITHIN REACH.
-
-     The rule above says "desktop only, the CTA lives at the foot of the menu
-     instead", and that was measured on 5 September 2026 (`docs/71` §3). What
-     it costs on a phone:
-
-       desktop 1440   longest stretch with no CTA in view:     0px
-       phone   390    longest stretch with no CTA in view: 4,660px
-
-     4,660px is 5.5 screens, and on the homepage they are the five and a half
-     that carry "Everything your business needs. Connected in one system." and
-     the add-ons — the two sections written to raise intent. /story is worse in
-     proportion: 80% of that page had nothing to press. Meanwhile the desktop
-     header carries a live CTA at every scroll position. The conversion path
-     existed on the device this market does not use.
-
-     `is-cta-away` is set by the runtime when the page's OWN first call to
-     action leaves the viewport, so the hero is never doubled — the header
-     stays logo + trigger while the hero's button is on screen, and takes over
-     the moment it is not. On a page with no hero CTA at all (/story, /terms)
-     the class is set immediately and `.is-scrolled` alone gates it.
-     ----------------------------------------------------------------------- */
-  @media (max-width: 63.999em) {
-    .c-header.is-scrolled.is-cta-away .c-header__cta {
-      display: inline-flex;
-      min-block-size: var(--touch-target-min);
-      padding-inline: var(--space-16);
-      font-size: var(--text-body-sm);
-      white-space: nowrap;
-    }
-
-    /* The arrow is the first thing to go. At this width the LABEL is what has
-       to survive, and a filled accent button is already unmistakably an
-       action without it. */
-    .c-header.is-scrolled.is-cta-away .c-header__cta .c-btn__icon {
-      display: none;
-    }
-  }
 
   /* -----------------------------------------------------------------------
      LANGUAGE CONTROL
@@ -350,4 +345,87 @@
      going to be `fixed`. It ended up `sticky`, which reserves its own space,
      so nothing ever used it. Anchor targets clear the header via
      scroll-margin in 01-reset.css. Removed in Stage 16. */
+}
+
+/* =============================================================================
+   COMPONENT — PHONE ACTION
+
+   The header carries no call to action at any width. This is what takes over
+   the job on a phone, and it is a separate component on purpose: it is not the
+   header shrinking a button into a corner, it is the page admitting it has run
+   out of its own.
+
+   WHEN IT SHOWS. navigation.js watches every `.c-btn` in the main content and
+   the footer with one IntersectionObserver, and adds `is-on` only when the
+   count of visible ones reaches zero. So it never doubles a button already on
+   screen — it appears in the gaps, which is exactly what the reach guard
+   measures and `docs/71` found to be four and a half screens long.
+
+   WHY `display: none` AND NOT `visibility: hidden`. A hidden element still
+   has a box, and qa's reach check counts any `.c-btn` whose rect overlaps the
+   viewport. Hiding this with `visibility` would have satisfied that check at
+   every scroll position, on every page, whether or not a visitor could see or
+   press a thing — a guard reporting green off an element nobody can reach.
+   `display: none` gives it a zero rect, so the check measures what is
+   actually there. It costs the entrance a transition, which is the cheaper
+   half of the trade.
+   ============================================================================= */
+
+@layer components {
+  .c-phone-cta {
+    display: none;
+    position: fixed;
+    inset-block-end: 0;
+    inset-inline: 0;
+    z-index: var(--z-header);
+    justify-content: center;
+    padding: var(--space-12) var(--container-gutter);
+    /* Clears the iPhone home indicator without eating the space elsewhere. */
+    padding-block-end: calc(var(--space-12) + env(safe-area-inset-bottom, 0px));
+    background-image: linear-gradient(to top,
+      var(--color-bg) 0%, var(--color-bg) 55%, rgb(0 0 0 / 0) 100%);
+    pointer-events: none;
+  }
+
+  .c-phone-cta .c-btn {
+    pointer-events: auto;
+    inline-size: 100%;
+    max-inline-size: 26rem;
+  }
+
+  /* Phones only. From 64em the navigation is a real bar and the page is wide
+     enough that its own actions stay in reach. */
+  @media (max-width: 63.999em) {
+    .c-phone-cta.is-on {
+      display: flex;
+    }
+  }
+
+  /* The drawer covers the page; an action floating over it is an action
+     pointing at something the visitor cannot see. */
+  .is-scroll-locked .c-phone-cta.is-on {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .c-phone-cta.is-on {
+      transition: translate var(--duration-base) var(--ease-out),
+        opacity var(--duration-fast) var(--ease-standard);
+    }
+
+    @supports (transition-behavior: allow-discrete) {
+      @starting-style {
+        .c-phone-cta.is-on {
+          translate: 0 100%;
+          opacity: 0;
+        }
+      }
+    }
+  }
+
+  @media print {
+    .c-phone-cta {
+      display: none !important;
+    }
+  }
 }
