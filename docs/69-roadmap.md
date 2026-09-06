@@ -185,20 +185,41 @@ Parallel with P1. Nothing here waits on anything else here.
 
 ---
 
-## 5. If the dashboard should be a real screen after all
+## 5. The dashboard — decided, 6 September 2026
 
-Not on the plan, because Option 0 was chosen on the owner's own answer. Priced
-here so reopening it is a decision rather than a surprise.
+**The trigger fired.** This section used to price three options against a
+future decision; the owner has now made it: **a second person will run the
+site, with full repository access.**
 
-| | What it is | Cost | What changes |
-| --- | --- | ---: | --- |
-| **Option 0** *(current)* | GitHub's web editor + CI | built | Nothing |
-| **Option 1** | A git-backed CMS — a real form UI, commits to the repo, still no server | ~a weekend | A third-party dependency and an auth surface. AD-01 survives |
-| **Option 2** | A dashboard with its own auth and storage | a scoping engagement | The threat model and backup plan are rewritten. AD-01 ends |
+`docs/85` works it through. The short version:
 
-The four triggers in `docs/36` §4 remain the route back, and `docs/63` maps
-each to the option it would move to. **A second content editor is the one that
-matters** — it was the answer to Q1 that decided this.
+| | |
+| --- | --- |
+| **Option chosen** | Option 0 extended — full repo access, **nothing new to build** |
+| **AD-01** | **Survives.** No server, no auth of ours, no stored personal data |
+| **Leads** | **Not built.** The enquiries already exist in WhatsApp and email — share those accounts rather than becoming the first place this site holds personal data |
+| **Blocking prerequisite** | Verified from the API: **two branches, neither protected, and no `main`.** CI reports failures, it cannot prevent them. A default branch, protected, with `check` required — *before* the invitation goes out |
+
+| # | Work | State |
+| --- | --- | --- |
+| **D1** | **Owner:** establish a default branch, protect it, require `check`, then invite | **Blocking — do first** |
+| **D2** | The operator runbook — `docs/85` §4. The blunt version of `docs/56` for someone who does not already know why the site is the way it is | Unblocked |
+
+---
+
+## 5a. The redesign block opened 6 September — `docs/84`
+
+| # | Work | Blocked by |
+| --- | --- | --- |
+| **R1** | **Section-by-section redesign**, everything except naming and order: how each section opens and closes, internal hierarchy, rhythm against neighbours, one CTA per surface, the hand-off between them | **Nothing** |
+| **R2** | **The way into Services & Pricing.** The tiers are right and match the field; the problem is **17.7 screenfuls on a phone** past twelve packages with no service-level entry. Measured, not asserted | **Nothing** |
+| **R3** | **The scroll-snap gallery** — case-study deliverables first, reusable for a portfolio. No JS required, no auto-advance, RTL for free. **Never the hero:** `docs/83` measured 132 blocks stranded when script-hidden content loses its script, and a carousel is that pattern by design | **Nothing** |
+| **R4** | Section **naming and order** — outcome-named vs feature-named, `docs/80` §3.1 | **B5** |
+| **R5** | Five **regional** competitors probed — Pro Branding, Infinity Corp, Emirates Graphic, Prism Digital, Upscale Digital. All bilingual, which no reference has covered. `docs/70` benchmarked SaaS products, right for craft and wrong for market | **B1 probe runs** |
+
+**Note on this container:** WebSearch works; fetching any specific page does
+not (`EGRESS_BLOCKED`, the network policy, not one domain). A competitive
+review can be *sourced* here but never *verified* — `docs/84` §0.
 
 ---
 
