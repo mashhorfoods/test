@@ -119,41 +119,6 @@ export const SOCIAL_LINKS = [
   { label: "Founder's portfolio", labelAr: 'أعمال المؤسس', href: 'https://muhalabsalah.github.io/muhalabsalah/' },
 ];
 
-/**
- * The approved contact channels (Stage 17 §02), verbatim.
- *
- * `display` is what the visitor sees and must never be reformatted — the
- * numbers are business data. `href` is the action. Everything that shows a
- * channel reads from here, so the visible number and the dialled number
- * cannot drift apart.
- *
- * @type {{key: string, label: string, labelAr: string, display: string,
- *         href: string, external?: boolean}[]}
- */
-export const CONTACT_CHANNELS = [
-  {
-    key: 'whatsapp',
-    label: 'WhatsApp',
-    labelAr: 'واتساب',
-    display: '+249 962672192',
-    href: 'https://wa.me/249962672192',
-    external: true,
-  },
-  {
-    key: 'phone',
-    label: 'Phone',
-    labelAr: 'الهاتف',
-    display: '+249 119005441',
-    href: 'tel:+249119005441',
-  },
-  {
-    key: 'email',
-    label: 'Email',
-    labelAr: 'البريد الإلكتروني',
-    display: 'muhalabsalah@gmail.com',
-    href: 'mailto:muhalabsalah@gmail.com',
-  },
-];
 
 
 /** Header chrome strings. Page content is translated when copy is finalised. */

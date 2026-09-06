@@ -87,6 +87,14 @@
   "contact": {
     "_comment": "WhatsApp number in wa.me form (digits only, country code first). One place: build-pricing.js renders every package CTA from it.",
     "whatsapp": "249962672192",
+  "_phoneComment": [
+    "The landline the site publishes, in tel: form. Declared here for the",
+    "same reason as the email: qa.js section 19 asserts that every tel: link",
+    "on every page dials this and that every number a visitor can READ",
+    "matches the number the link DIALS. It is a different number from the",
+    "WhatsApp one, which is exactly why it needs its own declared truth."
+  ],
+  "phone": "+249119005441",
     "_emailComment": [
       "The address the SITE publishes. It is declared here so that qa.js can",
       "assert no page publishes any other one — the address is written into",
