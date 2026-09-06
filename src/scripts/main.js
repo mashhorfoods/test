@@ -16,6 +16,7 @@ import { initStory } from './story.js';
 import { initFocus } from './focus.js';
 import { initAnalytics } from './analytics.js';
 import { initHeroFilm } from './hero-film.js';
+import { initReward } from './reward.js';
 
 function boot() {
   // Before the rest: every other module's links inherit this behaviour.
@@ -30,6 +31,9 @@ function boot() {
   // every page but the homepage, and usually a no-op there too — see the
   // four reasons it declines in hero-film.js.
   initHeroFilm();
+  // Marketing, not machinery: it enhances a panel that already reads correctly
+  // without it, and it is a no-op on every page that has no reward section.
+  initReward();
   // Last: it only listens, and it must never be the reason something else
   // failed to initialise.
   initAnalytics();

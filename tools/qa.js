@@ -1675,6 +1675,48 @@ function serve() {
     }
   }
 
+  /* ---- 26 the reward pool and the page must agree ------------------------
+     src/data/rewards.json is the only place a reward is defined, and
+     build-rewards.js renders it into the page. Those two can drift the moment
+     someone edits the JSON and does not rebuild — and the failure is quiet:
+     the page keeps showing the old pool, so a code a visitor is given is one
+     the business has stopped honouring, or a new reward never appears at all.
+
+     Also checks the things a reward cannot ship without: a code to quote, and
+     both languages, because half a reward is worse than none. */
+  {
+    const file = path.join(ROOT, 'src/data/rewards.json');
+    if (fs.existsSync(file)) {
+      const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+      const pool = data.rewards || [];
+      const page = SHIPPED.map((f) => fs.readFileSync(path.join(DIST, f), 'utf8')).join('\n');
+      const rendered = new Set([...page.matchAll(/data-reward-prize="([^"]+)"/g)].map((m) => m[1]));
+
+      if (!pool.length) fail('HIGH', 'reward', 'rewards.json defines no rewards, but the component ships');
+
+      for (const r of pool) {
+        if (!rendered.has(r.id)) {
+          fail('HIGH', 'reward', `rewards.json defines "${r.id}" and no shipped page renders it — run node tools/build-rewards.js, or a visitor can never win it`);
+        }
+        if (!r.code) fail('HIGH', 'reward', `reward "${r.id}" has no code — there is nothing for a visitor to quote`);
+        for (const field of ['name', 'detail']) {
+          const v = r[field] || {};
+          if (!v.en || !v.ar) fail('HIGH', 'reward', `reward "${r.id}" is missing ${field}.${v.en ? 'ar' : 'en'} — every visible string on this site exists in both languages`);
+        }
+        if (!(Number(r.weight) > 0)) {
+          fail('MED', 'reward', `reward "${r.id}" has no positive weight, so it can never be drawn — remove it or give it one`);
+        }
+      }
+
+      /* The reverse: markup naming a reward the config no longer has. */
+      for (const id of rendered) {
+        if (!pool.some((r) => r.id === id)) {
+          fail('HIGH', 'reward', `a shipped page renders reward "${id}", which rewards.json no longer defines — the page is stale`);
+        }
+      }
+    }
+  }
+
   await browser.close();
   server.close();
 

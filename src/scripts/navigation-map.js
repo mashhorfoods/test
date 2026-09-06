@@ -138,6 +138,8 @@ export const STRINGS = {
     footerElsewhere: 'Elsewhere',
     opensNewTab: '(opens in a new tab)',
     backToTop: 'Back to top',
+    // The Mystery Reward's copy button restores this after saying what happened.
+    rewardCopy: 'Copy code',
     // Names the scroll-snap gallery (gallery.css). It is a focusable scroll
     // region, so it needs a name a screen reader can announce before the
     // visitor decides whether to enter it.
@@ -184,6 +186,7 @@ export const STRINGS = {
     footerElsewhere: 'مواقع أخرى',
     opensNewTab: '(يفتح في نافذة جديدة)',
     backToTop: 'العودة إلى الأعلى',
+    rewardCopy: 'انسخ الرمز',
     galleryScroller: 'الأعمال المسلَّمة — مرّر للمزيد',
     rights: 'جميع الحقوق محفوظة.',
     currency: 'دولار',
