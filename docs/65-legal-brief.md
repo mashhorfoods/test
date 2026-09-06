@@ -24,7 +24,7 @@ Source: `src/pages/terms.html`. Roughly 900 words per language.
 | **Currency** | USD. Prices are published openly on the site |
 | **How money moves** | **50% before work starts, 50% before handover.** Monthly packages billed at the start of each month |
 | **What is sold** | Brand identity, websites, social media management, advertising. $250–$1,990 one-off; $250–$650 monthly |
-| **How a project starts** | A written quote, accepted by the client. Nothing is signed on the website |
+| **How a project starts** | A written quote, accepted by the client. Nothing is signed on the website. **And see `docs/78` §2: the quote travels by WhatsApp or ordinary email — 28 of the site's links are WhatsApp, the contact form is an `action="mailto:"` that opens the visitor's own mail client, and no server ever receives anything. The email to the one named client bounced; WhatsApp is what reached them** |
 | **Language** | The site and the Terms are fully bilingual, English and Arabic, presented as equals |
 
 ## 2. The question we most want answered
