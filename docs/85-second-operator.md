@@ -254,3 +254,40 @@ correctly-ruled branch is expected and proves nothing either way.
 **Order matters.** Set the default branch *first*, confirm it with the command
 above, and only then add a ruleset that targets the default — otherwise the
 target moves out from under the rule.
+
+### 6.6 State as of 6 September, evening — verified, not assumed
+
+Re-checked with the §6.5 command rather than trusting the earlier report:
+
+```
+$ git ls-remote --symref https://github.com/mashhorfoods/test HEAD
+ref: refs/heads/claude/master-design-system-setup-5oy6mo	HEAD
+```
+
+**The default branch is still the old working branch.** Neither setting is in
+place: all three branches report `protected: false`, and `main` sits at
+`7627b6d` where it was created.
+
+One thing changed that was blocking this, and it was not a setting. `main` was
+**13 commits behind and 0 ahead** — a strict ancestor, so nothing would be
+lost, but it was missing both interactive features, X05, the `/about` work and
+the B3/B4 briefs. Flipping the default to `main` in that state would have
+pointed the repository's canonical branch at a build without them. That is now
+the repository's first pull request, which also solves §6.3's footnote: the
+status-check list only offers checks GitHub has seen recently, so `check`
+becomes selectable once that run completes.
+
+So the sequence from here is four steps, and the first is the only one already
+done:
+
+1. ~~Bring `main` current~~ — pull request open.
+2. **Merge it**, so `main` is worth protecting.
+3. **Make `main` default** — §6.3 — then confirm with the command above before
+   going near a ruleset.
+4. **Add the ruleset** targeting *Default branch*, with `check` required.
+
+Steps 2–4 are repository settings and a merge button. Nothing in the toolchain
+available to this session can reach them: the GitHub MCP server exposes no
+default-branch or ruleset endpoint, and there is no `gh` CLI. This is recorded
+so it is not mistaken for an oversight — it is a boundary, and it is why this
+row has stayed open.
