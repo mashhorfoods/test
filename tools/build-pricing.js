@@ -69,10 +69,30 @@ ${rows.map(([en, ar, v]) => `              <dt>${pair({ en, ar })}</dt>
 
   /* <details>, not the site's accordion: it needs no JavaScript, no ARIA of
      our own and no id wiring, and it is the one disclosure on the page whose
-     content a search engine should still see when closed. */
+     content a search engine should still see when closed.
+
+     THE SUMMARY CARRIES ITS PACKAGE'S NAME, hidden. Twelve of these render on
+     the homepage and twelve on /pricing, and until 5 September 2026 every one
+     of them announced the identical string "What's not included" — so a
+     screen-reader user reaching the eighth had no way to know which package it
+     belonged to.
+
+     That is the same defect `docs/67` §1 found and fixed for the five
+     "See what it covers" links. It survived that pass because the pass looked
+     at links and buttons, and this is a <summary>. The fix is the same
+     mechanism, and it is safe here for the same reason it was there: the label
+     is a `pair()` of spans, not `data-i18n`, so nothing overwrites its
+     children at runtime.
+
+     The suffix is a DASH AND THE NAME, not "in Starter", and that wording is
+     deliberate. All twelve bodies render from `terms.shared` and are byte-for
+     -byte identical — the exclusions are the studio's, not the package's. "What
+     is not included in Starter" would be true and would still imply a
+     specificity that does not exist. "What's not included — Starter" names the
+     card without claiming the content belongs to it. */
   const more = (excludes.length || extras.length) ? `
             <details class="c-tier__terms">
-              <summary>${pair({ en: "What's not included", ar: 'ما لا تشمله الباقة' })}</summary>
+              <summary>${pair({ en: "What's not included", ar: 'ما لا تشمله الباقة' })}<span class="u-visually-hidden">${pair({ en: ` — ${pkg.name}`, ar: ` — ${pkg.name}` })}</span></summary>
               <div class="c-tier__terms-body">
 ${excludes.length ? `                <ul>
 ${excludes.map((v) => `                  <li>${pair(v)}</li>`).join('\n')}

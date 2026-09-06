@@ -37,6 +37,15 @@ nothing in the browser is the failure mode worth naming here.
 times and the navigation links twice, always to the same destination. WCAG
 permits that, and `docs/30` §11 argued for it.
 
+> **UPDATED 5 September 2026 — `docs/79`.** §1's tree was re-read after a day
+> of changes and found **a fourth defect of the same kind**: twelve
+> `<summary>` controls all announcing *"What's not included"*, one per package,
+> on both `/` and `/pricing`. It survived the §1 pass because that pass looked
+> at links and buttons. Fixed, and `qa.js` §18 now fails the build on three or
+> more controls that share a name without sharing a destination.
+>
+> §2 below is untouched and is still the whole of B6.
+
 ## 2. What only you can judge
 
 Automated rules catch perhaps a third to a half of real defects, and I have now
