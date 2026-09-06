@@ -18,6 +18,22 @@ a usable recording actually contains. This does, and it is deliberately short.
 > What is left is the half a spec sheet cannot carry: **motion, sequencing,
 > and how one section hands over to the next** — R5 in `docs/52` §1, which was
 > the actual brief. Everything below is now pointed only at that.
+
+> **SUPERSEDED 6 September 2026 — do not record anything.** Two frames arrived
+> instead of a recording and `docs/80` got X03 out of them, plus the motion
+> answer in one sentence from the owner: *sections fade up*. That is the whole
+> of what this protocol was still asking for.
+>
+> The measurable remainder is not filmable anyway, and this container cannot
+> fetch it — the egress proxy 403s every reference host. **`tools/reference-probe.js`
+> replaces this document entirely:** paste it into the browser console on the
+> reference site, once at a maximised window and once at iPhone 14 Pro in the
+> device toolbar, and paste the JSON back. It returns computed type ramp,
+> control sizing against the 44px floor, section order in screenfuls, and where
+> every control sits as a percentage of the scroll — numbers a video can only
+> show pictures of.
+>
+> Kept for the record of what was asked and why. Nothing below needs doing.
 >
 > §5's running order has also changed: **X09 is delivered** (`docs/75`) and
 > **X08's largest item is done** (`docs/72`).

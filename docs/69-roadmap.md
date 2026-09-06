@@ -153,7 +153,7 @@ Parallel with P1. Nothing here waits on anything else here.
 
 | # | Who | What | Unblocks |
 | --- | --- | --- | --- |
-| **B1** | You | The reference recording — full-page scroll at desktop *and* phone, plus ten seconds on the hero. `docs/64` says exactly what to capture. **Plus one Arabic-first site you respect** — a URL is enough | X02's second half → X03 → X04 → X10 |
+| **B1** | You | **Half done — `docs/80`.** Two PixVerse frames arrived (marketing hero on phone, app home on desktop) and **X03 is deconstructed from them**: the hero action as a real first step, categories named for the *outcome* not the feature, and the dark-side-left rule held against the reference's opposite choice. No recording needed now. What is left is **numbers**, and this container cannot get them — the egress proxy 403s every reference host. So: paste **`tools/reference-probe.js`** into the browser console on `pixverse.ai`, once at a maximised window and once in the device toolbar at iPhone 14 Pro, and paste back the JSON. **Plus one Arabic-first site** — a third probe run, or just a URL | X02's second half → X10 |
 | **B5** | Five buyers | Five moderated sessions, `docs/68`. **This is what answers category and section sort** | X06's structural question |
 | **B3** | An Arabic speaker | One hour, `docs/66`. **The meaning half is DONE — `docs/77`:** all 67 bilingual pairs on `/terms` and `/accessibility` compared, every number checked, **no discrepancy**. What is left is the half only a native speaker can do — register, tone, and the seven terminology decisions in `docs/66` §3. Reading order re-ordered: homepage first, `/terms` last | — |
 | **B4** | A lawyer | `docs/65` **plus `docs/78`**. Facts re-verified; the governing-language question **narrowed to one part** by `docs/77` (they do not disagree — confirmed). `docs/78` adds the fact the brief lacked: **every route to a binding agreement runs through WhatsApp or the visitor's own mail client**, which decides several clauses that rest on *"your written quote"* | Legal risk |
@@ -167,12 +167,13 @@ Parallel with P1. Nothing here waits on anything else here.
 
 | # | Work | Needs |
 | --- | --- | --- |
-| **P3-1** | X02 second half + **X03 Experience Deconstruction** | B1 |
-| **P3-2** | **X04 Reference-Driven Redesign** — preserve / borrow / adapt / improve / reject | P3-1 |
+| **P3-1a** | ~~**X03 Experience Deconstruction**~~ | ✅ **Done 6 Sep — `docs/80`** §2–§3 |
+| **P3-1b** | **X02 second half** — the measurable benchmark against the reference | Two `reference-probe.js` runs (B1) |
+| **P3-2** | **X04 Reference-Driven Redesign** — preserve / borrow / adapt / improve / reject. **Unblocked, three proposals already tabled** by `docs/80` §6 | ~~P3-1~~ — can start |
 | **P3-3** | **X05 direction statement** in full | P3-2 |
 | **P3-4** | **X06 structural remainder** — the four-block question | B5 + P3-2 |
 | **P3-5** | **X07 systematic motion pass** | P3-2 |
-| **P3-6** | **X10 comparative validation** | P3-2 |
+| **P3-6** | **X10 comparative validation** | P3-2 **+ P3-1b** — comparison needs the numbers |
 
 ### P4 — Delivery
 
