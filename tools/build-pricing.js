@@ -312,6 +312,52 @@ const COUNT_WORD = { 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five' };
 const COUNT_AR = { 1: 'باقة واحدة', 2: 'باقتان', 3: 'ثلاث باقات',
                    4: 'أربع باقات', 5: 'خمس باقات' };
 
+/* THE SERVICE INDEX — the way INTO the packages.
+   docs/84 §2.1 measured the problem rather than assuming it: /pricing runs to
+   17.7 screenfuls on a phone, and a buyer who came for a website scrolls past
+   three branding tiers and three disclosures to reach one. The tiers were
+   never the problem — four services' worth of correct tier design on one page
+   with no entry point was.
+
+   Four anchors, so it works with no JavaScript, in both directions, with no
+   new machinery: :target in 01-reset.css already offsets for the fixed header.
+
+   It carries the price floor and the package count because a chooser that only
+   names things makes you visit all four to compare them — which is the scroll
+   it exists to save. Same vocabulary as the per-service summary below each
+   block, from the same fields, so the two can never disagree. */
+function renderIndex(data) {
+  return `<!-- PACKAGES:index:START -->
+          <nav class="c-index" aria-labelledby="service-index-title" data-reveal-group>
+            <h2 class="t-label c-index__title" id="service-index-title">${pair({ en: 'Choose a service', ar: 'اختر الخدمة' })}</h2>
+            <ul class="c-index__list" role="list">
+${data.map((c) => {
+    const floor = c.packages.reduce((a, p) => (num(p.price) < num(a.price) ? p : a));
+    const monthly = c.packages[0].billing === 'billingMonthly';
+    const word = COUNT_WORD[c.packages.length] || String(c.packages.length);
+    return `              <li class="c-index__item">
+                <a class="c-index__link" href="#${c.id}">
+                  <span class="c-index__name">${pair({ en: c.label, ar: c.labelAr })}</span>
+                  <span class="c-index__meta">
+                    <span class="c-index__count">${pair({ en: `${word} packages, from`, ar: `${COUNT_AR[c.packages.length] || `${c.packages.length} باقة`}، تبدأ من` })}</span>
+                    <span class="c-index__price">
+                      <span class="c-index__amount">${esc(floor.price)}</span>
+                      <span class="c-index__currency" data-i18n="currency">USD</span>
+                      <span class="c-index__billing" data-i18n="${monthly ? 'billingMonthly' : 'billingOnce'}">${monthly ? 'Monthly' : 'One-time'}</span>
+                    </span>
+                  </span>
+                  <svg class="c-index__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none" />
+                  </svg>
+                </a>
+              </li>`;
+  }).join('\n')}
+            </ul>
+          </nav>
+          <!-- PACKAGES:index:END -->`;
+}
+
+
 function renderBlock(c) {
   const floor = c.packages.reduce((a, p) => (num(p.price) < num(a.price) ? p : a));
   const monthly = c.packages[0].billing === 'billingMonthly';
@@ -382,6 +428,14 @@ const TARGETS = [HTML, path.join(ROOT, 'src/pages/pricing.html')].filter(fs.exis
 TARGETS.forEach((file) => {
 let html = fs.readFileSync(file, 'utf8');
 const before = html;
+
+{
+  const a = '<!-- PACKAGES:index:START -->';
+  const b = '<!-- PACKAGES:index:END -->';
+  if (html.includes(a) && html.includes(b)) {
+    html = html.replace(new RegExp(`${a}[\\s\\S]*?${b}`), () => renderIndex(data));
+  }
+}
 
 data.forEach((c) => {
   const a = `<!-- PACKAGES:${c.id}:START -->`;

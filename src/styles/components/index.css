@@ -1,0 +1,126 @@
+/* =============================================================================
+   SERVICE INDEX — the way into the packages
+
+   docs/84 §2.1 measured /pricing at 17.7 screenfuls on a phone: four services,
+   twelve packages, and no entry point, so a buyer who came for a website
+   scrolled past three branding tiers and three closed disclosures to reach
+   one. The tiers themselves match what the field does. What was missing was a
+   door.
+
+   FOUR ANCHOR LINKS. Not tabs, not a script. `:target` in 01-reset.css already
+   offsets for the fixed header, so this works with JavaScript off, in both
+   text directions, and adds nothing to the page's behaviour that could fail.
+
+   It shows the price floor as well as the name, because a chooser that only
+   names things makes you visit all four to compare them — which is the scroll
+   it exists to save.
+   ============================================================================= */
+
+@layer components {
+  .c-index {
+    margin-block-end: var(--space-48);
+  }
+
+  .c-index__title {
+    color: var(--color-text-secondary);
+    margin-block-end: var(--space-16);
+  }
+
+  .c-index__list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48em) {
+    .c-index__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-16);
+    }
+  }
+
+  .c-index__link {
+    display: grid;
+    /* Name and meta stack in the first column; the arrow holds the second and
+       spans both rows. Logical placement, so RTL puts it on the other side
+       with no second rule. */
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-4) var(--space-16);
+    min-block-size: var(--control-height-lg);
+    padding: var(--space-16) var(--space-20);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-index__link:hover {
+    border-color: var(--color-border-accent);
+  }
+
+  .c-index__link:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  .c-index__name {
+    grid-column: 1;
+    font-family: var(--font-display);
+    font-size: var(--text-body);
+    line-height: var(--leading-snug);
+  }
+
+  .c-index__meta {
+    grid-column: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-4) var(--space-8);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .c-index__amount {
+    font-family: var(--font-display);
+    color: var(--color-accent);
+    /* A figure is read left-to-right in both languages; isolating it stops the
+       surrounding Arabic run from reordering it against its currency. */
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .c-index__price {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-4);
+  }
+
+  .c-index__go {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    inline-size: var(--icon-sm);
+    block-size: var(--icon-sm);
+    color: var(--color-text-muted);
+    flex: none;
+  }
+
+  .c-index__link:hover .c-index__go {
+    color: var(--color-accent);
+  }
+
+  /* PRINT. On paper every section is already visible in order, so a list of
+     jump links is four dead rows. */
+  @media print {
+    .c-index {
+      display: none;
+    }
+  }
+}
