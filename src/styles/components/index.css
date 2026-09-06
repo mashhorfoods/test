@@ -51,7 +51,7 @@
     align-items: center;
     gap: var(--space-4) var(--space-16);
     min-block-size: var(--control-height-lg);
-    padding: var(--space-16) var(--space-20);
+    padding: var(--space-16) var(--space-24);
     border: var(--border-hairline);
     border-radius: var(--radius-md);
     background-color: var(--color-surface);

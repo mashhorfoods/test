@@ -227,6 +227,9 @@ site, with full repository access.**
 | ~~**R3**~~ | ~~The scroll-snap gallery~~ | ✅ **DONE 6 Sep — `docs/86`.** No JS required, no auto-advance, RTL for free, and never the hero — a carousel is the stranding pattern `docs/83` measured at 132 blocks |
 | **R4** | Section **naming and order** — outcome-named vs feature-named, `docs/80` §3.1 | **B5** |
 | **R5** | Five **regional** competitors probed — Pro Branding, Infinity Corp, Emirates Graphic, Prism Digital, Upscale Digital. All bilingual, which no reference has covered. `docs/70` benchmarked SaaS products, right for craft and wrong for market | **B1 probe runs** |
+| ~~**R6**~~ | ~~What We Do~~ | ✅ **DONE 6 Sep — `docs/101`.** Four of five services said nothing until you clicked them; summaries now show closed. **Found on the way: a duplicated `@layer components {` that renested the utilities layer and put both languages in the orbit labels** — `qa.js` §29 |
+| ~~**R7**~~ | ~~Two slideshows and a showreel~~ | ✅ **DONE 6 Sep — `docs/102`.** Ten-image work gallery, eight-image campaign gallery, video placeholder with a player, and the full functions/responsive/padding/UX test around them |
+| ~~**R8**~~ | ~~Recent Work~~ | ✅ **DONE 6 Sep — `docs/103`.** Prose and a link became a four-tile bento of the real work, with a real `<h2>`. **Found on the way: five silent failures** — an undefined `--space-20` that voided padding in five places (`qa.js` §30), tiles sized from lazy images that laid out at 2px a row, an override that lost on source order and overflowed its column by 216px, white captions on white paper, and a page 40KB over budget |
 
 **Note on this container:** WebSearch works; fetching any specific page does
 not (`EGRESS_BLOCKED`, the network policy, not one domain). A competitive

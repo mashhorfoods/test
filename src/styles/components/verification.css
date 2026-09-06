@@ -49,7 +49,7 @@
   .c-verify__name {
     font-size: var(--text-lg, 1.125rem);
     font-weight: var(--weight-semibold, 600);
-    color: var(--color-text);
+    color: var(--color-text-primary);
   }
 
   .c-verify__role,

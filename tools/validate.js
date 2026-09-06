@@ -261,13 +261,21 @@ const fail = (sev, flow, text) => { findings.push({ sev, flow, text }); console.
         await p.goto(`${BASE}/${page}`, { waitUntil: 'load' }); await p.waitForTimeout(500);
         const m = await p.evaluate(() => ({
           overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+          /* Named, not counted. "4 target(s) under 44px" costs a debugging
+             session every time it fires; the selector and the height do not. */
           small: [...document.querySelectorAll('a,button,summary,input,select,textarea')]
-            .filter((e) => { const b = e.getBoundingClientRect(); return b.width > 0 && b.height < 43.9; }).length,
+            .filter((e) => { const b = e.getBoundingClientRect(); return b.width > 0 && b.height < 43.9; })
+            .map((e) => {
+              const b = e.getBoundingClientRect();
+              const id = e.id ? `#${e.id}` : e.className && typeof e.className === 'string'
+                ? `.${e.className.trim().split(/\s+/)[0]}` : '';
+              return `${e.tagName.toLowerCase()}${id} ${Math.round(b.width)}x${b.height.toFixed(1)} "${(e.textContent || '').trim().slice(0, 24)}"`;
+            }),
           h1: document.querySelectorAll('h1').length,
           landmarks: ['header', 'nav', 'main', 'footer'].filter((t) => document.querySelector(t)).length,
         }));
         if (m.overflow) fail('HIGH', 'responsive', `${page} @${width}: horizontal overflow`);
-        if (m.small) fail('HIGH', 'responsive', `${page} @${width}: ${m.small} target(s) under 44px`);
+        if (m.small.length) fail('HIGH', 'responsive', `${page} @${width}: ${m.small.length} target(s) under 44px — ${m.small.join('; ')}`);
         if (m.h1 !== 1) fail('MED', 'a11y', `${page} @${width}: ${m.h1} h1 elements`);
         if (m.landmarks < 4) fail('MED', 'a11y', `${page} @${width}: ${m.landmarks}/4 landmarks`);
         if (errors) fail('HIGH', 'console', `${page} @${width}: ${errors} console error(s)`);
