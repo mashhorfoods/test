@@ -209,6 +209,20 @@
     --radius-pill: 999px; /* tags and toggles only */
     --radius-circle: 50%;
 
+    /* THE CONTROL RADIUS, NAMED ONCE.
+       Surfaces on this site round at 8px and 12px; controls rounded at 4px,
+       which was a deliberate split — a control is tighter than the panel it
+       sits on — and which, at 4px, had also become the one part of the page
+       that still looked like 2018. Current practice puts interactive controls
+       in the 8-12px band, and 8px is a radius this system already owns.
+
+       It is a token rather than an edit in five files because buttons, fields,
+       the header controls, the nav items and the disclosure toggle have to
+       agree: a form with 8px buttons and 4px inputs beside them looks broken
+       in a way neither value is. One line moves them together, and one line
+       moves them back. */
+    --radius-control: var(--radius-md);
+
     /* ---------------------------------------------------------------------
        06 — BORDERS
        --------------------------------------------------------------------- */

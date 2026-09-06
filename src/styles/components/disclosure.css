@@ -195,7 +195,7 @@
     background-color: var(--color-bg-deep);
     color: var(--color-text-primary);
     border: var(--border-defined);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-control);
     font-size: var(--text-small);
     line-height: var(--leading-snug);
     text-align: center;

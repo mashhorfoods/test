@@ -276,7 +276,7 @@
     display: none;
     align-items: center;
     border: var(--border-hairline);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-control);
     overflow: hidden;
   }
 
@@ -316,6 +316,29 @@
     color: var(--color-text-primary);
     background-color: var(--color-surface-active);
     font-weight: var(--weight-bold);
+  }
+
+  /* THE SEGMENTS CARRY THEIR OWN RADIUS, RATHER THAN BORROWING THE GROUP'S.
+
+     The group is rounded and clips its children, so square segments looked
+     round — until one took focus, when the rule below un-clips the group so
+     the focus ring is not cut off, and the active segment's square corners
+     broke straight out through the rounded edge. At the old 4px radius that
+     was a four-pixel discrepancy nobody saw; at 8px it is the first thing you
+     see, which is how this redesign found it.
+
+     Shape should not depend on clipping. The end segments are rounded
+     themselves, one border-width tighter so the curves nest, and the group
+     looks the same clipped or not. Logical corner properties, so Arabic
+     mirrors without a second rule. */
+  .c-lang__option:first-child {
+    border-start-start-radius: calc(var(--radius-control) - var(--border-width));
+    border-end-start-radius: calc(var(--radius-control) - var(--border-width));
+  }
+
+  .c-lang__option:last-child {
+    border-start-end-radius: calc(var(--radius-control) - var(--border-width));
+    border-end-end-radius: calc(var(--radius-control) - var(--border-width));
   }
 
   /* Focus ring must not be clipped by the group's overflow: hidden. */

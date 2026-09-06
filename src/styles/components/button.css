@@ -32,7 +32,7 @@
     background-color: var(--_bg);
     color: var(--_fg);
     border: var(--border-width) solid var(--_border);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-control);
     cursor: pointer;
 
     transition: var(--transition-interactive);
@@ -90,25 +90,40 @@
     --_bg: var(--color-surface-active);
   }
 
-  /* --- Ghost / text — lowest emphasis, inline actions ------------------- */
+  /* --- Ghost / text — lowest emphasis, inline actions -------------------
+     IT NOW LOOKS PRESSABLE AT REST. Sitting in a row beside Secondary it read
+     as a stray word: no ground, no edge, nothing to say it was a control until
+     a pointer happened to cross it — and a pointer is exactly what a touch
+     visitor does not have. Lowest emphasis is not the same as no affordance,
+     so it keeps a sunken ground and a hairline, and gains the accent on hover
+     as before. */
   .c-btn--ghost {
-    --_bg: transparent;
+    --_bg: var(--color-bg-sunken);
     --_fg: var(--color-text-secondary);
+    --_border: var(--color-border);
     padding-inline: var(--space-16);
   }
 
   .c-btn--ghost:hover {
     --_fg: var(--color-accent);
     --_bg: var(--color-accent-subtle);
+    --_border: var(--color-border-accent);
   }
 
   .c-btn--ghost:active {
     --_bg: var(--color-surface-active);
   }
 
-  /* --- Icon-only -------------------------------------------------------- */
+  /* --- Icon-only --------------------------------------------------------
+     SQUARE, WHICH IT WAS NOT. `inline-size: var(--control-height)` set the
+     width to 48px while the height was left to `min-block-size:
+     var(--touch-target-min)` — 44px. So the one control on the site whose
+     shape carries all of its meaning shipped as a 48x44 rectangle. Both axes
+     now take the control height, with the touch floor kept underneath as a
+     floor rather than as the value. */
   .c-btn--icon {
     inline-size: var(--control-height);
+    block-size: var(--control-height);
     min-inline-size: var(--touch-target-min);
     min-block-size: var(--touch-target-min);
     padding: 0;
@@ -137,8 +152,20 @@
     block-size: var(--icon-sm);
   }
 
-  /* The compact size buys density on a mouse-driven screen, but it must never
-     produce a sub-44px touch target. On coarse pointers it grows. */
+  /* THE SIZE LADDER IS 44/48/56 AND STAYS THERE.
+
+     This redesign tried to make it 40/48/56, on the reasoning that the small
+     size renders 44px with a mouse and 44px with a finger, so the coarse-
+     pointer rule below raises nothing and the first step of the ladder is not
+     a step. All of that is true and none of it is a defect: `docs/73` §3
+     already tried `--control-height-sm: 40px`, found it was a size this site
+     cannot render, and moved the token TO 44 on purpose — "the small size IS
+     the touch minimum: a real step below the 48px default, and an honest one."
+
+     Both guards caught the regression within one run: `validate` reported five
+     targets under the 44px floor, and `qa`'s control-height check named the
+     class and the height it had no business rendering. The rule below is not
+     dead code; it is the floor holding if the token ever moves again. */
   @media (pointer: coarse) {
     .c-btn--sm {
       min-block-size: var(--touch-target-min);
@@ -147,7 +174,7 @@
 
   .c-btn--lg {
     min-block-size: var(--control-height-lg);
-    padding-inline: var(--space-48);
+    padding-inline: var(--space-40);
     font-size: var(--text-body);
   }
 
@@ -156,15 +183,58 @@
     inline-size: 100%;
   }
 
+  /* THE NARROWEST PHONES.
+
+     At 320px the reward panel gives its call to action 222px of room and
+     "Reveal my reward" asked for 232. `white-space: nowrap` means a button
+     cannot answer that by wrapping, and 32px of padding either side of a
+     16-character label is most of the difference. The padding gives way
+     first; the label is the part that has to survive. */
+  @media (max-width: 22.5em) {
+    .c-btn {
+      padding-inline: var(--space-16);
+    }
+
+    .c-btn--lg {
+      padding-inline: var(--space-24);
+    }
+  }
+
   /* --- States ----------------------------------------------------------- */
+  /* DISABLED STOPS LOOKING LIKE A BUTTON YOU COULD PRESS.
+
+     Recolouring explicitly rather than dropping opacity was right and stays.
+     What was wrong is what it was recoloured TO: a filled grey box, which in a
+     row of buttons is the second-heaviest thing on the line — heavier than the
+     Secondary beside it, which you CAN press. Weight is the first thing read,
+     so the unavailable action was reading as the more important one.
+
+     An unfilled box with a hairline and disabled text sits below every live
+     variant, which is where it belongs. */
   .c-btn:disabled,
   .c-btn[aria-disabled="true"] {
     cursor: not-allowed;
     opacity: 1; /* opacity alone is not a state — recolour explicitly */
-    --_bg: var(--color-surface);
+    --_bg: transparent;
     --_fg: var(--color-text-disabled);
     --_border: var(--color-border);
     pointer-events: none;
+  }
+
+  /* A disabled control does not lift, shrink or nudge its icon. Stated here
+     because the motion block above is keyed on :hover and :active, and
+     `pointer-events: none` is a setting a call site can undo. */
+  .c-btn:disabled:hover,
+  .c-btn[aria-disabled="true"]:hover,
+  .c-btn:disabled:active,
+  .c-btn[aria-disabled="true"]:active {
+    translate: none;
+    scale: none;
+  }
+
+  .c-btn:disabled:hover .c-btn__icon,
+  .c-btn[aria-disabled="true"]:hover .c-btn__icon {
+    translate: none;
   }
 
   .c-btn[aria-pressed="true"],
@@ -174,28 +244,63 @@
     --_border: var(--color-border-accent);
   }
 
-  /* --- Motion ----------------------------------------------------------- */
+  /* --- Motion -----------------------------------------------------------
+
+     INDIVIDUAL PROPERTIES, NOT `transform`, AND THE REASON IS THE PRESS.
+
+     Hover lifted the button with `transform: translateY(-1px)` and the press
+     put it back with `transform: translateY(0)`. That works only while the
+     press has nothing of its own to say — the moment it does, the two fight
+     over one property and whichever loses is simply not applied. `translate`
+     and `scale` are separate properties that compose, so the press can shrink
+     the button a little WHILE it drops back to the resting line, which is
+     what a press actually looks like.
+
+     The lift on its own was also barely a micro-interaction: one pixel, and
+     nothing at all on the way down. A button that gives no feedback when it
+     is pressed is a button people press twice.
+
+     The shared --transition-interactive token still lists `transform`, so
+     these two get their own transition here rather than the token being
+     rewritten under every other component that reads it. */
   @media (prefers-reduced-motion: no-preference) {
+    .c-btn {
+      transition: var(--transition-interactive),
+        translate var(--duration-fast) var(--ease-out),
+        scale var(--duration-fast) var(--ease-out);
+    }
+
     .c-btn:hover {
-      transform: translateY(-1px);
+      translate: 0 -2px;
     }
 
     .c-btn:active {
-      transform: translateY(0);
+      translate: 0 0;
+      scale: 0.97;
     }
 
     /* The arrow leads the eye toward the action; it mirrors under RTL via
-       .u-flip-rtl on the icon itself. */
+       .u-flip-rtl on the icon itself, so the nudge follows the reading
+       direction rather than the screen. */
     .c-btn__icon {
-      transition: transform var(--duration-fast) var(--ease-out);
+      transition: translate var(--duration-fast) var(--ease-out);
     }
 
     .c-btn:hover .c-btn__icon {
-      transform: translateX(3px);
+      translate: 3px;
     }
 
     [dir="rtl"] .c-btn:hover .c-btn__icon {
-      transform: translateX(-3px);
+      translate: -3px;
+    }
+  }
+
+  /* Without motion the press still has to register, so it does it with colour
+     and edge rather than with movement — every variant already darkens on
+     :active, and this makes sure nothing is left relying on the lift. */
+  @media (prefers-reduced-motion: reduce) {
+    .c-btn:active {
+      --_border: var(--color-border-accent);
     }
   }
 
