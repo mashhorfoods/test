@@ -224,3 +224,33 @@ lands on a working branch and merges from there.
 **This is the point of the exercise:** after these two settings, a bad push
 cannot reach the live branch, and that stops depending on whoever is pushing
 being careful.
+
+### 6.5 Confirm it took — the step that is easy to skip
+
+Both settings are silent when they fail, and one of them failed the first time
+here: the ruleset was added while the default branch was still the old one, so
+a ruleset targeting *Default branch* would have been guarding a stale working
+branch.
+
+**Which branch is default** — authoritative, uncached, the same lookup `git
+clone` uses:
+
+```
+git ls-remote --symref origin HEAD
+```
+
+It must print `ref: refs/heads/main`. If it still names a `claude/*` branch,
+Settings → General → *Default branch* did not save. Re-do it and re-run this.
+
+**Whether the rule is on** — open a pull request into `main` and look at it. A
+working ruleset shows *"Required statuses must pass"* with `check` listed, and
+the merge button disabled until it is green. **That is the only test that
+matters**, because it exercises the thing the rule exists to do.
+
+Do not rely on the branches API's `protected` flag: it reports classic branch
+protection and does not reliably reflect rulesets, so `protected: false` on a
+correctly-ruled branch is expected and proves nothing either way.
+
+**Order matters.** Set the default branch *first*, confirm it with the command
+above, and only then add a ruleset that targets the default — otherwise the
+target moves out from under the rule.
