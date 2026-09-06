@@ -17,6 +17,20 @@
    ============================================================================= */
 
 @layer components {
+  /* THE SECTION TAKES THE PAGE GROUND, DELIBERATELY.
+     Its neighbours are .c-detail sections, which sit on the deeper #141414
+     band. Leaving this one transparent lets the page's own lighter ground show
+     between them, so the panel reads as resting ON the page rather than inside
+     another content band — which is what a promotion should look like next to
+     the things it is promoting.
+
+     Noticed as an accident when the rendered page showed a lighter strip here,
+     then checked and kept. Stated so it survives any change to how .c-detail
+     is coloured. */
+  .c-reward {
+    background-color: transparent;
+  }
+
   .c-reward__panel {
     position: relative;
     overflow: hidden;
