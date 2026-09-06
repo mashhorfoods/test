@@ -1559,8 +1559,21 @@ function serve() {
       if (newest > signedAt + 60000) {
         fail('HIGH', 'hero', `the hero assets are newer than provenance.json (${p.generator}) — they were replaced by something that did not sign its work`);
       }
+      /* A KNOWN WATERMARK IS NOT A FINDING; AN UNKNOWN ONE IS.
+         The owner reaffirmed shipping the Pika mark on 6 Sep after docs/54 §9
+         set out the three options, so provenance.json records that decision
+         and this stops asking. A check that fires on a settled decision every
+         run is noise, and noise is how the real findings get scrolled past.
+
+         What it still catches is footage arriving with nobody having looked —
+         which is the state that let the mark ship unnoticed for two days. */
       if (p.generator === 'clips') {
-        fail('MED', 'hero', `the hero is wrapped from supplied footage (${(p.clips || []).join(', ') || 'unnamed clips'}) — check it carries no watermark before shipping; docs/54 §9 is why`);
+        const w = p.watermark;
+        if (!w || typeof w.present !== 'boolean') {
+          fail('MED', 'hero', `the hero is wrapped from supplied footage (${(p.clips || []).join(', ') || 'unnamed clips'}) and provenance.json does not say whether it carries a watermark — look, then record the answer; docs/54 §9 is why`);
+        } else if (w.present && !w.acceptedBy) {
+          fail('HIGH', 'hero', `the hero carries a ${w.mark || 'third-party'} watermark that nobody has accepted — this is the state docs/54 §9 exists to prevent`);
+        }
       }
     }
   }

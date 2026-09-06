@@ -422,3 +422,54 @@ are named inside `@font-face` in the inlined CSS, and subsetting means a face
 may legitimately serve one page only.
 
 `dist/assets`: **22 files → 21**.
+
+---
+
+## 11. Reversed — the video ships, watermark included, 6 September 2026
+
+**The owner's decision, reaffirmed after §9 laid out all three options:** ship
+the generated clips as they are. Restored from `f098fa8`, the exact files that
+were live before §10 — `hero.webm` 720KB, `hero.mp4` 878KB, `hero-poster.webp`
+8KB. Verified as the watermarked take by reading the poster's upper-left crop
+back, and verified playing in both languages at 4.2s and 5.2s.
+
+**§10 is not deleted, and neither is the drawn film.** `npm run film` rebuilds
+it in one command, and `docs/86`-era tooling is untouched. Two heroes, one
+command apart, exactly as §8 promised.
+
+### 11.1 The guard now records the decision instead of repeating it
+
+§23 was written to make one question answerable: *what was this hero made
+from?* It now has an answer, and the answer is settled — so it stops asking.
+
+`provenance.json` carries the decision itself:
+
+```json
+"watermark": {
+  "present": true, "mark": "Pika",
+  "acceptedBy": "owner", "acceptedOn": "2026-09-06"
+}
+```
+
+And §23 changed shape to match:
+
+| State | Verdict |
+| --- | --- |
+| Footage, watermark present, **accepted** | **passes** — a settled decision is not a finding |
+| Footage, provenance does not say either way | **MED** — look, then record the answer |
+| Footage, watermark present, **nobody accepted it** | **HIGH** — the exact state that shipped unnoticed for two days |
+
+**A check that fires on a decision already made is noise, and noise is how real
+findings get scrolled past.** What §23 still catches is footage arriving with
+nobody having looked — which was never the owner's decision, it was an absence
+of one.
+
+### 11.2 One correction on the way
+
+The first `provenance.json` was hand-dated `T00:00:00Z` and §23 failed HIGH:
+the restored files were newer than their own signature. The check was right.
+`at` means **when the signature was written**, and it cannot predate the files
+it describes; the footage's own age is carried by `restoredFrom`. Field
+documented in the file so the next person does not repeat it.
+
+`validate.js` **0** · `qa.js` **0 high, 0 medium** · `a11y.js` **0**.

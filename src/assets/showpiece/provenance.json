@@ -1,8 +1,18 @@
 {
-  "generator": "drawn",
-  "tool": "build-showpiece.js",
-  "at": "2026-09-06T12:33:52.412Z",
-  "frames": 300,
-  "seconds": 12,
-  "fps": 25
+  "generator": "clips",
+  "tool": "build-hero-from-clips.js",
+  "at": "2026-09-06T13:07:58.755352Z",
+  "clips": [
+    "clipA.mp4",
+    "clipB.mp4"
+  ],
+  "restoredFrom": "f098fa8",
+  "watermark": {
+    "present": true,
+    "mark": "Pika",
+    "acceptedBy": "owner",
+    "acceptedOn": "2026-09-06",
+    "note": "Decision reaffirmed after docs/54 §9 laid out the three options. The mark stays visible because on a free tier it is the licence condition; stripping it was the only option ruled out. Replace with a clean export when one exists — npm run film:clips — or npm run film for the drawn scene."
+  },
+  "_at": "When this signature was written — it must not predate the files it describes. The footage itself is older; restoredFrom names the commit it came back from."
 }
