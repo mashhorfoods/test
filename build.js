@@ -437,6 +437,55 @@ console.log('');
    build" mean what it says — until now a stale file passed that check by being
    present in both. */
 fs.rmSync(DIST, { recursive: true, force: true });
+/* STRIP THE AUTHORING COMMENTARY FROM THE ARTEFACT, NOT FROM THE SOURCE.
+
+   This project's HTML comments are its reasoning, and they are the most
+   valuable thing in the source files. They are also 91KB of text that every
+   visitor downloads and no visitor can use: 96 comments and 40KB on the
+   homepage alone, which is 15% of what a first-time visitor actually
+   receives over the wire (89.4KB gzipped down to 75.7KB) and 41KB against
+   the 480KB first-screen budget.
+
+   So they come out HERE, where dist/ is already a derived artefact that
+   nobody edits, and stay untouched in the files people read and change. It
+   is the same split the whole build already makes.
+
+   IT MUST NOT TOUCH SCRIPT OR STYLE. Everything is inlined into one file by
+   this point, so a naive regex would rewrite the middle of a program if a
+   string in it ever contained the sequence. The document is walked in
+   segments instead, and anything between script or style tags is copied
+   through byte for byte. There is an assertion below: the stripped page must
+   still carry exactly the script and style content it had before. */
+function stripComments(html) {
+  const BLOCK = /<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi;
+  /* Both operations run per segment. Collapsing the blank lines over the
+     whole document afterwards was the first version, and assertCodeIntact
+     stopped the very first build with it: it was reformatting the inlined
+     JavaScript and CSS as well. Harmless in this codebase and not the
+     contract, so it is fixed rather than excused — a template literal
+     spanning a blank line would have been silently rewritten. */
+  const clean = (t) => t.replace(/<!--[\s\S]*?-->/g, '').replace(/\n[ \t]*(?=\n)/g, '');
+  let out = '';
+  let last = 0;
+  for (const m of html.matchAll(BLOCK)) {
+    out += clean(html.slice(last, m.index));
+    out += m[0];
+    last = m.index + m[0].length;
+  }
+  return out + clean(html.slice(last));
+}
+
+/* The guard, run on every build rather than trusted: the executable content
+   of the page must be identical before and after. If this ever throws, the
+   stripper has reached into a program and the build stops instead of
+   shipping a broken page. */
+function assertCodeIntact(before, after, page) {
+  const code = (s) => (s.match(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi) || []).join(' ');
+  if (code(before) !== code(after)) {
+    throw new Error(`comment stripping altered script or style content in ${page} — build stopped`);
+  }
+}
+
 fs.mkdirSync(DIST, { recursive: true });
 
 const kb = (n) => `${(n / 1024).toFixed(1)}KB`;
@@ -446,7 +495,10 @@ const faviconMissing = [];
 const touchIconMissing = [];
 let missing = [];
 for (const page of ['index.html', 'styleguide.html', 'story.html', 'about.html', 'pricing.html', 'privacy.html', 'terms.html', 'accessibility.html', '404.html']) {
-  const { html, stats } = buildPage(page);
+  const built = buildPage(page);
+  const stats = built.stats;
+  const html = stripComments(built.html);
+  assertCodeIntact(built.html, html, page);
   const out = path.join(DIST, page);
   fs.writeFileSync(out, html);
   remote = remote.concat(stats.imagesRemote);

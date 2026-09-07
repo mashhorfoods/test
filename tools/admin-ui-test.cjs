@@ -39,7 +39,11 @@ const no=(n,d)=>{fails++;console.log(`  ✗ ${n}${d?`\n      ${d}`:''}`);};
 
 srv.listen(4801, async()=>{
  const b=await chromium.launch({executablePath:process.env.PLAYWRIGHT_CHROMIUM});
- const ctx=await b.newContext({viewport:{width:420,height:900},isMobile:true,hasTouch:true});
+  /* 390x667 — an iPhone SE, the device docs/121 §5b measured and the one
+    the phone defects all live on. The suite used to run at 420x900, which
+    is taller than any phone and where a message hidden behind the sticky
+    bar is comfortably above it. */
+ const ctx=await b.newContext({viewport:{width:390,height:667},isMobile:true,hasTouch:true});
  const page=await ctx.newPage();
  const errs=[]; page.on('console',m=>{if(m.type()==='error')errs.push(m.text())});
  page.on('pageerror',e=>errs.push('pageerror: '+e.message));
@@ -57,11 +61,16 @@ srv.listen(4801, async()=>{
      const json=(o,status=200)=>({ok:status<400,status,statusText:'',json:async()=>o});
      if(!/Bearer ghp_good/.test(auth)) return json({message:'Bad credentials'},401);
      if(/\/user$/.test(url)) return json({login:'mashhorfoods'});
-     if(/\/repos\/[^/]+\/[^/]+$/.test(url)) return json({full_name:'mashhorfoods/test'});
+     if(/\/repos\/[^/]+\/[^/]+$/.test(url)) return json({full_name:'mashhorfoods/test', default_branch:'main'});
      if(/contents\/src\/data\/pricing\.json/.test(url) && (opts.method||'GET')==='GET')
-       return json({sha:'abc123', content:b64(pricing)});
-     if((opts.method)==='PUT')
+       return json({sha: window.__serverSha||'abc123', content:b64(window.__serverText||pricing)});
+     if((opts.method)==='PUT'){
+       /* One armed conflict, so the stale-sha path is exercised rather than
+          assumed. It disarms itself, exactly as a real 409 stops once the sha
+          has been refreshed. */
+       if(window.__conflictOnce){ window.__conflictOnce=false; return json({message:'does not match'},409); }
        return json({content:{sha:'def456'}, commit:{sha:'0123456789abcdef', html_url:'https://github.com/x/y/commit/0123456'}});
+     }
      return json({message:'unexpected '+url},404);
    };
  },{pricing});
@@ -146,6 +155,28 @@ srv.listen(4801, async()=>{
  if (problemGroupOpen) ok('P10 — the category holding the invalid value opens itself and says so');
  else no('P10 — auto-open', 'the invalid value is hidden behind a closed summary');
 
+ // ---- P10b: the message is ABOVE the sticky bar, not behind it
+ {
+   /* docs/121 §5b moved the validity message from the bar down to its own
+      field, because the bar was sitting on top of the price it described.
+      Right, and not the whole fix: on a 667px screen the field being typed
+      into is usually the last thing above the bar, so the message that
+      appears under it appears under the bar. Every number was healthy when
+      that was true — 3.6 screens, no overflow, bar at 27% — and a
+      screenshot showed the one sentence the operator needs invisible. */
+   await page.waitForTimeout(700); // the reveal scroll is smooth
+   const r = await page.evaluate(()=>{
+     const note = document.querySelector('.a-card .a-field__error');
+     const bar = document.querySelector('.a-commit');
+     if (!note || !bar) return null;
+     const n = note.getBoundingClientRect(), b = bar.getBoundingClientRect();
+     return { top: Math.round(n.top), bottom: Math.round(n.bottom),
+       barTop: Math.round(b.top), vh: window.innerHeight };
+   });
+   if (r && r.top >= 0 && r.bottom <= r.barTop)
+     ok(`P10b — the field's message is fully visible above the bar (ends at ${r.bottom}px, bar starts at ${r.barTop}px)`);
+   else no('P10b — message behind the bar', JSON.stringify(r));
+ }
  // ---- P5: valid re-enables
  await (await page.$('.a-card .a-field__input')).fill('520');
  await page.waitForTimeout(300);
@@ -173,6 +204,92 @@ srv.listen(4801, async()=>{
  const result = await page.textContent('.a-result').catch(()=>'');
  if (/Saved/.test(result) && /rebuild/i.test(result)) ok('P7 — shows the commit and says what happens next');
  else no('P7 — result', result.slice(0,90));
+
+ // ---- P11: a PERSON can type into it
+ {
+   /* THE TEST THAT NINE PHASES OF TESTS COULD NOT DO. Every check above uses
+      Playwright's fill(), which sets .value and fires ONE input event. A
+      person presses one key at a time, and the page used to call rerender()
+      on each of them — replaceChildren(), so the input being typed into was
+      destroyed a character in, focus fell to <body>, the open category
+      collapsed, and every keystroke after the first went nowhere. Typing
+      "1234" into a price left "1", and the dashboard was unusable for its
+      only job.
+
+      fill() could never see it. This types. */
+   const box = await page.$('.a-card .a-field__input');
+   await box.click();
+   await page.keyboard.press('Control+a');
+   for (const ch of '1234') { await page.keyboard.type(ch); await page.waitForTimeout(90); }
+   const r = await page.evaluate(()=>{
+     const i = document.querySelector('.a-card .a-field__input');
+     return { value: i && i.value, focused: document.activeElement === i,
+       caret: i && i.selectionStart, open: document.querySelector('.a-group').open };
+   });
+   if (r.value === '1234' && r.focused && r.caret === 4 && r.open)
+     ok('P11 — four keystrokes produce four characters, focus stays, the category stays open');
+   else no('P11 — typing', `value="${r.value}" focused=${r.focused} caret=${r.caret} open=${r.open}`);
+   /* Back to the committed value: nothing to save, so the bar goes idle —
+      which is itself the behaviour P10 asserts. */
+   await (await page.$('.a-card .a-field__input')).fill('520');
+   await page.waitForTimeout(300);
+ }
+
+ // ---- P6b: the commit goes to the repository's DEFAULT branch
+ {
+   const put = await page.evaluate(()=>window.__calls.find(c=>c.method==='PUT'));
+   const body = JSON.parse(put.body);
+   /* This was a hard-coded session working branch until 7 September, and it
+      went stale the moment PR #1 merged. Everything downstream deploys from
+      the default branch, so a save anywhere else is a green commit that
+      changes nothing a visitor sees — the worst kind of failure, because it
+      looks exactly like success. */
+   if (body.branch === 'main') ok('P6b — the commit targets the repository default branch, read from the API');
+   else no('P6b — branch', `the PUT wrote to "${body.branch}"`);
+ }
+
+ // ---- P6c: a sha that moved but the content did not — re-read and save
+ {
+   /* The server now holds exactly what P6 committed — the sha moved, the
+      bytes did not. That is the benign case, and it is the common one: any
+      commit that touches a file without changing it lands here. */
+   const committed = JSON.parse(pricing);
+   committed.categories[0].packages[0].price = '520';
+   await page.evaluate((t)=>{ window.__calls=[]; window.__conflictOnce=true;
+     window.__serverSha='newsha'; window.__serverText=t; },
+     JSON.stringify(committed, null, 2)+'\n');
+   await (await page.$('.a-card .a-field__input')).fill('530');
+   await page.waitForTimeout(300);
+   await page.click('.a-btn--primary');
+   await page.waitForTimeout(800);
+   const puts = await page.evaluate(()=>window.__calls.filter(c=>c.method==='PUT'));
+   const status = (await page.textContent('#status')||'').trim();
+   const sha = puts.length ? JSON.parse(puts[puts.length-1].body).sha : '';
+   if (puts.length === 2 && sha === 'newsha' && !status)
+     ok('P6c — a sha that moved with identical content is re-read and the save goes through');
+   else no('P6c — benign conflict', `puts=${puts.length} sha=${sha} status="${status}"`);
+ }
+
+ // ---- P6d: a REAL conflict refuses to overwrite and says what to do
+ {
+   const changed = JSON.parse(pricing);
+   changed.categories[0].packages[0].price = '999';
+   await page.evaluate((t)=>{ window.__calls=[]; window.__conflictOnce=true; window.__serverText=t; },
+     JSON.stringify(changed, null, 2)+'\n');
+   await (await page.$('.a-card .a-field__input')).fill('540');
+   await page.waitForTimeout(300);
+   await page.click('.a-btn--primary');
+   await page.waitForTimeout(800);
+   const status = (await page.textContent('#status')||'');
+   const kept = await page.$eval('.a-card .a-field__input', e=>e.value);
+   const puts = await page.evaluate(()=>window.__calls.filter(c=>c.method==='PUT').length);
+   /* Two people have write access here, so this is a matter of when, not
+      whether. Refusing is the easy half; keeping the operator's unsaved work
+      on screen while refusing is the half that makes it usable. */
+   if (/changed on the repository/i.test(status) && kept === '540' && puts === 1)
+     ok('P6d — a real conflict refuses to overwrite, explains it, and keeps the edits on screen');
+   else no('P6d — real conflict', `puts=${puts} kept="${kept}" status="${status.slice(0,70)}"`);
+ }
 
  if (errs.length) no('console', errs.slice(0,2).join(' | '));
  else ok('0 console errors');

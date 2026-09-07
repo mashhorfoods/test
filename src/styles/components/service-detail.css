@@ -206,6 +206,28 @@
      ======================================================================= */
   .c-tiers {
     display: grid;
+    /* minmax(0, 1fr), NOT the implicit auto track.
+
+       An auto track is as wide as its widest item's MIN-CONTENT, and a grid
+       item defaults to min-width: auto, so the two together let one card set
+       the width of the column that is supposed to be constraining it. That is
+       exactly what happened: the package CTA is white-space: nowrap, its
+       min-content is 302px, and with the card's padding that made the card —
+       and therefore the track — 352px inside a 327px container. The cards
+       hung 25px past the page in English and, because RTL aligns from the
+       other edge, 9px off the LEFT of the screen in Arabic.
+
+       It was invisible at every width anything tested: fine at 320 and 360
+       (where the CTA was allowed to wrap), fine from 481 up (where the card
+       has room), and broken across 361-480 — iPhone SE, mini, XR and Plus.
+       responsive.js sampled 320/768/1024 and stepped straight over the band,
+       which is why 375 and 414 are now in its list.
+
+       This is the same shape docs/115 found at 320px and fixed at the button.
+       Fixing it at the button again would leave the coupling in place for the
+       next label; a track that cannot be widened by its own contents cannot
+       produce this failure at any width, in any language, for any label. */
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-24);
   }
 
@@ -619,10 +641,17 @@
     display: inline-flex;
   }
 
-  /* On the narrowest phones the card cannot hold 32px of padding and a
-     nowrap CTA: the button's min-content width becomes the card's floor and
-     pushes it past the container. Both are tightened rather than letting the
-     label wrap, which would cost the CTA its shape. */
+  /* On phones the card cannot hold 32px of padding and a nowrap CTA. The
+     padding is tightened first, because a wrapped label costs the CTA its
+     shape and is the second choice — but it must be ALLOWED as the second
+     choice, or the button overflows the card it sits in.
+
+     It was not allowed here: the wrap rule lived in button.css at
+     max-width: 22.5em (360px) and this block starts at 30em (480px), so
+     between 361px and 480px the label could neither fit nor wrap. With the
+     track no longer able to stretch (see .c-tiers above) the button would
+     have been the thing sticking out instead of the card, which is not a
+     fix. Both halves belong at the same breakpoint. */
   @media (max-width: 30em) {
     .c-tier {
       padding: var(--space-24);
@@ -631,6 +660,8 @@
     .c-tier__cta,
     .c-detail__action {
       padding-inline: var(--space-16);
+      white-space: normal;
+      line-height: var(--leading-snug);
     }
 
     .c-tier__ribbon {

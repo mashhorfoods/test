@@ -6,6 +6,23 @@ acceptance tests found.
 
 All nine phases pass. **`https://mashhorfoods.github.io/test/admin.html`**
 
+> **AMENDED 7 September, later the same day — `docs/123` §2.** An independent
+> pass found four defects in what is described below, and one of them made
+> this page unusable for its only job: **it could not be typed into.**
+> `rerender()` ran on every input event and begins with `replaceChildren()`,
+> so the field being typed into was destroyed a character in. Typing `1234`
+> into a price left `1`.
+>
+> Every acceptance test in §5 passed because every one of them used
+> Playwright's `fill()`, which sets a value and fires a single event. §5b of
+> this document says emulation is not a phone. The same sentence one level
+> down: **a synthetic event is not a person.**
+>
+> Also fixed there: it committed to a branch nothing deploys from, a second
+> operator's save could be overwritten without a word, and the sticky bar was
+> still covering the message — the exact defect §5b is about. This document
+> stands as written; `docs/123` is what happened next.
+
 ---
 
 ## 1. What it is, in one paragraph

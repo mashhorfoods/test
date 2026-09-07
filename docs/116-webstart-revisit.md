@@ -91,13 +91,13 @@ partial on **five buyers**. Phase 20 is partial on **twenty-eight more days**.
 | Public pages shipped | **8** — home, pricing, about, story, privacy, terms, accessibility, 404 |
 | Languages | 2, full RTL, every string paired |
 | Upload artefact | `pixora-site.zip`, **3.2MB**, rebuilt by one command |
-| Homepage over the wire | 405KB raw · **87KB gzipped** |
-| First screen | **444KB of a 480KB budget** |
+| Homepage over the wire | **371KB raw · 76KB gzipped** — 91KB of authoring commentary no longer ships (`docs/123` §5) |
+| First screen | **411KB of a 480KB budget** |
 | Images | **40, none missing width or height** |
 | Runtime dependencies | **0** |
 | Named third parties willing to be quoted | **1** — Faris Mohammed, Al Mada, 7 Sep |
-| Harnesses, run on every push | **5** — validate · qa (**34** sections; §34 added 7 Sep with the testimonial) · responsive · **arabic** · a11y |
-| Current result | **all five green** — validate 0 · qa 0 high, 0 medium (1 known low) · responsive 0 over 48 combinations · arabic 0 · axe 0 violations |
+| Harnesses, run on every push | **5** — validate · qa (**35** sections) · responsive (**80** combinations) · **arabic** · a11y |
+| Current result | **all five green** — validate 0 · qa 0 high, 0 medium (1 known low) · responsive 0 over **80** combinations · arabic 0 · axe 0 violations |
 | Catastrophic failure modes controlled | **all of them** — transfer lock, auto-renew, second remote, uptime alarm |
 
 **The site is live, monitored, backed up, legally papered and instrumented.**

@@ -153,7 +153,16 @@
     margin-block-start: 1rem;
   }
   /* The bar overlays the end of the page, so the page ends above it. */
-  .a-body { padding-block-end: 1rem; }
+  /* THE STICKY BAR NEEDS ITS OWN SPACE AT THE END OF THE PAGE.
+     Without it the bar floats over the last field, and the message under
+     that field can never be scrolled clear of it: the page is already at
+     the bottom, so there is nothing left to scroll. Reserving the height
+     of the bar is the fix that works at every screen size and needs no
+     scrolling at all. --a-bar-h is written by admin.js after each render
+     and is 0 when the bar is idle and draws nothing, so a page with
+     nothing to save pays no whitespace for a control that is not there. */
+  .a-body { padding-block-end: calc(1rem + var(--a-bar-h, 0px)); }
+  html { scroll-padding-block-end: calc(1rem + var(--a-bar-h, 0px)); }
   .a-problems__title { color: #ff9a9a; margin: 0; font-size: .9rem; }
   .a-note { color: var(--color-text-secondary, #b9b9b9); font-size: .9rem; }
   .a-note--ok { color: var(--color-accent, #f4d13f); }

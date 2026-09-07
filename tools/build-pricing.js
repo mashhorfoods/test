@@ -127,6 +127,27 @@ const serviceMessage = (c, lang) => (lang === 'ar'
   ? `مرحبًا بيكسورا — أود التحدث بخصوص ${c.labelAr}.`
   : `Hi Pixora — I'd like to talk about ${c.label}.`);
 
+/* EVERY LINK THAT LEAVES THE SITE SAYS SO.
+
+   These anchors open WhatsApp in a new tab, and until 7 September they were
+   the only new-tab links on the site that did not announce it — 22 of them,
+   and they are the conversion path: the four service buttons and every
+   package CTA. The rest of the site (LinkedIn, Behance, the portfolio, the
+   client's own site, and the WhatsApp links in the legal pages' prose) has
+   carried the note from the start, so this was not a missing rule but a rule
+   with a hole in exactly the place it mattered most.
+
+   Conditional on WHATSAPP for the same reason target="_blank" is: with no
+   number configured these are not off-site links at all, and a note about a
+   new tab that does not open would be a lie in the accessible name.
+
+   Bilingual, because the note is a string a screen reader reads out and this
+   site does not read one language's words in the other's voice. */
+const NEW_TAB = WHATSAPP
+  ? '<span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span>'
+    + '<span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span>'
+  : '';
+
 /* One anchor shape for both. `data-wa-en` / `data-wa-ar` carry the two hrefs;
    the href itself ships as English so the link works with no JavaScript, and
    contact.js swaps it when the language does. `data-about` is the package the
@@ -137,7 +158,7 @@ const waCta = ({ href, hrefAr, labelEn, labelAr, about, primary, describedBy }) 
               ${about ? `data-about="${about}"` : ''}
               ${WHATSAPP ? 'target="_blank" rel="noopener noreferrer"' : ''}
               aria-describedby="${describedBy}">
-              <span><span data-lang-copy="en">${labelEn}</span><span data-lang-copy="ar" lang="ar">${labelAr}</span></span>
+              <span><span data-lang-copy="en">${labelEn}</span><span data-lang-copy="ar" lang="ar">${labelAr}</span></span>${NEW_TAB}
               <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
               </svg>
@@ -409,7 +430,7 @@ ${tiers}
                  opening four different conversations. The WhatsApp message
                  always named the service; the button a screen reader reads
                  did not. -->
-            <span><span data-lang-copy="en">Ask about ${esc(c.label)}</span><span data-lang-copy="ar" lang="ar">اسأل عن ${esc(c.labelAr)}</span></span>
+            <span><span data-lang-copy="en">Ask about ${esc(c.label)}</span><span data-lang-copy="ar" lang="ar">اسأل عن ${esc(c.labelAr)}</span></span>${NEW_TAB}
             <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
             </svg>

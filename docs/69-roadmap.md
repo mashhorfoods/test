@@ -262,6 +262,8 @@ site, with full repository access.**
 | ~~**R20**~~ | ~~The admin dashboard~~ | ✅ **7 Sep — `docs/120` (plan), `docs/121` (built).** All nine phases pass their acceptance tests. A static page at the repository root, served by the **review surface**, editing prices and Arabic strings through the GitHub API with a fine-grained token the operator pastes — **no server, AD-01 survives.** Its whole justification is `docs/63`'s own objection to Option 0: a wrong price is now refused *before* the commit rather than as a red build ten minutes later. **The plan was wrong twice and the code said so:** the page does not ship at all (better than the scoped-CSP block that was planned), and `challenge.json` came out of scope because it does not round-trip. **Two validation rules were wrong and the real data proved it** — `level`/`purpose` are paired, not required, and an Arabic field may hold no Arabic when it is a proper noun identical to the English. `qa.js` §33 adds five guards, each negative-tested. **Option 0 is not removed** |
 
 | ~~**R21**~~ | ~~The first client testimonial~~ | ✅ **7 Sep — `docs/122`.** Faris Mohammed, Founder & CEO of Al Mada Travel & Tourism Agency, sent a testimonial in writing and agreed to be named. **This is the item `docs/108`, `docs/112` and `docs/116` all named as the one thing standing between the site and a *yes*, and the only one of them no amount of building could supply** — the verdict turned on the sentence *"every single claim on this site comes from the company itself"*, which is no longer true. Published under the four Al Mada deliverables on the homepage and at the end of the case study, so it reads as a verdict on work the visitor has just looked at rather than an assertion. **The Arabic is ours and says so:** he wrote in English, and publishing our translation under a named man's name without declaring it would be putting words in his mouth in a language he did not use — the one judgement here an owner should overrule if they disagree, and the better fix is to ask him for Arabic. `qa.js` §34 holds every rendering of his words to one source in `story.json`, **negative-tested four ways**, because the quote is published twice and a tidy-up of one copy is all it takes to have a named man saying two different things |
+| ~~**R22**~~ | ~~The finishing pass~~ | ✅ **7 Sep — `docs/123`.** The owner asked for the project to be finished rather than discussed. An independent audit pressed every control on every page in both languages (0 dead links, 0 unnamed controls, 0 console errors) and found **six real defects, all fixed**. **The worst by a distance: the admin dashboard could not be typed into** — `rerender()` ran on every input event and begins with `replaceChildren()`, so typing `1234` into a price left `1`; all nine phases of acceptance tests passed because every one of them used Playwright's `fill()`, and **a synthetic event is not a person**. It also **committed to a branch nothing deploys from** (the constant went stale the moment PR #1 merged — the owner would have seen a green commit and an unchanged site), could silently overwrite a second operator's save, and still had the sticky bar covering the message `docs/121` §5b moved out of it. **Site side: 22 WhatsApp links — the whole conversion path — opened a new tab and said nothing**, while the other 76 off-site links on the site had always said so, and all 76 said it in English on the Arabic page; five `aria-label`s were English in both languages, three of them the contact channels. **Pricing cards hung off the page from 361px to 480px** — iPhone SE, mini, XR and Plus — because an `auto` grid track takes its width from its widest item's min-content; clean at 320, clean at 360, clean at 768, and `responsive.js` sampled exactly those. Fixed at the track, not at the button, so no future label can bring it back. **91KB of authoring commentary stopped shipping** (homepage 89.4KB → 75.7KB gzipped, first screen 450 → 411KB of a 480KB budget), with a build-stopping assertion that the stripper never touches script or style — which fired on its first run and was fixed rather than excused. New guards, each negative-tested: `qa.js` §35, `responsive.js` at **80** combinations, and five new dashboard assertions including one that **types** |
+
 
 **Note on this container:** WebSearch works; fetching any specific page does
 not (`EGRESS_BLOCKED`, the network policy, not one domain). A competitive
@@ -350,8 +352,8 @@ width it broke at.
 | Harness | Widths | Languages | Pages |
 | --- | --- | --- | --- |
 | `validate.js` | 1280, 390 | English | the journeys it walks |
-| `qa.js` | 390, 1280, 1440 | English throughout; **Arabic too** for §15 buttons, §31 counts, §32 region names and §34 attributions | all built pages |
-| **`responsive.js`** | **320, 768, 1024** | **English and Arabic** | **all eight** |
+| `qa.js` | 390, 1280, 1440 | English throughout; **Arabic too** for §15 buttons, §31 counts, §32 region names, §34 attributions and §35 off-site links | all built pages |
+| **`responsive.js`** | **320, 375, 414, 768, 1024** | **English and Arabic** | **all eight** |
 | **`arabic.js`** | — *(static, no browser)* | **the pairing between them** | **all built pages + `navigation-map.js`** |
 | `a11y.js` | axe defaults | both | all built pages |
 
@@ -362,6 +364,13 @@ Arabic inside English, figures that disagree between the two languages, and the
 pre-composed WhatsApp messages. It cannot tell you whether the Arabic is
 *good* — `docs/91` is the brief that asks a person that. Before it, no check had loaded
 `/privacy`, `/terms`, `/404` or `/accessibility` in Arabic at any width.
+
+> **375 and 414 were added on 7 September, and the reason is in this table's
+> own argument.** The first list was chosen as "the widths nothing else
+> renders", which was right about the gaps and wrong about phones: every
+> check on this project rendered 320, 360 or 390 and nothing between 391 and
+> 767. The pricing cards were hanging off the page across that whole band —
+> `docs/123` §4. **A sample is not coverage.**
 
 **If a harness is added or its coverage changes, this table changes with it.**
 A gap nobody has written down is a gap nobody will look for.

@@ -454,7 +454,7 @@ ${testimonial(data.testimonial)}
       <footer class="c-story__close">
         <p class="c-story__statement">${pair(data.close.statement)}</p>
         <a class="c-link c-story__link" href="${esc(data.close.href)}"${OFFSITE(data.close.href)}>
-          ${pair(data.close.link)}${OFFSITE(data.close.href) ? '<span class="u-visually-hidden"> (opens in a new tab)</span>' : ''}
+          ${pair(data.close.link)}${OFFSITE(data.close.href) ? '<span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span>' : ''}
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="u-flip-rtl">
             <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2"
               stroke-linecap="square" fill="none" />
