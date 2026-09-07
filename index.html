@@ -288,9 +288,16 @@
               Your Digital <br class="c-hero__br" />Presence.<br />
               <span class="c-hero__accent">One Partner.</span></span><span data-lang-copy="ar" lang="ar">علامتك.<br /> حضورك الرقمي.<br /> <span class="c-hero__accent">شريك واحد.</span></span></h1>
 
-            <p class="t-body-lg c-hero__lead"><span data-lang-copy="en">We build brands, websites and digital experiences —
+            <!-- WHO IT IS FOR, ON THE FIRST SCREEN. The market was stated once, on
+                 /about — "a remote studio for the Gulf and Egypt" — which a
+                 visitor reaches only by clicking. A buyer in Cairo could not
+                 tell this site was for them, and a visitor outside the region
+                 could not tell it was not. Same sentence, moved to the
+                 paragraph everyone reads. -->
+            <p class="t-body-lg c-hero__lead"><span data-lang-copy="en">A remote studio for the Gulf and Egypt.
+              We build brands, websites and digital experiences —
               then connect them with content, social media and performance
-              marketing to help your business grow.</span><span data-lang-copy="ar" lang="ar">نبني العلامات والمواقع والتجارب الرقمية، ثم نربطها بالمحتوى ووسائل التواصل والتسويق الأدائي لينمو عملك.</span></p>
+              marketing to help your business grow.</span><span data-lang-copy="ar" lang="ar">استوديو يعمل عن بُعد في الخليج ومصر. نبني العلامات والمواقع والتجارب الرقمية، ثم نربطها بالمحتوى ووسائل التواصل والتسويق الأدائي لينمو عملك.</span></p>
 
             <div class="c-hero__actions">
               <a
@@ -314,7 +321,20 @@
                   />
                 </svg>
               </a>
-            </div>
+            
+              <!-- A SECOND, SOFTER STEP. The hero offered exactly one action —
+                   "Start Your Project" — which is the highest-commitment thing
+                   on the site, asked of someone who arrived ten seconds ago.
+                   Prices are this studio's strongest and most unusual card
+                   (published in full, where the market asks you to request a
+                   quote), so the low-commitment route is to go and look at
+                   them. /about already argues exactly this: "we would rather
+                   you could decide whether we are worth a conversation before
+                   having one." -->
+              <a class="c-btn c-btn--secondary c-hero__action-2" href="./pricing">
+                <span data-lang-copy="en">See what it costs</span><span data-lang-copy="ar" lang="ar">اطّلع على الأسعار</span>
+              </a>
+</div>
           </div>
 
           <!-- ===========================================================
@@ -509,7 +529,15 @@
               <h2 class="c-services__headline" id="services-title"><span data-lang-copy="en">Everything Digital.<br />
                 <span class="c-services__accent">Built to Work Together.</span></span><span data-lang-copy="ar" lang="ar">كل ما هو رقمي.<br /> <span class="c-services__accent">مبني ليعمل معًا.</span></span></h2>
             </div>
-            <p class="t-body-lg c-services__lead"><span data-lang-copy="en">Five services. Open any one to see what it covers.</span><span data-lang-copy="ar" lang="ar">خمس خدمات. افتح أيًا منها لترى ما تشمله.</span></p>
+            <!-- THE ARGUMENT, MOVED TO WHERE IT IS STILL BEING ASKED.
+                 This sentence was the best line on the site and it sat at
+                 screen 10 of 22, inside #integrated, long after a visitor had
+                 decided whether to keep reading. It is the only place the site
+                 says what it is actually selling — not four services, but the
+                 coordination between them — so it belongs in the first section
+                 after the hero. #integrated keeps the section and loses the
+                 duplicate sentence. -->
+            <p class="t-body-lg c-services__lead"><span data-lang-copy="en">The difference is not what gets made — it is how much of the coordinating you have to do yourself. Five services; open any one to see what it covers.</span><span data-lang-copy="ar" lang="ar">الفارق ليس فيما يُنجَز — بل في مقدار التنسيق الذي يقع عليك. خمس خدمات؛ افتح أيًا منها لترى ما تشمله.</span></p>
           </div>
 
           <div class="c-service-list" data-accordion data-accordion-single data-reveal-group>
@@ -1753,9 +1781,14 @@
               <h2 class="c-detail__headline" id="integrated-title"><span data-lang-copy="en">Everything your business needs.<br />
                 <span class="c-detail__accent">Connected in one system.</span></span><span data-lang-copy="ar" lang="ar">كل ما يحتاجه عملك.<br /> <span class="c-detail__accent">متصل في نظام واحد.</span></span></h2>
             </div>
-            <p class="t-body-lg c-detail__lead"><span data-lang-copy="en">The same four services, arranged two ways. The difference is not
-              what gets made — it is how much of the coordinating you have to
-              do yourself.</span><span data-lang-copy="ar" lang="ar">الخدمات الأربع نفسها، مرتّبة بطريقتين. الفارق ليس فيما يُنجَز — بل في مقدار التنسيق الذي يقع عليك.</span></p>
+            <!-- The coordination sentence used to close this paragraph. It now
+                 opens the Services section instead — a visitor who reaches
+                 this far has already read it, and saying it twice was the
+                 fourth statement of "one partner" on one page. What is left
+                 here is the part only this section makes: the two
+                 arrangements, side by side. -->
+            <p class="t-body-lg c-detail__lead"><span data-lang-copy="en">The same four services, arranged two ways — as four
+              projects you hold together, or as one you do not.</span><span data-lang-copy="ar" lang="ar">الخدمات الأربع نفسها، مرتّبة بطريقتين — أربعة مشاريع تتولّى أنت ربطها، أو مشروع واحد لا تفعل.</span></p>
           </header>
 
           <!-- The hub is LAST in the DOM at every width. On tablet it is
@@ -2716,7 +2749,7 @@
             <form class="c-contact__form" data-reveal
               data-contact-form="muhalabsalah@gmail.com"
               action="mailto:muhalabsalah@gmail.com"
-              method="post" enctype="text/plain"
+              method="get"
               aria-labelledby="contact-form-title">
               <h3 class="t-label c-contact__heading" id="contact-form-title" data-i18n="formSend">Send message</h3>
 
@@ -2777,6 +2810,41 @@
                 Opens your email app with the message ready to send.
               </p>
               <p class="c-contact__status" data-contact-status role="status" aria-live="polite"></p>
+
+              <!-- THE RECOVERY, FOR WHEN THE MAIL APP NEVER OPENS.
+
+                   This form does not post anywhere: it hands the message to
+                   the visitor's own mail client. On a machine with no mail
+                   client registered — a work desktop, a browser where nobody
+                   has ever set one — `mailto:` does nothing at all, silently,
+                   while the note above says the message is ready. The visitor
+                   believes they have made contact and no one ever hears from
+                   them.
+
+                   So the moment the form is submitted, the alternatives
+                   appear. The WhatsApp address is copied from the channel
+                   above it by contact.js rather than written twice, so there
+                   is still one source for the number. -->
+              <div class="c-contact__fallback" data-contact-fallback hidden>
+                <p class="c-contact__fallback-text"><span data-lang-copy="en">If your email app did not open, nothing has been sent yet. Use either of these instead:</span><span data-lang-copy="ar" lang="ar">إذا لم يفتح تطبيق البريد لديك، فلم يُرسَل شيء بعد. استخدم أحد هذين البديلين:</span></p>
+                <p class="c-contact__fallback-actions">
+                  <a class="c-btn c-btn--secondary c-btn--sm" data-contact-fallback-wa href="#contact" target="_blank" rel="noopener noreferrer">
+                    <span data-lang-copy="en">Send it on WhatsApp</span><span data-lang-copy="ar" lang="ar">أرسلها عبر واتساب</span>
+                  </a>
+                  <button class="c-btn c-btn--secondary c-btn--sm" type="button" data-contact-copy-address>
+                    <span data-lang-copy="en">Copy the email address</span><span data-lang-copy="ar" lang="ar">انسخ عنوان البريد</span>
+                  </button>
+                </p>
+              </div>
+
+              <!-- WHAT HAPPENS NEXT — the last question before someone acts,
+                   and the site never answered it. Both facts here are already
+                   on the site: /about ("you deal with the person doing the
+                   work, not an account manager") and process stage 01
+                   ("understand the business... before anything is designed").
+                   No response time is promised, because none has been decided
+                   — see docs/109. -->
+              <p class="c-contact__next"><span data-lang-copy="en">Your message goes to Muhalab, who does the design and the build — not to an account manager. The first reply asks about the business; nothing gets designed before that.</span><span data-lang-copy="ar" lang="ar">تصل رسالتك إلى مهلب، الذي ينفّذ التصميم والتطوير — لا إلى مدير حسابات. أول ردّ يسأل عن العمل نفسه؛ ولا يبدأ أي تصميم قبل ذلك.</span></p>
             </form>
           </div>
         </div>
