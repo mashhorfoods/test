@@ -1,8 +1,13 @@
 # Pixora — terms of service review
 
-**Prepared 6 September 2026. This is the brief to send.** It replaces the two
-internal working documents it was assembled from; every fact below was
-re-verified against the live site on the day of writing.
+**Prepared 6 September 2026 · updated 7 September 2026. This is the brief to
+send.** It replaces the two internal working documents it was assembled from;
+every fact below was re-verified against the live site on the day of writing.
+
+> **One clause has been added since this was first written, and it is unusual
+> enough to flag at the top: §3.9 is a section of the terms that says of
+> itself that it is not final and has not been reviewed by a lawyer.** It is
+> live. It is the first thing to look at after §2.
 
 ---
 
@@ -197,6 +202,44 @@ quote is a **WhatsApp message**, and acceptance is a reply.
 - Does the pre-filled message in §1.2 change that analysis — the client sends
   wording we authored, naming a tier and a figure? We use *"from"* throughout;
   we would like to know whether that is enough.
+
+### 3.9 A clause that declares itself unfinished — added since this brief was written
+
+**Read this one first of the section-3 clauses.** On 7 September the terms
+gained a section, *"Promotions and reward codes" / "العروض ورموز المكافآت"*,
+which opens by saying **"Not final terms"** and states in its own body that it
+has not been reviewed by a lawyer. It is published, in both languages, on a
+page a paying client is asked to accept.
+
+It exists because the homepage now carries a quiz — the Brand Challenge —
+which issues a discount code to whoever solves it. Its operative sentence is:
+
+> *"Until it is, a reward code is an invitation to talk about a discount, and
+> the discount is agreed in your written quote like every other figure."*
+
+**The three questions, in order of how much they cost if the answer is bad:**
+
+1. **Does that sentence do what it is trying to do?** The intent is that a
+   code creates no entitlement — it starts a conversation, and the binding
+   number is the one in the written quote. Is that how it would be read in
+   Saudi Arabia, the UAE or Egypt, or has publishing a percentage on a public
+   page already created an obligation regardless of what this clause says?
+2. **Is "not final terms" better or worse than saying nothing?** Our instinct
+   was that flagging a draft is more honest than quietly publishing an
+   untested clause. It is also an admission, in writing, that part of our
+   contract is unreviewed. Tell us if that instinct is wrong.
+3. **The clause lists what it will cover once written** — one reward per
+   visitor, code validity period, which packages it applies to,
+   non-transferable, no cash value, not combinable, and our right to end a
+   promotion. **Is anything missing from that list**, and is any of it
+   unenforceable in the three jurisdictions?
+
+If the answer to (1) is that the clause does not hold, **the quiz can be
+changed** — it is ours and it is not load-bearing. We would rather change the
+mechanic than publish a discount we are obliged to honour on terms we did not
+choose. Say so plainly and we will.
+
+---
 
 ### 3.8 Portfolio rights
 

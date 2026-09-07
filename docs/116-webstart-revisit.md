@@ -122,12 +122,16 @@ wide margin, and it costs an email.
 
 Each has a written brief; none needs anything from us first.
 
-| | Who | Brief | Why it matters here |
-| --- | --- | --- | --- |
-| **B3** | An Arabic speaker | `docs/66` | `/terms` and `/accessibility` — 1,170 Arabic words — were written after both review passes and **have never been read by anyone.** One of them is a contract |
-| **B4** | A lawyer | `docs/65` | The Terms exist in two languages with equal standing and **nothing says which prevails** |
-| **B5** | Five buyers | `docs/68` | Unblocks Phase 12, X06 and X10. Two of the five should read Arabic |
-| **B6** | A screen-reader user | `docs/67` | Preparing the brief found three defects that passed every automated check |
+**All four now have a send-ready pack — 7 September, `docs/119`.** Send the
+right-hand column; the middle column is the internal reasoning and does not go
+out.
+
+| | Who | Send this | Internal | Why it matters here |
+| --- | --- | --- | --- | --- |
+| **B3** | An Arabic speaker | **`docs/91`** | `docs/66` | `/terms` and `/accessibility` were written after both review passes and **have never been read by anyone** — and **118 more Arabic strings** have been added since the pack was first written |
+| **B4** | A lawyer | **`docs/90`** | `docs/65` | The Terms exist in two languages with equal standing and **nothing says which prevails** — and one clause now says of itself that it is not final |
+| **B5** | Five buyers | **`docs/118`** | `docs/68` | Unblocks Phase 12, X06 and X10. Two of the five should read Arabic |
+| **B6** | A screen-reader user | **`docs/117`** | `docs/67` | Preparing the briefs found **five** defects that passed every automated check, two of them on 7 September |
 
 ### 🟡 One that is a clock, not a task
 

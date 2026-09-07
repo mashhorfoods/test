@@ -2099,6 +2099,129 @@ function serve() {
     }
   }
 
+  /* ---- 31 a count written in prose, against the count in the markup ------
+
+     Found the hard way on 7 September. The Selected Work lead read "Ten
+     pieces from recent projects" — and "عشرة أعمال" — while the gallery
+     beneath it held SEVEN, because `docs/114` replaced ten placeholders with
+     seven real photographs, renumbered the captions 01/07…07/07, and left the
+     sentence above them alone. In both languages. On the live site.
+
+     Nothing could have caught it: the number lives in prose, and prose is not
+     something the other thirty sections read. It was found while preparing
+     the Arabic reviewer's brief, which is a lucky way to find a thing.
+
+     So: a lead that states a count is checked against the gallery it leads.
+     Number words in English and Arabic, because the sentence exists twice and
+     a mismatch in one language only is the more likely failure — the
+     translation gets updated and the original does not, or the reverse. */
+  {
+    const WORDS = {
+      one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8,
+      nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15,
+      /* Arabic counts from three up take the plural form used here. One and
+         two are not written as words in this position, so they are absent
+         deliberately rather than forgotten. */
+      'ثلاثة': 3, 'أربعة': 4, 'خمسة': 5, 'ستة': 6, 'سبعة': 7, 'ثمانية': 8,
+      'تسعة': 9, 'عشرة': 10, 'أحد عشر': 11, 'اثنا عشر': 12,
+    };
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const p = await ctx.newPage();
+    for (const page of PAGES) {
+      await p.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+      await p.waitForTimeout(300);
+      const rows = await p.evaluate(() => [...document.querySelectorAll('.c-gallery')].map((g) => {
+        const section = g.closest('section');
+        const lead = section?.querySelector('.c-showcase__lead');
+        const say = (lang) => {
+          const el = lead?.querySelector(`[data-lang-copy="${lang}"]`);
+          return el ? el.textContent.trim() : '';
+        };
+        return { slides: g.querySelectorAll('.c-gallery__item').length, en: say('en'), ar: say('ar'),
+          label: g.getAttribute('aria-label') || section?.id || 'gallery' };
+      }));
+      for (const r of rows) {
+        for (const [lang, text] of [['en', r.en], ['ar', r.ar]]) {
+          if (!text) continue;
+          for (const [word, n] of Object.entries(WORDS)) {
+            const re = lang === 'en'
+              ? new RegExp(`\\b${word}\\b`, 'i')
+              : new RegExp(word);
+            if (re.test(text) && n !== r.slides) {
+              fail('HIGH', 'content', `${page}: the ${lang === 'ar' ? 'Arabic' : 'English'} lead for "${r.label}" says ${word} (${n}) and the gallery holds ${r.slides} — "${text.slice(0, 70)}"`);
+            }
+          }
+        }
+      }
+    }
+    await ctx.close();
+  }
+
+  /* ---- 32 a focusable region with no name, or with somebody else's -------
+
+     axe checks that a scrollable region is REACHABLE by keyboard
+     (scrollable-region-focusable). It does not check that the thing you land
+     in tells you what it is. Both halves of that gap were live on 7 September
+     and both passed every automated check:
+
+       · `.c-brandboard`, `.c-devices` and `.c-modules` were given
+         `tabindex="0"` by docs/113 to satisfy that very rule, and no name at
+         all. Three unnamed groups on the way down one page.
+       · Both homepage galleries carried `data-i18n-label="galleryScroller"`,
+         so the i18n pass overwrote the two distinct labels the markup had
+         written with ONE generic string — three regions across the site
+         announcing the same name, and the author's own words destroyed to do
+         it.
+
+     docs/67 §1 had already found this shape once and fixed three instances
+     of it by hand. A rule is cheaper than finding it a third time. */
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const p = await ctx.newPage();
+    for (const page of PAGES) {
+      for (const lang of ['en', 'ar']) {
+        await p.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+        await p.waitForTimeout(300);
+        if (lang === 'ar') {
+          const ok = await p.evaluate(() => {
+            const el = document.querySelector('[data-lang="ar"]');
+            if (!el) return false;
+            el.click(); return true;
+          });
+          if (!ok) continue;
+          await p.waitForTimeout(400);
+        }
+        const regions = await p.evaluate(() => [...document.querySelectorAll('[tabindex="0"]')]
+          .filter((e) => {
+            const b = e.getBoundingClientRect();
+            const cs = getComputedStyle(e);
+            return b.width > 0 && b.height > 0
+              && (cs.overflowX === 'auto' || cs.overflowX === 'scroll'
+                || cs.overflowY === 'auto' || cs.overflowY === 'scroll');
+          })
+          .map((e) => ({
+            name: (e.getAttribute('aria-label')
+              || document.getElementById(e.getAttribute('aria-labelledby') || '')?.textContent
+              || '').trim(),
+            what: `${e.tagName.toLowerCase()}.${String(e.className || '').split(' ').filter(Boolean)[0] || ''}`,
+          })));
+        const seen = new Map();
+        for (const r of regions) {
+          if (!r.name) {
+            fail('HIGH', 'a11y', `${page} (${lang}): the focusable scroll region ${r.what} has no accessible name — a keyboard visitor lands in an unnamed group`);
+            continue;
+          }
+          if (seen.has(r.name)) {
+            fail('HIGH', 'a11y', `${page} (${lang}): ${r.what} and ${seen.get(r.name)} both announce "${r.name}" — two regions with one name is a name that says nothing`);
+          } else {
+            seen.set(r.name, r.what);
+          }
+        }
+      }
+    }
+    await ctx.close();
+  }
+
   await browser.close();
   server.close();
 

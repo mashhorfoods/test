@@ -159,10 +159,28 @@ const STRINGS = {
     // The Brand Challenge's copy button restores this after saying what
     // happened. (The Mystery Reward used it too, until docs/111 removed it.)
     rewardCopy: 'Copy code',
-    // Names the scroll-snap gallery (gallery.css). It is a focusable scroll
-    // region, so it needs a name a screen reader can announce before the
-    // visitor decides whether to enter it.
+    // Names a focusable scroll region, so a screen reader can announce it
+    // before the visitor decides whether to enter it.
+    //
+    // ONE KEY WAS DOING THE JOB OF SIX, AND IT UNDID THE MARKUP TO DO IT.
+    // index.html had written two good, distinct labels — "Selected work" and
+    // "Campaigns" — and both carried data-i18n-label="galleryScroller", so
+    // the i18n pass replaced both with this one generic string at runtime.
+    // Three regions on the site ended up announcing the SAME name, and the
+    // author's own words were destroyed to achieve it. Exactly the shape
+    // docs/67 §1 already found once ("five identical 'See what it covers'
+    // links"), so it gets a key each. Found 7 Sep while preparing the
+    // screen-reader brief; qa.js §32 now fails on a repeated region name.
     galleryScroller: 'The work delivered — scroll for more',
+    galleryWork: 'Selected work — scroll for more',
+    galleryCampaigns: 'Campaigns — scroll for more',
+    // The three phone scrollers from docs/113. They were given tabindex="0"
+    // to satisfy axe's scrollable-region-focusable and NO NAME AT ALL, which
+    // axe does not check — so a keyboard visitor landed in an unnamed group
+    // three times on the way down the page.
+    scrollerBrandboard: 'Identity boards — scroll for more',
+    scrollerDevices: 'Website screens — scroll for more',
+    scrollerModules: 'Social formats — scroll for more',
     rights: 'All rights reserved.',
     // Currency SYMBOL only — the price figure itself is business data and is
     // authored in the markup, never here.
@@ -208,6 +226,11 @@ const STRINGS = {
     backToTop: 'العودة إلى الأعلى',
     rewardCopy: 'انسخ الرمز',
     galleryScroller: 'الأعمال المسلَّمة — مرّر للمزيد',
+    galleryWork: 'أعمال مختارة — مرّر للمزيد',
+    galleryCampaigns: 'حملات — مرّر للمزيد',
+    scrollerBrandboard: 'لوحات الهوية — مرّر للمزيد',
+    scrollerDevices: 'شاشات الموقع — مرّر للمزيد',
+    scrollerModules: 'صيغ التواصل — مرّر للمزيد',
     rights: 'جميع الحقوق محفوظة.',
     currency: 'دولار',
     billingOnce: 'لمرة واحدة',
@@ -2274,7 +2297,8 @@ if (document.readyState === 'loading') {
                finger and not with a keyboard is a region some people cannot
                read. Same treatment as .c-gallery, which has carried it since
                docs/86. -->
-          <div class="c-brandboard" data-reveal-group tabindex="0">
+          <div class="c-brandboard" data-reveal-group tabindex="0"
+            role="group" aria-label="Identity boards — scroll for more" data-i18n-label="scrollerBrandboard">
           <div class="c-brandboard__panel">
             <img width="740" height="476"
               class="c-brandboard__image"
@@ -2407,7 +2431,8 @@ if (document.readyState === 'loading') {
               build websites ready for real business use.</span><span data-lang-copy="ar" lang="ar">من النطاق والاستضافة إلى التصميم والتطوير والإطلاق — نبني مواقع جاهزة للاستخدام التجاري الفعلي.</span></p>
           </div>
 
-          <div class="c-devices" data-reveal-group tabindex="0">
+          <div class="c-devices" data-reveal-group tabindex="0"
+            role="group" aria-label="Website screens — scroll for more" data-i18n-label="scrollerDevices">
           <figure class="c-device c-device--desktop">
             <img width="801" height="952"
               class="c-device__image"
@@ -2577,7 +2602,8 @@ if (document.readyState === 'loading') {
             </p>
           </header>
 
-          <ul class="c-modules" data-reveal-group role="list" tabindex="0">
+          <ul class="c-modules" data-reveal-group role="list" tabindex="0"
+            aria-label="Social formats — scroll for more" data-i18n-label="scrollerModules">
             <li class="c-modules__item c-modules__item--lead">
               <div class="c-modules__module">
                 <img width="724" height="985"
@@ -3373,7 +3399,7 @@ if (document.readyState === 'loading') {
           <header class="c-showcase__head" data-reveal-group>
             <p class="t-label c-showcase__eyebrow"><span data-lang-copy="en">Selected Work</span><span data-lang-copy="ar" lang="ar">أعمال مختارة</span></p>
             <h2 class="c-showcase__headline" id="work-title"><span data-lang-copy="en">The work behind the list.</span><span data-lang-copy="ar" lang="ar">العمل خلف القائمة.</span></h2>
-            <p class="t-body-lg c-showcase__lead"><span data-lang-copy="en">Ten pieces from recent projects — identity, campaigns and the pages they lead to. Scroll sideways.</span><span data-lang-copy="ar" lang="ar">عشرة أعمال من مشاريع حديثة — هوية وحملات والصفحات التي تقود إليها. مرّر جانبًا.</span></p>
+            <p class="t-body-lg c-showcase__lead"><span data-lang-copy="en">Seven pieces of recent identity work — marks, print, signage and the spaces they live in. Scroll sideways.</span><span data-lang-copy="ar" lang="ar">سبعة أعمال من مشاريع هوية حديثة — علامات ومطبوعات ولافتات والمساحات التي تظهر فيها. مرّر جانبًا.</span></p>
           </header>
 
           <!-- THE SHOWREEL — a real player, a placeholder file.
@@ -3411,7 +3437,7 @@ if (document.readyState === 'loading') {
           </figure>
 
           <ul class="c-gallery c-showcase__gallery" role="list" tabindex="0"
-            aria-label="Selected work — scroll for more" data-i18n-label="galleryScroller">
+            aria-label="Selected work — scroll for more" data-i18n-label="galleryWork">
               <li class="c-gallery__item">
                 <figure style="margin:0">
                   <img class="c-gallery__image" src="./assets/work-1.webp"
@@ -3515,7 +3541,7 @@ if (document.readyState === 'loading') {
           </header>
 
           <ul class="c-gallery c-showcase__gallery" role="list" tabindex="0"
-            aria-label="Campaigns — scroll for more" data-i18n-label="galleryScroller">
+            aria-label="Campaigns — scroll for more" data-i18n-label="galleryCampaigns">
               <li class="c-gallery__item">
                 <figure style="margin:0">
                   <img class="c-gallery__image" src="./assets/campaign-01.svg"
