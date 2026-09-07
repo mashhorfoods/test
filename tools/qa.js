@@ -343,21 +343,68 @@ function serve() {
      Passes vacuously until a video ships. That is the point: it is here on
      the day the decision was made, not on the day someone notices the phone
      build got heavy. */
+  /* TWO BUDGETS, BECAUSE THERE ARE TWO KINDS OF COST. Split 7 Sep 2026.
+
+     One number used to cover every video file in assets/, and that number was
+     written for the hero: a loop hero-film.js attaches on every wide screen,
+     which every desktop visitor pays for whether or not they wanted it. 2MB
+     is the right cap for that and it does not move.
+
+     The showreel is not that. It sits behind `preload="none"` inside a
+     `<video controls>`: not one byte is fetched until somebody presses play,
+     and somebody who presses play has asked for the file. Weighing it against
+     the hero's number said a sixty-second reel had to fit in the 350KB the
+     hero left over — which is not a reel, it is a warning. So click-to-play
+     video gets its own 6MB, roughly twenty-five seconds of waiting on a 2Mbps
+     connection: still a real cost, which is why it is not larger.
+
+     WHICH POOL A FILE IS IN IS READ FROM THE MARKUP, NOT FROM ITS NAME. A
+     file is click-to-play only if every `<video>` that references it carries
+     both `controls` and `preload="none"`. Anything else — attached by script,
+     autoplaying, or referenced nowhere the parse can see — counts against the
+     hero. The conservative default is the point: a reel that loses its
+     `controls` attribute silently becomes a 6MB autoplay, and this is what
+     notices. */
   {
-    const BUDGET = 2 * 1024 * 1024; // one showpiece, desktop only
+    const AUTO_BUDGET = 2 * 1024 * 1024;  // paid by every desktop visitor
+    const CLICK_BUDGET = 6 * 1024 * 1024; // paid only by someone who pressed play
     const assets = path.join(DIST, 'assets');
     const vids = fs.existsSync(assets)
       ? fs.readdirSync(assets).filter((f) => /\.(mp4|webm|mov|m4v)$/i.test(f))
       : [];
 
-    let total = 0;
+    /* Every <video> in every shipped page, with the files it names. */
+    const clickOnly = new Set(vids);
+    for (const page of PAGES) {
+      const html = fs.readFileSync(path.join(DIST, page), 'utf8');
+      for (const block of html.match(/<video\b[\s\S]*?<\/video>/gi) || []) {
+        const tag = block.match(/<video\b[^>]*>/i)[0];
+        const gated = /\bcontrols\b/i.test(tag) && /preload="none"/i.test(tag);
+        const named = [...block.matchAll(/(?:src|data-film-webm|data-film-mp4)="[^"]*?([^/"]+\.(?:mp4|webm|mov|m4v))"/gi)]
+          .map((m) => m[1]);
+        if (!gated) named.forEach((n) => clickOnly.delete(n));
+      }
+    }
+    /* A file no page references at all is dead weight in assets/ — and it is
+       weighed against the stricter pool, not excused by the looser one. */
+    const referenced = new Set();
+    for (const page of PAGES) {
+      const html = fs.readFileSync(path.join(DIST, page), 'utf8');
+      for (const m of html.matchAll(/([\w.-]+\.(?:mp4|webm|mov|m4v))/gi)) referenced.add(m[1]);
+    }
+    for (const v of vids) if (!referenced.has(v)) clickOnly.delete(v);
+
+    let auto = 0;
+    let click = 0;
     for (const v of vids) {
       const bytes = fs.statSync(path.join(assets, v)).size;
-      total += bytes;
+      const cap = clickOnly.has(v) ? CLICK_BUDGET : AUTO_BUDGET;
+      if (clickOnly.has(v)) click += bytes; else auto += bytes;
       if (/\.mov$/i.test(v)) fail('HIGH', 'budget', `${v} is a .mov — an editing format, not a delivery one`);
-      if (bytes > BUDGET) fail('HIGH', 'budget', `${v} is ${(bytes / 1048576).toFixed(1)}MB, over the ${BUDGET / 1048576}MB showpiece budget`);
+      if (bytes > cap) fail('HIGH', 'budget', `${v} is ${(bytes / 1048576).toFixed(1)}MB, over the ${cap / 1048576}MB ${clickOnly.has(v) ? 'click-to-play' : 'showpiece'} budget`);
     }
-    if (total > BUDGET) fail('HIGH', 'budget', `video totals ${(total / 1048576).toFixed(1)}MB across ${vids.length} files — the budget is one showpiece, not a library`);
+    if (auto > AUTO_BUDGET) fail('HIGH', 'budget', `video every visitor pays for totals ${(auto / 1048576).toFixed(1)}MB — the budget is one showpiece, not a library`);
+    if (click > CLICK_BUDGET) fail('HIGH', 'budget', `click-to-play video totals ${(click / 1048576).toFixed(1)}MB, over ${CLICK_BUDGET / 1048576}MB — re-encode with tools/build-reel.js`);
 
     /* Markup rules. A video without a poster is a blank rectangle until it
        decodes; one without preload="none" spends the budget on every visitor
@@ -442,29 +489,144 @@ function serve() {
      puts any of them there. The first draft of this check did exactly that and
      reported the homepage at 510KB — wrong by 408KB, and confident about it. */
   {
-    const BUDGET = 1024 * 1024;
+    /* RAISED 7 Sep 2026, 1024KB -> 1200KB, deliberately and in a commit
+       message, which is what the note below asks for.
+
+       What it buys: the Selected Work gallery stopped being ten placeholder
+       SVGs (40KB of nothing) and became seven real pieces of branding work
+       supplied by the owner — 205KB after re-encoding at 900px, and the one
+       detail-heavy flat-lay taken down to q0.50 on its own to stop it costing
+       99KB by itself.
+
+       Why it is worth the bytes here specifically: these images ARE the
+       product. A studio selling design that ships soft, over-compressed
+       pictures of its own work has argued against itself. And the number that
+       governs how fast the page FEELS did not move — the gallery is below the
+       fold and lazy, so the first screen stays at ~437KB against its own
+       480KB budget, untouched. A visitor only pays this if they scroll to the
+       work, which is the moment they have decided to look at it. */
+    const BUDGET = 1200 * 1024;
+    /* Above today's 450KB on purpose: a ratchet against the next unbudgeted
+       feature, not a demand to undo the last two. Moving it is a decision to
+       take in a commit message, which is the point. */
+    const FIRST_SCREEN_BUDGET = 480 * 1024;
+    /* `first` IS DEFINED BY LAYOUT, NOT BY A CLOCK.
+
+       It used to be "everything fetched by load + 900ms", which made it a
+       measure of how fast the machine was: a lazy image that finished inside
+       the window counted, the same image on a slower runner did not. The same
+       code reported 418KB in the dev container and 450KB in CI — 32KB apart
+       on identical bytes — so a budget on it could pass in one place and fail
+       in the other for no reason anyone could act on.
+
+       Now an image is counted if its box overlaps the first viewport, and
+       excluded if it does not. Whether a below-fold image happened to load is
+       no longer a question the number can be sensitive to, because it is
+       excluded either way. The waits below are conditions, not timeouts.
+
+       Known approximation: a CSS background image is not in document.images,
+       so it counts as first-screen wherever it sits. This site does not use
+       any for content; if that changes, this counts high rather than low,
+       which is the safe direction for a budget. */
     const weigh = async (page, width, height, scroll) => {
       const c = await browser.newContext({ viewport: { width, height }, isMobile: width < 700, hasTouch: width < 700 });
       const pg = await c.newPage();
       const seen = [];
       pg.on('response', (r) => seen.push(r.body().then((b) => [r.url(), b.length]).catch(() => null)));
       await pg.goto(`${BASE}/${page}`, { waitUntil: 'load' });
-      await pg.waitForTimeout(900);
+
+      /* Every URL each image could resolve to (src and every srcset
+         candidate), absolute, split by whether the element overlaps the first
+         viewport. Read from attributes rather than currentSrc: a lazy image
+         that has not started loading has no currentSrc, and missing it here
+         is exactly how its bytes would leak back into `first`. */
+      const imgs = await pg.evaluate(() => {
+        const abs = (u) => { try { return new URL(u, location.href).href; } catch { return null; } };
+        const urlsOf = (el) => {
+          const out = [];
+          if (el.getAttribute('src')) out.push(abs(el.getAttribute('src')));
+          for (const part of (el.getAttribute('srcset') || '').split(',')) {
+            const u = part.trim().split(/\s+/)[0];
+            if (u) out.push(abs(u));
+          }
+          return out.filter(Boolean);
+        };
+        const all = new Set(); const firstScreen = new Set();
+        const h = window.innerHeight;
+        for (const img of document.images) {
+          const r = img.getBoundingClientRect();
+          const overlaps = r.top < h && r.bottom > 0;
+          const urls = [...urlsOf(img), ...[...(img.parentElement?.tagName === 'PICTURE'
+            ? img.parentElement.querySelectorAll('source') : [])].flatMap(urlsOf)];
+          for (const u of urls) { all.add(u); if (overlaps) firstScreen.add(u); }
+        }
+        return { all: [...all], firstScreen: [...firstScreen] };
+      });
+      const belowFold = new Set(imgs.all.filter((u) => !imgs.firstScreen.includes(u)));
+
+      /* Two conditions rather than a fixed wait: the images that DO overlap
+         the first viewport have finished, and font loading has settled. Both
+         are async and both would otherwise be a race against the clock. */
+      await pg.waitForFunction(() => {
+        const h = window.innerHeight;
+        return [...document.images]
+          .filter((i) => { const r = i.getBoundingClientRect(); return r.top < h && r.bottom > 0; })
+          .every((i) => i.complete);
+      }, null, { timeout: 20000 }).catch(() => {});
+      await pg.evaluate(() => document.fonts.ready).catch(() => {});
+
       const settle = async () => (await Promise.all(seen)).filter(Boolean);
       const sum = (rows, film) => rows.filter(([u]) => /hero\.(mp4|webm)$/.test(u) === film)
         .reduce((n, [, b]) => n + b, 0);
-      const firstRows = await settle();
-      const first = sum(firstRows, false);
+
+      const firstRows = (await settle()).filter(([u]) => !belowFold.has(u) && !/hero\.(mp4|webm)$/.test(u));
+      const first = firstRows.reduce((n, [, b]) => n + b, 0);
+
+      /* WHERE THE BYTES WENT, not just how many.
+
+         This measurement reads 418KB in the dev container and 450KB on the CI
+         runner, and neither of the obvious explanations survived being tested:
+         throttling the network to a quarter of its speed moved the number not
+         at all, and waiting on document.fonts.ready instead of a timer fetched
+         the same five files. The remaining difference between the two is the
+         browser build itself, which cannot be reproduced from here.
+
+         Rather than guess a third time, the number now carries its own
+         composition. A 32KB disagreement that names a font is a different
+         problem from one that names an image or the document, and the log line
+         says which without anyone having to reproduce anything. */
+      const bucket = (u) => (/\.woff2?$/.test(u) ? 'fonts'
+        : /\.(webp|png|jpe?g|svg|avif|gif)$/.test(u) ? 'img'
+        : /\.html?$|\/$/.test(u) ? 'html' : 'other');
+      const parts = {};
+      const otherUrls = new Set();
+      for (const [u, b] of firstRows) {
+        const k = bucket(u);
+        parts[k] = (parts[k] || 0) + b;
+        /* `other` is the bucket for things we did not anticipate, so it is the
+           one that has to name itself. A 3KB "other" that turns out to be a
+           data: URI is a non-finding; the same 3KB against a real request is
+           a page fetching something nobody meant it to. */
+        if (k === 'other') otherUrls.add(u.startsWith('data:') ? 'data:' : u.split('/').pop().slice(0, 24));
+      }
+      const firstBreakdown = ['html', 'fonts', 'img', 'other']
+        .filter((k) => parts[k])
+        .map((k) => `${k} ${(parts[k] / 1024).toFixed(0)}${k === 'other' ? ` [${[...otherUrls].join(' ')}]` : ''}`)
+        .join(' + ');
+
       if (scroll) {
         const H = await pg.evaluate(() => document.documentElement.scrollHeight);
         for (let y = 0; y < H; y += height) {
           await pg.evaluate((v) => window.scrollTo(0, v), y);
           await pg.waitForTimeout(60);
         }
-        await pg.waitForTimeout(1200);
+        /* Again a condition rather than a fixed wait: every image on the page
+           has settled, however long that took. */
+        await pg.waitForFunction(() => [...document.images].every((i) => i.complete),
+          null, { timeout: 30000 }).catch(() => {});
       }
       const rows = await settle();
-      const out = { first, full: sum(rows, false), film: sum(rows, true) };
+      const out = { first, firstBreakdown, full: sum(rows, false), film: sum(rows, true) };
       await c.close();
       return out;
     };
@@ -485,9 +647,31 @@ function serve() {
         if (!varies) break; // one measurement, one verdict
       }
 
+      /* THE FIRST SCREEN HAS ITS OWN BUDGET, and it is the homepage's that
+         matters: docs/52 stakes the whole positioning on a buyer in the Gulf
+         on mobile data, and `full` at 1MB is a different promise to a
+         different person — the reader who scrolls, not the one deciding
+         whether to stay.
+
+         This number was already measured and printed on every run. What it
+         never had was a threshold, so it moved 314KB → 450KB across two
+         interactive features (docs/92 §3.1, docs/98 §5) with nobody reading
+         the line it was printed on. A number nobody acts on is not a guard. */
+      if (page === 'index.html') {
+        if (phone.first > FIRST_SCREEN_BUDGET) {
+          fail('MED', 'budget', `the homepage costs a phone ${(phone.first / 1024).toFixed(0)}KB before it scrolls, over the ${FIRST_SCREEN_BUDGET / 1024}KB first-screen budget (docs/98 §5) — either the budget moves deliberately or the page comes back under it`);
+        }
+        /* docs/92 §3.2 verified once that a phone never requests the film, and
+           nothing kept it verified. It is the reason the number above is
+           affordable at all. */
+        if (phone.film > 0) {
+          fail('HIGH', 'budget', `a 390px phone requested ${(phone.film / 1024).toFixed(0)}KB of showpiece — the film is desktop-only (docs/53), and a phone paying for it breaks the one promise the budget exists to keep`);
+        }
+      }
+
       const line = varies
         ? `phone ${(phone.full / 1024).toFixed(0)}KB · desktop ${(desktop.full / 1024).toFixed(0)}KB` +
-          ` (first screen ${(phone.first / 1024).toFixed(0)}KB)` + (desktop.film ? ` + ${(desktop.film / 1024).toFixed(0)}KB showpiece` : '')
+          ` (first screen ${(phone.first / 1024).toFixed(0)}KB = ${phone.firstBreakdown})` + (desktop.film ? ` + ${(desktop.film / 1024).toFixed(0)}KB showpiece` : '')
         : `${(phone.full / 1024).toFixed(0)}KB, one file`;
       console.log(`  ·  ${page.padEnd(14)} ${line}`);
     }
@@ -1553,11 +1737,31 @@ function serve() {
       fail('HIGH', 'hero', 'the hero film ships with no provenance.json — nothing records which builder made it, which is exactly how a watermark shipped for two days');
     } else if (assets.length) {
       const p = JSON.parse(fs.readFileSync(prov, 'utf8'));
-      const signedAt = new Date(p.at).getTime();
-      const newest = Math.max(...assets.map((f) => fs.statSync(f).mtimeMs));
-      /* A minute of slack: the encoder writes the files, then the signature. */
-      if (newest > signedAt + 60000) {
-        fail('HIGH', 'hero', `the hero assets are newer than provenance.json (${p.generator}) — they were replaced by something that did not sign its work`);
+
+      /* HASHES, NOT MTIMES. This compared the assets' modification times
+         against the signature's timestamp, which cannot work anywhere the
+         repository is cloned: git does not preserve mtimes, so a fresh CI
+         checkout stamps every file with the checkout time and the comparison
+         reported "replaced by something that did not sign its work" on every
+         single run. It passed locally only because these files happened to
+         predate the signature on this disk — the check was measuring the
+         working copy, not the repository.
+
+         A content hash travels through a clone and answers the sharper
+         question anyway: are these the exact bytes that were signed? */
+      const sig = p.sha256 || {};
+      if (!Object.keys(sig).length) {
+        fail('HIGH', 'hero', `provenance.json (${p.generator}) records no sha256 for the hero assets, so nothing can tell whether the shipped bytes are the signed ones — re-run the builder that made them`);
+      } else {
+        for (const f of assets) {
+          const name = path.basename(f);
+          const actual = crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
+          if (!sig[name]) {
+            fail('HIGH', 'hero', `${name} ships but provenance.json (${p.generator}) does not sign it — re-run the builder`);
+          } else if (sig[name] !== actual) {
+            fail('HIGH', 'hero', `${name} does not match the hash in provenance.json (${p.generator}) — it was replaced by something that did not sign its work`);
+          }
+        }
       }
       /* A KNOWN WATERMARK IS NOT A FINDING; AN UNKNOWN ONE IS.
          The owner reaffirmed shipping the Pika mark on 6 Sep after docs/54 §9
@@ -1603,6 +1807,470 @@ function serve() {
         if (pages.includes(name)) continue;
         const kb = (fs.statSync(file).size / 1024).toFixed(1);
         fail('MED', 'weight', `dist/assets/${name} (${kb}KB) is referenced by no shipped page, and build-zip ships assets/ whole — it uploads and nobody downloads it`);
+      }
+    }
+  }
+
+  /* ---- 25 scroll-driven motion escapes the universal guard ----------------
+     PROVED, NOT ASSUMED. 01-reset.css carries a universal reduced-motion rule
+     that flattens animation-duration, animation-delay, iteration-count and
+     transition-duration with !important. It covers every animation on this
+     site — except one kind.
+
+     A scroll-driven animation (`animation-timeline: view()`) takes its
+     progress from the scroll position, not from a clock. It has no duration to
+     flatten. Tested on a minimal page carrying exactly that guard: the element
+     moved identically with reduced motion ON and OFF.
+
+     So for this one kind of animation the guard is not a safety net, and the
+     only protection is declaring it inside `prefers-reduced-motion:
+     no-preference` — which installs the rule solely for people who have not
+     asked for less motion. /about's figure drift is written that way (docs/94).
+
+     This fails any scroll-driven animation that is not, because the failure is
+     silent: it looks correct to whoever wrote it and it ignores the one
+     preference a person can state about motion. */
+  {
+    const files = [];
+    const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).forEach((e) => {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) walk(full);
+      else if (e.name.endsWith('.css')) files.push(full);
+    });
+    walk(path.join(ROOT, 'src', 'styles'));
+
+    for (const file of files) {
+      const css = fs.readFileSync(file, 'utf8');
+      if (!css.includes('animation-timeline')) continue;
+
+      /* Walk the file tracking brace depth, and remember the depth at which a
+         no-preference block opened. A declaration is safe only while such a
+         block is still open around it. */
+      /* Paren depth matters: `@supports (animation-timeline: view())` names the
+         property inside its CONDITION, before any guard block has opened. The
+         first run of this check flagged /about's own drift for exactly that —
+         the CSS was correct and the scanner was not. A declaration is never
+         inside parentheses; an @supports condition always is. */
+      let depth = 0; let paren = 0; const guards = [];
+      for (let i = 0; i < css.length; i += 1) {
+        /* Skip comments. The first version did not, and flagged the comment in
+           page.css that explains this very rule — the word appears in prose
+           describing the check as often as in code breaking it. */
+        if (css.startsWith('/*', i)) {
+          const close = css.indexOf('*/', i + 2);
+          i = close === -1 ? css.length : close + 1;
+          continue;
+        }
+        if (css[i] === '(') paren += 1;
+        else if (css[i] === ')') paren = Math.max(0, paren - 1);
+        if (css[i] === '{') {
+          const head = css.slice(Math.max(0, i - 160), i);
+          if (/@media[^{}]*prefers-reduced-motion\s*:\s*no-preference[^{}]*$/.test(head)) guards.push(depth);
+          depth += 1;
+        } else if (css[i] === '}') {
+          depth -= 1;
+          while (guards.length && guards[guards.length - 1] >= depth) guards.pop();
+        } else if (!paren && css.startsWith('animation-timeline', i) && !guards.length) {
+          const line = css.slice(0, i).split('\n').length;
+          fail('HIGH', 'motion', `${path.relative(ROOT, file)}:${line} sets animation-timeline outside a prefers-reduced-motion: no-preference block — the universal guard in 01-reset.css cannot stop a scroll-driven animation, so this one runs for people who asked for less motion`);
+          i += 18;
+        }
+      }
+    }
+  }
+
+  /* ---- 26 RETIRED — the reward pool -------------------------------------
+     This checked src/data/rewards.json against the rendered pool. The Mystery
+     Reward was removed on 7 September (docs/111) and so were its JSON, its
+     generator, its script and its stylesheet; a check whose subject no longer
+     exists passes for the wrong reason, which is worse than no check. §27
+     below does the same job for the Brand Challenge, which is the mechanic
+     that stayed. The number is left as a gap rather than reused: the other
+     numbers are referenced from commit messages and docs. */
+
+  /* ---- 27 the challenge config and the page must agree --------------------
+     Same drift as §26, but the stakes are higher: this component hands out a
+     discount code, and a wrong answer key hands it to everyone. The answer
+     lives in the JSON as a plain id and reaches the page only as a salted
+     digest, so a mismatch here is invisible by design — nothing on screen
+     would look wrong while every visitor loses, or every visitor wins.
+
+     Checks: the shipped digest is the digest of the configured answer; the
+     configured answer is one of the configured options; every option and
+     every reward tier ships in both languages; tiers carry a code and a
+     positive weight; and the rendered options are exactly the configured
+     ones, in neither direction more nor fewer. */
+  {
+    const file = path.join(ROOT, 'src/data/challenge.json');
+    if (fs.existsSync(file)) {
+      const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+      const C = data.challenge || {};
+      const Q = data.question || {};
+      const R = data.reward || {};
+      const opts = Q.options || [];
+      const tiers = R.tiers || [];
+      const page = SHIPPED.map((f) => fs.readFileSync(path.join(DIST, f), 'utf8')).join('\n');
+      /* Same salt as tools/build-challenge.js. If that ever changes, this
+         check fails loudly rather than passing on a stale key. */
+      const digest = (id) =>
+        crypto.createHash('sha256').update(`${C.id}:${id}`).digest('base64').slice(0, 16);
+
+      const shippedAnswer = (page.match(/data-challenge-answer="([^"]+)"/) || [])[1];
+      if (!shippedAnswer) {
+        fail('HIGH', 'challenge', 'no shipped page carries data-challenge-answer — run node tools/build-challenge.js');
+      } else if (shippedAnswer !== digest(Q.correct)) {
+        fail('HIGH', 'challenge', `the shipped answer key is not the digest of challenge.json's "${Q.correct}" — rebuild, or every visitor is graded against the wrong answer`);
+      }
+
+      if (!opts.some((o) => o.id === Q.correct)) {
+        fail('HIGH', 'challenge', `challenge.json marks "${Q.correct}" correct, but no option has that id — nobody can ever win`);
+      }
+
+      /* The option ids never reach the markup — only their digests do, in each
+         radio's value. So compare digests, which is also what the runtime
+         compares. Matching a bare `data-challenge-option` would match a
+         valueless attribute and assert nothing. */
+      const rendered = new Set(
+        [...page.matchAll(/value="([^"]+)" data-challenge-option/g)].map((m) => m[1])
+      );
+      const byDigest = new Map(opts.map((o) => [digest(o.id), o.id]));
+      for (const o of opts) {
+        if (!rendered.has(digest(o.id))) {
+          fail('HIGH', 'challenge', `challenge.json defines option "${o.id}" and no shipped page renders it — run node tools/build-challenge.js`);
+        }
+        const v = o.label || {};
+        if (!v.en || !v.ar) {
+          fail('HIGH', 'challenge', `option "${o.id}" is missing label.${v.en ? 'ar' : 'en'} — every visible string on this site exists in both languages`);
+        }
+      }
+      for (const d of rendered) {
+        if (!byDigest.has(d)) {
+          fail('HIGH', 'challenge', `a shipped page renders an option challenge.json no longer defines (digest ${d}) — the page is stale`);
+        }
+      }
+
+      for (const field of ['scenario', 'ask', 'explanation']) {
+        const v = Q[field] || {};
+        if (!v.en || !v.ar) {
+          fail('HIGH', 'challenge', `question.${field} is missing ${v.en ? 'ar' : 'en'} — every visible string on this site exists in both languages`);
+        }
+      }
+
+      if (!tiers.length) fail('HIGH', 'challenge', 'reward.tiers is empty, but the challenge ships — a winner would be promised nothing');
+      for (const t of tiers) {
+        if (!t.code) fail('HIGH', 'challenge', `reward tier "${t.id}" has no code — there is nothing for a winner to quote`);
+        if (!(Number(t.percent) > 0)) fail('HIGH', 'challenge', `reward tier "${t.id}" has no positive percent — a winner is told they saved nothing`);
+        if (!(Number(t.weight) > 0)) fail('MED', 'challenge', `reward tier "${t.id}" has no positive weight, so it can never be drawn — remove it or give it one`);
+      }
+      /* The headline promises a ceiling. If a tier ever exceeds it, the page
+         is advertising less than it hands out — or, worse, the reverse. */
+      const top = Math.max(...tiers.map((t) => Number(t.percent) || 0));
+      const claimed = Number((String(R.headline && R.headline.en).match(/(\d+)\s*%/) || [])[1]);
+      if (claimed && top !== claimed) {
+        fail('HIGH', 'challenge', `the headline promises "up to ${claimed}%" but the best tier is ${top}% — the promise and the pool disagree`);
+      }
+
+      if (!(Number(C.maxAttempts) > 0)) {
+        fail('HIGH', 'challenge', 'challenge.maxAttempts is not a positive number — a visitor gets no tries, or unlimited ones');
+      }
+      if (!C.storageKey) {
+        fail('MED', 'challenge', 'challenge.storageKey is unset — a visitor’s result cannot survive a refresh');
+      }
+    }
+  }
+
+  /* ---- 28 a focus ring written as the wrong kind of thing ------------------
+     --focus-ring is a two-layer *box-shadow* value. Written as
+     `outline: var(--focus-ring)` it is not a shorthand the parser accepts, so
+     the declaration is dropped in silence and the element keeps whatever ring
+     it had. On a normally focusable element that is harmless — the base
+     :focus-visible rule already draws one — which is exactly why the mistake
+     survives review. On a component whose real control is a visually hidden
+     input and whose ring must land on a sibling label, the base rule reaches
+     nothing, and the result is a keyboard visitor with no indicator at all.
+     That shipped once here. Catch the pattern, not the one instance. */
+  {
+    const cssDir = path.join(ROOT, 'src/styles');
+    const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+      const full = path.join(dir, e.name);
+      return e.isDirectory() ? walk(full) : e.name.endsWith('.css') ? [full] : [];
+    });
+    for (const f of walk(cssDir)) {
+      const lines = fs.readFileSync(f, 'utf8').split('\n');
+      lines.forEach((line, i) => {
+        if (/^\s*outline\s*:\s*var\(\s*--focus-ring\s*\)/.test(line)) {
+          fail('HIGH', 'focus', `${path.relative(ROOT, f)}:${i + 1} writes the ring as an outline; --focus-ring is a box-shadow value, so this declaration is dropped — use box-shadow: var(--focus-ring)`);
+        }
+      });
+    }
+  }
+
+  /* ---- 29 a stylesheet that never closes its layer -------------------------
+     One duplicated `@layer components {` in page.css left the file with an
+     unclosed block. The build concatenates these files, so everything
+     imported after it nested INSIDE components — including the whole
+     utilities layer, which the cascade contract in main.css puts after it.
+
+     The visible result was a bilingual failure: `html:not([lang|="ar"])
+     [data-lang-copy="ar"] { display: none }` became a sub-layer of components
+     and lost to `.c-orbit__label span { display: block }`, so the English
+     homepage rendered "BRANDING & DESIGN الهوية والتصميم" — both languages at
+     once, in the same label. 06-utilities.css already carries a comment
+     saying this exact thing happened once before to this exact component.
+
+     Nothing could see it. The bilingual guard counts strings and both were
+     present; a11y had no violation to report; the page was valid CSS, because
+     an unclosed block is not a syntax error, it is a nesting instruction.
+
+     So the check is on the cause, not the symptom: every stylesheet must
+     close what it opens. Comments are stripped first — braces in prose are
+     not code. */
+  {
+    const cssDir = path.join(ROOT, 'src/styles');
+    const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+      const full = path.join(dir, e.name);
+      return e.isDirectory() ? walk(full) : e.name.endsWith('.css') ? [full] : [];
+    });
+    for (const f of walk(cssDir)) {
+      const src = fs.readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+      const depth = (src.match(/\{/g) || []).length - (src.match(/\}/g) || []).length;
+      if (depth !== 0) {
+        const rel = path.relative(ROOT, f);
+        fail('HIGH', 'css', `${rel} ${depth > 0 ? `leaves ${depth} block(s) open` : `closes ${-depth} block(s) it never opened`} — the build concatenates these files, so every stylesheet after it nests inside this one and the cascade contract in main.css stops holding`);
+      }
+    }
+  }
+
+  /* ---- 30 a var() that names a token nobody defines ----------------------
+     `.c-bento__body { padding: var(--space-48) var(--space-20) var(--space-20) }`
+     There is no --space-20. The scale goes 16, 24, 32 — twenty was a number I
+     wanted, not a token that exists. An undefined custom property with no
+     fallback makes the whole declaration invalid AT COMPUTED-VALUE TIME,
+     which is not a parse error: the rule stays in the stylesheet, the
+     declaration survives in devtools, and the computed value silently becomes
+     the initial one. So the tile shipped with `padding: 0px`, text flush to
+     the crop on all four sides, and every other check passed — the CSS was
+     valid, the brace count balanced, axe found the contrast acceptable, and
+     the dead-selector check saw a selector that matched.
+
+     The same slip had already shipped in four more places: `var(--color-text)`
+     where the token is --color-text-primary, in pricing, verification and
+     contact; and the same --space-20 padding on .c-index__item, which is why
+     the index cards had none.
+
+     A fallback is the escape hatch — `var(--text-lg, 1.125rem)` is a
+     deliberate default, not a typo — and so are the properties the markup or
+     the script sets (--i, --span, --reveal-delay). Both are collected before
+     judging, so what is left is only the third case: a name that is spelled
+     wrong or was never written. */
+  {
+    const cssDir = path.join(ROOT, 'src/styles');
+    const walkCss = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+      const full = path.join(dir, e.name);
+      return e.isDirectory() ? walkCss(full) : e.name.endsWith('.css') ? [full] : [];
+    });
+    const sheets = walkCss(cssDir);
+    const strip = (t) => t.replace(/\/\*[\s\S]*?\*\//g, '');
+
+    const defined = new Set();
+    for (const f of sheets) {
+      for (const m of strip(fs.readFileSync(f, 'utf8')).matchAll(/(--[\w-]+)\s*:/g)) defined.add(m[1]);
+    }
+    /* Properties handed in from outside the stylesheets count as defined. */
+    const walkAny = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+      if (['node_modules', '.git', 'dist'].includes(e.name)) return [];
+      const full = path.join(dir, e.name);
+      return e.isDirectory() ? walkAny(full) : /\.(html|js|mjs|json)$/.test(e.name) ? [full] : [];
+    });
+    for (const f of walkAny(ROOT)) {
+      const t = fs.readFileSync(f, 'utf8');
+      for (const m of t.matchAll(/(--[\w-]+)\s*:/g)) defined.add(m[1]);
+      for (const m of t.matchAll(/setProperty\(\s*['"](--[\w-]+)/g)) defined.add(m[1]);
+    }
+
+    for (const f of sheets) {
+      const rel = path.relative(ROOT, f);
+      strip(fs.readFileSync(f, 'utf8')).split('\n').forEach((line, i) => {
+        for (const m of line.matchAll(/var\(\s*(--[\w-]+)\s*([,)])/g)) {
+          if (m[2] === ',' || defined.has(m[1])) continue;
+          fail('HIGH', 'css', `${rel}:${i + 1} reads ${m[1]}, which nothing defines and which has no fallback — the whole declaration is invalid at computed-value time and falls back to the initial value: \`${line.trim().slice(0, 80)}\``);
+        }
+      });
+    }
+  }
+
+  /* ---- 31 a count written in prose, against the count in the markup ------
+
+     Found the hard way on 7 September. The Selected Work lead read "Ten
+     pieces from recent projects" — and "عشرة أعمال" — while the gallery
+     beneath it held SEVEN, because `docs/114` replaced ten placeholders with
+     seven real photographs, renumbered the captions 01/07…07/07, and left the
+     sentence above them alone. In both languages. On the live site.
+
+     Nothing could have caught it: the number lives in prose, and prose is not
+     something the other thirty sections read. It was found while preparing
+     the Arabic reviewer's brief, which is a lucky way to find a thing.
+
+     So: a lead that states a count is checked against the gallery it leads.
+     Number words in English and Arabic, because the sentence exists twice and
+     a mismatch in one language only is the more likely failure — the
+     translation gets updated and the original does not, or the reverse. */
+  {
+    const WORDS = {
+      one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8,
+      nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15,
+      /* Arabic counts from three up take the plural form used here. One and
+         two are not written as words in this position, so they are absent
+         deliberately rather than forgotten. */
+      'ثلاثة': 3, 'أربعة': 4, 'خمسة': 5, 'ستة': 6, 'سبعة': 7, 'ثمانية': 8,
+      'تسعة': 9, 'عشرة': 10, 'أحد عشر': 11, 'اثنا عشر': 12,
+    };
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const p = await ctx.newPage();
+    for (const page of PAGES) {
+      await p.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+      await p.waitForTimeout(300);
+      const rows = await p.evaluate(() => [...document.querySelectorAll('.c-gallery')].map((g) => {
+        const section = g.closest('section');
+        const lead = section?.querySelector('.c-showcase__lead');
+        const say = (lang) => {
+          const el = lead?.querySelector(`[data-lang-copy="${lang}"]`);
+          return el ? el.textContent.trim() : '';
+        };
+        return { slides: g.querySelectorAll('.c-gallery__item').length, en: say('en'), ar: say('ar'),
+          label: g.getAttribute('aria-label') || section?.id || 'gallery' };
+      }));
+      for (const r of rows) {
+        for (const [lang, text] of [['en', r.en], ['ar', r.ar]]) {
+          if (!text) continue;
+          for (const [word, n] of Object.entries(WORDS)) {
+            const re = lang === 'en'
+              ? new RegExp(`\\b${word}\\b`, 'i')
+              : new RegExp(word);
+            if (re.test(text) && n !== r.slides) {
+              fail('HIGH', 'content', `${page}: the ${lang === 'ar' ? 'Arabic' : 'English'} lead for "${r.label}" says ${word} (${n}) and the gallery holds ${r.slides} — "${text.slice(0, 70)}"`);
+            }
+          }
+        }
+      }
+    }
+    await ctx.close();
+  }
+
+  /* ---- 32 a focusable region with no name, or with somebody else's -------
+
+     axe checks that a scrollable region is REACHABLE by keyboard
+     (scrollable-region-focusable). It does not check that the thing you land
+     in tells you what it is. Both halves of that gap were live on 7 September
+     and both passed every automated check:
+
+       · `.c-brandboard`, `.c-devices` and `.c-modules` were given
+         `tabindex="0"` by docs/113 to satisfy that very rule, and no name at
+         all. Three unnamed groups on the way down one page.
+       · Both homepage galleries carried `data-i18n-label="galleryScroller"`,
+         so the i18n pass overwrote the two distinct labels the markup had
+         written with ONE generic string — three regions across the site
+         announcing the same name, and the author's own words destroyed to do
+         it.
+
+     docs/67 §1 had already found this shape once and fixed three instances
+     of it by hand. A rule is cheaper than finding it a third time. */
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const p = await ctx.newPage();
+    for (const page of PAGES) {
+      for (const lang of ['en', 'ar']) {
+        await p.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+        await p.waitForTimeout(300);
+        if (lang === 'ar') {
+          const ok = await p.evaluate(() => {
+            const el = document.querySelector('[data-lang="ar"]');
+            if (!el) return false;
+            el.click(); return true;
+          });
+          if (!ok) continue;
+          await p.waitForTimeout(400);
+        }
+        const regions = await p.evaluate(() => [...document.querySelectorAll('[tabindex="0"]')]
+          .filter((e) => {
+            const b = e.getBoundingClientRect();
+            const cs = getComputedStyle(e);
+            return b.width > 0 && b.height > 0
+              && (cs.overflowX === 'auto' || cs.overflowX === 'scroll'
+                || cs.overflowY === 'auto' || cs.overflowY === 'scroll');
+          })
+          .map((e) => ({
+            name: (e.getAttribute('aria-label')
+              || document.getElementById(e.getAttribute('aria-labelledby') || '')?.textContent
+              || '').trim(),
+            what: `${e.tagName.toLowerCase()}.${String(e.className || '').split(' ').filter(Boolean)[0] || ''}`,
+          })));
+        const seen = new Map();
+        for (const r of regions) {
+          if (!r.name) {
+            fail('HIGH', 'a11y', `${page} (${lang}): the focusable scroll region ${r.what} has no accessible name — a keyboard visitor lands in an unnamed group`);
+            continue;
+          }
+          if (seen.has(r.name)) {
+            fail('HIGH', 'a11y', `${page} (${lang}): ${r.what} and ${seen.get(r.name)} both announce "${r.name}" — two regions with one name is a name that says nothing`);
+          } else {
+            seen.set(r.name, r.what);
+          }
+        }
+      }
+    }
+    await ctx.close();
+  }
+
+  /* ---- 33 the dashboard must never reach the live host -------------------
+
+     `admin.html` is a tool, not a page of the site. It talks to
+     api.github.com, and the live site's Content-Security-Policy forbids that
+     — correctly. The resolution (docs/120 §4.1) is not to loosen the policy
+     but to keep the page off that host entirely: it is served by the review
+     surface, GitHub Pages, which has no .htaccess.
+
+     That arrangement is invisible. Nothing about `admin.html` sitting in the
+     repository root says "this must not be uploaded", and the one thing
+     standing between it and the live server is its absence from a list in
+     another file. So the absence is checked, five ways. */
+  {
+    const admin = path.join(ROOT, 'admin.html');
+    if (fs.existsSync(admin)) {
+      const html = fs.readFileSync(admin, 'utf8');
+
+      const { SHIP } = require('./build-zip.js');
+      if (SHIP.includes('admin.html')) {
+        fail('HIGH', 'admin', 'admin.html is in SHIP — it would be uploaded to the live host, where its API calls are blocked by the CSP and where it has no business being');
+      }
+      if (fs.existsSync(path.join(DIST, 'admin.html'))) {
+        fail('HIGH', 'admin', 'admin.html has been built into dist/ — nothing should build it, and dist/ is one careless copy away from the server');
+      }
+      if (cfg.pages.some((p) => p.file === 'admin.html')) {
+        fail('HIGH', 'admin', 'admin.html is registered in site.config.json — that makes it a page of the site, which it is not');
+      }
+      if (!/name="robots"[^>]*noindex/i.test(html)) {
+        fail('HIGH', 'admin', 'admin.html does not carry noindex');
+      }
+      const sitemap = path.join(DIST, 'sitemap.xml');
+      if (fs.existsSync(sitemap) && fs.readFileSync(sitemap, 'utf8').includes('admin')) {
+        fail('HIGH', 'admin', 'admin.html appears in the sitemap');
+      }
+
+      /* A credential pasted once and accidentally committed is the failure
+         this whole design is arranged to avoid, so the file is checked for
+         one rather than trusted not to have one. */
+      if (/gh[pousr]_[A-Za-z0-9]{16,}|github_pat_[A-Za-z0-9_]{20,}/.test(html)) {
+        fail('HIGH', 'admin', 'admin.html contains something shaped like a GitHub token');
+      }
+
+      /* Linked from nowhere: a link would put it in front of visitors and in
+         front of crawlers that ignore robots. */
+      for (const page of PAGES) {
+        const body = fs.readFileSync(path.join(DIST, page), 'utf8');
+        if (/href="[^"]*admin\.html/.test(body)) {
+          fail('HIGH', 'admin', `${page} links to admin.html — it is linked from nowhere by design`);
+        }
       }
     }
   }

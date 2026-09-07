@@ -1,0 +1,168 @@
+/* =============================================================================
+   SHOWCASE — the two scroll-snap galleries on the homepage.
+
+   The scroller itself is `.c-gallery` (docs/86), unchanged: no script, no
+   auto-advance, no dot navigation, and RTL for free because it scrolls on the
+   inline axis. This file only dresses the section around it, so the two
+   galleries and the one on /story cannot drift apart.
+
+   WHY A SECTION AND NOT A CAROUSEL. docs/83 measured 132 blocks stranded when
+   script-hidden content loses its script. A carousel hides all but one slide
+   and needs script to bring the rest back; a scroll-snap list shows every
+   slide to anything that can scroll, which includes a phone with the network
+   half-gone and a browser with JavaScript off.
+   ============================================================================= */
+
+@layer components {
+  .c-showcase__head {
+    max-inline-size: var(--container-max-narrow);
+    margin-block-end: var(--space-32);
+  }
+
+  .c-showcase__eyebrow {
+    color: var(--color-text-accent);
+    margin-block-end: var(--space-12);
+  }
+
+  .c-showcase__headline {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .c-showcase__lead {
+    color: var(--color-text-secondary);
+    max-inline-size: 54ch;
+    margin-block-start: var(--space-16);
+  }
+
+  /* The scroller runs to the container edge rather than stopping inside it:
+     a slide half-cut at the edge is the affordance that says "this moves",
+     and it costs nothing to a visitor who never scrolls it. */
+  .c-showcase__gallery {
+    margin-block-start: var(--space-32);
+    padding-block-end: var(--space-16);
+  }
+
+  /* THE BOX MATCHES THE PICTURE.
+
+     The gallery on /story sets a fixed block-size and `object-fit: contain`,
+     which is right there: those are portrait posters of client work and
+     cropping one would be editing it. Here the same rule letterboxed a 3:2
+     work sample inside a portrait box, with grey above and below.
+
+     So the showcase sets an aspect-ratio per section and lets the height
+     follow. Nothing is cropped and nothing is padded — the frame is the
+     shape of the thing in it. Each section declares its own ratio because
+     the two hold different shapes: landscape work, portrait social. */
+  .c-showcase__gallery .c-gallery__image {
+    aspect-ratio: var(--showcase-ratio, 3 / 2);
+    block-size: auto;
+    inline-size: 100%;
+    object-fit: cover;
+  }
+
+  #work { --showcase-ratio: 3 / 2; }
+  #campaigns {
+    --showcase-ratio: 4 / 5;
+    /* THE SECOND GALLERY TAKES THE DEEPER GROUND.
+
+       The two galleries used to sit four sections apart, so a visitor could
+       not tell whether the second was new work or the first one again
+       (docs/108 §5). They are adjacent now — one portfolio in two parts —
+       which fixes that and creates the opposite problem: 3,200px of identical
+       ground reading as a single slab. The four service blocks already solve
+       this by alternating, deliberately and by id; this is the same device,
+       for the same reason. */
+    background-color: var(--color-bg-deep);
+  }
+
+  /* A portrait slide should not eat the screen on a phone. */
+  @media (max-width: 47.99em) {
+    #campaigns .c-gallery__image { max-block-size: 62vh; object-fit: contain; }
+  }
+
+  /* MOTION — one idea, applied once.
+
+     Each slide settles as it enters, and only where the browser can do it on
+     the compositor without script: a scroll-driven view() timeline. The
+     universal reduced-motion guard covers transitions and animations, but
+     scroll-driven animations are a separate axis and qa.js §25 exists because
+     that was missed once — so the preference is honoured explicitly here. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      /* THE IMAGE SETTLES, NOT THE SLIDE.
+
+         The first version animated the whole .c-gallery__item from
+         opacity 0.35. axe found eight contrast failures immediately: the
+         caption and its count were being rendered at 35% opacity while the
+         slide sat outside the animation's entry range, and text at 35% does
+         not meet contrast against anything.
+
+         Motion is allowed to make a picture arrive. It is not allowed to make
+         words unreadable while it does — docs/83 is the whole argument. So
+         the image carries the movement and the caption stays at full opacity
+         throughout. */
+      .c-showcase__gallery .c-gallery__image {
+        animation: showcase-settle linear both;
+        animation-timeline: view(inline);
+        animation-range: entry 0% entry 60%;
+      }
+
+      @keyframes showcase-settle {
+        from { opacity: 0.45; scale: 0.97; }
+        to { opacity: 1; scale: 1; }
+      }
+    }
+  }
+
+  /* PRINT. Same reasoning as the gallery it wraps: on paper a horizontal
+     scroller shows one slide and silently drops the rest. */
+  @media print {
+    .c-showcase__gallery {
+      display: block;
+    }
+  }
+}
+
+@layer components {
+  /* THE SHOWREEL. A plain, native player — no custom controls, because a
+     custom control surface is a keyboard trap and a screen-reader problem
+     waiting to be written, and the browser's own is neither. */
+  .c-reel {
+    margin: 0 0 var(--space-32);
+  }
+
+  .c-reel__video {
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 16 / 9;
+    display: block;
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+  }
+
+  .c-reel__caption {
+    margin-block-start: var(--space-12);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-muted);
+    max-inline-size: 60ch;
+  }
+
+  .c-reel__fallback {
+    padding: var(--space-16);
+    color: var(--color-text-secondary);
+  }
+
+  /* PRINT. A video is a still on paper at best; the caption carries the
+     meaning, so keep that and drop the black rectangle. */
+  @media print {
+    .c-reel__video { display: none; }
+  }
+}

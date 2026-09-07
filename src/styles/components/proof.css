@@ -30,41 +30,278 @@
     background-color: var(--color-bg);
   }
 
-  .c-proof__inner {
-    display: grid;
-    gap: var(--space-16);
-    justify-items: start;
-    /* An accent rule rather than a border box: this is a remark inside the
-       page, not a card sitting on top of it. */
-    border-inline-start: 2px solid var(--color-accent);
-    padding-inline-start: var(--space-24);
-  }
-
-  @media (min-width: 48em) {
-    .c-proof__inner {
-      padding-inline-start: var(--space-32);
-    }
+  .c-proof__head {
+    max-inline-size: var(--container-max-narrow);
+    margin-block-end: var(--space-32);
   }
 
   .c-proof__eyebrow {
-    margin: 0;
+    color: var(--color-text-accent);
+    margin-block-end: var(--space-12);
   }
 
-  .c-proof__line {
-    /* Deliberately below the section headlines around it. The sentence is
-       evidence, not a chapter opening — sized to be read rather than scanned. */
-    margin: 0;
-    max-inline-size: 58ch;
-    font-size: var(--text-body-lg);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-relaxed);
-    color: var(--color-text-secondary);
-    text-wrap: pretty;
-  }
-
-  .c-proof__line strong {
+  /* A REAL HEADING, at last. The section labelled itself with a paragraph —
+     `aria-labelledby` pointed at the eyebrow — so the page had a landmark
+     with no heading in it and the document outline skipped straight past the
+     one piece of proof on the homepage. */
+  .c-proof__headline {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
     color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .c-proof__lead {
+    color: var(--color-text-secondary);
+    max-inline-size: 58ch;
+    margin-block-start: var(--space-16);
+  }
+
+  /* ---------------------------------------------------------------------
+     THE BENTO GRID
+     --------------------------------------------------------------------- */
+  .c-bento {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* TWO COLUMNS FROM 40em, AND THE LEAD DOES NOT SPAN THEM.
+
+     It did at first, and that put the same hole in the tablet band that the
+     three-column version put in the desktop one: lead across the top, website
+     and campaigns beneath it, profile alone on row three with an empty cell
+     beside it. Four tiles in two columns is a 2x2 that closes exactly, and a
+     closed grid is worth more here than a bigger first tile — the lead gets
+     its 2x2 emphasis back at 64em, where there is room for it.
+
+     Logical properties throughout, so the Arabic layout is the mirror without
+     a second rule. */
+  @media (min-width: 40em) {
+    .c-bento {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-24);
+    }
+  }
+
+  /* FROM 64em, A FOUR-COLUMN BENTO THAT ACTUALLY CLOSES.
+
+     The first attempt used three columns with the lead spanning 2x2. Three
+     columns cannot hold four tiles that way: the lead took two, the website
+     and campaigns stacked in the third, and the profile fell to a row of its
+     own with two empty columns beside it. A bento with a hole in it is just a
+     grid that went wrong.
+
+     Four columns closes exactly:
+
+       +---------------+-------+-------+
+       |               |    website    |
+       |   identity    +-------+-------+
+       |               | camp. | prof. |
+       +---------------+-------+-------+
+
+     The identity leads at 2x2 because it is what the other three are made
+     of — that is the argument the section exists to make. */
+  @media (min-width: 64em) {
+    .c-bento {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      /* A row height in absolute terms, for the same reason the link carries
+         the ratio: `minmax(0, 1fr)` sizes rows from their content, and the
+         content is four images that are not there yet. */
+      grid-auto-rows: clamp(15rem, 20vw, 22rem);
+    }
+
+    .c-bento__tile--lead {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    /* The website is the wide one on the top right; the last two share the
+       row beneath it. */
+    .c-bento__tile:nth-child(2) { grid-column: span 2; }
+  }
+
+  .c-bento__tile {
+    margin: 0;
+    min-inline-size: 0;
+  }
+
+  /* THE TILE'S HEIGHT COMES FROM THE RATIO, NOT FROM THE PICTURE.
+
+     It used to come from the picture: the link was `block-size: 100%` and the
+     image carried `aspect-ratio`, so the row sized itself to whatever the
+     image was. The images are `loading="lazy"` and the section is well below
+     the fold, so until one loads there is no image to size to — and validate
+     found the whole bento laid out at TWO PIXELS a row at 1440. It looks fine
+     in a screenshot because by then the images have arrived; the cost is paid
+     before that, as a layout jump the size of the section and a run of
+     targets under the 44px floor for anyone reaching it with a keyboard
+     before the pictures land.
+
+     So the ratio lives on the link, which knows its width without loading
+     anything, and the image just fills what the link decided. */
+  .c-bento__link {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border: var(--border-hairline);
+    border-radius: var(--card-radius-media);
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: border-color var(--duration-fast) var(--ease-standard);
+  }
+
+  /* At 64em the grid rows carry the height, so the link stops setting one —
+     and this override has to sit AFTER the base rule, not in the media block
+     further up that establishes the columns. Same specificity, so source
+     order decides; written above, it lost, and the link kept 4/3 while
+     `block-size: 100%` gave it a definite height, which made the 584px lead
+     tile compute an 800px WIDTH and overflow its own column. */
+  @media (min-width: 64em) {
+    .c-bento__link {
+      aspect-ratio: auto;
+      block-size: 100%;
+    }
+  }
+
+  .c-bento__link:hover {
+    border-color: var(--card-border-hover);
+    background-color: var(--card-surface-hover);
+  }
+
+  /* --focus-ring is a box-shadow value; `outline:` would be dropped in
+     silence, which qa.js §28 now fails on. */
+  .c-bento__link:focus-visible {
+    box-shadow: var(--focus-ring);
+  }
+
+  @media (forced-colors: active) {
+    .c-bento__link:focus-visible {
+      outline: 3px solid CanvasText;
+      outline-offset: 2px;
+    }
+  }
+
+  /* A RATIO, NOT A MINIMUM. `min-block-size: 26rem` on the lead made a tile
+     over a thousand pixels tall on a wide screen, because the grid row grew
+     with it. The tile takes the height its column deserves and no more, and
+     `cover` keeps every crop consistent across four images that are not the
+     same shape — one of them portrait. */
+  .c-bento__image {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: scale var(--duration-base) var(--ease-out);
+  }
+
+  /* THE SCRIM, AND WHY IT IS TALLER THAN IT LOOKS.
+
+     The first version ramped from 0.82 at the foot to nothing at the top of
+     the body box, with 32px of top padding. That reads fine for the project
+     name, which sits low — and fails for the index numeral above it, which
+     landed around 70% up the ramp where the scrim is nearly gone. Against a
+     pale photograph the "01" all but disappeared, and a numeral you cannot
+     read is worse than no numeral at all.
+
+     So the box is taller than its text (48px of top padding is runway, not
+     spacing) and the ramp HOLDS rather than falls: near-opaque at the foot,
+     still 0.7 at two thirds up — which is where the numeral is — and only
+     then releasing into the picture. The extra height costs nothing; the
+     tile is a fixed ratio and the scrim sits inside it. */
+  .c-bento__body {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-48) var(--space-24) var(--space-24);
+    background-image: linear-gradient(to top,
+      rgb(0 0 0 / 0.88) 0%,
+      rgb(0 0 0 / 0.82) 35%,
+      rgb(0 0 0 / 0.70) 65%,
+      rgb(0 0 0 / 0.34) 85%,
+      rgb(0 0 0 / 0) 100%);
+  }
+
+  .c-bento__index {
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-accent);
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .c-bento__name {
+    font-family: var(--font-display);
+    font-size: var(--text-h4, var(--text-body-lg));
     font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: #FFFFFF;
+  }
+
+  /* THE SECOND LAYER.
+
+     The 2026 pattern is a tile that reveals more on hover rather than merely
+     changing colour, and this does that — but a touch visitor never hovers,
+     so the detail is SHOWN BY DEFAULT and only hidden where hovering is
+     actually possible. `any-hover: hover` asks the right question: not "is
+     the screen wide" but "can this person hover at all".
+
+     :focus-within is on the same rule, so a keyboard visitor gets what a
+     mouse visitor gets. */
+  .c-bento__detail {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: rgb(255 255 255 / 0.86);
+  }
+
+  @media (any-hover: hover) and (min-width: 40em) {
+    .c-bento__detail {
+      max-block-size: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-block-size var(--duration-base) var(--ease-out),
+        opacity var(--duration-fast) var(--ease-standard);
+    }
+
+    .c-bento__link:hover .c-bento__detail,
+    .c-bento__link:focus-within .c-bento__detail,
+    .c-bento__link:focus-visible .c-bento__detail {
+      max-block-size: 6em;
+      opacity: 1;
+    }
+
+    .c-bento__link:hover .c-bento__image,
+    .c-bento__link:focus-within .c-bento__image {
+      scale: 1.03;
+    }
+  }
+
+  /* The universal guard covers transitions, but state it here too: a tile
+     that grows under the pointer is exactly the motion someone with a
+     vestibular disorder turned the preference on to avoid. */
+  @media (prefers-reduced-motion: reduce) {
+    .c-bento__image,
+    .c-bento__detail {
+      transition: none;
+    }
+
+    .c-bento__link:hover .c-bento__image,
+    .c-bento__link:focus-within .c-bento__image {
+      scale: none;
+    }
   }
 
   .c-proof__more {

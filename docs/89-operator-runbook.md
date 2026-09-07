@@ -58,6 +58,93 @@ the log — it names the file and the reason.
 
 ---
 
+## 3b. The dashboard — prices and Arabic strings, from a phone
+
+**Added 7 September 2026.** `docs/120` is the plan, `docs/121` the build.
+
+**`https://mashhorfoods.github.io/test/admin.html`**
+
+It edits two files — prices and packages, and the Arabic string map — and
+**nothing else**. It checks everything before it will let you save, which is
+the one thing editing JSON in GitHub cannot do: there, a wrong price is a red
+build ten minutes later.
+
+### First time: make a token
+
+1. `github.com/settings/personal-access-tokens` → **Generate new token**.
+2. **Repository access → Only select repositories → `mashhorfoods/test`.**
+3. **Permissions → Repository permissions → Contents → Read and write.**
+   Nothing else. Do not grant anything else.
+4. **Expiration:** set one. 90 days is sensible.
+5. Copy it. It is shown once.
+
+Paste it into the dashboard. Tick *"remember on this device"* only on a device
+that is yours and locked — without it, the token is forgotten when you close
+the tab, which is the right default on a shared or borrowed machine.
+
+**Forget token** clears it from both places. Lost the device? Revoke the token
+at the same settings page — one click, and it is dead everywhere.
+
+### Changing a price
+
+1. **Prices and packages** → find the package → change the number.
+2. Digits only. **No `$`, no comma, no space.** The site adds "From" and
+   "USD" itself.
+3. Watch the **Save** button. If it is grey, something is wrong and the reason
+   is listed above it by name. Fix that first — **the button will not let you
+   commit something the build would reject.**
+4. Write a few words saying what changed, and Save.
+5. It commits to the working branch, then the build runs: it rebuilds the site,
+   runs the five checks, and commits the result back. **About four minutes.**
+
+### What it will not let you do
+
+A price with a currency symbol · a package with no name · two packages with
+the same name · a level or purpose in one language and not the other · a
+feature with no Arabic · a missing delivery or revisions promise · Eastern
+numerals (٠-٩) where the site uses 0-9 everywhere.
+
+Each of those is a real rule the build enforces. The dashboard just tells you
+first.
+
+### Five minutes on your own phone — please actually do this
+
+Everything above was tested by **emulating** four phones. **No real device has
+opened this page**, and this container cannot run iOS Safari at all — which is
+the browser most of this market uses (`docs/59`). Emulation gets layout right
+and gets the things below wrong.
+
+Open `https://mashhorfoods.github.io/test/admin.html` on your phone and check
+six things. **A one-line answer to each is enough**, and "it was fine" is a
+useful answer.
+
+| | What to try | What would be wrong |
+| --- | --- | --- |
+| 1 | **Paste your token** into the field | It does not paste cleanly, or the keyboard covers the field, or a password manager interferes |
+| 2 | Tap **Prices and packages**, then open a category | The disclosure does not open, or the caret does not turn |
+| 3 | Tap a **price field** and type | The page zooms in (it should not), or the keyboard covers what you are typing |
+| 4 | Type `$490` — deliberately wrong | The red message under the field is hidden behind the bar at the bottom, or you cannot see the field and the message at once |
+| 5 | Fix it, then look at the **Save** button | It is off-screen, or you cannot tell whether it is enabled |
+| 6 | Turn the phone **sideways** | Anything overlaps, or the bar covers half the screen |
+
+**Item 4 is the one to watch.** An earlier version had the message covering the
+field it was about — the instruction to fix the price sat on top of the price.
+It was fixed, and it was found by looking at a screenshot rather than by any
+measurement, which is exactly why a real device pass is worth five minutes.
+
+### If something looks wrong
+
+**The dashboard cannot break the site.** Worst case it commits something the
+harnesses refuse, CI goes red, and the live site keeps serving what it already
+had — nothing is deployed automatically. Tell whoever maintains the code, or
+revert the commit in GitHub.
+
+**GitHub's web editor still works** and is not going away. If the dashboard is
+down, unreachable or behaving oddly, edit `src/data/pricing.json` there exactly
+as before. §4 below is that road.
+
+---
+
 ## 4. The other path: editing anything else
 
 You need the repository on a machine with Node 22:
@@ -65,7 +152,7 @@ You need the repository on a machine with Node 22:
 ```
 npm install
 node build.js        # regenerates dist/ — the thing that actually ships
-npm run check        # validate.js, qa.js, a11y.js
+npm run check        # validate.js, qa.js, responsive.js, arabic.js, a11y.js
 ```
 
 **Commit `dist/` along with your change.** CI checks that the committed `dist/`
@@ -99,13 +186,19 @@ npm run check
 
 | | |
 | --- | --- |
-| `validate.js` | Walks the buyer journeys. **0 findings or something is broken** |
-| `qa.js` | 24 sections. **0 high and 0 medium is the standard** |
+| `validate.js` | Walks the buyer journeys at 1280 and 390. **0 findings or something is broken** |
+| `qa.js` | 30 sections over the built files. **0 high and 0 medium is the standard** |
+| `responsive.js` | 320/768/1024 × 8 pages × English and Arabic — 48 combinations. **0 high is the standard** |
+| `arabic.js` | The bilingual layer: pairing, `lang="ar"`, untagged Arabic inside English, figures that disagree between the languages, the WhatsApp messages. **Static, no browser, fast.** 0 high is the standard — and it cannot tell you whether the Arabic is *good*, which is what `docs/91` asks a person |
 | `a11y.js` | axe-core. **0 violations is the standard** |
+
+Which widths each one actually renders is tabled in `docs/69` §5d. That table
+exists because `responsive.js` was added on 7 September after `docs/115` found
+nine pricing cards cut off at 320px — a width nothing had ever rendered.
 
 **One finding is expected and safe to ignore:**
 
-> `LOW [css] 91 selector(s) style nothing any visitor can see`
+> `LOW [css] 103 selector(s) style nothing any visitor can see`
 
 That is a documented, deliberate decision (`docs/75` §4) — a utility layer and
 a type scale kept whole on purpose. It has printed 91 for weeks. **If the

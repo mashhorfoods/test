@@ -93,3 +93,126 @@
     margin-block-start: var(--space-16);
   }
 }
+
+@layer components {
+  /* SPLIT — image beside the section it belongs to.
+     /about used to run full-measure images stacked between blocks of prose. On
+     a wide screen that left a 672px reading column next to 550px of nothing,
+     and the images read as interruptions rather than as belonging to anything.
+
+     One column below 48em: the pair stacks image-then-text, the order it reads
+     in. Two columns above, alternating sides. */
+  .c-split {
+    display: grid;
+    gap: var(--space-64);
+    margin-block: var(--space-48);
+  }
+
+  .c-split__row {
+    display: grid;
+    gap: var(--space-24);
+  }
+
+  .c-split__figure {
+    margin: 0;
+    /* The image drifts inside this box, so the box is what clips it. */
+    overflow: hidden;
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+  }
+
+  .c-split__image {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+  }
+
+  /* The prose inside a split row has its own measure already; it must not also
+     carry the page-level top margin that separated the old stacked blocks. */
+  .c-split__text > :first-child {
+    margin-block-start: 0;
+  }
+
+  @media (min-width: 48em) {
+    .c-split__row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--grid-gutter);
+      align-items: center;
+    }
+
+    /* ALTERNATING SIDES. Placing the figure in track 2 on even rows is enough:
+       the text flows into track 1 on its own. Under RTL the grid's inline axis
+       reverses, so track 2 is the left-hand side and the alternation mirrors
+       with no second rule. */
+    .c-split__row:nth-of-type(even) .c-split__figure {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+
+  @media (min-width: 64em) {
+    .c-split {
+      gap: var(--space-88, 5.5rem);
+    }
+  }
+
+  .c-split__coda {
+    margin-block-start: var(--space-48);
+  }
+}
+
+@layer motion {
+  /* THE PAIR MOVES AS ONE OBJECT.
+     As a row crosses the viewport its figure rises a little and its text sinks
+     a little, so the two pass each other. The amount is small on purpose — it
+     should register as the page being alive, not as an effect someone has to
+     wait for.
+
+     Scroll-driven, so there is no script and nothing to fail, and the frame
+     clips the image so nothing about this moves the layout.
+
+     GUARDED EXPLICITLY, and that is not belt-and-braces. The universal
+     reduced-motion rule in 01-reset.css works by flattening animation-duration
+     and iteration-count; a scroll-driven animation has neither — its progress
+     comes from the scroll position. Measured: identical transform with reduced
+     motion on and off (docs/94 §4). This gate is the only thing that stops it,
+     and qa.js §25 fails any animation-timeline declared without one.
+
+     Only from 48em, where the two columns exist. Stacked on a phone there is no
+     pair to counterpoint, and the movement would just be jitter. */
+  @supports (animation-timeline: view()) {
+    @media (min-width: 48em) and (prefers-reduced-motion: no-preference) {
+      .c-split__figure,
+      .c-split__text {
+        animation: split-drift linear both;
+        animation-timeline: view();
+        animation-range: entry 15% exit 85%;
+        will-change: transform;
+      }
+
+      .c-split__figure { --split-shift: -14px; }
+      .c-split__text { --split-shift: 9px; }
+
+      @keyframes split-drift {
+        from { transform: translateY(calc(var(--split-shift) * -1)); }
+        to   { transform: translateY(var(--split-shift)); }
+      }
+    }
+
+    /* The image also settles within its own frame, which is what keeps the
+       picture from feeling pinned to the box. Runs at every width. */
+    @media (prefers-reduced-motion: no-preference) {
+      .c-split__image {
+        animation: image-settle linear both;
+        animation-timeline: view();
+        animation-range: entry 0% exit 100%;
+      }
+
+      @keyframes image-settle {
+        from { transform: scale(1.06) translateY(-1.4%); }
+        to   { transform: scale(1.06) translateY(1.4%); }
+      }
+    }
+  }
+}

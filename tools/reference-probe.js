@@ -32,6 +32,31 @@
     const cs = getComputedStyle(el);
     return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && cs.opacity !== '0';
   };
+  /* AN ELEMENT'S OWN BOX IS NOT ENOUGH.
+     A control inside a collapsed accordion panel keeps a perfectly good
+     bounding rect — the panel clips it with overflow and a zero track, so
+     getBoundingClientRect() reports a button nobody can see or press. Run
+     against our own homepage this counted ten controls in the services
+     section when a visitor at rest is offered one, because four of the five
+     panels were shut. Any competitor using an accordion or tabs would be
+     overcounted the same way, so this has to be right before the comparison
+     rows are collected. */
+  const clipped = (el) => {
+    for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+      const cs = getComputedStyle(a);
+      if (cs.display === 'none' || cs.visibility === 'hidden') return true;
+      if (cs.overflow !== 'visible' && a.getBoundingClientRect().height < 8) return true;
+    }
+    return false;
+  };
+  const shown = (el) => vis(el) && !clipped(el);
+  /* A disclosure trigger opens something on the page it is already on. It is
+     navigation within a section, not a request to go somewhere or do
+     something, and counting the two together makes a five-item accordion look
+     like a page begging. `asks` is the number that means what CTA usually
+     means. */
+  const isDisclosure = (el) =>
+    el.hasAttribute('aria-expanded') || el.hasAttribute('data-accordion-trigger');
   /* Own text only: an ancestor would otherwise be credited with its children's words. */
   const ownText = (el) =>
     [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent.trim()).join(' ').trim();
@@ -86,6 +111,21 @@
   const sections = [...root.children].filter(vis).map((el) => {
     const r = el.getBoundingClientRect();
     const cs = getComputedStyle(el);
+    /* THE SECTION-BY-SECTION FIELDS.
+       Order, height and rhythm were always here. What a design comparison
+       also needs is what each section is DOING: does it ask for anything,
+       does it carry evidence, how much reading does it cost. The hero is
+       excluded from the comparison deliberately — it is the one section this
+       project has already settled (docs/53, docs/80 §2.3) and the one where
+       every agency site looks the same. Everything after it is where the
+       differences live. */
+    const words = (el.innerText || '').trim().split(/\s+/).filter(Boolean).length;
+    const ctas = [...el.querySelectorAll('a,button')].filter((c) => {
+      if (!shown(c)) return false;
+      const cr = c.getBoundingClientRect();
+      return cr.height >= 32 && (c.innerText || '').trim().length > 0;
+    });
+    const asks = ctas.filter((c) => !isDisclosure(c));
     return {
       tag: el.tagName.toLowerCase(),
       cls: (el.getAttribute('class') || '').slice(0, 44),
@@ -94,6 +134,20 @@
       padY: `${px(cs.paddingTop)}/${px(cs.paddingBottom)}`,
       bg: cs.backgroundColor,
       heading: (el.querySelector('h1,h2,h3')?.innerText || '').trim().slice(0, 70),
+      /* --- added for the section-by-section pass --- */
+      words,
+      /* Reading cost at roughly 200 wpm, in seconds — a section that takes
+         90 seconds to read is a decision, not an accident. */
+      readSec: Math.round((words / 200) * 60),
+      ctaCount: ctas.length,
+      askCount: asks.length,
+      askLabels: asks.slice(0, 3).map((c) => (c.innerText || '').trim().split('\n')[0].slice(0, 28)),
+      imgs: el.querySelectorAll('img,picture,svg').length,
+      video: el.querySelectorAll('video,iframe').length,
+      /* A horizontal scroller or a slide container, which is the question
+         docs/86 answered for us and worth asking of everyone else. */
+      slider: !!el.querySelector('[class*="slid"],[class*="carousel"],[class*="swiper"],[class*="marquee"]'),
+      listItems: el.querySelectorAll('li').length,
     };
   });
 

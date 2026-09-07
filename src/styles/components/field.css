@@ -30,7 +30,7 @@
     background-color: var(--color-surface);
     color: var(--color-text-primary);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-control);
     font-size: var(--text-body);
     transition: border-color var(--duration-fast) var(--ease-standard),
       background-color var(--duration-fast) var(--ease-standard);

@@ -70,7 +70,7 @@
     padding: var(--space-12) var(--space-16);
     background-color: var(--color-bg-sunken);
     border: var(--border-hairline);
-    border-radius: var(--radius-sm);
+    border-radius: var(--card-radius);
     text-align: start;
     transition: border-color var(--duration-fast) var(--ease-standard),
       background-color var(--duration-fast) var(--ease-standard);
@@ -419,7 +419,7 @@
       padding: var(--space-12);
       background-color: rgba(20, 20, 20, 0.94);
       border: var(--border-hairline);
-      border-radius: var(--radius-sm);
+      border-radius: var(--card-radius);
     }
 
     .c-orbit__card-label {

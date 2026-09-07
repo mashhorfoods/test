@@ -231,6 +231,46 @@
   .c-contact__status:empty {
     display: none;
   }
+
+  /* THE RECOVERY BLOCK. Hidden until the form is submitted, then permanent for
+     the rest of the visit: a visitor whose mail client did not open has no way
+     of telling the difference between "sent" and "nothing happened", so the
+     alternatives stay on screen rather than flashing past. Bordered and
+     recessed so it reads as a consequence of pressing the button, not as a
+     second form. */
+  .c-contact__fallback {
+    margin-block-start: var(--space-16);
+    padding: var(--space-16);
+    border: var(--border-width) solid var(--card-border);
+    border-radius: var(--card-radius);
+    background-color: var(--color-bg-sunken);
+  }
+
+  .c-contact__fallback-text {
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .c-contact__fallback-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+    margin-block-start: var(--space-12);
+    margin-block-end: 0;
+  }
+
+  /* What happens after the message goes. Sits below the form because it
+     answers the question a visitor asks with their hand already on the
+     button. */
+  .c-contact__next {
+    margin-block-start: var(--space-16);
+    padding-block-start: var(--space-16);
+    border-block-start: var(--border-hairline);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    max-inline-size: 52ch;
+  }
 }
 
 /* ===========================================================================
@@ -270,6 +310,6 @@
 
 .c-channel__copy:hover,
 .c-channel__copy:focus-visible {
-  color: var(--color-text);
+  color: var(--color-text-primary);
   border-color: var(--color-border-strong);
 }

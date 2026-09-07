@@ -1,0 +1,160 @@
+/* =============================================================================
+   COMPONENT — FAQ
+
+   Six questions, answered from facts that were already on the site and in the
+   wrong place: who you deal with and where the studio is (on /about), how long
+   a project takes, how many revisions it includes and who owns the files
+   (inside the pricing tables), and why the price is what it is (/about again).
+   docs/108 §14 is the list; this is where those answers now sit — the last
+   screen before the form, which is where the objections are.
+
+   NATIVE <details>, NOT AN ACCORDION. The services list has a real accordion
+   because it is single-open and script-driven; an FAQ is neither. <details>
+   is keyboard-operable, announced, works with JavaScript disabled and lets a
+   crawler read every answer whether or not it is open — and it costs no
+   script at all.
+
+   The mark is the same plus/minus the challenge's "why this is the answer"
+   uses, for the same reason it does: `display: flex` on a <summary> removes
+   the native triangle, and a disclosure that does not look pressable is one
+   nobody presses.
+   ============================================================================= */
+
+@layer components {
+  .c-faq__head {
+    max-inline-size: var(--container-max-narrow);
+    margin-block-end: var(--space-32);
+  }
+
+  .c-faq__headline {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .c-faq__list {
+    display: grid;
+    gap: var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-inline-size: 62rem;
+  }
+
+  .c-faq__entry {
+    border: var(--border-width) solid var(--card-border);
+    border-radius: var(--card-radius);
+    background-color: var(--card-surface);
+    transition: border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  @media (any-hover: hover) {
+    .c-faq__entry:hover {
+      border-color: var(--card-border-hover);
+      background-color: var(--card-surface-hover);
+    }
+  }
+
+  .c-faq__entry[open] {
+    border-color: var(--color-border-accent);
+  }
+
+  .c-faq__q {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    min-block-size: var(--touch-target-min);
+    padding: var(--space-16) var(--space-24);
+    font-family: var(--font-display);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .c-faq__q::-webkit-details-marker {
+    display: none;
+  }
+
+  /* --focus-ring is a two-layer box-shadow, not an outline shorthand: written
+     as `outline:` it parses as invalid and is dropped in silence, which is
+     what qa.js §28 exists to catch. */
+  .c-faq__q:focus-visible {
+    box-shadow: var(--focus-ring);
+    border-radius: var(--card-radius);
+  }
+
+  @media (forced-colors: active) {
+    .c-faq__q:focus-visible {
+      outline: 3px solid CanvasText;
+      outline-offset: 2px;
+    }
+  }
+
+  .c-faq__mark {
+    position: relative;
+    flex: none;
+    inline-size: var(--icon-md);
+    block-size: var(--icon-md);
+    color: var(--color-text-accent);
+  }
+
+  .c-faq__mark::before,
+  .c-faq__mark::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: var(--icon-md);
+    block-size: var(--border-width-strong);
+    background-color: currentcolor;
+    translate: -50% -50%;
+    transition: rotate var(--duration-base) var(--ease-out),
+      opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-faq__mark::after {
+    rotate: 90deg;
+  }
+
+  .c-faq__entry[open] .c-faq__mark::after {
+    rotate: 0deg;
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-faq__mark::before,
+    .c-faq__mark::after,
+    .c-faq__entry {
+      transition: none;
+    }
+  }
+
+  .c-faq__a {
+    margin: 0;
+    padding: 0 var(--space-24) var(--space-24);
+    /* Clears the mark so the answer lines up under its question, not under
+       the icon. Logical, so Arabic mirrors without a second rule. */
+    padding-inline-start: calc(var(--space-24) + var(--icon-md) + var(--space-16));
+    color: var(--color-text-secondary);
+    max-inline-size: 68ch;
+  }
+
+  @media print {
+    .c-faq__entry {
+      border-color: var(--color-border);
+    }
+
+    /* On paper every answer is open: a printed page cannot be clicked. */
+    .c-faq__a {
+      display: block;
+    }
+  }
+}

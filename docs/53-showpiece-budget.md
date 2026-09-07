@@ -16,9 +16,15 @@ only where bandwidth is cheap and the screen is big enough to deserve it.
 
 ## 2. The numbers
 
+> **Section 9 amends this table**, 7 September 2026. The numbers below still
+> govern the hero — the thing every desktop visitor is given whether they
+> asked for it or not. They were also, until that date, the only numbers, and
+> they were being applied to a second video of an entirely different kind.
+> Read §9 before quoting any figure here.
+
 | Rule | Limit | Why this number |
 | --- | --- | --- |
-| Showpieces that ship | **1** | Singular. A second one is a library |
+| Showpieces that ship | **1** | Singular. A second one is a library. *(Amended §9: one AUTOMATIC showpiece. A click-to-play film is a different kind of cost)* |
 | Encodings of it | **2** | WebM/VP9 and MP4/H.264. Each visitor downloads exactly one |
 | Weight per visitor | **≤ 2.0 MB** | 12 seconds at 720p, no audio. Today: 43 KB WebM, 156 KB MP4 |
 | Format | **WebM first, MP4 second** | Everything that can take WebM should — a third of the size. Safari and iOS fall through to the MP4 |
@@ -141,3 +147,87 @@ that was wrong, not the rule.
 `tools/build-showpiece.js` remain, and `node tools/build-showpiece.js` puts the
 three-act canvas film back. Two hero films, one command apart, and the choice
 stays open.
+
+---
+
+## 9. The budget was one number doing two jobs — 7 September 2026
+
+**Amends §2.** `docs/114`, and the finding is worth stating plainly because
+the check had been passing the whole time.
+
+`qa.js` §7 capped **every video file in `assets/`** at 2 MB together. That
+number was written for the hero and it is the right number for the hero:
+`hero-film.js` attaches the loop on every wide screen, so every desktop
+visitor pays for it whether or not they wanted it. Nothing about that has
+changed.
+
+**The showreel is not that.** It sits behind `preload="none"` inside a
+`<video controls>`. Not one byte is fetched until somebody presses play, and
+somebody who presses play has asked for the file. Weighed against the hero's
+number, its whole allowance was what the hero left over — the hero pair is
+1.6 MB, so **≈350 KB**. Sixty seconds in 350 KB is about 47 kbps. That is not
+a reel; it is a warning that something is wrong.
+
+The comment in `index.html` stated the constraint plainly and had done for a
+day: *"a replacement reel has roughly 400KB before the check fails."* It read
+as a budget. It was a category error — two different kinds of cost held by one
+number.
+
+### Two budgets
+
+| | Limit | Who pays it |
+| --- | --- | --- |
+| **Automatic** — `AUTO_BUDGET` | **2 MB** | Every desktop visitor, unasked. The hero loop. Unchanged |
+| **Click-to-play** — `CLICK_BUDGET` | **6 MB** | Only someone who pressed play. The showreel pair |
+
+6 MB is roughly twenty-five seconds of waiting on a 2 Mbps connection before
+playback can start. That is a real cost, and it is why the number is not
+larger.
+
+### Which pool a file is in is read from the markup, not from its name
+
+A file is click-to-play **only if every `<video>` that references it carries
+both `controls` and `preload="none"`**. Anything else — attached by script,
+autoplaying, or referenced nowhere the parse can see — counts against the
+hero. The conservative default is the point: a reel that quietly loses its
+`controls` attribute becomes a 6 MB autoplay, and this is what notices.
+
+Negative-tested in both directions, because a guard nobody tested is a comment:
+
+| Test | Expected | Got |
+| --- | --- | --- |
+| 3 MB `reel.webm` (click-to-play) | passes | passes |
+| 3 MB `hero.webm` (automatic) | **fails** | `hero.webm is 3.0MB, over the 2MB showpiece budget` |
+| 7 MB `reel.webm` (click-to-play) | **fails** | `reel.webm is 7.0MB, over the 6MB click-to-play budget` |
+
+### Three §2 rules do not apply to the click-to-play pool
+
+- **"Audio track: none."** Right for a hero that plays itself; wrong for a
+  film somebody chose to watch. `build-reel.js` keeps audio by default and
+  reserves 96 kbps for it. `--mute` is there for when it is not wanted.
+- **"Showpieces that ship: 1."** Two now ship. They are not two of the same
+  thing: one is given, one is asked for.
+- **"Dimensions ≤ 1280×720"** still holds, but is now a ceiling rather than a
+  target — the width is chosen from the bitrate the budget affords, and never
+  exceeds the source's own.
+
+### The master never enters the repository
+
+`tools/build-reel.js` — `npm run reel -- <master>` — encodes any export into
+`reel.webm`, `reel.mp4` and `reel-still.webp`, and **refuses to write if the
+pair does not fit**, deleting both encodes rather than shipping one over. The
+budget decides the picture: bitrate from budget and duration, width chosen to
+suit the bitrate.
+
+A 35 MB master must not be uploaded, for three separate reasons, any one
+sufficient: GitHub's web uploader refuses anything over 25 MB; a master in git
+history is paid for on every clone forever for bytes no visitor downloads; and
+it is seventeen times a budget it could never meet.
+
+### The file names are stable now
+
+`reel-placeholder.webm` and `reel-still.svg` became lies the moment real
+footage landed, and replacing them would have needed a markup edit. The three
+names are **`reel.webm`, `reel.mp4`, `reel-still.webp`**, a placeholder of
+each ships today so the `<source>` pair is real from the start, and
+`index.html` never changes again.

@@ -33,8 +33,10 @@ export function initContact(scope = document) {
     const status = form.querySelector('[data-contact-status]');
     const about = form.querySelector('[data-contact-about]');
     const to = form.dataset.contactForm;
+    const fallback = form.querySelector('[data-contact-fallback]');
 
     restoreAbout(about);
+    wireFallback(form, fallback, to);
 
     form.addEventListener('submit', (event) => {
       // Let the browser run native validation first; if it fails, this
@@ -72,13 +74,58 @@ export function initContact(scope = document) {
 
       window.location.href = href;
 
+      /* THE ONE THING THIS FILE COULD NOT SEE BEFORE.
+
+         `window.location.href = 'mailto:…'` reports nothing. If a mail client
+         opens, the visitor is away and never reads what follows; if none is
+         registered — a work desktop, a browser where nobody ever set one —
+         absolutely nothing happens, and the old status line said the message
+         was ready to send. That is the silent failure the module comment at
+         the top of this file already named, still live at the one moment it
+         mattered.
+
+         There is no event to listen for, so the honest move is to stop
+         claiming success and show the alternatives every time. A visitor whose
+         mail app DID open never sees this; one whose did not now has two
+         working routes and the truth that nothing was sent. */
       if (status) status.textContent = t('formNote');
+      if (fallback) fallback.hidden = false;
     });
   });
 
   initRemember(scope);
   initCopy(scope);
   watchLanguage(scope);
+}
+
+/* --- the fallback -------------------------------------------------------- */
+
+/* The WhatsApp href is COPIED from the channel already on the page rather than
+   written a second time: site.config.json is the single source for that number
+   and build-pricing.js renders it, so a second literal here would be a copy
+   that could drift. If the channel is missing, the button is dropped rather
+   than left pointing at nothing. */
+function wireFallback(form, fallback, address) {
+  if (!fallback) return;
+
+  const wa = fallback.querySelector('[data-contact-fallback-wa]');
+  const channel = document.querySelector('.c-channel--primary[href*="wa.me"]');
+  if (wa) {
+    if (channel) {
+      wa.href = channel.getAttribute('href');
+      /* contact.js swaps these on a language change for every [data-wa]. */
+      if (channel.dataset.waEn) wa.dataset.waEn = channel.dataset.waEn;
+      if (channel.dataset.waAr) wa.dataset.waAr = channel.dataset.waAr;
+      if (channel.hasAttribute('data-wa')) wa.setAttribute('data-wa', '');
+    } else {
+      wa.remove();
+    }
+  }
+
+  /* Reuses the copy control the section already has, so there is one
+     implementation of "did the clipboard actually work". */
+  const copy = fallback.querySelector('[data-contact-copy-address]');
+  if (copy && address) copy.setAttribute('data-copy', address);
 }
 
 /* --- carrying the choice ------------------------------------------------- */

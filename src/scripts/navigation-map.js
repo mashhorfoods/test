@@ -88,7 +88,11 @@ export const SECTIONS = [
   /* Reached through the primary CTA in the header, and now ALSO a labelled
      destination in the drawer (IA-5): a button is not a way-finding target, and
      a returning visitor looking for a phone number had nothing to scan for. */
-  { id: 'contact', label: 'Contact', labelAr: 'تواصل معنا', inNav: false, inMenu: true },
+  /* In the menu, not the top bar: the bar is at six items and current
+     practice puts the ceiling at seven, but someone hunting for "how long does
+     it take" should not have to scroll to find out where the answers are. */
+  { id: 'faq', label: 'FAQ', labelAr: 'الأسئلة الشائعة', inNav: false, inMenu: true },
+  { id: 'contact', label: 'Contact', labelAr: 'تواصل معنا', inNav: true, inMenu: true },
 ];
 
 /**
@@ -126,6 +130,7 @@ export const STRINGS = {
   en: {
     brandHome: 'Pixora, Digital Agency — home',
     primaryNav: 'Primary',
+    challengeSteps: 'Challenge progress',
     menuNav: 'Menu',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
@@ -138,10 +143,31 @@ export const STRINGS = {
     footerElsewhere: 'Elsewhere',
     opensNewTab: '(opens in a new tab)',
     backToTop: 'Back to top',
-    // Names the scroll-snap gallery (gallery.css). It is a focusable scroll
-    // region, so it needs a name a screen reader can announce before the
-    // visitor decides whether to enter it.
+    // The Brand Challenge's copy button restores this after saying what
+    // happened. (The Mystery Reward used it too, until docs/111 removed it.)
+    rewardCopy: 'Copy code',
+    // Names a focusable scroll region, so a screen reader can announce it
+    // before the visitor decides whether to enter it.
+    //
+    // ONE KEY WAS DOING THE JOB OF SIX, AND IT UNDID THE MARKUP TO DO IT.
+    // index.html had written two good, distinct labels — "Selected work" and
+    // "Campaigns" — and both carried data-i18n-label="galleryScroller", so
+    // the i18n pass replaced both with this one generic string at runtime.
+    // Three regions on the site ended up announcing the SAME name, and the
+    // author's own words were destroyed to achieve it. Exactly the shape
+    // docs/67 §1 already found once ("five identical 'See what it covers'
+    // links"), so it gets a key each. Found 7 Sep while preparing the
+    // screen-reader brief; qa.js §32 now fails on a repeated region name.
     galleryScroller: 'The work delivered — scroll for more',
+    galleryWork: 'Selected work — scroll for more',
+    galleryCampaigns: 'Campaigns — scroll for more',
+    // The three phone scrollers from docs/113. They were given tabindex="0"
+    // to satisfy axe's scrollable-region-focusable and NO NAME AT ALL, which
+    // axe does not check — so a keyboard visitor landed in an unnamed group
+    // three times on the way down the page.
+    scrollerBrandboard: 'Identity boards — scroll for more',
+    scrollerDevices: 'Website screens — scroll for more',
+    scrollerModules: 'Social formats — scroll for more',
     rights: 'All rights reserved.',
     // Currency SYMBOL only — the price figure itself is business data and is
     // authored in the markup, never here.
@@ -172,6 +198,7 @@ export const STRINGS = {
   ar: {
     brandHome: 'بيكسورا، وكالة رقمية — الصفحة الرئيسية',
     primaryNav: 'التنقل الرئيسي',
+    challengeSteps: 'مسار التحدي',
     menuNav: 'القائمة',
     openMenu: 'فتح القائمة',
     closeMenu: 'إغلاق القائمة',
@@ -184,7 +211,13 @@ export const STRINGS = {
     footerElsewhere: 'مواقع أخرى',
     opensNewTab: '(يفتح في نافذة جديدة)',
     backToTop: 'العودة إلى الأعلى',
+    rewardCopy: 'انسخ الرمز',
     galleryScroller: 'الأعمال المسلَّمة — مرّر للمزيد',
+    galleryWork: 'أعمال مختارة — مرّر للمزيد',
+    galleryCampaigns: 'حملات — مرّر للمزيد',
+    scrollerBrandboard: 'لوحات الهوية — مرّر للمزيد',
+    scrollerDevices: 'شاشات الموقع — مرّر للمزيد',
+    scrollerModules: 'صيغ التواصل — مرّر للمزيد',
     rights: 'جميع الحقوق محفوظة.',
     currency: 'دولار',
     billingOnce: 'لمرة واحدة',

@@ -104,7 +104,17 @@ jobs:
             echo "-> data-only edit; a stale dist/ will be rebuilt and committed"
           else
             echo "data_only=false" >> "$GITHUB_OUTPUT"
-            [ -n "$OFFENDERS" ] && { echo "-> not data-only, because of:"; echo "$OFFENDERS" | sed 's/^/     /'; }
+            # An `if`, not `[ -n ... ] && { ... }`. The step runs under
+            # `bash -e`, and that guard was the step's LAST command: on a push
+            # with no offenders and no data edit — a docs-only push — it
+            # evaluates false, returns 1, and takes the whole step down with
+            # it. The branch it guards is pure logging, so the failure said
+            # nothing about the push. Caught by this repository's first pull
+            # request, which changed two files in docs/ and nothing else.
+            if [ -n "$OFFENDERS" ]; then
+              echo "-> not data-only, because of:"
+              echo "$OFFENDERS" | sed 's/^/     /'
+            fi
           fi
 
       # THE COMMITTED dist/ IS WHAT SHIPS.
@@ -132,7 +142,8 @@ jobs:
             exit 1
           }
 
-      # validate.js, qa.js, a11y.js. Each exits non-zero only on a HIGH finding;
+      # validate.js, qa.js, responsive.js, arabic.js, a11y.js. Each exits
+      # non-zero only on a HIGH finding;
       # MEDIUM and LOW print and pass, which is deliberate (docs/56 §3) — so
       # read the log rather than only the tick.
       #

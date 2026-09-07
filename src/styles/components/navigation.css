@@ -9,7 +9,28 @@
 
 @layer components {
   /* -----------------------------------------------------------------------
-     DESKTOP NAV — 1024px and up (§05)
+     DESKTOP NAV — 1024px and up (§05), and it was tested at 768px first.
+
+     Removing the header CTA looked like it should buy a lower breakpoint: the
+     bar now holds a brand, six links and a language control where it used to
+     hold those plus a filled button, so tablets in portrait — 768, 810, 820 —
+     could have six labelled destinations instead of a hamburger.
+
+     They cannot. Measured on the shipped build, using the three zones' real
+     boxes, the gap between the brand and the centred nav at 768px in English
+     is MINUS 44px: they overlap. 800px is -28, 820px is -18, and the first
+     width that clears is around 880. Arabic fits at every one of them — its
+     labels are shorter — but a breakpoint that works in one language is not a
+     breakpoint.
+
+     So the constraint was never the CTA. It is six English labels against a
+     brand lockup, and 64em is where they stop arguing. Written down so the
+     next person to notice the empty space does not spend the same hour.
+
+     (The first measurement said it fitted with 95px to spare. It summed
+     intrinsic widths while the header is a `1fr auto 1fr` grid, so the brand
+     box it measured was the stretched column and not the lockup. A sum of the
+     wrong boxes is not a fit test.)
      ----------------------------------------------------------------------- */
   .c-nav {
     display: none;
@@ -116,7 +137,7 @@
     inline-size: var(--touch-target-min);
     block-size: var(--touch-target-min);
     border: var(--border-hairline);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-control);
     color: var(--color-text-primary);
     transition: var(--transition-interactive);
   }

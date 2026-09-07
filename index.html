@@ -160,24 +160,6 @@
             </button>
           </div>
 
-          <a class="c-btn c-btn--primary c-header__cta" href="#contact" data-cta-link>
-            <span data-cta-label>Start Your Project</span>
-            <svg
-              class="c-btn__icon u-flip-rtl"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path
-                d="M5 12h13M13 6l6 6-6 6"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="square"
-              />
-            </svg>
-          </a>
-
           <button
             class="c-menu-trigger"
             type="button"
@@ -306,9 +288,16 @@
               Your Digital <br class="c-hero__br" />Presence.<br />
               <span class="c-hero__accent">One Partner.</span></span><span data-lang-copy="ar" lang="ar">علامتك.<br /> حضورك الرقمي.<br /> <span class="c-hero__accent">شريك واحد.</span></span></h1>
 
-            <p class="t-body-lg c-hero__lead"><span data-lang-copy="en">We build brands, websites and digital experiences —
+            <!-- WHO IT IS FOR, ON THE FIRST SCREEN. The market was stated once, on
+                 /about — "a remote studio for the Gulf and Egypt" — which a
+                 visitor reaches only by clicking. A buyer in Cairo could not
+                 tell this site was for them, and a visitor outside the region
+                 could not tell it was not. Same sentence, moved to the
+                 paragraph everyone reads. -->
+            <p class="t-body-lg c-hero__lead"><span data-lang-copy="en">A remote studio for the Gulf and Egypt.
+              We build brands, websites and digital experiences —
               then connect them with content, social media and performance
-              marketing to help your business grow.</span><span data-lang-copy="ar" lang="ar">نبني العلامات والمواقع والتجارب الرقمية، ثم نربطها بالمحتوى ووسائل التواصل والتسويق الأدائي لينمو عملك.</span></p>
+              marketing to help your business grow.</span><span data-lang-copy="ar" lang="ar">استوديو يعمل عن بُعد في الخليج ومصر. نبني العلامات والمواقع والتجارب الرقمية، ثم نربطها بالمحتوى ووسائل التواصل والتسويق الأدائي لينمو عملك.</span></p>
 
             <div class="c-hero__actions">
               <a
@@ -332,7 +321,20 @@
                   />
                 </svg>
               </a>
-            </div>
+            
+              <!-- A SECOND, SOFTER STEP. The hero offered exactly one action —
+                   "Start Your Project" — which is the highest-commitment thing
+                   on the site, asked of someone who arrived ten seconds ago.
+                   Prices are this studio's strongest and most unusual card
+                   (published in full, where the market asks you to request a
+                   quote), so the low-commitment route is to go and look at
+                   them. /about already argues exactly this: "we would rather
+                   you could decide whether we are worth a conversation before
+                   having one." -->
+              <a class="c-btn c-btn--secondary c-hero__action-2" href="./pricing">
+                <span data-lang-copy="en">See what it costs</span><span data-lang-copy="ar" lang="ar">اطّلع على الأسعار</span>
+              </a>
+</div>
           </div>
 
           <!-- ===========================================================
@@ -527,7 +529,15 @@
               <h2 class="c-services__headline" id="services-title"><span data-lang-copy="en">Everything Digital.<br />
                 <span class="c-services__accent">Built to Work Together.</span></span><span data-lang-copy="ar" lang="ar">كل ما هو رقمي.<br /> <span class="c-services__accent">مبني ليعمل معًا.</span></span></h2>
             </div>
-            <p class="t-body-lg c-services__lead"><span data-lang-copy="en">Five services. Open any one to see what it covers.</span><span data-lang-copy="ar" lang="ar">خمس خدمات. افتح أيًا منها لترى ما تشمله.</span></p>
+            <!-- THE ARGUMENT, MOVED TO WHERE IT IS STILL BEING ASKED.
+                 This sentence was the best line on the site and it sat at
+                 screen 10 of 22, inside #integrated, long after a visitor had
+                 decided whether to keep reading. It is the only place the site
+                 says what it is actually selling — not four services, but the
+                 coordination between them — so it belongs in the first section
+                 after the hero. #integrated keeps the section and loses the
+                 duplicate sentence. -->
+            <p class="t-body-lg c-services__lead"><span data-lang-copy="en">The difference is not what gets made — it is how much of the coordinating you have to do yourself. Five services; open any one to see what it covers.</span><span data-lang-copy="ar" lang="ar">الفارق ليس فيما يُنجَز — بل في مقدار التنسيق الذي يقع عليك. خمس خدمات؛ افتح أيًا منها لترى ما تشمله.</span></p>
           </div>
 
           <div class="c-service-list" data-accordion data-accordion-single data-reveal-group>
@@ -539,6 +549,7 @@
                 <span class="c-service__indicator" aria-hidden="true"></span>
               </button>
             </h3>
+            <p class="c-service__summary"><span data-lang-copy="en">One consistent look across every channel.</span><span data-lang-copy="ar" lang="ar">مظهر واحد متسق في كل قناة.</span></p>
             <div class="c-service__panel" data-accordion-panel>
               <div class="c-service__panel-inner">
                 <div class="c-service__content">
@@ -584,6 +595,7 @@
                 <span class="c-service__indicator" aria-hidden="true"></span>
               </button>
             </h3>
+            <p class="c-service__summary"><span data-lang-copy="en">Designed, built, and handed over working.</span><span data-lang-copy="ar" lang="ar">يُصمَّم ويُبنى ويُسلَّم وهو يعمل.</span></p>
             <div class="c-service__panel" data-accordion-panel>
               <div class="c-service__panel-inner">
                 <div class="c-service__content">
@@ -627,6 +639,7 @@
                 <span class="c-service__indicator" aria-hidden="true"></span>
               </button>
             </h3>
+            <p class="c-service__summary"><span data-lang-copy="en">Strategy, content and publishing, handled.</span><span data-lang-copy="ar" lang="ar">استراتيجية ومحتوى ونشر، نتولّاها عنك.</span></p>
             <div class="c-service__panel" data-accordion-panel>
               <div class="c-service__panel-inner">
                 <div class="c-service__content">
@@ -676,6 +689,7 @@
                 <span class="c-service__indicator" aria-hidden="true"></span>
               </button>
             </h3>
+            <p class="c-service__summary"><span data-lang-copy="en">Paid campaigns, targeted and measured.</span><span data-lang-copy="ar" lang="ar">حملات مدفوعة، موجَّهة ومقاسة.</span></p>
             <div class="c-service__panel" data-accordion-panel>
               <div class="c-service__panel-inner">
                 <div class="c-service__content">
@@ -722,6 +736,7 @@
                 <span class="c-service__indicator" aria-hidden="true"></span>
               </button>
             </h3>
+            <p class="c-service__summary"><span data-lang-copy="en">All of the above, run as one system.</span><span data-lang-copy="ar" lang="ar">كل ما سبق، يُدار كنظامٍ واحد.</span></p>
             <div class="c-service__panel" data-accordion-panel>
               <div class="c-service__panel-inner">
                 <div class="c-service__content">
@@ -776,22 +791,97 @@
            times. This answers it with an example before the repetition starts.
            One quiet text link, not a second CTA — §11 of the CTA hierarchy.
            ============================================================= -->
+      <!-- =============================================================
+           RECENT WORK — four deliverables, shown rather than described.
+
+           This section used to be an eyebrow, one paragraph of prose and a
+           text link: it CLAIMED that one partner delivered four things and
+           showed none of them, on a site selling design, in a market where
+           the work is the argument. The four images already existed and were
+           being used only on /story.
+
+           THE LAYOUT is a bento grid — the 2026 pattern for case-study
+           previews — but it earns its place here for a reason older than the
+           trend: the claim is "four things, one brand", and a grid of four
+           tiles sharing one visual language is that sentence as a picture.
+           The identity leads at double width because it is what the other
+           three are made of.
+
+           NO SCRIPT. CSS grid, and the detail line is revealed by :hover and
+           :focus-within on pointer devices and shown outright everywhere
+           else — a touch visitor never hovers, so nothing may hide behind it.
+           ============================================================= -->
       <section class="l-section l-section--tight l-section--flush-top c-proof" aria-labelledby="proof-title">
         <div class="l-container">
-          <div class="c-proof__inner" data-reveal-group>
-            <p class="t-label c-proof__eyebrow" id="proof-title"><span data-lang-copy="en">Recent work</span><span data-lang-copy="ar" lang="ar">عمل حديث</span></p>
-            <p class="c-proof__line"><span data-lang-copy="en">Al Mada Travel &amp; Tourism Agency needed an identity, a website, a campaign set and a company profile — the four things most businesses buy from four different suppliers. <strong>One partner delivered all four</strong>, and the brand is the same object on every one of them.</span><span data-lang-copy="ar" lang="ar">احتاجت وكالة المدى للسفر والسياحة إلى هوية بصرية وموقع إلكتروني وحملات إعلانية وملف تعريفي — أربعة أشياء يشتريها معظم أصحاب الأعمال من أربع جهات مختلفة. <strong>أنجزها شريك واحد جميعها</strong>، والعلامة نفسها حاضرة في كل واحدة منها.</span></p>
-            <p class="c-proof__more">
-              <a class="c-link" href="./story">
-                <span data-lang-copy="en">Read the case study</span><span data-lang-copy="ar" lang="ar">اقرأ دراسة الحالة</span>
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="u-flip-rtl">
-                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none" />
-                </svg>
+          <header class="c-proof__head" data-reveal-group>
+            <p class="t-label c-proof__eyebrow"><span data-lang-copy="en">Recent work</span><span data-lang-copy="ar" lang="ar">عمل حديث</span></p>
+            <h2 class="c-proof__headline" id="proof-title"><span data-lang-copy="en">One partner delivered all four.</span><span data-lang-copy="ar" lang="ar">أنجزها شريك واحد جميعها.</span></h2>
+            <p class="t-body-lg c-proof__lead"><span data-lang-copy="en">Al Mada Travel &amp; Tourism Agency needed an identity, a website, a campaign set and a company profile — the four things most businesses buy from four different suppliers. The brand is the same object on every one of them.</span><span data-lang-copy="ar" lang="ar">احتاجت وكالة المدى للسفر والسياحة إلى هوية بصرية وموقع إلكتروني وحملات إعلانية وملف تعريفي — أربعة أشياء يشتريها معظم أصحاب الأعمال من أربع جهات مختلفة. والعلامة نفسها حاضرة في كل واحدة منها.</span></p>
+          </header>
+
+          <ul class="c-bento" role="list" data-reveal-group>
+            <li class="c-bento__tile c-bento__tile--lead">
+              <a class="c-bento__link" href="./story">
+                <img class="c-bento__image" src="./src/assets/images/al-mada-identity-tile.webp"
+                  alt="The Al Mada brand identity sheet: the mark at the centre — an aeroplane inside a circle, its flight path curving into the letter M — with the palette and type beneath it." data-alt-en="The Al Mada brand identity sheet: the mark at the centre — an aeroplane inside a circle, its flight path curving into the letter M — with the palette and type beneath it." data-alt-ar="لوحة هوية وكالة المدى: العلامة في المنتصف — طائرة داخل دائرة، يتحوّل مسارها إلى حرف M — وتحتها الألوان والخطوط."
+                  width="900" height="600" loading="lazy" decoding="async" />
+                <span class="c-bento__body">
+                  <span class="c-bento__index" aria-hidden="true">01</span>
+                  <span class="c-bento__name"><span data-lang-copy="en">Identity</span><span data-lang-copy="ar" lang="ar">الهوية</span></span>
+                  <span class="c-bento__detail"><span data-lang-copy="en">Logo, palette, type and the rules that hold them together.</span><span data-lang-copy="ar" lang="ar">شعار وألوان وخطوط والقواعد التي تجمعها.</span></span>
+                </span>
               </a>
-            </p>
-          </div>
+            </li>
+            <li class="c-bento__tile">
+              <a class="c-bento__link" href="./story">
+                <img class="c-bento__image" src="./src/assets/images/al-mada-website-tile.webp"
+                  alt="The Al Mada website on a desktop screen, a tablet and a phone. All three are Arabic and read right to left, with the navigation running from the right." data-alt-en="The Al Mada website on a desktop screen, a tablet and a phone. All three are Arabic and read right to left, with the navigation running from the right." data-alt-ar="موقع وكالة المدى على شاشة مكتبية ولوح وهاتف. الثلاثة بالعربية وتُقرأ من اليمين إلى اليسار، والقائمة تبدأ من اليمين."
+                  width="900" height="506" loading="lazy" decoding="async" />
+                <span class="c-bento__body">
+                  <span class="c-bento__index" aria-hidden="true">02</span>
+                  <span class="c-bento__name"><span data-lang-copy="en">Website</span><span data-lang-copy="ar" lang="ar">الموقع</span></span>
+                  <span class="c-bento__detail"><span data-lang-copy="en">Arabic-first, right to left, on every screen size.</span><span data-lang-copy="ar" lang="ar">بالعربية أولًا، من اليمين إلى اليسار، على كل المقاسات.</span></span>
+                </span>
+              </a>
+            </li>
+            <li class="c-bento__tile">
+              <a class="c-bento__link" href="./story">
+                <img class="c-bento__image" src="./src/assets/images/al-mada-campaign-tile.webp"
+                  alt="Five Umrah offer posters in the same blue identity, each with the Al Mada mark, a curved panel carrying a photograph and the offer in large Arabic numerals." data-alt-en="Five Umrah offer posters in the same blue identity, each with the Al Mada mark, a curved panel carrying a photograph and the offer in large Arabic numerals." data-alt-ar="خمسة إعلانات لعروض العمرة بالهوية الزرقاء نفسها، يحمل كلٌّ منها علامة المدى، ولوحة منحنية فيها صورة، والعرض بأرقام عربية كبيرة."
+                  width="560" height="794" loading="lazy" decoding="async" />
+                <span class="c-bento__body">
+                  <span class="c-bento__index" aria-hidden="true">03</span>
+                  <span class="c-bento__name"><span data-lang-copy="en">Campaigns</span><span data-lang-copy="ar" lang="ar">الحملات</span></span>
+                  <span class="c-bento__detail"><span data-lang-copy="en">Five Umrah offers, one identity, no redesign per post.</span><span data-lang-copy="ar" lang="ar">خمسة عروض عمرة، هوية واحدة، دون إعادة تصميم لكل منشور.</span></span>
+                </span>
+              </a>
+            </li>
+            <li class="c-bento__tile">
+              <a class="c-bento__link" href="./story">
+                <img class="c-bento__image" src="./src/assets/images/al-mada-profile-tile.webp"
+                  alt="The Al Mada company profile, printed. Three panels: a cover carrying the mark and the promise over an airport window, and inside spreads introducing the agency." data-alt-en="The Al Mada company profile, printed. Three panels: a cover carrying the mark and the promise over an airport window, and inside spreads introducing the agency." data-alt-ar="الملف التعريفي لوكالة المدى مطبوعًا. ثلاث لوحات: غلاف يحمل العلامة والوعد فوق نافذة مطار، وصفحات داخلية تعرّف بالوكالة."
+                  width="560" height="313" loading="lazy" decoding="async" />
+                <span class="c-bento__body">
+                  <span class="c-bento__index" aria-hidden="true">04</span>
+                  <span class="c-bento__name"><span data-lang-copy="en">Profile</span><span data-lang-copy="ar" lang="ar">الملف التعريفي</span></span>
+                  <span class="c-bento__detail"><span data-lang-copy="en">The same brand, printed and handed across a desk.</span><span data-lang-copy="ar" lang="ar">العلامة نفسها، مطبوعة وتُسلَّم باليد.</span></span>
+                </span>
+              </a>
+            </li>
+          </ul>
+
+          <p class="c-proof__more">
+            <a class="c-link" href="./story">
+              <span data-lang-copy="en">Read the case study</span><span data-lang-copy="ar" lang="ar">اقرأ دراسة الحالة</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="u-flip-rtl">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none" />
+              </svg>
+            </a>
+          </p>
         </div>
       </section>
+
+        
 
       <!-- =============================================================
            01 — BRANDING & DESIGN
@@ -815,7 +905,15 @@
               consistent, professional presence across every channel.</span><span data-lang-copy="ar" lang="ar">هويات بصرية وأنظمة تصميم تمنح عملك حضورًا متسقًا واحترافيًا في كل قناة.</span></p>
           </div>
 
-          <div class="c-brandboard" data-reveal-group>
+<!-- tabindex="0" because this becomes a horizontal scroller on a
+               phone (service-detail.css, foot of file). axe's
+               scrollable-region-focusable caught both of the other two the
+               moment they started scrolling: a region you can scroll with a
+               finger and not with a keyboard is a region some people cannot
+               read. Same treatment as .c-gallery, which has carried it since
+               docs/86. -->
+          <div class="c-brandboard" data-reveal-group tabindex="0"
+            role="group" aria-label="Identity boards — scroll for more" data-i18n-label="scrollerBrandboard">
           <div class="c-brandboard__panel">
             <img width="740" height="476"
               class="c-brandboard__image"
@@ -948,7 +1046,8 @@
               build websites ready for real business use.</span><span data-lang-copy="ar" lang="ar">من النطاق والاستضافة إلى التصميم والتطوير والإطلاق — نبني مواقع جاهزة للاستخدام التجاري الفعلي.</span></p>
           </div>
 
-          <div class="c-devices" data-reveal-group>
+          <div class="c-devices" data-reveal-group tabindex="0"
+            role="group" aria-label="Website screens — scroll for more" data-i18n-label="scrollerDevices">
           <figure class="c-device c-device--desktop">
             <img width="801" height="952"
               class="c-device__image"
@@ -1118,7 +1217,8 @@
             </p>
           </header>
 
-          <ul class="c-modules" data-reveal-group role="list">
+          <ul class="c-modules" data-reveal-group role="list" tabindex="0"
+            aria-label="Social formats — scroll for more" data-i18n-label="scrollerModules">
             <li class="c-modules__item c-modules__item--lead">
               <div class="c-modules__module">
                 <img width="724" height="985"
@@ -1442,9 +1542,14 @@
               <h2 class="c-detail__headline" id="integrated-title"><span data-lang-copy="en">Everything your business needs.<br />
                 <span class="c-detail__accent">Connected in one system.</span></span><span data-lang-copy="ar" lang="ar">كل ما يحتاجه عملك.<br /> <span class="c-detail__accent">متصل في نظام واحد.</span></span></h2>
             </div>
-            <p class="t-body-lg c-detail__lead"><span data-lang-copy="en">The same four services, arranged two ways. The difference is not
-              what gets made — it is how much of the coordinating you have to
-              do yourself.</span><span data-lang-copy="ar" lang="ar">الخدمات الأربع نفسها، مرتّبة بطريقتين. الفارق ليس فيما يُنجَز — بل في مقدار التنسيق الذي يقع عليك.</span></p>
+            <!-- The coordination sentence used to close this paragraph. It now
+                 opens the Services section instead — a visitor who reaches
+                 this far has already read it, and saying it twice was the
+                 fourth statement of "one partner" on one page. What is left
+                 here is the part only this section makes: the two
+                 arrangements, side by side. -->
+            <p class="t-body-lg c-detail__lead"><span data-lang-copy="en">The same four services, arranged two ways — as four
+              projects you hold together, or as one you do not.</span><span data-lang-copy="ar" lang="ar">الخدمات الأربع نفسها، مرتّبة بطريقتين — أربعة مشاريع تتولّى أنت ربطها، أو مشروع واحد لا تفعل.</span></p>
           </header>
 
           <!-- The hub is LAST in the DOM at every width. On tablet it is
@@ -1542,6 +1647,9 @@
         </div>
       </section>
 
+
+
+
             <!-- =============================================================
            08 — ADD-ONS (Stage 11)
            The twelve additional services from the Services & Pricing
@@ -1578,12 +1686,15 @@
           </header>
 
           <div class="c-addons">
-            <div class="c-addons__group" data-reveal-group>
-              <h3 class="t-label c-addons__category">
+            <details class="c-addons__group" data-reveal-group open>
+              <summary class="c-addons__summary">
+                <h3 class="t-label c-addons__category">
                 <span><span data-lang-copy="en">Design</span><span data-lang-copy="ar" lang="ar">التصميم</span></span>
                 <span class="c-addons__count" aria-hidden="true">3</span>
                 <span class="u-visually-hidden"><span><span data-lang-copy="en">3 add-ons</span><span data-lang-copy="ar" lang="ar">ثلاث إضافات</span></span></span>
-              </h3>
+                  <span class="c-addons__mark" aria-hidden="true"></span>
+                </h3>
+              </summary>
               <ul class="c-addons__grid" role="list">
               <li class="c-addon">
                 <span class="c-addon__index" aria-hidden="true">01</span>
@@ -1619,14 +1730,17 @@
                 </span>
               </li>
               </ul>
-            </div>
+            </details>
 
-            <div class="c-addons__group" data-reveal-group>
-              <h3 class="t-label c-addons__category">
+            <details class="c-addons__group" data-reveal-group>
+              <summary class="c-addons__summary">
+                <h3 class="t-label c-addons__category">
                 <span><span data-lang-copy="en">Content</span><span data-lang-copy="ar" lang="ar">المحتوى</span></span>
                 <span class="c-addons__count" aria-hidden="true">3</span>
                 <span class="u-visually-hidden"><span><span data-lang-copy="en">3 add-ons</span><span data-lang-copy="ar" lang="ar">ثلاث إضافات</span></span></span>
-              </h3>
+                  <span class="c-addons__mark" aria-hidden="true"></span>
+                </h3>
+              </summary>
               <ul class="c-addons__grid" role="list">
               <li class="c-addon">
                 <span class="c-addon__index" aria-hidden="true">04</span>
@@ -1662,14 +1776,17 @@
                 </span>
               </li>
               </ul>
-            </div>
+            </details>
 
-            <div class="c-addons__group" data-reveal-group>
-              <h3 class="t-label c-addons__category">
+            <details class="c-addons__group" data-reveal-group>
+              <summary class="c-addons__summary">
+                <h3 class="t-label c-addons__category">
                 <span><span data-lang-copy="en">Digital</span><span data-lang-copy="ar" lang="ar">الرقمي</span></span>
                 <span class="c-addons__count" aria-hidden="true">2</span>
                 <span class="u-visually-hidden"><span><span data-lang-copy="en">2 add-ons</span><span data-lang-copy="ar" lang="ar">إضافتان</span></span></span>
-              </h3>
+                  <span class="c-addons__mark" aria-hidden="true"></span>
+                </h3>
+              </summary>
               <ul class="c-addons__grid" role="list">
               <li class="c-addon">
                 <span class="c-addon__index" aria-hidden="true">07</span>
@@ -1695,14 +1812,17 @@
                 </span>
               </li>
               </ul>
-            </div>
+            </details>
 
-            <div class="c-addons__group" data-reveal-group>
-              <h3 class="t-label c-addons__category">
+            <details class="c-addons__group" data-reveal-group>
+              <summary class="c-addons__summary">
+                <h3 class="t-label c-addons__category">
                 <span><span data-lang-copy="en">Media</span><span data-lang-copy="ar" lang="ar">الوسائط</span></span>
                 <span class="c-addons__count" aria-hidden="true">2</span>
                 <span class="u-visually-hidden"><span><span data-lang-copy="en">2 add-ons</span><span data-lang-copy="ar" lang="ar">إضافتان</span></span></span>
-              </h3>
+                  <span class="c-addons__mark" aria-hidden="true"></span>
+                </h3>
+              </summary>
               <ul class="c-addons__grid" role="list">
               <li class="c-addon c-addon--custom">
                 <span class="c-addon__index" aria-hidden="true">09</span>
@@ -1715,14 +1835,17 @@
                 <span class="c-addon__quote"><span data-lang-copy="en">By project</span><span data-lang-copy="ar" lang="ar">حسب المشروع</span></span>
               </li>
               </ul>
-            </div>
+            </details>
 
-            <div class="c-addons__group" data-reveal-group>
-              <h3 class="t-label c-addons__category">
+            <details class="c-addons__group" data-reveal-group>
+              <summary class="c-addons__summary">
+                <h3 class="t-label c-addons__category">
                 <span><span data-lang-copy="en">Branding</span><span data-lang-copy="ar" lang="ar">الهوية</span></span>
                 <span class="c-addons__count" aria-hidden="true">1</span>
                 <span class="u-visually-hidden"><span><span data-lang-copy="en">1 add-on</span><span data-lang-copy="ar" lang="ar">إضافة واحدة</span></span></span>
-              </h3>
+                  <span class="c-addons__mark" aria-hidden="true"></span>
+                </h3>
+              </summary>
               <ul class="c-addons__grid" role="list">
               <li class="c-addon">
                 <span class="c-addon__index" aria-hidden="true">11</span>
@@ -1736,7 +1859,7 @@
                 </span>
               </li>
               </ul>
-            </div>
+            </details>
           </div>
 
           <div class="c-quote" data-reveal>
@@ -1759,6 +1882,14 @@
           </div>
         </div>
       </section>
+
+        <!-- The Mystery Reward stood here (docs/96). Removed at the owner's
+             instruction on 7 September: the visitor audit found two prize
+             mechanics on one page reading as a promo site rather than a studio
+             arguing for craft, and asked for one. The Brand Challenge is the
+             one kept — it earns its discount by making the visitor think about
+             the thing this studio sells, where the reward asked only that they
+             press a button. docs/111. -->
 
             <!-- =============================================================
            10 — PROCESS (Stage 13)
@@ -1864,35 +1995,265 @@
            leading edge, continuing Process; the other sits on the rule it
            departs on, at the trailing edge, leading into the footer.
            ============================================================= -->
-      <section id="start" class="c-detail" aria-labelledby="final-title">
+
+      <!-- =============================================================
+           THE WORK BEHIND THE LIST.
+           A scroll-snap gallery, the same component /story uses (docs/86):
+           no script required, no auto-advance, no dot navigation, and RTL
+           for free because it scrolls on the inline axis. It is never the
+           hero — docs/83 measured 132 blocks stranded when script-hidden
+           content loses its script, and a carousel is that pattern by
+           design.
+
+           EVERY IMAGE HERE IS A PLACEHOLDER. src/assets/placeholders/ holds
+           generated artwork at the right dimensions; replace the files and
+           the alt text, keep the names, and nothing else has to change.
+           ============================================================= -->
+      <section id="work" class="l-section c-showcase" aria-labelledby="work-title">
         <div class="l-container">
-          <div class="c-final">
-            <div data-reveal-group>
-              <p class="t-label c-detail__eyebrow">
-                <span class="c-detail__number">08</span>
-                <span><span data-lang-copy="en">Start</span><span data-lang-copy="ar" lang="ar">ابدأ</span></span>
-              </p>
-              <h2 class="c-final__headline" id="final-title"><span data-lang-copy="en">Let’s build your
-                <span class="c-final__accent">digital presence.</span></span><span data-lang-copy="ar" lang="ar">لنبنِ <span class="c-final__accent">حضورك الرقمي.</span></span></h2>
-            </div>
+          <header class="c-showcase__head" data-reveal-group>
+            <p class="t-label c-showcase__eyebrow"><span data-lang-copy="en">Selected Work</span><span data-lang-copy="ar" lang="ar">أعمال مختارة</span></p>
+            <h2 class="c-showcase__headline" id="work-title"><span data-lang-copy="en">The work behind the list.</span><span data-lang-copy="ar" lang="ar">العمل خلف القائمة.</span></h2>
+            <p class="t-body-lg c-showcase__lead"><span data-lang-copy="en">Seven pieces of recent identity work — marks, print, signage and the spaces they live in. Scroll sideways.</span><span data-lang-copy="ar" lang="ar">سبعة أعمال من مشاريع هوية حديثة — علامات ومطبوعات ولافتات والمساحات التي تظهر فيها. مرّر جانبًا.</span></p>
+          </header>
 
-            <div class="c-final__row" data-reveal-group>
-              <p class="c-final__lead"><span data-lang-copy="en">Tell us what you are building. We will take it from there.</span><span data-lang-copy="ar" lang="ar">أخبرنا بما تبنيه، ونتولى الباقي.</span></p>
+          <!-- THE SHOWREEL — a real player, a placeholder file.
 
-              <div class="c-final__actions">
-                <a class="c-btn c-btn--primary c-final__cta" href="#contact" data-cta-link>
-                  <span data-cta-label>Start Your Project</span>
-                  <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
-                  </svg>
-                </a>
-              </div>
-            </div>
+               preload="none" so nothing downloads until the visitor presses
+               play; no autoplay, so nothing plays into a room; playsinline so
+               iOS does not take over the screen; controls so it is operable
+               by keyboard and by a screen reader without a line of script.
+               The poster is painted before any of that, so the block is never
+               a black rectangle.
 
-            <div class="c-final__depart" aria-hidden="true"></div>
-          </div>
+               TO REPLACE: do not hand-drop a file here. Run
+
+                 npm run reel -- /path/to/the-master.mov
+
+               and tools/build-reel.js writes all three of these names from
+               the export, inside the budget, refusing to write at all if it
+               cannot fit. The master never enters the repository.
+
+               qa.js §7 caps click-to-play video at 6MB across the pair —
+               separately from the hero's 2MB, because the hero is paid for by
+               every desktop visitor and this is paid for only by someone who
+               presses play. -->
+          <figure class="c-reel" data-reveal-group>
+            <video class="c-reel__video" controls preload="none" playsinline
+              poster="./src/assets/showpiece/reel-still.webp"
+              aria-describedby="reel-caption">
+              <source src="./src/assets/showpiece/reel.webm" type="video/webm" />
+              <source src="./src/assets/showpiece/reel.mp4" type="video/mp4" />
+              <p class="c-reel__fallback"><span data-lang-copy="en">Your browser cannot play this video.</span><span data-lang-copy="ar" lang="ar">متصفحك لا يستطيع تشغيل هذا الفيديو.</span></p>
+            </video>
+            <figcaption class="c-reel__caption" id="reel-caption">
+              <span data-lang-copy="en">A sixty-second pass through recent work. Placeholder footage — the real reel replaces it.</span><span data-lang-copy="ar" lang="ar">جولة من ستين ثانية في أعمال حديثة. لقطات مؤقتة — يحلّ محلها الفيلم الحقيقي.</span>
+            </figcaption>
+          </figure>
+
+          <ul class="c-gallery c-showcase__gallery" role="list" tabindex="0"
+            aria-label="Selected work — scroll for more" data-i18n-label="galleryWork">
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/images/work-1.webp"
+                    alt="A gold geometric monogram, embossed on dark textured card and lit from one side." data-alt-en="A gold geometric monogram, embossed on dark textured card and lit from one side." data-alt-ar="شعار هندسي ذهبي مطبوع بارزًا على ورق داكن الملمس، تضيئه إضاءة من جانب واحد."
+                    width="900" height="834" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">01/07</span>
+                    <span data-lang-copy="en">Monogram, embossed</span><span data-lang-copy="ar" lang="ar">شعار مطبوع بارزًا</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/images/work-2.webp"
+                    alt="The Ajwa Flavors logo — a green botanical wreath around the name — debossed on an ivory business card, with wheat ears and bay leaves laid around it." data-alt-en="The Ajwa Flavors logo — a green botanical wreath around the name — debossed on an ivory business card, with wheat ears and bay leaves laid around it." data-alt-ar="شعار أجوا فليفرز — إكليل نباتي أخضر يحيط بالاسم — مطبوع غائرًا على بطاقة عمل عاجية، وحولها سنابل قمح وأوراق غار."
+                    width="900" height="812" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">02/07</span>
+                    <span data-lang-copy="en">Identity on a business card</span><span data-lang-copy="ar" lang="ar">الهوية على بطاقة عمل</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/images/work-3.webp"
+                    alt="The NexTech logo, its N drawn as a circuit board, on a glass sign above an open-plan office." data-alt-en="The NexTech logo, its N drawn as a circuit board, on a glass sign above an open-plan office." data-alt-ar="شعار نكس تك، وحرف N فيه مرسوم كلوحة دوائر إلكترونية، على لافتة زجاجية فوق مكتب مفتوح."
+                    width="900" height="822" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">03/07</span>
+                    <span data-lang-copy="en">Office signage</span><span data-lang-copy="ar" lang="ar">لافتة مكتبية</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/images/work-4.webp"
+                    alt="A Box Store retail interior: the illuminated wall sign, phones on lit display shelves, and a branded carrier bag on the counter." data-alt-en="A Box Store retail interior: the illuminated wall sign, phones on lit display shelves, and a branded carrier bag on the counter." data-alt-ar="واجهة داخلية لمتجر بوكس ستور: لافتة الحائط المضاءة، وهواتف على أرفف عرض مضاءة، وكيس يحمل العلامة على المنضدة."
+                    width="900" height="978" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">04/07</span>
+                    <span data-lang-copy="en">Retail interior</span><span data-lang-copy="ar" lang="ar">تجهيز متجر</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/images/work-5.webp"
+                    alt="A carved wooden shopfront sign in Arabic, with a pen nib worked into the lettering, lit at dusk above a bookshop." data-alt-en="A carved wooden shopfront sign in Arabic, with a pen nib worked into the lettering, lit at dusk above a bookshop." data-alt-ar="لافتة واجهة محل منحوتة في الخشب بحروف عربية، وقد دُمج سنّ قلم في الحروف، مضاءة عند الغروب فوق مكتبة."
+                    width="900" height="828" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">05/07</span>
+                    <span data-lang-copy="en">Shopfront sign</span><span data-lang-copy="ar" lang="ar">لافتة واجهة</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/images/work-6.webp"
+                    alt="A Mashhor Foodstuff Trading box photographed from above on a wooden table, surrounded by grains, pulses, herbs and dried citrus." data-alt-en="A Mashhor Foodstuff Trading box photographed from above on a wooden table, surrounded by grains, pulses, herbs and dried citrus." data-alt-ar="علبة مشهور لتجارة المواد الغذائية مصوّرة من أعلى على طاولة خشبية، وحولها حبوب وبقوليات وأعشاب وشرائح حمضيات مجففة."
+                    width="900" height="600" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">06/07</span>
+                    <span data-lang-copy="en">Packaging</span><span data-lang-copy="ar" lang="ar">التغليف</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/images/work-7.webp"
+                    alt="The Teela colour palette board: deep olive, soft ivory, warm stone, dark moss and champagne gold, with the extended tints named beneath." data-alt-en="The Teela colour palette board: deep olive, soft ivory, warm stone, dark moss and champagne gold, with the extended tints named beneath." data-alt-ar="لوحة ألوان تيلا: زيتوني غامق، وعاجي ناعم، وحجري دافئ، وطحلبي داكن، وذهبي شامبانيا، وتحتها التدرجات الموسّعة بأسمائها."
+                    width="900" height="600" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">07/07</span>
+                    <span data-lang-copy="en">Colour palette</span><span data-lang-copy="ar" lang="ar">لوحة الألوان</span>
+                  </figcaption>
+                </figure>
+              </li>
+          </ul>
         </div>
       </section>
+
+      <!-- =============================================================
+           CAMPAIGNS, AS THEY RAN.
+           A scroll-snap gallery, the same component /story uses (docs/86):
+           no script required, no auto-advance, no dot navigation, and RTL
+           for free because it scrolls on the inline axis. It is never the
+           hero — docs/83 measured 132 blocks stranded when script-hidden
+           content loses its script, and a carousel is that pattern by
+           design.
+
+           EVERY IMAGE HERE IS A PLACEHOLDER. src/assets/placeholders/ holds
+           generated artwork at the right dimensions; replace the files and
+           the alt text, keep the names, and nothing else has to change.
+           ============================================================= -->
+      <section id="campaigns" class="l-section c-showcase" aria-labelledby="campaigns-title">
+        <div class="l-container">
+          <header class="c-showcase__head" data-reveal-group>
+            <p class="t-label c-showcase__eyebrow"><span data-lang-copy="en">In Market</span><span data-lang-copy="ar" lang="ar">في السوق</span></p>
+            <h2 class="c-showcase__headline" id="campaigns-title"><span data-lang-copy="en">Campaigns, as they ran.</span><span data-lang-copy="ar" lang="ar">حملات كما ظهرت.</span></h2>
+            <p class="t-body-lg c-showcase__lead"><span data-lang-copy="en">Eight pieces of social and advertising work in the format the audience actually saw them in.</span><span data-lang-copy="ar" lang="ar">ثمانية أعمال إعلانية واجتماعية بالشكل الذي رآه الجمهور فعلًا.</span></p>
+          </header>
+
+          <ul class="c-gallery c-showcase__gallery" role="list" tabindex="0"
+            aria-label="Campaigns — scroll for more" data-i18n-label="galleryCampaigns">
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-01.svg"
+                    alt="Campaign piece 1 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 1 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 1 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">01/08</span>
+                    <span data-lang-copy="en">Campaign piece 1</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 1</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-02.svg"
+                    alt="Campaign piece 2 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 2 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 2 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">02/08</span>
+                    <span data-lang-copy="en">Campaign piece 2</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 2</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-03.svg"
+                    alt="Campaign piece 3 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 3 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 3 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">03/08</span>
+                    <span data-lang-copy="en">Campaign piece 3</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 3</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-04.svg"
+                    alt="Campaign piece 4 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 4 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 4 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">04/08</span>
+                    <span data-lang-copy="en">Campaign piece 4</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 4</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-05.svg"
+                    alt="Campaign piece 5 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 5 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 5 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">05/08</span>
+                    <span data-lang-copy="en">Campaign piece 5</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 5</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-06.svg"
+                    alt="Campaign piece 6 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 6 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 6 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">06/08</span>
+                    <span data-lang-copy="en">Campaign piece 6</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 6</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-07.svg"
+                    alt="Campaign piece 7 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 7 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 7 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">07/08</span>
+                    <span data-lang-copy="en">Campaign piece 7</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 7</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li class="c-gallery__item">
+                <figure style="margin:0">
+                  <img class="c-gallery__image" src="./src/assets/placeholders/campaign-08.svg"
+                    alt="Campaign piece 8 of 8 — placeholder artwork to be replaced with the real image." data-alt-en="Campaign piece 8 of 8 — placeholder artwork to be replaced with the real image." data-alt-ar="عمل إعلاني 8 من 8 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
+                    width="1080" height="1350" loading="lazy" decoding="async" />
+                  <figcaption class="c-gallery__caption">
+                    <span class="c-gallery__count" aria-hidden="true">08/08</span>
+                    <span data-lang-copy="en">Campaign piece 8</span><span data-lang-copy="ar" lang="ar">عمل إعلاني 8</span>
+                  </figcaption>
+                </figure>
+              </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- The "08 Start" closing banner stood here: one headline — "Let's build
+           your digital presence" — 710px above a section headed "Let's talk.
+           Let's build it." Two closes in a row saying the same thing, and only
+           the second one carried a form (docs/108 §5). The number it held now
+           belongs to the FAQ, so the run 01-09 stays unbroken.  -->
 
       <!-- =============================================================
            12 — CONTACT (Stage 17)
@@ -1915,6 +2276,326 @@
            beats typing a message, and a visitor who wants to call should not
            have to scroll past three inputs to find the number.
            ============================================================= -->
+<!-- CHALLENGE:START -->
+        <section class="l-section c-challenge" aria-labelledby="challenge-title" data-challenge
+          data-challenge-id="diagnosis-2026"
+          data-challenge-storage="pixora:challenge"
+          data-challenge-attempts="2"
+          data-challenge-answer="ZhcDl4xY3RVY/kux"
+          data-challenge-shuffle="true"
+          data-challenge-days="30"
+          data-challenge-whatsapp="249962672192"
+          data-challenge-state="intro">
+          <div class="l-container">
+            <div class="c-challenge__panel" data-reveal>
+
+              <!-- THE HEADER IS PERSISTENT, and that is a fix as well as a
+                   composition. The <h2> used to live inside the intro pane, so
+                   the moment the challenge started, the section's
+                   aria-labelledby pointed at a hidden element and the
+                   landmark lost its name for the whole of the part that
+                   matters. It now sits outside the panes, with the step track
+                   under it, so the visitor can always see what this is and how
+                   far through it they are. -->
+              <header class="c-challenge__head">
+                <p class="t-label c-challenge__eyebrow"><span data-lang-copy="en">The brand challenge</span><span data-lang-copy="ar" lang="ar">تحدّي العلامة</span></p>
+                <h2 class="c-challenge__title" id="challenge-title"><span data-lang-copy="en">Think you can solve it?</span><span data-lang-copy="ar" lang="ar">أتظن أنك تستطيع حلّه؟</span></h2>
+                <ol class="c-challenge__steps" role="list" data-challenge-steps data-i18n-label="challengeSteps">
+                  <!-- data-challenge-at ships with the page, not only from the
+                       script. The stylesheet colours the current step from it,
+                       so leaving it to the script drew a track with no current
+                       step at all until JavaScript ran — and never, for a
+                       visitor without it, while aria-current still said step
+                       one. The announcement and the drawing agree from the
+                       first paint. -->
+                  <li class="c-challenge__step" data-challenge-step="brief" data-challenge-at="now" aria-current="step">
+                    <span class="c-challenge__step-num" aria-hidden="true">1</span>
+                    <span class="c-challenge__step-name"><span data-lang-copy="en">Brief</span><span data-lang-copy="ar" lang="ar">الموجز</span></span>
+                  </li>
+                  <li class="c-challenge__step" data-challenge-step="answer" data-challenge-at="ahead">
+                    <span class="c-challenge__step-num" aria-hidden="true">2</span>
+                    <span class="c-challenge__step-name"><span data-lang-copy="en">Answer</span><span data-lang-copy="ar" lang="ar">الإجابة</span></span>
+                  </li>
+                  <li class="c-challenge__step" data-challenge-step="reward" data-challenge-at="ahead">
+                    <span class="c-challenge__step-num" aria-hidden="true">3</span>
+                    <span class="c-challenge__step-name"><span data-lang-copy="en">Reward</span><span data-lang-copy="ar" lang="ar">المكافأة</span></span>
+                  </li>
+                </ol>
+              </header>
+
+              <!-- STAGE 1 — the invitation. Complete without JavaScript: it says
+                   what is on offer and what it is for. The start button is
+                   revealed by the script, because a button that cannot start
+                   anything is worse than no button. -->
+              <div class="c-challenge__intro" data-challenge-intro>
+                <p class="c-challenge__lead"><span data-lang-copy="en">Take the challenge. Find the right answer. Unlock a special reward.</span><span data-lang-copy="ar" lang="ar">خُض التحدي. اعثر على الإجابة الصحيحة. افتح مكافأة خاصة.</span></p>
+                <button class="c-btn c-btn--primary c-challenge__start" type="button" data-challenge-start hidden>
+                  <span><span data-lang-copy="en">Start the challenge</span><span data-lang-copy="ar" lang="ar">ابدأ التحدي</span></span>
+                  <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+                  </svg>
+                </button>
+                <p class="c-challenge__terms"><span data-lang-copy="en">Up to 70% off eligible packages.</span><span data-lang-copy="ar" lang="ar">خصم يصل إلى 70% على الباقات المؤهّلة.</span> <a class="c-link" href="./terms#promotions"><span data-lang-copy="en">Terms apply.</span><span data-lang-copy="ar" lang="ar">تُطبَّق الشروط.</span></a></p>
+              </div>
+
+              <!-- STAGE 2 — the question. A real fieldset of real radios, so it
+                   is keyboard-operable and screen-reader-legible before any
+                   script touches it. -->
+              <form class="c-challenge__quiz" data-challenge-quiz hidden>
+                <fieldset class="c-challenge__fieldset">
+                  <!-- The legend stays the fieldset's FIRST child. It is the
+                       group's accessible name — announced with every option —
+                       and anywhere else in the fieldset it is neither valid
+                       nor announced. So the two-column layout goes on an inner
+                       wrapper and the ask spans the top of it. -->
+                  <legend class="c-challenge__ask"><span data-lang-copy="en">You can only start with one. Which one, once solved, makes the other three easier to solve?</span><span data-lang-copy="ar" lang="ar">لا يمكنك البدء إلا بواحدة. أيّها إذا حُلَّت جعلت الثلاث الأخرى أسهل؟</span></legend>
+                  <div class="c-challenge__body">
+                    <!-- The case material, marked as case material. It was one
+                         grey paragraph of body copy indistinguishable from the
+                         lead above it — four facts a visitor has to hold in
+                         mind to answer at all, styled as though they were
+                         scenery. -->
+                    <div class="c-challenge__brief">
+                      <p class="t-label c-challenge__brief-label"><span data-lang-copy="en">The brief</span><span data-lang-copy="ar" lang="ar">الموجز</span></p>
+                      <p class="c-challenge__scenario"><span data-lang-copy="en">A clinic comes to you with four complaints, and all four are true. Their logo looks dated. Their site takes six seconds to load. Visitors cannot tell which of their five services applies to them. Their ads cost a great deal per enquiry.</span><span data-lang-copy="ar" lang="ar">تأتيك عيادة بأربع شكاوى، وكلها صحيحة. شعارها يبدو قديمًا. وموقعها يستغرق ست ثوانٍ ليُفتح. والزائر لا يعرف أيّ خدمة من خدماتها الخمس تخصّه. وإعلاناتها تكلّف كثيرًا مقابل كل استفسار.</span></p>
+                    </div>
+                    <div class="c-challenge__answer">
+                    <ul class="c-challenge__options" role="list" data-challenge-options>
+                  <li class="c-challenge__option">
+                    <input class="c-challenge__radio u-visually-hidden" type="radio"
+                      name="challenge-answer" id="challenge-logo"
+                      value="15rAS0uINV/GYII1" data-challenge-option />
+                    <label class="c-challenge__label" for="challenge-logo">
+                      <span class="c-challenge__marker" aria-hidden="true">A</span>
+                      <span class="c-challenge__option-text"><span data-lang-copy="en">The dated logo</span><span data-lang-copy="ar" lang="ar">الشعار القديم</span></span>
+                      <svg class="c-challenge__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M4 12.5l5.5 5.5L20 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" />
+                      </svg>
+                    </label>
+                  </li>
+                  <li class="c-challenge__option">
+                    <input class="c-challenge__radio u-visually-hidden" type="radio"
+                      name="challenge-answer" id="challenge-speed"
+                      value="w+7J3zKGasZQrw29" data-challenge-option />
+                    <label class="c-challenge__label" for="challenge-speed">
+                      <span class="c-challenge__marker" aria-hidden="true">B</span>
+                      <span class="c-challenge__option-text"><span data-lang-copy="en">The six-second load time</span><span data-lang-copy="ar" lang="ar">زمن التحميل: ست ثوانٍ</span></span>
+                      <svg class="c-challenge__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M4 12.5l5.5 5.5L20 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" />
+                      </svg>
+                    </label>
+                  </li>
+                  <li class="c-challenge__option">
+                    <input class="c-challenge__radio u-visually-hidden" type="radio"
+                      name="challenge-answer" id="challenge-clarity"
+                      value="ZhcDl4xY3RVY/kux" data-challenge-option />
+                    <label class="c-challenge__label" for="challenge-clarity">
+                      <span class="c-challenge__marker" aria-hidden="true">C</span>
+                      <span class="c-challenge__option-text"><span data-lang-copy="en">How the five services are explained</span><span data-lang-copy="ar" lang="ar">طريقة شرح الخدمات الخمس</span></span>
+                      <svg class="c-challenge__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M4 12.5l5.5 5.5L20 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" />
+                      </svg>
+                    </label>
+                  </li>
+                  <li class="c-challenge__option">
+                    <input class="c-challenge__radio u-visually-hidden" type="radio"
+                      name="challenge-answer" id="challenge-ads"
+                      value="RiqDsZeT1u49AsmJ" data-challenge-option />
+                    <label class="c-challenge__label" for="challenge-ads">
+                      <span class="c-challenge__marker" aria-hidden="true">D</span>
+                      <span class="c-challenge__option-text"><span data-lang-copy="en">The ad targeting</span><span data-lang-copy="ar" lang="ar">استهداف الإعلانات</span></span>
+                      <svg class="c-challenge__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M4 12.5l5.5 5.5L20 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" />
+                      </svg>
+                    </label>
+                  </li>
+                    </ul>
+                    <div class="c-challenge__foot">
+                      <p class="c-challenge__attempts" data-challenge-attempts-line>
+                        <span class="t-label"><span data-lang-copy="en">Attempts left</span><span data-lang-copy="ar" lang="ar">المحاولات المتبقية</span></span>
+                        <span class="c-challenge__dots" aria-hidden="true"><span class="c-challenge__dot" data-challenge-dot="left"></span><span class="c-challenge__dot" data-challenge-dot="left"></span></span>
+                        <span class="c-challenge__attempts-count" data-challenge-remaining>2</span>
+                      </p>
+                      <button class="c-btn c-btn--primary c-challenge__submit" type="submit" data-challenge-submit>
+                        <span><span data-lang-copy="en">Submit answer</span><span data-lang-copy="ar" lang="ar">أرسل الإجابة</span></span>
+                      </button>
+                    </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+
+              <!-- The wrong-answer state. It never names the correct option:
+                   the visitor gets another go, and being told the answer would
+                   end the thinking the challenge exists to provoke. -->
+              <div class="c-challenge__wrong" data-challenge-wrong hidden role="status" aria-live="polite">
+                <p class="t-label c-challenge__wrong-title"><span data-lang-copy="en">Not quite.</span><span data-lang-copy="ar" lang="ar">ليست تمامًا.</span></p>
+                <p class="c-challenge__wrong-body" data-challenge-wrong-body><span data-lang-copy="en">Think about it again — which one do the others depend on?</span><span data-lang-copy="ar" lang="ar">فكّر فيها مرة أخرى — أيّها تعتمد عليه البقية؟</span></p>
+                <button class="c-btn c-btn--secondary" type="button" data-challenge-retry>
+                  <span><span data-lang-copy="en">Try again</span><span data-lang-copy="ar" lang="ar">حاول مرة أخرى</span></span>
+                </button>
+              </div>
+
+              <!-- Attempts spent. Not a punishment and not a dead end — it
+                   turns into the same conversation the rest of the site offers. -->
+              <div class="c-challenge__spent" data-challenge-spent hidden role="status" aria-live="polite">
+                <p class="t-label c-challenge__wrong-title"><span data-lang-copy="en">That was the last attempt.</span><span data-lang-copy="ar" lang="ar">كانت تلك المحاولة الأخيرة.</span></p>
+                <p class="c-challenge__wrong-body"><span data-lang-copy="en">The offer stands anyway: tell us about the business and we will give you the answer, and our reading of it.</span><span data-lang-copy="ar" lang="ar">العرض قائم على أي حال: حدّثنا عن العمل وسنعطيك الإجابة وقراءتنا لها.</span></p>
+                <a class="c-btn c-btn--primary" data-challenge-talk href="#contact">
+                  <span><span data-lang-copy="en">Tell us about it</span><span data-lang-copy="ar" lang="ar">حدّثنا عنه</span></span>
+                </a>
+              </div>
+
+              <!-- STAGE 3 — solved. -->
+              <div class="c-challenge__won" data-challenge-won hidden role="status" aria-live="polite">
+                <p class="t-label c-challenge__won-eyebrow"><span data-lang-copy="en">You got it.</span><span data-lang-copy="ar" lang="ar">أصبتها.</span></p>
+                <p class="c-challenge__won-body"><span data-lang-copy="en">Excellent. You solved the challenge.</span><span data-lang-copy="ar" lang="ar">ممتاز. لقد حللت التحدي.</span></p>
+
+                <p class="t-label c-challenge__reward-label"><span data-lang-copy="en">Your reward</span><span data-lang-copy="ar" lang="ar">مكافأتك</span></p>
+                <p class="c-challenge__prize">
+                  <span class="c-challenge__prize-figure" data-challenge-prize></span>
+                  <span class="c-challenge__prize-word"><span data-lang-copy="en">off</span><span data-lang-copy="ar" lang="ar">خصم</span></span>
+                </p>
+                <!-- THE POOL THE PRIZE CAME OUT OF. Marked aria-hidden because
+                     it depicts what the two lines around it already state: a
+                     screen reader reading "10 20 30 50 70" learns nothing and
+                     loses the thread. The figure above and the ceiling below
+                     are the text; this is the picture of it. -->
+                <div class="c-challenge__draw">
+                  <p class="t-label c-challenge__draw-label"><span data-lang-copy="en">Your draw</span><span data-lang-copy="ar" lang="ar">ما حصلت عليه</span></p>
+                  <ol class="c-challenge__ladder" role="list" data-challenge-ladder aria-hidden="true">
+                    <li class="c-challenge__tier" data-challenge-tier="t10"
+                      data-challenge-weight="34" data-challenge-code="SOLVED10" data-challenge-drawn="no">
+                      <span class="c-challenge__percent">10%</span>
+                    </li>
+                    <li class="c-challenge__tier" data-challenge-tier="t20"
+                      data-challenge-weight="30" data-challenge-code="SOLVED20" data-challenge-drawn="no">
+                      <span class="c-challenge__percent">20%</span>
+                    </li>
+                    <li class="c-challenge__tier" data-challenge-tier="t30"
+                      data-challenge-weight="22" data-challenge-code="SOLVED30" data-challenge-drawn="no">
+                      <span class="c-challenge__percent">30%</span>
+                    </li>
+                    <li class="c-challenge__tier" data-challenge-tier="t50"
+                      data-challenge-weight="11" data-challenge-code="SOLVED50" data-challenge-drawn="no">
+                      <span class="c-challenge__percent">50%</span>
+                    </li>
+                    <li class="c-challenge__tier" data-challenge-tier="t70"
+                      data-challenge-weight="3" data-challenge-code="SOLVED70" data-challenge-drawn="no">
+                      <span class="c-challenge__percent">70%</span>
+                    </li>
+                  </ol>
+                </div>
+                <p class="c-challenge__cap"><span data-lang-copy="en">Up to 70% off</span><span data-lang-copy="ar" lang="ar">خصم يصل إلى 70%</span></p>
+
+                <p class="c-challenge__code-label t-label"><span data-lang-copy="en">Your code</span><span data-lang-copy="ar" lang="ar">رمزك</span></p>
+                <p class="c-challenge__code"><code data-challenge-code-slot></code></p>
+                <p class="c-challenge__validity"><span data-lang-copy="en">Valid for 30 days.</span><span data-lang-copy="ar" lang="ar">صالحة لمدة 30 يومًا.</span></p>
+
+                <!-- The explanation is the point of the whole thing: the
+                     visitor should leave knowing how we think, not only that
+                     they won something. -->
+                <details class="c-challenge__why">
+                  <summary>
+                    <span class="c-challenge__why-mark" aria-hidden="true"></span>
+                    <span><span data-lang-copy="en">Why this is the answer</span><span data-lang-copy="ar" lang="ar">لماذا هذه هي الإجابة</span></span>
+                  </summary>
+                  <p><span data-lang-copy="en">Because the other three depend on it. Ads need a proposition to target and a page that converts, so they cannot be fixed before the services are clear. A logo changes how a business looks, not what it means. And a fast page that still confuses people converts no better than a slow one. Make each service legible to the person it is for, and the ads gain something to aim at, the logo gains a brief, and you finally know which pages are worth making fast.</span><span data-lang-copy="ar" lang="ar">لأن الثلاث الأخرى تعتمد عليها. الإعلانات تحتاج رسالة تستهدفها وصفحة تُحوِّل، فلا يمكن إصلاحها قبل أن تتّضح الخدمات. والشعار يغيّر شكل العمل لا معناه. والصفحة السريعة التي تربك الزائر لا تُحوِّل أفضل من البطيئة. اجعل كل خدمة مفهومة لمن هي له، فتجد للإعلانات ما تستهدفه، وللشعار ملخصًا يُبنى عليه، وتعرف أخيرًا أي الصفحات يستحق تسريعه.</span></p>
+                </details>
+
+                <div class="c-challenge__actions">
+                  <button class="c-btn c-btn--secondary" type="button" data-challenge-copy>
+                    <span><span data-lang-copy="en">Copy code</span><span data-lang-copy="ar" lang="ar">انسخ الرمز</span></span>
+                  </button>
+                  <a class="c-btn c-btn--primary" data-challenge-claim href="#contact">
+                    <span><span data-lang-copy="en">Claim my reward</span><span data-lang-copy="ar" lang="ar">احصل على مكافأتي</span></span>
+                  </a>
+                </div>
+                <p class="c-challenge__more">
+                  <a class="c-link" href="./pricing"><span data-lang-copy="en">Explore our packages</span><span data-lang-copy="ar" lang="ar">اطّلع على باقاتنا</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="u-flip-rtl">
+                      <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none" />
+                    </svg>
+                  </a>
+                  <a class="c-link c-challenge__share" data-challenge-share href="#" hidden><span data-lang-copy="en">Challenge a friend</span><span data-lang-copy="ar" lang="ar">تحدَّ صديقًا</span></a>
+                </p>
+              </div>
+
+              <span class="c-challenge__sweep" aria-hidden="true" data-challenge-sweep></span>
+            </div>
+          </div>
+        </section>
+        <!-- CHALLENGE:END -->
+
+      <!-- =============================================================
+           FAQ — the last six questions, answered from what the site
+           already says.
+
+           docs/108 §14 listed what a buyer still wants to know after
+           reading everything. Six of those answers already existed on the
+           site and none of them were where the decision gets made: who you
+           actually deal with and where the studio is (on /about), how long
+           a project takes, how many revisions it includes and who owns the
+           files (inside the pricing tables), and why the price is what it
+           is (on /about again).
+
+           Nothing here is new information. It is the same facts, moved to
+           the last screen before the form, which is where the objections
+           are. Native <details>: it works with JavaScript disabled, it is
+           keyboard-operable for free, and a crawler reads every answer
+           whether or not it is open.
+           ============================================================= -->
+      <section id="faq" class="l-section c-faq" aria-labelledby="faq-title">
+        <div class="l-container">
+          <header class="c-faq__head" data-reveal-group>
+            <p class="t-label c-detail__eyebrow">
+              <span class="c-detail__number">08</span>
+              <span><span data-lang-copy="en">Before you ask</span><span data-lang-copy="ar" lang="ar">قبل أن تسأل</span></span>
+            </p>
+            <h2 class="c-faq__headline" id="faq-title"><span data-lang-copy="en">The questions everyone asks first.</span><span data-lang-copy="ar" lang="ar">الأسئلة التي يبدأ بها الجميع.</span></h2>
+          </header>
+
+          <ul class="c-faq__list" role="list" data-reveal-group>
+            <li class="c-faq__item">
+              <details class="c-faq__entry">
+                <summary class="c-faq__q"><span class="c-faq__mark" aria-hidden="true"></span><span><span data-lang-copy="en">Who will I actually be working with?</span><span data-lang-copy="ar" lang="ar">مع من سأتعامل فعليًا؟</span></span></summary>
+                <p class="c-faq__a"><span data-lang-copy="en">Pixora is run by Muhalab Salah, who designs the brands and builds the sites. You deal with the person doing the work, not an account manager relaying messages to someone you never meet.</span><span data-lang-copy="ar" lang="ar">يدير بيكسورا مهلب صلاح، وهو من يصمّم العلامات ويبني المواقع. تتعامل مع من ينفّذ العمل، لا مع مدير حسابات ينقل الرسائل إلى شخص لن تقابله.</span></p>
+              </details>
+            </li>
+            <li class="c-faq__item">
+              <details class="c-faq__entry">
+                <summary class="c-faq__q"><span class="c-faq__mark" aria-hidden="true"></span><span><span data-lang-copy="en">Where are you based?</span><span data-lang-copy="ar" lang="ar">أين مقرّكم؟</span></span></summary>
+                <p class="c-faq__a"><span data-lang-copy="en">There is no office to visit, and that is the point: it is why one studio can serve Riyadh, Dubai and Cairo at the same price. Conversations happen on WhatsApp or by email, in Arabic or English, whichever suits you.</span><span data-lang-copy="ar" lang="ar">لا يوجد مكتب تزوره، وهذا هو المقصود: لذلك يستطيع استوديو واحد أن يخدم الرياض ودبي والقاهرة بالسعر نفسه. الحديث يجري عبر واتساب أو البريد، بالعربية أو الإنجليزية، أيّهما تفضّل.</span></p>
+              </details>
+            </li>
+            <li class="c-faq__item">
+              <details class="c-faq__entry">
+                <summary class="c-faq__q"><span class="c-faq__mark" aria-hidden="true"></span><span><span data-lang-copy="en">How long does a project take?</span><span data-lang-copy="ar" lang="ar">كم يستغرق المشروع؟</span></span></summary>
+                <p class="c-faq__a"><span data-lang-copy="en">Between 3 and 18 working days, depending on the package — every package names its own. Social media plans start differently: the plan in 3 working days, then posts on schedule.</span><span data-lang-copy="ar" lang="ar">بين 3 و18 يوم عمل، بحسب الباقة — وكل باقة تذكر مدّتها. باقات وسائل التواصل تبدأ بطريقة مختلفة: الخطة خلال 3 أيام عمل، ثم النشر حسب الجدول.</span></p>
+              </details>
+            </li>
+            <li class="c-faq__item">
+              <details class="c-faq__entry">
+                <summary class="c-faq__q"><span class="c-faq__mark" aria-hidden="true"></span><span><span data-lang-copy="en">What if I do not like the design?</span><span data-lang-copy="ar" lang="ar">وماذا لو لم يعجبني التصميم؟</span></span></summary>
+                <p class="c-faq__a"><span data-lang-copy="en">Every package includes revision rounds — one to three of them, depending on the package, and each package says how many before you buy it.</span><span data-lang-copy="ar" lang="ar">كل باقة تتضمّن جولات تعديل — من جولة إلى ثلاث، بحسب الباقة، وكل باقة تذكر عددها قبل أن تشتريها.</span></p>
+              </details>
+            </li>
+            <li class="c-faq__item">
+              <details class="c-faq__entry">
+                <summary class="c-faq__q"><span class="c-faq__mark" aria-hidden="true"></span><span><span data-lang-copy="en">Who owns the files at the end?</span><span data-lang-copy="ar" lang="ar">لمن تعود الملفات في النهاية؟</span></span></summary>
+                <p class="c-faq__a"><span data-lang-copy="en">You do — everything delivered, on completion. Source files included, on every package.</span><span data-lang-copy="ar" lang="ar">لك أنت — كل ما نسلّمه لك، عند الانتهاء. وملفات المصدر ضمن ذلك، في كل الباقات.</span></p>
+              </details>
+            </li>
+            <li class="c-faq__item">
+              <details class="c-faq__entry">
+                <summary class="c-faq__q"><span class="c-faq__mark" aria-hidden="true"></span><span><span data-lang-copy="en">Why are your prices lower than agencies I know?</span><span data-lang-copy="ar" lang="ar">لماذا أسعاركم أقل من وكالات أعرفها؟</span></span></summary>
+                <p class="c-faq__a"><span data-lang-copy="en">Because they are published instead of quoted, and because we are new in these markets and priced accordingly. That is a deliberate position, not a discount that expires.</span><span data-lang-copy="ar" lang="ar">لأنها منشورة لا مطلوبة بعرض سعر، ولأننا جدد في هذه الأسواق وسعّرنا على هذا الأساس. هذا موقف مقصود، لا خصم ينتهي.</span></p>
+              </details>
+            </li>
+          </ul>
+        </div>
+      </section>
+
       <section id="contact" class="l-section c-detail" aria-labelledby="contact-title">
         <div class="l-container">
           <header class="c-detail__head" data-reveal-group>
@@ -1994,7 +2675,7 @@
             <form class="c-contact__form" data-reveal
               data-contact-form="muhalabsalah@gmail.com"
               action="mailto:muhalabsalah@gmail.com"
-              method="post" enctype="text/plain"
+              method="get"
               aria-labelledby="contact-form-title">
               <h3 class="t-label c-contact__heading" id="contact-form-title" data-i18n="formSend">Send message</h3>
 
@@ -2055,6 +2736,41 @@
                 Opens your email app with the message ready to send.
               </p>
               <p class="c-contact__status" data-contact-status role="status" aria-live="polite"></p>
+
+              <!-- THE RECOVERY, FOR WHEN THE MAIL APP NEVER OPENS.
+
+                   This form does not post anywhere: it hands the message to
+                   the visitor's own mail client. On a machine with no mail
+                   client registered — a work desktop, a browser where nobody
+                   has ever set one — `mailto:` does nothing at all, silently,
+                   while the note above says the message is ready. The visitor
+                   believes they have made contact and no one ever hears from
+                   them.
+
+                   So the moment the form is submitted, the alternatives
+                   appear. The WhatsApp address is copied from the channel
+                   above it by contact.js rather than written twice, so there
+                   is still one source for the number. -->
+              <div class="c-contact__fallback" data-contact-fallback hidden>
+                <p class="c-contact__fallback-text"><span data-lang-copy="en">If your email app did not open, nothing has been sent yet. Use either of these instead:</span><span data-lang-copy="ar" lang="ar">إذا لم يفتح تطبيق البريد لديك، فلم يُرسَل شيء بعد. استخدم أحد هذين البديلين:</span></p>
+                <p class="c-contact__fallback-actions">
+                  <a class="c-btn c-btn--secondary c-btn--sm" data-contact-fallback-wa href="#contact" target="_blank" rel="noopener noreferrer">
+                    <span data-lang-copy="en">Send it on WhatsApp</span><span data-lang-copy="ar" lang="ar">أرسلها عبر واتساب</span>
+                  </a>
+                  <button class="c-btn c-btn--secondary c-btn--sm" type="button" data-contact-copy-address>
+                    <span data-lang-copy="en">Copy the email address</span><span data-lang-copy="ar" lang="ar">انسخ عنوان البريد</span>
+                  </button>
+                </p>
+              </div>
+
+              <!-- WHAT HAPPENS NEXT — the last question before someone acts,
+                   and the site never answered it. Both facts here are already
+                   on the site: /about ("you deal with the person doing the
+                   work, not an account manager") and process stage 01
+                   ("understand the business... before anything is designed").
+                   No response time is promised, because none has been decided
+                   — see docs/109. -->
+              <p class="c-contact__next"><span data-lang-copy="en">Your message goes to Muhalab, who does the design and the build — not to an account manager. The first reply asks about the business; nothing gets designed before that.</span><span data-lang-copy="ar" lang="ar">تصل رسالتك إلى مهلب، الذي ينفّذ التصميم والتطوير — لا إلى مدير حسابات. أول ردّ يسأل عن العمل نفسه؛ ولا يبدأ أي تصميم قبل ذلك.</span></p>
             </form>
           </div>
         </div>
@@ -2203,5 +2919,26 @@
         </div>
       </div>
     </footer>
+  
+    <!-- =================================================================
+         PHONE ACTION — deliberately NOT in the header.
+
+         The header carries no call to action at any width; that was the
+         instruction and it holds. What it cannot do is take the conversion
+         path with it: `docs/71` measured 4,660px of the homepage and 80% of
+         /story with nothing to press once the phone header was bare, and the
+         reach guard exists so that cannot ship twice.
+
+         So the action lives here instead — its own component, at the foot of
+         the phone viewport, shown by navigation.js only when NOTHING else on
+         the page is pressable. It is not a second CTA: it is the one that
+         appears when the page has run out of its own.
+         ================================================================= -->
+    <div class="c-phone-cta" data-phone-cta>
+      <a class="c-btn c-btn--primary" href="#contact" data-cta-link>
+        <span data-cta-label>Start Your Project</span>
+      </a>
+    </div>
+
   </body>
 </html>

@@ -1,5 +1,13 @@
 # Brief for the Arabic reviewer
 
+> **SUPERSEDED 6 September 2026 — send `docs/91` instead.** Everything here is
+> carried into it. What that adds is a first section this file predates: **the
+> Arabic written during the 6 September session, by a non-native speaker** — the
+> service chooser, the gallery, the reworked service buttons and the two
+> WhatsApp messages the site now composes for the visitor. That is the newest
+> and least-checked text on the site, so it goes first.
+
+
 Written 5 September 2026. `docs/62` B3.
 
 **One hour, on a phone, reading Arabic.** `docs/47` §5 recommended exactly that

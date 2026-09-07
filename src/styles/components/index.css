@@ -51,7 +51,7 @@
     align-items: center;
     gap: var(--space-4) var(--space-16);
     min-block-size: var(--control-height-lg);
-    padding: var(--space-16) var(--space-20);
+    padding: var(--space-16) var(--space-24);
     border: var(--border-hairline);
     border-radius: var(--radius-md);
     background-color: var(--color-surface);
@@ -62,12 +62,15 @@
   }
 
   .c-index__link:hover {
-    border-color: var(--color-border-accent);
+    border-color: var(--card-border-hover);
+    background-color: var(--card-surface-hover);
   }
 
   .c-index__link:focus-visible {
-    outline: var(--focus-ring);
-    outline-offset: var(--focus-ring-offset);
+    /* --focus-ring is a box-shadow value; `outline:` would parse as invalid
+       and be dropped. The base :focus-visible rule already draws this, but
+       state it here so the intent survives a refactor. */
+    box-shadow: var(--focus-ring);
   }
 
   .c-index__name {

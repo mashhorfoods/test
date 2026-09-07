@@ -141,24 +141,6 @@
             </button>
           </div>
 
-          <a class="c-btn c-btn--primary c-header__cta" href="#contact" data-cta-link>
-            <span data-cta-label>Start Your Project</span>
-            <svg
-              class="c-btn__icon u-flip-rtl"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path
-                d="M5 12h13M13 6l6 6-6 6"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="square"
-              />
-            </svg>
-          </a>
-
           <button
             class="c-menu-trigger"
             type="button"
@@ -377,7 +359,7 @@
               <span class="c-chapter__annotation"><span data-lang-copy="en">the website</span><span data-lang-copy="ar" lang="ar">الموقع</span></span>
             </p>
             <h2 class="c-chapter__title" id="ch-transformation-title"><span data-lang-copy="en">Arabic first, on the screen the customer actually holds.</span><span data-lang-copy="ar" lang="ar">العربية أولًا، على الشاشة التي يمسكها العميل فعلًا.</span></h2>
-            <p class="c-chapter__lead"><span data-lang-copy="en">The site is built right-to-left because that is how its readers read, not as a mirrored afterthought. One promise carries the first screen — رحلتك تبدأ بثقة, your journey begins with confidence — and the pages behind it answer the questions a traveller asks in order: who you are, why you, what you do, how you work, what you stand for, how to reach you. Designed for the phone as carefully as for the desktop.</span><span data-lang-copy="ar" lang="ar">بُني الموقع من اليمين إلى اليسار لأن هذه هي طريقة قرّائه، لا كنسخة معكوسة أُضيفت لاحقًا. وعدٌ واحد يتصدّر الشاشة الأولى — «رحلتك تبدأ بثقة» — والصفحات خلفه تجيب أسئلة المسافر بترتيبها: من هم، ولماذا هم، وماذا يقدّمون، وكيف يعملون، وما الذي يؤمنون به، وكيف يُتواصل معهم. مصمَّم للهاتف بالعناية نفسها التي صُمِّم بها لسطح المكتب.</span></p>
+            <p class="c-chapter__lead"><span data-lang-copy="en">The site is built right-to-left because that is how its readers read, not as a mirrored afterthought. One promise carries the first screen — <span lang="ar">رحلتك تبدأ بثقة</span>, your journey begins with confidence — and the pages behind it answer the questions a traveller asks in order: who you are, why you, what you do, how you work, what you stand for, how to reach you. Designed for the phone as carefully as for the desktop.</span><span data-lang-copy="ar" lang="ar">بُني الموقع من اليمين إلى اليسار لأن هذه هي طريقة قرّائه، لا كنسخة معكوسة أُضيفت لاحقًا. وعدٌ واحد يتصدّر الشاشة الأولى — «رحلتك تبدأ بثقة» — والصفحات خلفه تجيب أسئلة المسافر بترتيبها: من هم، ولماذا هم، وماذا يقدّمون، وكيف يعملون، وما الذي يؤمنون به، وكيف يُتواصل معهم. مصمَّم للهاتف بالعناية نفسها التي صُمِّم بها لسطح المكتب.</span></p>
             <p class="c-chapter__aside"><span data-lang-copy="en">A bilingual studio building an Arabic-first site is not a compromise. It is the point.</span><span data-lang-copy="ar" lang="ar">أن يبني استوديو ثنائي اللغة موقعًا عربيًا أولًا ليس تنازلًا، بل هو المقصد.</span></p>
           </div>
 
@@ -594,5 +576,26 @@
       </div>
     </footer>
     <!-- CHROME:FOOT:END -->
+  
+    <!-- =================================================================
+         PHONE ACTION — deliberately NOT in the header.
+
+         The header carries no call to action at any width; that was the
+         instruction and it holds. What it cannot do is take the conversion
+         path with it: `docs/71` measured 4,660px of the homepage and 80% of
+         /story with nothing to press once the phone header was bare, and the
+         reach guard exists so that cannot ship twice.
+
+         So the action lives here instead — its own component, at the foot of
+         the phone viewport, shown by navigation.js only when NOTHING else on
+         the page is pressable. It is not a second CTA: it is the one that
+         appears when the page has run out of its own.
+         ================================================================= -->
+    <div class="c-phone-cta" data-phone-cta>
+      <a class="c-btn c-btn--primary" href="#contact" data-cta-link>
+        <span data-cta-label>Start Your Project</span>
+      </a>
+    </div>
+
   </body>
 </html>

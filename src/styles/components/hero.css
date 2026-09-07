@@ -162,6 +162,14 @@
     margin-block-start: var(--space-8);
   }
 
+  /* The second, softer action. Full width beside the primary on a phone —
+     the parent is a column there — and it inherits the row layout at 48em
+     with everything else. No size modifier: two actions of the same height
+     read as two options; a smaller one reads as an afterthought. */
+  .c-hero__action-2 {
+    min-block-size: var(--control-height-lg);
+  }
+
   .c-hero__action {
     justify-content: space-between;
     inline-size: 100%;

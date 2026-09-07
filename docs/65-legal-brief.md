@@ -1,5 +1,12 @@
 # Brief for the lawyer reading the Terms
 
+> **SUPERSEDED 6 September 2026 — send `docs/90` instead.** This brief and
+> `docs/78` were merged into one sendable document, with every fact re-verified
+> against that day's build. Two facts here are now wrong: the WhatsApp link
+> count (28 → **27**) and their distribution, which R1 changed. Kept for the
+> record of what was asked and why.
+
+
 Written 5 September 2026. `docs/62` B4.
 
 **This document is not legal advice and does not attempt any.** It is the

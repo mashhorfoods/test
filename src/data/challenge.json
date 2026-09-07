@@ -1,0 +1,103 @@
+{
+  "_readme": [
+    "THE BRAND CHALLENGE — question, answers, attempts and reward rules.",
+    "",
+    "Everything the challenge knows is in this file. tools/build-challenge.js",
+    "renders it and src/scripts/challenge.js runs it; neither contains the",
+    "question, an option, the correct answer or a reward figure. To change the",
+    "challenge, change this file and rebuild.",
+    "",
+    "WHY THIS QUESTION. The site's own claim is that work starts by",
+    "understanding the business — /about: 'We do not start designing before we",
+    "understand the business. That is stage one of our process, not a",
+    "formality.' So the challenge tests exactly that: not taste, not trivia,",
+    "but whether someone can tell which problem is upstream of the others.",
+    "",
+    "WHY ONE ANSWER IS DEFENSIBLE. The question does not ask which problem is",
+    "worst — that would be a matter of opinion. It asks which one, once solved,",
+    "makes the other three EASIER, which is a question about dependency and has",
+    "one answer:",
+    "  - ads (D) need a clear proposition to target and a page that converts, so",
+    "    D depends on C; solving D first helps neither A, B nor C;",
+    "  - a logo (A) changes how the business looks, not what it means; it leaves",
+    "    B, C and D exactly where they were;",
+    "  - load time (B) is real and worth fixing, but a fast page that still",
+    "    confuses people converts no better, and it makes nothing else easier;",
+    "  - C unblocks all three: the ads gain something to target, the logo gains",
+    "    a brief, and you learn which pages matter enough to optimise.",
+    "",
+    "ANSWER ORDER IS SHUFFLED at runtime so the correct one is not always in",
+    "the same position, and `correct` names an id rather than an index.",
+    "",
+    "HONESTY. The correct answer is in the page, the check runs in the browser,",
+    "and clearing storage allows another go. This is a marketing device, not a",
+    "security control: a code is honoured by a person, by hand. docs/97 §7 sets",
+    "out what a backend would have to add."
+  ],
+
+  "challenge": {
+    "id": "diagnosis-2026",
+    "active": true,
+    "maxAttempts": 2,
+    "storageKey": "pixora:challenge",
+    "shuffle": true
+  },
+
+  "question": {
+    "eyebrow": { "en": "The brand challenge", "ar": "تحدّي العلامة" },
+    "title": { "en": "Think you can solve it?", "ar": "أتظن أنك تستطيع حلّه؟" },
+    "lead": {
+      "en": "Take the challenge. Find the right answer. Unlock a special reward.",
+      "ar": "خُض التحدي. اعثر على الإجابة الصحيحة. افتح مكافأة خاصة."
+    },
+    "scenario": {
+      "en": "A clinic comes to you with four complaints, and all four are true. Their logo looks dated. Their site takes six seconds to load. Visitors cannot tell which of their five services applies to them. Their ads cost a great deal per enquiry.",
+      "ar": "تأتيك عيادة بأربع شكاوى، وكلها صحيحة. شعارها يبدو قديمًا. وموقعها يستغرق ست ثوانٍ ليُفتح. والزائر لا يعرف أيّ خدمة من خدماتها الخمس تخصّه. وإعلاناتها تكلّف كثيرًا مقابل كل استفسار.",
+      "note": "Four true problems, one of which is upstream of the rest."
+    },
+    "ask": {
+      "en": "You can only start with one. Which one, once solved, makes the other three easier to solve?",
+      "ar": "لا يمكنك البدء إلا بواحدة. أيّها إذا حُلَّت جعلت الثلاث الأخرى أسهل؟"
+    },
+    "options": [
+      {
+        "id": "logo",
+        "label": { "en": "The dated logo", "ar": "الشعار القديم" }
+      },
+      {
+        "id": "speed",
+        "label": { "en": "The six-second load time", "ar": "زمن التحميل: ست ثوانٍ" }
+      },
+      {
+        "id": "clarity",
+        "label": { "en": "How the five services are explained", "ar": "طريقة شرح الخدمات الخمس" }
+      },
+      {
+        "id": "ads",
+        "label": { "en": "The ad targeting", "ar": "استهداف الإعلانات" }
+      }
+    ],
+    "correct": "clarity",
+    "explanation": {
+      "en": "Because the other three depend on it. Ads need a proposition to target and a page that converts, so they cannot be fixed before the services are clear. A logo changes how a business looks, not what it means. And a fast page that still confuses people converts no better than a slow one. Make each service legible to the person it is for, and the ads gain something to aim at, the logo gains a brief, and you finally know which pages are worth making fast.",
+      "ar": "لأن الثلاث الأخرى تعتمد عليها. الإعلانات تحتاج رسالة تستهدفها وصفحة تُحوِّل، فلا يمكن إصلاحها قبل أن تتّضح الخدمات. والشعار يغيّر شكل العمل لا معناه. والصفحة السريعة التي تربك الزائر لا تُحوِّل أفضل من البطيئة. اجعل كل خدمة مفهومة لمن هي له، فتجد للإعلانات ما تستهدفه، وللشعار ملخصًا يُبنى عليه، وتعرف أخيرًا أي الصفحات يستحق تسريعه."
+    }
+  },
+
+  "reward": {
+    "headline": { "en": "Up to 70% off", "ar": "خصم يصل إلى 70%" },
+    "validityDays": 30,
+    "_comment": [
+      "Tiers are weighted, and the promise is 'up to 70%' — never a guaranteed",
+      "70%. Change these five lines to change the promotion; nothing else knows",
+      "a percentage."
+    ],
+    "tiers": [
+      { "id": "t10", "percent": 10, "weight": 34, "code": "SOLVED10" },
+      { "id": "t20", "percent": 20, "weight": 30, "code": "SOLVED20" },
+      { "id": "t30", "percent": 30, "weight": 22, "code": "SOLVED30" },
+      { "id": "t50", "percent": 50, "weight": 11, "code": "SOLVED50" },
+      { "id": "t70", "percent": 70, "weight": 3, "code": "SOLVED70" }
+    ]
+  }
+}

@@ -1,5 +1,13 @@
 # B4 — the facts under the legal brief, re-checked
 
+> **SUPERSEDED 6 September 2026 — send `docs/90` instead.** The findings here
+> are carried into it, chiefly §2's point that every route to a binding
+> agreement runs through WhatsApp or the visitor's own mail client. `docs/90`
+> §3.6 turns that into the questions a reviewer can answer, and adds one this
+> file predates: **the site now composes the client's first message**, naming a
+> package and a price.
+
+
 `docs/69` P2 B4. Written 5 September 2026.
 
 **This answers no legal question and attempts no legal advice**, which is

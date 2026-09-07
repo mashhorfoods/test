@@ -18,14 +18,12 @@
   ],
   "Creative Digital Partner": "شريكك الرقمي الإبداعي",
   "Your Brand. Your Digital Presence. One Partner.": "علامتك.<br /> حضورك الرقمي.<br /> <span class=\"c-hero__accent\">شريك واحد.</span>",
-  "We build brands, websites and digital experiences — then connect them with content, social media and performance marketing to help your business grow.": "نبني العلامات والمواقع والتجارب الرقمية، ثم نربطها بالمحتوى ووسائل التواصل والتسويق الأدائي لينمو عملك.",
   "Branding & Design": "الهوية والتصميم",
   "Websites": "المواقع الإلكترونية",
   "Social Media": "وسائل التواصل",
   "Digital Marketing & Ads": "التسويق الرقمي والإعلانات",
   "What We Do": "ما الذي نقدمه",
   "Everything Digital. Built to Work Together.": "كل ما هو رقمي.<br /> <span class=\"c-services__accent\">مبني ليعمل معًا.</span>",
-  "Five services. Open any one to see what it covers.": "خمس خدمات. افتح أيًا منها لترى ما تشمله.",
   "Logo, identity and visual systems that give your business one consistent look across every channel.": "شعار وهوية وأنظمة بصرية تمنح عملك مظهرًا واحدًا متسقًا في كل قناة.",
   "Design, build and deployment — handed over as a working website, with domain and hosting arranged.": "تصميم وتطوير ونشر — يُسلَّم موقعًا يعمل، مع تجهيز النطاق والاستضافة.",
   "Strategy, content and publishing across your channels, with community monitoring and performance analysis.": "استراتيجية ومحتوى ونشر عبر قنواتك، مع متابعة المجتمع وتحليل الأداء.",
@@ -66,7 +64,6 @@
   "Conversion Tracking, A/B Testing and Performance Report": "تتبّع التحويلات واختبارات A/B وتقرير الأداء",
   "One Digital Partner": "شريك رقمي واحد",
   "Everything your business needs. Connected in one system.": "كل ما يحتاجه عملك.<br /> <span class=\"c-detail__accent\">متصل في نظام واحد.</span>",
-  "The same four services, arranged two ways. The difference is not what gets made — it is how much of the coordinating you have to do yourself.": "الخدمات الأربع نفسها، مرتّبة بطريقتين. الفارق ليس فيما يُنجَز — بل في مقدار التنسيق الذي يقع عليك.",
   "Identity & Design": "الهوية والتصميم",
   "Build the foundation.": "نبني الأساس.",
   "Create the digital presence.": "ننشئ الحضور الرقمي.",
@@ -152,5 +149,8 @@
   "2 add-ons": "إضافتان",
   "3 add-ons": "ثلاث إضافات",
   "Performance": "الأداء",
-  "Traffic": "الزيارات"
+  "Traffic": "الزيارات",
+  "The same four services, arranged two ways — as four projects you hold together, or as one you do not.": "الخدمات الأربع نفسها، مرتّبة بطريقتين — أربعة مشاريع تتولّى أنت ربطها، أو مشروع واحد لا تفعل.",
+  "The difference is not what gets made — it is how much of the coordinating you have to do yourself. Five services; open any one to see what it covers.": "الفارق ليس فيما يُنجَز — بل في مقدار التنسيق الذي يقع عليك. خمس خدمات؛ افتح أيًا منها لترى ما تشمله.",
+  "A remote studio for the Gulf and Egypt. We build brands, websites and digital experiences — then connect them with content, social media and performance marketing to help your business grow.": "استوديو يعمل عن بُعد في الخليج ومصر. نبني العلامات والمواقع والتجارب الرقمية، ثم نربطها بالمحتوى ووسائل التواصل والتسويق الأدائي لينمو عملك."
 }

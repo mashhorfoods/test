@@ -1,0 +1,844 @@
+/* =============================================================================
+   THE BRAND CHALLENGE
+
+   A SIBLING OF THE REWARD PANEL, not a new idea. Same panel treatment — the
+   surface, the hairline, the radius, the accent tint at the top — so the two
+   promotional components read as one family rather than two experiments. Every
+   value is an existing token; the buttons are .c-btn untouched.
+
+   THE ANSWERS ARE REAL RADIOS. The input is visually hidden and its label is
+   the control, which is the pattern that keeps the whole thing keyboard- and
+   screen-reader-native: arrow keys move within the group, Space selects, the
+   legend is announced, and the form submits. Nothing here is a div pretending
+   to be a control.
+
+   SELECTION IS NOT SIGNALLED BY COLOUR ALONE (§17). A chosen option gains an
+   accent border, an accent-tinted ground AND a filled marker — three signals,
+   one of which survives greyscale.
+   ============================================================================= */
+
+@layer components {
+  /* Takes the page ground because it sits between .c-detail bands and should
+     read as resting on the page. (.c-reward used to share this reasoning; it
+     was removed on 7 September — docs/111.) */
+  .c-challenge {
+    background-color: transparent;
+  }
+
+  .c-challenge__panel {
+    position: relative;
+    overflow: hidden;
+    container-type: inline-size;
+    max-inline-size: 48rem;
+    margin-inline: auto;
+    padding: var(--space-32) var(--space-24);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    background-image: linear-gradient(to bottom, var(--color-surface-accent), transparent 60%);
+  }
+
+  @media (min-width: 48em) {
+    .c-challenge__panel {
+      padding: var(--space-48) var(--space-40);
+      /* A FLOOR, SO THE PAGE STOPS JOLTING. The five panes measured 406, 651,
+         232, 232 and 674 pixels tall, and every transition moved everything
+         below the panel by the difference — the wrong-answer pane alone
+         dropped the page by four hundred pixels and then put it back. */
+      min-block-size: 30rem;
+    }
+  }
+
+  /* From 64em the question earns two columns, so the panel widens for it. It
+     is one component that has to hold a brief and four answers at once; at
+     48rem those stack into a column tall enough to scroll. */
+  @media (min-width: 64em) {
+    .c-challenge__panel {
+      max-inline-size: 62rem;
+    }
+  }
+
+  .c-challenge__intro,
+  .c-challenge__wrong,
+  .c-challenge__spent,
+  .c-challenge__won {
+    text-align: center;
+  }
+
+  /* The floor above stops the page jolting; this stops the floor showing. A
+     short pane in a tall panel would otherwise sit against the header with
+     150px of nothing beneath it, which reads as a rendering fault rather than
+     as breathing room. `display: flex` is safe on a hidden pane because the
+     reset's [hidden] carries !important. */
+  @media (min-width: 48em) {
+    .c-challenge__panel {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .c-challenge__intro,
+    .c-challenge__wrong,
+    .c-challenge__spent,
+    .c-challenge__won,
+    .c-challenge__quiz {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  .c-challenge__eyebrow,
+  .c-challenge__won-eyebrow {
+    color: var(--color-text-accent);
+    margin-block-end: var(--space-16);
+  }
+
+  /* --- the persistent header --------------------------------------------- */
+
+  .c-challenge__head {
+    text-align: center;
+    margin-block-end: var(--space-32);
+  }
+
+  .c-challenge__title {
+    font-size: var(--text-h3);
+    margin-block-end: var(--space-24);
+  }
+
+  /* THE STEP TRACK — the one thing the component was missing.
+
+     It had three stages and showed none of them: you pressed a button, the
+     panel became a different panel, and nothing said how many more of those
+     there were or which one you were in. A visitor mid-challenge could not
+     tell whether they were nearly done or had just begun, and that
+     uncertainty is what makes people abandon an interaction they have already
+     started.
+
+     It is an ordered list of three, drawn as a track. `data-challenge-at` is
+     set by the script alongside `aria-current`, so the colour and the
+     announcement come from the same assignment rather than one being inferred
+     from the other. */
+  .c-challenge__steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-8) var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .c-challenge__step {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    transition: color var(--duration-base) var(--ease-standard);
+  }
+
+  /* The connector between steps. A pseudo-element on the item rather than a
+     separate span, and it is dropped on the first one — logical inline-start,
+     so the track runs the other way in Arabic without a second rule. */
+  .c-challenge__step::before {
+    content: "";
+    inline-size: var(--space-24);
+    block-size: var(--border-width);
+    background-color: var(--color-border);
+    transition: background-color var(--duration-base) var(--ease-standard);
+  }
+
+  .c-challenge__step:first-child::before {
+    display: none;
+  }
+
+  .c-challenge__step-num {
+    display: grid;
+    place-items: center;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    flex: none;
+    border: var(--border-hairline);
+    border-radius: var(--radius-circle);
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    /* A numeral reads left to right in both languages. */
+    direction: ltr;
+    unicode-bidi: isolate;
+    transition: background-color var(--duration-base) var(--ease-standard),
+      border-color var(--duration-base) var(--ease-standard),
+      color var(--duration-base) var(--ease-standard);
+  }
+
+  /* THREE STATES, AND NOT BY COLOUR ALONE (§17). The current step is accent
+     AND filled AND the only one at full text contrast; a completed one keeps
+     an accent border. Greyscale still separates all three. */
+  .c-challenge__step[data-challenge-at="now"] {
+    color: var(--color-text-primary);
+  }
+
+  .c-challenge__step[data-challenge-at="now"] .c-challenge__step-num {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+  }
+
+  /* qa:allow-dead — a step only becomes "done" once a visitor has walked past
+     it, so this matches nothing in the shipped markup and never will. That is
+     a runtime state, not a selector left behind, and the dead-selector check
+     cannot tell the two apart on its own. Same for the spent attempt dot and
+     the drawn reward chip below. */
+  .c-challenge__step[data-challenge-at="done"] {
+    color: var(--color-text-secondary);
+  }
+
+  .c-challenge__step[data-challenge-at="done"] .c-challenge__step-num,
+  .c-challenge__step[data-challenge-at="done"]::before {
+    border-color: var(--color-border-accent);
+  }
+
+  .c-challenge__step[data-challenge-at="done"]::before {
+    background-color: var(--color-border-accent);
+  }
+
+  .c-challenge__step[data-challenge-at="done"] .c-challenge__step-num {
+    color: var(--color-text-accent);
+  }
+
+  /* NARROW: ONLY THE CURRENT STEP IS NAMED.
+
+     Three numbers and three names is 318px of track in a 297px panel on a
+     393px phone, so it wrapped — and a wrapped track puts step three on its
+     own line with a connector dangling into the space where step two used to
+     be, which reads as breakage rather than as a step. The names of the steps
+     you are not on are hidden the way everything else on this site is hidden
+     from sight but not from a screen reader, so the announcement is unchanged
+     and only the drawing gets shorter. */
+  @media (max-width: 47.99em) {
+    .c-challenge__step:not([data-challenge-at="now"]) .c-challenge__step-name {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-challenge__step,
+    .c-challenge__step::before,
+    .c-challenge__step-num {
+      transition: none;
+    }
+  }
+
+  .c-challenge__lead,
+  .c-challenge__won-body,
+  .c-challenge__wrong-body {
+    color: var(--color-text-secondary);
+    max-inline-size: 48ch;
+    margin-inline: auto;
+    margin-block-end: var(--space-32);
+  }
+
+  .c-challenge__start {
+    min-block-size: var(--control-height-lg);
+  }
+
+  .c-challenge__terms {
+    margin-block-start: var(--space-24);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  /* --- the question ------------------------------------------------------- */
+
+  .c-challenge__fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .c-challenge__ask {
+    /* A legend, so it is announced with every option. Sized as a heading
+       because it is the question the panel exists to ask. */
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    padding: 0;
+    margin-block-end: var(--space-24);
+    text-wrap: balance;
+  }
+
+  /* TWO COLUMNS AT 64em: the brief on one side, the answers on the other.
+
+     Stacked, the four facts you need scroll off the top before you reach the
+     options you need them for — the visitor is asked to remember a paragraph
+     instead of read it. Side by side, the case material stays in view while
+     the answer is chosen, which is the only arrangement that makes the
+     question answerable without scrolling back. */
+  .c-challenge__body {
+    display: grid;
+    gap: var(--space-24);
+  }
+
+  @media (min-width: 64em) {
+    .c-challenge__body {
+      grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+      gap: var(--space-40);
+      align-items: start;
+    }
+  }
+
+  .c-challenge__brief {
+    padding: var(--space-16);
+    border-inline-start: var(--border-width-strong) solid var(--color-border-accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background-color: var(--color-bg-sunken);
+  }
+
+  /* The radius follows the border to the other side in Arabic. */
+  [dir="rtl"] .c-challenge__brief {
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  }
+
+  .c-challenge__brief-label {
+    color: var(--color-text-accent);
+    margin-block-end: var(--space-8);
+  }
+
+  .c-challenge__scenario {
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* Two across from 40em. Four options in one column is a list of bars; two
+     across is a set of choices, which is what it is. */
+  .c-challenge__options {
+    display: grid;
+    gap: var(--space-12);
+    margin: 0 0 var(--space-24);
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 40em) {
+    .c-challenge__options {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .c-challenge__option {
+    display: flex;
+  }
+
+  .c-challenge__label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    inline-size: 100%;
+    min-block-size: var(--control-height-lg);
+    padding: var(--space-16);
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-sunken);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard),
+      translate var(--duration-fast) var(--ease-out);
+  }
+
+  /* The lift is only offered where there is a pointer to lift under. */
+  @media (any-hover: hover) {
+    .c-challenge__label:hover {
+      border-color: var(--color-border-strong);
+      translate: 0 -2px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-challenge__label {
+      transition: border-color var(--duration-fast) var(--ease-standard),
+        background-color var(--duration-fast) var(--ease-standard);
+    }
+
+    .c-challenge__label:hover {
+      translate: none;
+    }
+  }
+
+  .c-challenge__marker {
+    display: grid;
+    place-items: center;
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+    flex: none;
+    border: var(--border-hairline);
+    border-radius: var(--radius-circle);
+    font-family: var(--font-display);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    /* A letter is read left to right in both languages. */
+    direction: ltr;
+    unicode-bidi: isolate;
+    transition: background-color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard),
+      color var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-challenge__option-text {
+    flex: 1 1 auto;
+    line-height: var(--leading-snug);
+  }
+
+  /* The tick is the fourth signal and the only one that is a SHAPE. It
+     occupies its space whether or not it is drawn, so selecting an option
+     does not reflow the card it is in. */
+  .c-challenge__tick {
+    flex: none;
+    inline-size: var(--icon-md);
+    block-size: var(--icon-md);
+    color: var(--color-text-accent);
+    opacity: 0;
+    scale: 0.6;
+    transition: opacity var(--duration-fast) var(--ease-standard),
+      scale var(--duration-base) var(--ease-out);
+  }
+
+  /* FOUR SIGNALS, not one: border, ground, a filled marker and a tick. */
+  .c-challenge__radio:checked + .c-challenge__label {
+    border-color: var(--color-border-accent);
+    background-color: var(--color-accent-subtle);
+  }
+
+  .c-challenge__radio:checked + .c-challenge__label .c-challenge__marker {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+  }
+
+  .c-challenge__radio:checked + .c-challenge__label .c-challenge__tick {
+    opacity: 1;
+    scale: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-challenge__tick {
+      transition: none;
+      scale: 1;
+    }
+  }
+
+  /* The input is hidden, so the ring has to be drawn on the label it controls
+     — otherwise a keyboard visitor moving through the options sees nothing.
+     --focus-ring is a two-layer *box-shadow* value, not an outline shorthand:
+     `outline: var(--focus-ring)` parses as invalid and is dropped silently,
+     which is exactly how this went unnoticed. Draw it as the shadow it is. */
+  .c-challenge__radio:focus-visible + .c-challenge__label {
+    box-shadow: var(--focus-ring);
+  }
+
+  /* Forced-colours users get no box-shadow at all, so mirror the base rule's
+     OS outline rather than leaving those visitors with no indicator. */
+  @media (forced-colors: active) {
+    .c-challenge__radio:focus-visible + .c-challenge__label {
+      outline: 3px solid CanvasText;
+      outline-offset: 2px;
+    }
+  }
+
+  /* The count and the button share a row from 40em, so the state of the
+     attempt and the act of spending one are next to each other rather than
+     stacked with the count floating above the button like a caption. */
+  .c-challenge__foot {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-16);
+  }
+
+  @media (min-width: 40em) {
+    .c-challenge__foot {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .c-challenge__attempts {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 40em) {
+    .c-challenge__attempts {
+      justify-content: flex-start;
+    }
+  }
+
+  /* DOTS THAT ACTUALLY EMPTY. "Attempts left 2" is a number a visitor reads
+     once and stops seeing. Two dots that go hollow when one is spent is the
+     same fact as a state you can watch change — and the numeral stays beside
+     them, unhidden, because that is what a screen reader announces. */
+  .c-challenge__dots {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .c-challenge__dot {
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-radius: var(--radius-circle);
+    border: var(--border-width) solid var(--color-accent);
+    background-color: var(--color-accent);
+    transition: background-color var(--duration-base) var(--ease-standard);
+  }
+
+  /* qa:allow-dead — set by the script when an attempt is used. */
+  .c-challenge__dot[data-challenge-dot="spent"] {
+    background-color: transparent;
+    border-color: var(--color-text-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-challenge__dot { transition: none; }
+  }
+
+  .c-challenge__attempts-count {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-secondary);
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .c-challenge__submit {
+    inline-size: 100%;
+    min-block-size: var(--control-height-lg);
+  }
+
+  @media (min-width: 40em) {
+    .c-challenge__submit {
+      inline-size: auto;
+      min-inline-size: 14rem;
+    }
+  }
+
+  .c-challenge__wrong-title {
+    color: var(--color-text-primary);
+    margin-block-end: var(--space-12);
+  }
+
+  /* --- solved ------------------------------------------------------------- */
+
+  .c-challenge__reward-label,
+  .c-challenge__code-label {
+    color: var(--color-text-muted);
+    margin-block-start: var(--space-32);
+    margin-block-end: var(--space-8);
+  }
+
+  /* THE LADDER.
+
+     The winner used to be shown one figure — "10%" — over a line reading "up
+     to 70% off", which reads as the smaller number apologising for itself.
+     Five rungs, with the drawn one raised, says the true thing instead: there
+     was a pool, this is what came out of it, and that is what the other four
+     were. The rung is a real list item in a real ordered list, so the
+     sequence is in the document and not only in the paint.
+
+     The odds are deliberately not printed. They are in challenge.json and in
+     docs/97; a rung labelled "3%" turns a reward into a lottery ticket, and
+     the promotion is not a lottery — every solver wins something. */
+  /* The figure itself, written from the drawn rung by the script. */
+  .c-challenge__prize {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: var(--space-8);
+    margin: 0;
+  }
+
+  .c-challenge__prize-figure {
+    font-family: var(--font-display);
+    font-size: var(--text-price);
+    line-height: 1;
+    color: var(--color-text-accent);
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .c-challenge__prize-word {
+    font-size: var(--text-h4);
+    color: var(--color-text-secondary);
+  }
+
+  .c-challenge__draw {
+    margin-block-start: var(--space-24);
+  }
+
+  .c-challenge__draw-label {
+    color: var(--color-text-muted);
+    margin-block-end: var(--space-8);
+  }
+
+  /* EVERY RUNG THE SAME SIZE. The first version grew the drawn one to hold a
+     bigger numeral and two extra lines, which made it half again as tall as
+     its neighbours: the row lost its baseline, the four undrawn rungs floated
+     against the middle of the tall one, and the whole ladder sat off to one
+     side of the panel. The headline figure moved out to its own line above,
+     and what is left is five equal chips whose only job is to say which one
+     of the five this was. */
+  .c-challenge__ladder {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Five chips have to fit one row at 393px — 297px of usable panel — or the
+     last one drops to a line of its own and the ladder stops looking like a
+     ladder. Sized for the narrow case and given room back at 48em. */
+  .c-challenge__tier {
+    display: grid;
+    place-items: center;
+    min-inline-size: 2.75rem;
+    padding: var(--space-8);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    transition: border-color var(--duration-base) var(--ease-standard),
+      background-color var(--duration-base) var(--ease-standard),
+      color var(--duration-base) var(--ease-standard);
+  }
+
+  .c-challenge__percent {
+    font-family: var(--font-display);
+    font-size: var(--text-small);
+    line-height: 1;
+    color: inherit;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  @media (min-width: 48em) {
+    .c-challenge__ladder {
+      gap: var(--space-12);
+    }
+
+    .c-challenge__tier {
+      min-inline-size: 4rem;
+      padding: var(--space-8) var(--space-16);
+    }
+
+    .c-challenge__percent {
+      font-size: var(--text-body);
+    }
+  }
+
+  /* Three signals on the drawn chip — border, ground and text colour — all of
+     which survive greyscale as a contrast step against four flat neighbours. */
+  /* qa:allow-dead — set by the script on the one rung that was drawn. */
+  .c-challenge__tier[data-challenge-drawn="yes"] {
+    border-color: var(--color-border-accent);
+    background-color: var(--color-accent-subtle);
+    color: var(--color-text-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-challenge__tier { transition: none; }
+  }
+
+  /* The promise is always "up to", never the figure alone. */
+  .c-challenge__cap {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    margin-block-start: var(--space-8);
+  }
+
+  .c-challenge__code code {
+    display: inline-block;
+    padding: var(--space-12) var(--space-24);
+    border: var(--border-width) dashed var(--color-border-accent);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg-sunken);
+    font-family: var(--font-display);
+    font-size: var(--text-h4);
+    letter-spacing: 0.08em;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .c-challenge__validity {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .c-challenge__why {
+    margin-block-start: var(--space-24);
+    text-align: start;
+    border-block-start: var(--border-hairline);
+    padding-block-start: var(--space-16);
+  }
+
+  /* `display: flex` on a <summary> removes the native disclosure triangle,
+     which left this reading as a plain heading — the explanation, the whole
+     point of the component, sat behind something that did not look clickable.
+     So the marker is suppressed deliberately and replaced with the same
+     plus/minus the accordion uses, driven by [open]. */
+  .c-challenge__why summary {
+    font-family: var(--font-display);
+    color: var(--color-text-accent);
+    min-block-size: var(--touch-target-min);
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .c-challenge__why summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .c-challenge__why-mark {
+    position: relative;
+    flex-shrink: 0;
+    inline-size: var(--icon-md);
+    block-size: var(--icon-md);
+  }
+
+  .c-challenge__why-mark::before,
+  .c-challenge__why-mark::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: var(--icon-md);
+    block-size: var(--border-width-strong);
+    background-color: currentcolor;
+    translate: -50% -50%;
+    transition: rotate var(--duration-base) var(--ease-out),
+      opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .c-challenge__why-mark::after {
+    rotate: 90deg;
+  }
+
+  .c-challenge__why[open] .c-challenge__why-mark::after {
+    rotate: 0deg;
+    opacity: 0;
+  }
+
+  .c-challenge__why p {
+    color: var(--color-text-secondary);
+    margin-block-start: var(--space-12);
+  }
+
+  .c-challenge__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-12);
+    margin-block-start: var(--space-24);
+  }
+
+  .c-challenge__more {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-24);
+    margin-block-start: var(--space-24);
+  }
+
+  .c-challenge__more .c-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .c-challenge__more svg {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    flex: none;
+  }
+
+  /* --- the reveal --------------------------------------------------------- */
+
+  .c-challenge__sweep {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: 2px;
+    background-color: var(--color-accent);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .c-challenge__sweep.is-running {
+    animation: challenge-sweep var(--duration-slow) var(--ease-out) both;
+  }
+
+  @keyframes challenge-sweep {
+    0% { opacity: 0; transform: translateX(0); }
+    12% { opacity: 1; }
+    88% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(calc(100cqw - 2px)); }
+  }
+
+  /* THE PANE ENTRANCE, WIRED THIS TIME AND ON PURPOSE.
+
+     An entrance animation used to live here keyed on a `data-challenge-state`
+     attribute that nothing set, so it could never apply; it was removed rather
+     than wired up, on the grounds that adding motion to a shipped component
+     under cover of a cleanup is not a cleanup. This is the redesign that was
+     waiting for, so it goes in deliberately and it is keyed on the thing that
+     actually changes: `hidden`. Removing `hidden` renders the pane afresh,
+     which starts the animation — no attribute, no class, nothing to fall out
+     of sync with the script.
+
+     The intro is left out. It is the state the page arrives in, and the panel
+     already has the site's own reveal on it; animating it twice on load is
+     two entrances for one arrival. */
+  @media (prefers-reduced-motion: no-preference) {
+    .c-challenge__quiz:not([hidden]),
+    .c-challenge__wrong:not([hidden]),
+    .c-challenge__spent:not([hidden]),
+    .c-challenge__won:not([hidden]) {
+      animation: challenge-enter var(--duration-base) var(--ease-out) both;
+    }
+  }
+
+  @keyframes challenge-enter {
+    from { opacity: 0; translate: 0 var(--space-8); }
+    to { opacity: 1; translate: 0 0; }
+  }
+
+
+  @media print {
+    .c-challenge__actions,
+    .c-challenge__more,
+    .c-challenge__sweep {
+      display: none;
+    }
+  }
+}

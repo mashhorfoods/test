@@ -167,11 +167,43 @@
        ---------------------------------------------------------------------- */
     .c-tier,
     .c-card,
-    .c-proof__inner,
+    .c-bento__tile,
     .c-brandboard__panel,
     .c-eco__stop,
     li {
       break-inside: avoid;
+    }
+
+    /* THE BENTO CAPTION IS WHITE ON A GRADIENT, AND PAPER HAS NO GRADIENT.
+
+       On screen the label sits on a scrim over the artwork. Printers drop
+       background images by default, so the scrim vanishes and the caption is
+       white ink on white paper — qa's print check caught exactly that:
+       "printed text at 1:1 on paper — Identity". The fix is not to force the
+       scrim to print (that is a page of solid black per tile) but to take the
+       caption off the picture: it goes back into the flow underneath its own
+       image, in ordinary text colour, where it costs nothing and reads. */
+    .c-bento__link {
+      display: block;
+    }
+
+    .c-bento__body {
+      position: static;
+      background-image: none;
+      padding: var(--space-8) 0 0;
+    }
+
+    .c-bento__index,
+    .c-bento__name,
+    .c-bento__detail {
+      color: #000000;
+    }
+
+    /* Every tile's detail line prints, whatever the hover rules do on screen. */
+    .c-bento__detail {
+      max-block-size: none;
+      opacity: 1;
+      overflow: visible;
     }
 
     h1, h2, h3, h4 {
