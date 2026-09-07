@@ -96,7 +96,7 @@ partial on **five buyers**. Phase 20 is partial on **twenty-eight more days**.
 | Images | **40, none missing width or height** |
 | Runtime dependencies | **0** |
 | Harnesses, run on every push | **5** — validate · qa (**33** sections) · responsive · **arabic** · a11y |
-| Current result | 0 · 0 high 0 medium (1 known low) · 0 over 48 combinations · 0 · 0 axe violations |
+| Current result | **all five green** — validate 0 · qa 0 high, 0 medium (1 known low) · responsive 0 over 48 combinations · arabic 0 · axe 0 violations |
 | Catastrophic failure modes controlled | **all of them** — transfer lock, auto-renew, second remote, uptime alarm |
 
 **The site is live, monitored, backed up, legally papered and instrumented.**
