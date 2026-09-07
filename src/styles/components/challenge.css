@@ -18,8 +18,9 @@
    ============================================================================= */
 
 @layer components {
-  /* Takes the page ground for the same reason .c-reward does: it sits between
-     .c-detail bands and should read as resting on the page. */
+  /* Takes the page ground because it sits between .c-detail bands and should
+     read as resting on the page. (.c-reward used to share this reasoning; it
+     was removed on 7 September — docs/111.) */
   .c-challenge {
     background-color: transparent;
   }

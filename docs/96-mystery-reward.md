@@ -1,3 +1,15 @@
+> **RETIRED 7 September 2026.** This feature was removed at the owner's
+> instruction — `docs/111`. `docs/108` found two prize mechanics on one
+> homepage and asked for one; the Brand Challenge (`docs/97`) is the one kept,
+> because it earns its discount by making the visitor think about what this
+> studio sells, where this one asked them to press a button.
+>
+> The document below is left exactly as written. The feature existed, was built
+> to a standard, and was removed by a decision — deleting the record would hide
+> the decision with it.
+
+---
+
 # Feature 01 — Mystery Reward
 
 **6 September 2026.** An interactive promotional component on the homepage:

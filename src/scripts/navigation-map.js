@@ -143,7 +143,8 @@ export const STRINGS = {
     footerElsewhere: 'Elsewhere',
     opensNewTab: '(opens in a new tab)',
     backToTop: 'Back to top',
-    // The Mystery Reward's copy button restores this after saying what happened.
+    // The Brand Challenge's copy button restores this after saying what
+    // happened. (The Mystery Reward used it too, until docs/111 removed it.)
     rewardCopy: 'Copy code',
     // Names the scroll-snap gallery (gallery.css). It is a focusable scroll
     // region, so it needs a name a screen reader can announce before the

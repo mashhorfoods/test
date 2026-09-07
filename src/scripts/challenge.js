@@ -23,8 +23,11 @@ import { t } from './navigation-map.js';
 
 /* NAMES ARE MODULE-SPECIFIC ON PURPOSE. build.js flattens every module into one
    inline script and refuses to bundle two top-level bindings with the same
-   name. reward.js already owns MOTION_OK, read and show, and it caught all
-   three the moment this file was wired in — which is the check working. */
+   name. reward.js owned MOTION_OK, read and show, and the check caught all
+   three the moment this file was wired in — which is the check working. That
+   file is gone now (docs/111) and the collisions with it went too, but the
+   prefixes stay: they cost nothing, and the next module to want a name called
+   `show` should not be able to take this one's. */
 
 const CHALLENGE_MOTION_OK = () => !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -37,7 +40,8 @@ function saveState(key, value) {
   try { window.localStorage.setItem(key, JSON.stringify(value)); } catch { /* private mode */ }
 }
 
-/* Same weighted draw the reward pool uses, over the tier elements. */
+/* A weighted draw over the tier elements. The Mystery Reward used the same
+   one until docs/111 removed it; this is now the only copy. */
 function drawTier(tiers) {
   const w = tiers.map((el) => Number(el.dataset.challengeWeight) || 1);
   const total = w.reduce((a, b) => a + b, 0);

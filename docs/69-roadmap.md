@@ -310,7 +310,7 @@ same way everything else does.
 
 | # | Work | State |
 | --- | --- | --- |
-| ~~**F1**~~ | ~~Mystery Reward~~ | ✅ **DONE 6 Sep — `docs/96`.** Weighted pool of seven, one JSON source, reveal → code → WhatsApp |
+| ~~**F1**~~ | ~~Mystery Reward~~ | ⛔ **RETIRED 7 Sep — `docs/111`.** Built 6 Sep (`docs/96`), removed at the owner's instruction after `docs/108` found two prize mechanics on one page reading as a promo site. Section, script, stylesheet, JSON, generator and `qa.js` §26 all removed; the Brand Challenge is the mechanic that stayed |
 | ~~**F2**~~ | ~~The Brand Challenge~~ | ✅ **DONE 6 Sep — `docs/97`.** Diagnostic quiz, two attempts, salted answer digest, weighted reward tiers. Surfaced and fixed a real keyboard-focus failure in three stylesheets; added `qa.js` §27 and §28 |
 | **F3+** | Further interactive features | **Held at the owner's instruction** — *"Do not implement any additional interactive marketing features yet."* Nothing starts here without a new brief |
 

@@ -16,7 +16,6 @@ import { initStory } from './story.js';
 import { initFocus } from './focus.js';
 import { initAnalytics } from './analytics.js';
 import { initHeroFilm } from './hero-film.js';
-import { initReward } from './reward.js';
 import { initChallenge } from './challenge.js';
 
 function boot() {
@@ -33,9 +32,6 @@ function boot() {
   // four reasons it declines in hero-film.js.
   initHeroFilm();
   // Marketing, not machinery: it enhances a panel that already reads correctly
-  // without it, and it is a no-op on every page that has no reward section.
-  initReward();
-  // Same footing as the reward: it enhances a panel that reads correctly
   // without it, and is a no-op on every page that has no challenge.
   initChallenge();
   // Last: it only listens, and it must never be the reason something else
