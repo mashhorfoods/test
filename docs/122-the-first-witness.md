@@ -72,11 +72,18 @@ or testimonial anywhere on this site."* That promise survives this addition —
 the testimonial is real — and it would not have survived an undeclared
 translation, because the Arabic sentences would then be ours presented as his.
 
-**This is the one judgement in this change that an owner should overrule if
-they disagree.** The alternatives were: publish the English in both languages
-(honest, and unreadable to half the audience), or ask Faris to supply Arabic
-himself (better than both, and it costs a message — worth doing, at which
-point the note changes and the guard in §5 catches the drift).
+**This was the one judgement in this change that an owner could overrule.**
+The alternatives were: publish the English in both languages (honest, and
+unreadable to half the audience), or ask Faris to supply Arabic himself.
+
+> **SETTLED 7 September.** Asked which, the owner answered: translate it. So
+> the Arabic above is the published version and is not provisional.
+>
+> **The disclosure does not change with it.** Being authorised to translate a
+> named man's words is not the same as being authorised to present our
+> sentences as his, and the second was never asked for. The line under the
+> attribution still says the testimonial arrived in English and that the
+> Arabic is ours.
 
 ---
 

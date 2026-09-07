@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Privacy — Pixora</title>
+    <meta name="title-ar" content="الخصوصية — بيكسورا" />
     <meta
       name="description"
       content="What this site collects, what it does not, and how to reach us about it."
@@ -403,7 +404,13 @@ function renderSurfaces() {
     );
   });
 }
+const TITLE_EN = document.title;
+function renderTitle() {
+  const ar = document.querySelector('meta[name="title-ar"]')?.content?.trim();
+  document.title = (currentLang() === 'ar' && ar) ? ar : TITLE_EN;
+}
 function renderStrings() {
+  renderTitle();
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     el.textContent = t(el.dataset.i18n);
   });

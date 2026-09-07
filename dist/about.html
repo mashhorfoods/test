@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>About — Pixora</title>
+    <meta name="title-ar" content="من نحن — بيكسورا" />
     <meta
       name="description"
       content="A remote studio for the Gulf and Egypt: who you work with, how remote works, what we charge and why, and what we will not do."
@@ -403,7 +404,13 @@ function renderSurfaces() {
     );
   });
 }
+const TITLE_EN = document.title;
+function renderTitle() {
+  const ar = document.querySelector('meta[name="title-ar"]')?.content?.trim();
+  document.title = (currentLang() === 'ar' && ar) ? ar : TITLE_EN;
+}
 function renderStrings() {
+  renderTitle();
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     el.textContent = t(el.dataset.i18n);
   });

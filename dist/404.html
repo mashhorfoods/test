@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <base href="/" />
     <title>Page not found — Pixora</title>
+    <meta name="title-ar" content="الصفحة غير موجودة — بيكسورا" />
     <meta name="robots" content="noindex, follow" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#202020" />
@@ -392,7 +393,13 @@ function renderSurfaces() {
     );
   });
 }
+const TITLE_EN = document.title;
+function renderTitle() {
+  const ar = document.querySelector('meta[name="title-ar"]')?.content?.trim();
+  document.title = (currentLang() === 'ar' && ar) ? ar : TITLE_EN;
+}
 function renderStrings() {
+  renderTitle();
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     el.textContent = t(el.dataset.i18n);
   });

@@ -269,8 +269,27 @@ function renderSurfaces() {
   });
 }
 
+/* THE TAB AND THE BOOKMARK FOLLOW THE LANGUAGE TOO.
+
+   Everything visible on this site is paired, and the one string that was not
+   is the one a visitor keeps: the browser tab, the bookmark, the entry in
+   their history. <title> cannot hold a pair, so the English one stays in the
+   markup — that is what a crawler and the canonical URL should see — and the
+   Arabic is read from <meta name="title-ar"> at the moment the language
+   changes.
+
+   The English is captured once at boot rather than re-read, because by the
+   time the visitor switches back this function has already overwritten it. */
+const TITLE_EN = document.title;
+
+function renderTitle() {
+  const ar = document.querySelector('meta[name="title-ar"]')?.content?.trim();
+  document.title = (currentLang() === 'ar' && ar) ? ar : TITLE_EN;
+}
+
 /** Apply chrome strings and CTA labels for the current language. */
 function renderStrings() {
+  renderTitle();
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     el.textContent = t(el.dataset.i18n);
   });

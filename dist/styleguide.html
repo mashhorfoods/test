@@ -388,7 +388,13 @@ function renderSurfaces() {
     );
   });
 }
+const TITLE_EN = document.title;
+function renderTitle() {
+  const ar = document.querySelector('meta[name="title-ar"]')?.content?.trim();
+  document.title = (currentLang() === 'ar' && ar) ? ar : TITLE_EN;
+}
 function renderStrings() {
+  renderTitle();
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     el.textContent = t(el.dataset.i18n);
   });

@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Al Mada — one brand, four surfaces | Pixora</title>
+    <meta name="title-ar" content="المدى — هوية واحدة، أربع واجهات | بيكسورا" />
     <meta
       name="description"
       content="Identity, website, campaigns and a company profile for Al Mada Travel & Tourism Agency — four surfaces most businesses buy from four suppliers."
@@ -395,7 +396,13 @@ function renderSurfaces() {
     );
   });
 }
+const TITLE_EN = document.title;
+function renderTitle() {
+  const ar = document.querySelector('meta[name="title-ar"]')?.content?.trim();
+  document.title = (currentLang() === 'ar' && ar) ? ar : TITLE_EN;
+}
 function renderStrings() {
+  renderTitle();
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     el.textContent = t(el.dataset.i18n);
   });
