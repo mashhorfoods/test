@@ -47,8 +47,16 @@ half of what is left.**
 ### WEBSTART — the cycle is complete
 
 **All three gates held, and since 5 September none is held on an open
-criterion** (A3 closed the last one, `docs/46` §9). Eleven of 21 phases
-complete, nine partial, one out of scope. **Every partial is waiting on a
+criterion** (A3 closed the last one, `docs/46` §9).
+
+> **Re-walked 7 September — `docs/116`.** The count below said *"eleven of 21
+> complete, nine partial, one out of scope"*. Re-checked against the build
+> rather than quoted, it is **18 complete · 2 partial · 1 running on a clock**,
+> and nothing is out of scope any more — Phase 15 was decided on 5 September
+> rather than deferred. **Eight rows of `docs/27` had gone stale and every one
+> understated the position**, the worst being Phase 19, which still described
+> the four live checks as unrun three days after they passed. The site
+> launched 4 September. **Every partial is waiting on a
 person or on elapsed time — none is waiting on work.** Phase 20 needs thirty
 days of analytics that are now running; the review phases need the four people
 in §B below.
@@ -106,7 +114,7 @@ conversations.
 
 | | What it means | Where we are |
 | --- | --- | --- |
-| **Finish line A — the site is done and safe** | Live, verified, backed up, monitored, legally papered, nothing catastrophic uncontrolled | **Reached.** A10 is the only open item and it is deferred on purpose |
+| **Finish line A — the site is done and safe** | Live, verified, backed up, monitored, legally papered, nothing catastrophic uncontrolled | **Reached** — and re-confirmed 7 Sep against the build (`docs/116` §3). A10 is the only open item; it is no longer merely deferred but **blocked on registering the Pixora domain**, since the owner chose `hello@` on it |
 | **Finish line B — the redesign and the reviews are complete** | WEBSTART X through X11, and the four human reviews applied | **This roadmap.** P1–P4 below |
 
 ---
