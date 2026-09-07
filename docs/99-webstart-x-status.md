@@ -1,8 +1,19 @@
 # WEBSTART X — where the eleven stages actually stand
 
-**6 September 2026.** `docs/62` read *"1 of 11 complete"* until this document replaced it. That was true
+**6 September 2026, re-traced 7 September.** `docs/62` read *"1 of 11 complete"* until this document replaced it. That was true
 when it was written on 5 September and was out of date within a day. This is the current
 state, each row traced to the document that closed it.
+
+> **7 September re-trace.** Twelve documents landed after this one — `docs/103`
+> through `docs/115`. **None of them moves a stage count**, and that is worth
+> saying rather than leaving to be inferred: they were component redesigns
+> (`103`–`107`), a visitor audit and its fixes (`108`–`112`), the phone scroll
+> (`113`), the owner's photographs and the reel road (`114`), and a full test
+> that found a 320px defect and added a fourth harness (`115`).
+>
+> The two partial stages and the two blocked ones are blocked on the same four
+> people-shaped things they were blocked on yesterday — §3 is unchanged and was
+> re-confirmed today. **Nothing in this container can advance them.**
 
 ---
 
@@ -17,9 +28,9 @@ state, each row traced to the document that closed it.
 | **X03** | Experience Deconstruction | ✅ **Done** | `docs/80` §2–§3 — the hero action as a real first step, categories named for the outcome, the dark-side-left rule held. Thin on scroll and rhythm, and says so |
 | **X04** | Reference-Driven Redesign | ✅ **Ledger closed** | `docs/82` §7 — one adapted, one held for B5, one rejected with a reason, one already answered. The section-level remainder is B5's |
 | **X05** | Redesign Direction | ✅ **Done** | `docs/98` — Current → Desired → Why → What changes → What stays. `docs/53` made the showpiece budget decision inside it, early |
-| **X06** | High-Impact Upgrade | 🟡 **Most of it** | `docs/88` (section pass), `docs/87` (the way into Services & Pricing), plus P1's CTA, width, banding and hero work. **Remaining: the four-block repetition and section naming/order — both B5's** |
+| **X06** | High-Impact Upgrade | 🟡 **Most of it** | `docs/88` (section pass), `docs/87` (the way into Services & Pricing), plus P1's CTA, width, banding and hero work — and since 6 Sep the button, card, header and Recent Work redesigns (`docs/103`–`107`) and the sixteen-item visitor audit (`docs/108`–`112`). **Remaining is unchanged: the four-block repetition and section naming/order — both B5's**, because both are judgements about what a buyer does, not about what the code does |
 | **X07** | Interaction & Motion | ✅ **Done** | `docs/83` — the systematic pass, and the reduced-motion promise made true rather than claimed |
-| **X08** | Mobile Excellence | ✅ **Done** | `docs/72` — the stage X01 called *verified, not designed*. `/story` went from a CTA in view 6% of the scroll to 99% |
+| **X08** | Mobile Excellence | ✅ **Done**, and twice re-opened by measurement | `docs/72` — the stage X01 called *verified, not designed*. `/story` went from a CTA in view 6% of the scroll to 99%. Since: `docs/113` took the phone homepage 27.6 → **25.8 screens** by turning three stacked image grids into snapping scrollers, and `docs/115` found **nine pricing cards laying out 352px wide in a 272px column at 320px**, clipped in silence. A stage marked done is not a stage that stops being measured |
 | **X09** | Design System Refinement | ✅ **Done** | `docs/75` — text below 10px and shrinking as the screen grew, including four service names at 10px on a laptop |
 | **X10** | Validation & Comparative Review | ⛔ **Blocked** | Needs the reference numbers B1 would produce. A comparison cannot be sourced from here — §3 |
 | **X11** | World-Class Gate | ❌ **Not started** | Correctly last. It gates on P4-1, which applies the B3/B4/B5/B6 findings |
@@ -58,6 +69,20 @@ be refinement, not reversal."**
 left that this container can advance alone — which is a different situation
 from a month ago, when the blocker was a missing capability rather than a
 missing observation.
+
+**Re-confirmed 7 September**, after twelve further documents and a second full
+test. The table above is unchanged, and it is unchanged for the right reason:
+each of the four rows needs an observation only a person can make — a live
+competitor page the egress proxy will not fetch, five buyers in a room, an
+Arabic reader, a screen-reader user. None of them is a piece of work being put
+off.
+
+There is also one item that is neither a stage nor blocked: **the site's
+verdict.** `docs/108` graded it 🟡 MAYBE for one reason — every claim on the
+page comes from the company itself — and `docs/112` and `docs/114` both
+re-checked it and left it there. Seven photographs of the studio's own work
+are still the studio's own word. **One named client willing to be quoted is
+the single thing that moves it**, and it is owner-supplied.
 
 ---
 

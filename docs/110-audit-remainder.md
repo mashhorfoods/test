@@ -106,7 +106,7 @@ live.
 | `validate` | 0 findings |
 | `qa` | 0 high, 0 medium, 1 pre-existing low |
 | `a11y` | 0 violations |
-| Section order | 16 sections, exactly as tabled above |
+| Section order | 16 sections, exactly as tabled above *(15 from `docs/111` the same day, when the Mystery Reward came out)* |
 | Numbering | 01–09, no gap, no duplicate |
 | Page height | 20,583px desktop — unchanged |
 | The challenge after its move | starts, shuffles, grades — state `quiz` on start |

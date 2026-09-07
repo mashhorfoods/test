@@ -184,4 +184,4 @@ files. The `width`/`height` attributes were wrong as well — all four said
 | `prefers-reduced-motion` | image `scale: none`, detail still revealed |
 | Arabic | `dir="rtl"`, grid mirrors, index stays LTR-isolated |
 | Grid closes | 393 stacked · 820 a 2×2 · 1440 the 4-column bento, no empty cell |
-| Page weight | 942KB, under the 1024KB budget |
+| Page weight | 942KB, under the 1024KB budget *(raised to 1200KB on 7 Sep when seven real photographs replaced the placeholders — `docs/114` §2. First-screen budget unchanged)* |

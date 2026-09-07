@@ -65,7 +65,7 @@ You need the repository on a machine with Node 22:
 ```
 npm install
 node build.js        # regenerates dist/ — the thing that actually ships
-npm run check        # validate.js, qa.js, a11y.js
+npm run check        # validate.js, qa.js, responsive.js, a11y.js
 ```
 
 **Commit `dist/` along with your change.** CI checks that the committed `dist/`
@@ -99,13 +99,18 @@ npm run check
 
 | | |
 | --- | --- |
-| `validate.js` | Walks the buyer journeys. **0 findings or something is broken** |
-| `qa.js` | 24 sections. **0 high and 0 medium is the standard** |
+| `validate.js` | Walks the buyer journeys at 1280 and 390. **0 findings or something is broken** |
+| `qa.js` | 30 sections over the built files. **0 high and 0 medium is the standard** |
+| `responsive.js` | 320/768/1024 × 8 pages × English and Arabic — 48 combinations. **0 high is the standard** |
 | `a11y.js` | axe-core. **0 violations is the standard** |
+
+Which widths each one actually renders is tabled in `docs/69` §5d. That table
+exists because `responsive.js` was added on 7 September after `docs/115` found
+nine pricing cards cut off at 320px — a width nothing had ever rendered.
 
 **One finding is expected and safe to ignore:**
 
-> `LOW [css] 91 selector(s) style nothing any visitor can see`
+> `LOW [css] 103 selector(s) style nothing any visitor can see`
 
 That is a documented, deliberate decision (`docs/75` §4) — a utility layer and
 a type scale kept whole on purpose. It has printed 91 for weeks. **If the

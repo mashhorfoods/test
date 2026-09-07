@@ -57,7 +57,7 @@ it is the one that decides the verdict.**
 | --- | --- | --- |
 | Homepage sections | 16 | **15** |
 | Desktop height | 20,329px · 22.6 screens | **19,970px · 22.2** |
-| Phone height | 23,405px · 27.5 screens | 23,526px · **27.6** |
+| Phone height | 23,405px · 27.5 screens | 23,526px · **27.6** — then **25.8** the same day, `docs/113` |
 | Hero actions | 1 | **2**, both above the fold |
 | Position of the value proposition | section 9 | **section 2** |
 | Position of the process | section 13 | **section 10** |
@@ -69,6 +69,13 @@ it is the one that decides the verdict.**
 | Third-party proof | 0 | **0** |
 
 **Two rows there are not wins and should not be read as ones.**
+
+> **Both rows below were written as not-wins and one of them stopped being
+> one within hours.** `docs/113` did the work this section called out of
+> scope — 27.6 → **25.8 screens** — and `docs/115` re-measured it at 25.8 on
+> 7 September. The other, third-party proof, is unchanged and still the item
+> that decides the verdict. Left as written, with this note, because a
+> not-win quietly edited into a win is how a record stops being one.
 
 - **Phone length did not improve.** 27.5 → 27.6 screens. The reward and the
   closing banner came out; the FAQ went in; it netted to nothing. `docs/108`

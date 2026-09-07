@@ -65,7 +65,7 @@ is not the visible one.*
 
 | | | |
 | --- | --- | --- |
-| **Selected Work** — 10 pieces | after the five service detail sections, before Add-ons | The visitor has just read what we do; this is the evidence for it. The search-sourced pattern for agency sites in 2026 puts the work *before* the list; section order is R4's and waits on B5, so the work goes as close to the list as the ordering allows without moving anything |
+| **Selected Work** — ~~10~~ **7 pieces** *(`docs/114`, 7 Sep)* | after the five service detail sections, before Add-ons | The visitor has just read what we do; this is the evidence for it. The search-sourced pattern for agency sites in 2026 puts the work *before* the list; section order is R4's and waits on B5, so the work goes as close to the list as the ordering allows without moving anything |
 | **Campaigns, as they ran** — 8 pieces | after Process, before the final call to action | Serves marketing: the last thing before "let's build yours" is proof that campaigns ran |
 
 Both reuse `.c-gallery` (`docs/86`) unchanged: **no script required, no
@@ -108,28 +108,48 @@ waiting to be written, and the native one is neither.
 Placed at the head of Selected Work: the reel introduces the work, the gallery
 shows the pieces.
 
-**Budget.** `docs/53` allows 2MB of video across the site and `qa.js` §7
+**Budget.** ~~`docs/53` allows 2MB of video across the site and `qa.js` §7
 enforces it. The hero pair is 1.6MB; the placeholder reel is 10KB, leaving
-roughly **400KB for the real one** before the check fails. That is the number
-to hand whoever cuts it.
+roughly **400KB for the real one** before the check fails.~~
+
+**That paragraph was wrong, and `docs/114` §4 explains why.** It was not a
+budget, it was a category error: one number holding two different kinds of
+cost. The hero loop is given to every desktop visitor unasked; the reel is
+behind `preload="none"` and a control, and fetches nothing until somebody
+presses play. Sixty seconds in 400KB is 47kbps — not a reel, a warning.
+
+`qa.js` §7 now weighs them separately: **2MB automatic, 6MB click-to-play**,
+with the pool read from the markup rather than the filename (`docs/53` §9).
+The number to hand whoever cuts it is **6MB for the pair** — and they do not
+need to work it out, because `npm run reel -- <master>` encodes to it and
+refuses to write if it cannot fit.
 
 ---
 
-## 4. Every image here is a placeholder
+## 4. Every image here is a placeholder — *half of this is now false*
+
+**Superseded in part on 7 September by `docs/114`.** Selected Work carries
+real photographs of real branding work now. The rest still stands.
 
 The egress proxy blocks this container from downloading stock photography, so
-the eighteen slides and the reel are **generated locally** at the right
-dimensions and say so on their face.
+what remains placeholder is **generated locally** at the right dimensions and
+says so on its face.
 
-| | |
-| --- | --- |
-| `src/assets/placeholders/work-01..10.svg` | 1200×800 |
-| `src/assets/placeholders/campaign-01..08.svg` | 1080×1350 |
-| `src/assets/showpiece/reel-placeholder.webm` | 10KB, 6s |
-| `src/assets/showpiece/reel-still.svg` | the poster |
+| | | State |
+| --- | --- | --- |
+| ~~`src/assets/placeholders/work-01..10.svg`~~ | 1200×800 | 🟢 **Replaced and deleted.** Seven owner photographs, `src/assets/images/work-1..7.webp` |
+| `src/assets/placeholders/campaign-01..08.svg` | 1080×1350 | ⚪ still placeholder |
+| ~~`src/assets/showpiece/reel-placeholder.webm`~~ | 10KB, 6s | 🟡 renamed `reel.webm`; still placeholder footage |
+| ~~`src/assets/showpiece/reel-still.svg`~~ | the poster | 🟡 now `reel-still.webp`; the `.svg` remains as its editable source |
+| `src/assets/showpiece/reel.mp4` | 10KB | 🟡 added, so the `<source>` pair is real from the start |
 
-**To replace:** overwrite the files, keep the names, update the `alt` text in
-both languages. Nothing else changes.
+**To replace the campaign slides:** overwrite the files, keep the names,
+update the `alt` text in both languages.
+
+**To replace the reel: do not overwrite anything by hand.** Run
+`npm run reel -- /path/to/the-master.mov`. It writes all three reel names
+inside the budget and refuses to write at all if it cannot fit. The master
+stays off the repository — see `docs/53` §9.
 
 ---
 
@@ -157,7 +177,7 @@ nothing and closed the hole.
 | --- | ---: | ---: |
 | Homepage first screen, phone | 389KB | **414KB** |
 | Budget | 480KB | 480KB — **66KB of headroom** |
-| Video total | 1.60MB | 1.61MB of 2MB |
+| Video total | 1.60MB | 1.61MB of 2MB *(the pools were split 7 Sep — the hero pair is 1.61MB of 2MB automatic, the reel 20KB of 6MB click-to-play)* |
 | Homepage length | 23.9 screenfuls | **26.1** |
 
 `validate` 0 findings · `qa` 0 high, 0 medium, 1 expected LOW · `a11y` 0

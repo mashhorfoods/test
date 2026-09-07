@@ -59,31 +59,33 @@ copy, and the site cannot go down unnoticed.
 
 **Plainly: the site is deliverable today.** What follows is not rescue work.
 
-### WEBSTART X — one of eleven, and that is the honest number
+### WEBSTART X — 7 of 11, and `docs/99` is the only place that number lives
 
-| | Stage | Status |
-| --- | --- | --- |
-| X01 | Baseline Audit | ✅ **Done** — `docs/55` |
-| X02 | Global Benchmark | 🟡 **Splitting in two.** The *measurable* half runs now (P1 below). The *experience* half needs the recording |
-| X03 | Experience Deconstruction | ⛔ Behind X02's second half |
-| X04 | Reference-Driven Redesign | ⛔ Behind X03 |
-| X05 | Redesign Direction | 🟡 One decision made and shipped — the showpiece budget, `docs/53` |
-| X06 | High-Impact Upgrade | 🟡 Phone CTA, width parity, proof band, section banding, hero, Arabic heading leading, package-button alignment all shipped |
-| X07 | Interaction & Motion | 🟡 Hero film ships with reduced-motion guards. No systematic pass |
-| X08 | Mobile Excellence | 🔓 **Not started — and not blocked.** Starts in P1 |
-| X09 | Design System Refinement | 🔓 **Not started — and not blocked.** Starts in P1 |
-| X10 | Comparative Validation | ⛔ Needs a baseline to compare against, which is X04 |
-| X11 | World-Class Gate | ⛔ Last |
+> **This table was deleted on 7 September.** It read *"one of eleven, and that
+> is the honest number"*, written 5 September and wrong by the 6th — six
+> stages closed in a day, four of them as a side effect of work named
+> something else. `docs/99` was written to replace it and this file went on
+> carrying a stale copy anyway.
+>
+> **Two copies of a status drift, and the older one gets quoted.** So there is
+> one copy now.
 
-**Two stages were sitting behind a blocker that never applied to them.** X08
-and X09 need our own site and a measuring tool, both of which are here.
+**→ `docs/99-webstart-x-status.md` is the single source for stage state.**
+Current, re-traced 7 September: **7 complete · 2 partial · 2 blocked**, and
+all four of the unfinished rows wait on an observation only a person can make
+(`docs/99` §3).
+
+**Two stages had been sitting behind a blocker that never applied to them** —
+X08 and X09 needed our own site and a measuring tool, both of which are here.
+That was the finding that moved the number, and it is why this file no longer
+keeps its own.
 
 ### The admin dashboard — already delivered, and worth saying so plainly
 
 `docs/63`, decided 5 September on the owner's own answers: **one content
 editor, therefore Option 0.** GitHub's web editor *is* the dashboard. Edit
 `src/data/*.json` from anything including a phone; CI classifies the push as
-data-only, runs all three harnesses, rebuilds and commits `dist/` back, and
+data-only, runs all four harnesses, rebuilds and commits `dist/` back, and
 attaches the upload archive to the run.
 
 **It was tested end to end on the live branch, not reasoned about** — a price
@@ -228,7 +230,7 @@ site, with full repository access.**
 | **R4** | Section **naming and order** — outcome-named vs feature-named, `docs/80` §3.1 | **B5** |
 | **R5** | Five **regional** competitors probed — Pro Branding, Infinity Corp, Emirates Graphic, Prism Digital, Upscale Digital. All bilingual, which no reference has covered. `docs/70` benchmarked SaaS products, right for craft and wrong for market | **B1 probe runs** |
 | ~~**R6**~~ | ~~What We Do~~ | ✅ **DONE 6 Sep — `docs/101`.** Four of five services said nothing until you clicked them; summaries now show closed. **Found on the way: a duplicated `@layer components {` that renested the utilities layer and put both languages in the orbit labels** — `qa.js` §29 |
-| ~~**R7**~~ | ~~Two slideshows and a showreel~~ | ✅ **DONE 6 Sep — `docs/102`.** Ten-image work gallery, eight-image campaign gallery, video placeholder with a player, and the full functions/responsive/padding/UX test around them |
+| ~~**R7**~~ | ~~Two slideshows and a showreel~~ | ✅ **DONE 6 Sep — `docs/102`.** Ten-image work gallery, eight-image campaign gallery, video placeholder with a player, and the full functions/responsive/padding/UX test around them. *(The ten placeholders became **seven real photographs** on 7 Sep — `docs/114`; the reel's file names and budget changed with it)* |
 | ~~**R8**~~ | ~~Recent Work~~ | ✅ **DONE 6 Sep — `docs/103`.** Prose and a link became a four-tile bento of the real work, with a real `<h2>`. **Found on the way: five silent failures** — an undefined `--space-20` that voided padding in five places (`qa.js` §30), tiles sized from lazy images that laid out at 2px a row, an override that lost on source order and overflowed its column by 216px, white captions on white paper, and a page 40KB over budget |
 | ~~**R9**~~ | ~~The Brand Challenge~~ | ✅ **DONE 6 Sep — `docs/104`.** A three-stage interaction that showed none of its stages: a step track, a two-column question, radio cards, attempt dots and a reward ladder. **Found on the way: the section lost its accessible name the moment the challenge started** — the labelled heading was inside the pane that gets hidden — plus a step track with no current step without JavaScript, and a legend that nearly stopped being the option group's name |
 | ~~**R10**~~ | ~~All buttons~~ | ✅ **DONE 6 Sep — `docs/105`.** Control radius 4px → 8px as a token across all five control files, a square icon button, a press that composes with the lift, an unfilled disabled state and a ghost with an affordance. **Found on the way: in Arabic the CTA arrow un-mirrored itself on hover** — the nudge and `.u-flip-rtl` were fighting over `transform`. **And one overreach the guards reverted:** a 40px small button, which `docs/73` had already rejected |
@@ -236,8 +238,11 @@ site, with full repository access.**
 | ~~**R12**~~ | ~~All cards~~ | ✅ **DONE 7 Sep — `docs/107`.** Twenty-three card surfaces, four radii, seven grounds and a `.c-card` component used on no shipped page. One contract in the tokens; radii down to two. **Found on the way: the pricing card was the only card not raised off its own band** — it became a card only on hover, which a phone never gets. Plus a regression I made and caught (raising every tier erased the recommendation's third signal) and one pre-existing (the featured tier's accent border lost to `.c-tier:hover` on specificity) |
 | ~~**R13**~~ | ~~Visitor audit + fixes 2-5~~ | ✅ **DONE 7 Sep — `docs/108`, `docs/109`.** First-time-visitor audit of the shipped site (verdict: MAYBE — every claim comes from the company itself), then four of its five fixes: the contact form's silent failure, who the site is for in the hero, the value proposition moved to section 2 plus a softer second CTA, and what happens after you make contact. **Fix 1 — one real client testimonial — is the owner's**, and so are a domain mailbox and a response time |
 | ~~**R14**~~ | ~~The rest of the audit~~ | ✅ **DONE 7 Sep — `docs/110`.** Galleries merged, process moved above them, the duplicate closing banner removed, the challenge moved out of section 4, and a six-question FAQ answering what `docs/108` §14 said a buyer still wanted to know — every answer from copy already on the site. **Two left with the owner on purpose:** which prize mechanic to keep (deleting a commissioned feature is not a silent judgement), and which industries you serve (facts only they have) |
-| ~~**R15**~~ | ~~Close out the visitor audit~~ | ✅ **DONE 7 Sep — `docs/112`.** Every `docs/108` item checked against the shipped build rather than against memory: 14 of 16 done. **The verdict does not move — it is still MAYBE — because the one item left is the one that decides it:** zero third-party proof. Re-verified on the live page that the five elements resembling social proof are a price-quote block and the word "Integrated". Also recorded honestly: phone scroll length did not improve, 27.5 → 27.6 screens |
+| ~~**R15**~~ | ~~Close out the visitor audit~~ | ✅ **DONE 7 Sep — `docs/112`.** Every `docs/108` item checked against the shipped build rather than against memory: 14 of 16 done. **The verdict does not move — it is still MAYBE — because the one item left is the one that decides it:** zero third-party proof. Re-verified on the live page that the five elements resembling social proof are a price-quote block and the word "Integrated". Also recorded honestly: phone scroll length did not improve, 27.5 → 27.6 screens — **then `docs/113` took it to 25.8 the same day**, by collapsing the three stacked image grids into phone scrollers |
 | ~~**R16**~~ | ~~The two not-wins from `docs/112`~~ | ✅/🟠 **7 Sep — `docs/113`.** Phone scroll fixed: the three visual grids become horizontal snapping scrollers on phones, 27.6 → **25.8 screens**, desktop untouched. **Four silent failures on the way**, all measured — two placements that did nothing, a grid-height collapse that measured as a saving, and flex sizing on the wrong element — plus an axe `scrollable-region-focusable` and an empty `@media` defended by a comment describing CSS that was already gone. **The email cannot be fixed yet:** the owner chose `hello@` on the Pixora domain, and that domain is not registered (`docs/44` §1) |
+
+| ~~**R17**~~ | ~~The owner's photographs, and the road for the film~~ | ✅/🟠 **7 Sep — `docs/114`.** Seven uploaded images identified as branding work and placed in Selected Work — bilingual alt text describing what is actually in each photograph, captions numbered honestly `01/07`…`07/07`, ten placeholder SVGs deleted, 408KB re-encoded to 205KB. Page budget raised 1024→1200KB deliberately and in a commit message; **the first-screen budget did not move.** **Found on the way: the video budget was one number doing two jobs** — the reel's whole allowance was the ~350KB the hero left over, which at sixty seconds is 47kbps. Split into 2MB automatic / 6MB click-to-play, pool read from the markup, negative-tested both ways (`docs/53` §9). `npm run reel` added so the 35MB master never enters the repository. **🟠 The footage itself is the owner's to encode** |
+| ~~**R18**~~ | ~~Second full test~~ | ✅ **7 Sep — `docs/115`.** **The test was wrong three times before the site was wrong once.** A widened sweep reported 42 findings, 40 of them its own — a language selector this site has never used, a selector list returning by document order, and a console filter matching text that does not contain the URL. Then the guard could not fire at all, twice: `overflow-x: clip` on html *and* body pins `scrollWidth` to the viewport, and the ancestor walk that replaced it reached body and excused everything. **The real find: nine of twelve pricing cards laying out 352px wide in a 272px column at 320px**, clipped in silence, because `white-space: nowrap` on a CTA made the button's min-content the floor of its card. Fixed at the component root. `tools/responsive.js` added and wired into `npm run check` — 320/768/1024 × 8 pages × both languages |
 
 **Note on this container:** WebSearch works; fetching any specific page does
 not (`EGRESS_BLOCKED`, the network policy, not one domain). A competitive
@@ -318,7 +323,7 @@ same way everything else does.
 
 ---
 
-## 5c. Harnesses — what each one actually renders
+## 5d. Harnesses — what each one actually renders
 
 Added 7 September after `docs/115` found a page nothing had ever loaded at the
 width it broke at.

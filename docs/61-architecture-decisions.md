@@ -155,7 +155,7 @@ preload tags `index.html` has carried all along and the build used to strip.
 
 **Decision.** Deployment stays a deliberate manual zip upload (`docs/44`). CI
 does **not** deploy. What CI owns is whether the thing being uploaded is sound:
-`.github/workflows/check.yml` builds and runs all three harnesses on every push.
+`.github/workflows/check.yml` builds and runs all four harnesses on every push.
 
 **Consequences.** The moment the live site changes is a moment a person chose,
 which at this size is a feature — there is no pipeline that can surprise
@@ -192,7 +192,7 @@ already exist and they cover what staging is for:
 
 | Surface | What it is | What it catches |
 | --- | --- | --- |
-| **Local** | `npm run release` against `dist/` | Everything the three harnesses test, before anything leaves the machine |
+| **Local** | `npm run release` against `dist/` | Everything the four harnesses test, before anything leaves the machine |
 | **The review surface** | GitHub Pages from the repository | What the built site looks like to someone else, on a real host, at a real URL |
 | **Production** | The zip on Hostinger | Only what depends on that host: `.htaccess`, the headers, clean URLs, the 404 |
 
@@ -236,7 +236,7 @@ about which, because the row is quoted elsewhere:
 | --- | --- |
 | No monitoring | `docs/57` §5 — four monitors defined, one is the last open Gate 03 criterion, and it needs an owner account rather than a decision |
 | No backup strategy | `docs/57` — written, including the finding that the three irreplaceable things are none of them in the repository |
-| No CI | `.github/workflows/check.yml` — build, staleness, three harnesses, every push |
+| No CI | `.github/workflows/check.yml` — build, staleness, four harnesses, every push |
 | No environments | AD-08 — decided, not deferred |
 
 **Still true and still deliberate:** no backend, no API, no database, no

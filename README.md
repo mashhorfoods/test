@@ -8,7 +8,10 @@
 | Live | `zaokalyamamah.online` | the built `dist/` bundle |
 | Future | `pixora.net` or similar | one field in `site.config.json`, then rebuild |
 
-**Before every upload:** `node build.js` · `node tools/validate.js` · `node tools/qa.js`
+**Before every upload:** `npm run release` — that is `node build.js` followed by
+all four harnesses (`validate.js` · `qa.js` · `responsive.js` · `a11y.js`).
+What each one actually renders is tabled in `docs/69` §5d; run them individually
+with `npm run check`, `npm run responsive`, `npm run a11y`.
 
 
 Built in stages on a token-driven design system. Every stage builds on the
@@ -56,7 +59,7 @@ src/styles/                 The product stylesheet
                             orbit · services · service-detail ·
                             campaign · pricing · addons · value ·
                             process · cta · contact · footer ·
-                            ecosystem · disclosure · field
+                            ecosystem · disclosure · field · faq
                             (value.css is now the arrangement contrast only)
 src/data/pricing.json       The package data — the source of truth
 src/data/i18n-ar.json       Arabic for every non-package string
@@ -64,6 +67,21 @@ tools/build-i18n.js         Applies it — run after editing the JSON
 tools/build-pricing.js      Renders each service's package cards and its
                             price summary from pricing.json — run after
                             any package change
+tools/build-challenge.js    Renders the Brand Challenge from its JSON
+tools/build-pages.js        Builds every subpage from the index.html shell
+tools/build-reel.js         `npm run reel -- <master>` — encodes a showreel
+                            export to reel.webm/.mp4/-still.webp inside the
+                            budget, and refuses to write if it will not fit.
+                            The master never enters the repo (docs/53 §9)
+tools/build-showpiece.js    `npm run film` — draws the hero from scene.html
+tools/build-hero-from-clips.js  `npm run film:clips` — hero from real footage
+
+  --- the four harnesses, none of them decoration ---
+tools/validate.js           Walks the buyer journeys at 1280 and 390
+tools/qa.js                 30 sections over the built files
+tools/responsive.js         320/768/1024 x 8 pages x EN+AR — the widths and
+                            combinations the other two never render
+tools/a11y.js               axe-core
 src/scripts/                Vanilla ES modules, no dependencies
   main.js                   Entry point
   navigation-map.js         Single source of section order and labels

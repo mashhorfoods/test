@@ -149,6 +149,10 @@ actually reaches `dir="rtl"`.
 repeated. Before this, **no check had ever loaded `/privacy`, `/terms`, `/404`
 or `/accessibility` in Arabic at any width at all.**
 
+`docs/69` §5d now tables what each harness actually renders, with the rule that
+the table changes whenever a harness does — a gap nobody has written down is a
+gap nobody will look for.
+
 It is negative-tested, which given §3 is not a formality: an injected 1400px
 element fires HIGH, an injected 20px link fires MED, and a missing
 `[data-lang="ar"]` control fires as a harness failure rather than passing

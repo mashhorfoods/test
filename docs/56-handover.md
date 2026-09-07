@@ -30,7 +30,7 @@ Run them from the project folder.
 | Command | What it does |
 | --- | --- |
 | `npm run build` | Rebuilds everything and writes `pixora-site.zip` |
-| `npm run check` | Runs the three quality harnesses. **Read the last line of each** |
+| `npm run check` | Runs the four quality harnesses. **Read the last line of each** |
 | `npm run release` | Both of the above, in order. This is the one to use |
 
 GitHub also runs all of this on every push (`.github/workflows/check.yml`).
@@ -41,7 +41,7 @@ checks need.
 
 ## 3. Uploading
 
-1. `npm run release` — each of the three harnesses should end with zero.
+1. `npm run release` — each of the four harnesses should end with zero.
 
    **Read those two lines rather than trusting that the command finished.** The
    harnesses stop the build only on a HIGH finding; a MEDIUM or LOW is printed
@@ -91,7 +91,7 @@ This is the table to keep. Everything on the site comes from one of these.
 **From a browser or a phone — no terminal at all** (`docs/63`, Option 0):
 
 1. Open `src/data/pricing.json` on GitHub, edit the number, commit.
-2. Wait ~3 minutes. CI runs all three harnesses, then rebuilds and commits
+2. Wait ~4 minutes. CI runs all four harnesses, then rebuilds and commits
    `dist/` for you. **If the run goes red, nothing was committed** — read the
    log rather than assuming it worked.
 3. Download `pixora-site` from that run's Artifacts, and upload it.
@@ -149,7 +149,7 @@ there, change both language spans.
 
 ## 6. What the checks actually check
 
-`npm run check` runs three harnesses. None of them is decoration.
+`npm run check` runs four harnesses. None of them is decoration.
 
 **`validate.js`** walks what a buyer does: every link resolves, a package
 button carries its package and price into WhatsApp, the choice survives a round
@@ -161,9 +161,22 @@ JavaScript off, a keyboard reaches everything, and no page overflows at
 descriptions are the right length, the sitemap matches the pages, headings are
 in order, images have alt text and dimensions, contrast passes, both languages
 have the same number of strings, the phone requests no video, the link preview
-card and the iPhone touch icon both exist and shipped, and **no page costs a
-visitor more than 1MB** — measured by loading it and scrolling the whole way
-down, which is the only way the lazy images get counted.
+card and the iPhone touch icon both exist and shipped, no `var()` names a
+custom property nothing defines, and **no page costs a visitor more than
+1200KB** — measured by loading it and scrolling the whole way down, which is
+the only way the lazy images get counted. (That figure was 1024KB until
+7 September, raised deliberately and in a commit message when seven real
+photographs replaced ten placeholders; the *first-screen* budget, 480KB, did
+not move — see `docs/114` §2.)
+
+**`responsive.js`** renders every page at **320, 768 and 1024** in both
+languages — 48 combinations — and checks three things: nothing reaches past
+the viewport, no target below the 44px floor, and Arabic actually reaches
+`dir="rtl"`. It covers the widths `validate` and `qa` never render, which is
+the whole reason it exists: it was added on 7 September after nine pricing
+cards turned out to be laying out 352px wide inside a 272px column at 320px,
+with the excess silently clipped by `overflow-x: clip` and every other harness
+passing (`docs/115`).
 
 **`a11y.js`** runs axe-core — an accessibility engine nobody here wrote —
 against every shipped page at two widths and in both languages, plus the mobile
