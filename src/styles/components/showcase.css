@@ -67,7 +67,19 @@
   }
 
   #work { --showcase-ratio: 3 / 2; }
-  #campaigns { --showcase-ratio: 4 / 5; }
+  #campaigns {
+    --showcase-ratio: 4 / 5;
+    /* THE SECOND GALLERY TAKES THE DEEPER GROUND.
+
+       The two galleries used to sit four sections apart, so a visitor could
+       not tell whether the second was new work or the first one again
+       (docs/108 §5). They are adjacent now — one portfolio in two parts —
+       which fixes that and creates the opposite problem: 3,200px of identical
+       ground reading as a single slab. The four service blocks already solve
+       this by alternating, deliberately and by id; this is the same device,
+       for the same reason. */
+    background-color: var(--color-bg-deep);
+  }
 
   /* A portrait slide should not eat the screen on a phone. */
   @media (max-width: 47.99em) {
