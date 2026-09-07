@@ -4,6 +4,17 @@
 phone. It replaces the internal version in `docs/67`, which was written on
 6 September and predates half of what is on the page now.
 
+> **THE SENDABLE VERSION IS A PAGE — 8 September 2026.**
+> **[Forty Minutes with VoiceOver](https://claude.ai/code/artifact/a12d0fb9-a405-4b60-88d2-56dbf5bd9eed)**
+>
+> This file stays as the working source and keeps the internal
+> reasoning and the provenance appendix. The page is what goes to the
+> reviewer: the same questions, self-contained, with every internal
+> cross-reference removed, readable on a phone and printable.
+>
+> **Edit here, then republish the page** — the two are not linked, so a
+> change made in only one of them is a brief that disagrees with itself.
+
 ---
 
 ## 0. What we are asking for

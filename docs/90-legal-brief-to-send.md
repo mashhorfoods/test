@@ -9,6 +9,17 @@ every fact below was re-verified against the live site on the day of writing.
 > itself that it is not final and has not been reviewed by a lawyer.** It is
 > live. It is the first thing to look at after §2.
 
+> **THE SENDABLE VERSION IS A PAGE — 8 September 2026.**
+> **[Pixora Terms Review](https://claude.ai/code/artifact/73fcd882-7995-4c55-8c05-f2e174bbaa58)**
+>
+> This file stays as the working source and keeps the internal
+> reasoning and the provenance appendix. The page is what goes to the
+> reviewer: the same questions, self-contained, with every internal
+> cross-reference removed, readable on a phone and printable.
+>
+> **Edit here, then republish the page** — the two are not linked, so a
+> change made in only one of them is a brief that disagrees with itself.
+
 ---
 
 ## 0. What we are asking for

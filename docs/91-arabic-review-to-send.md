@@ -17,6 +17,17 @@ It replaces the earlier internal version and is current as of today's build.
 > they are the newest, they were written by a non-native speaker, and several
 > of them are the first words a visitor reads.
 
+> **THE SENDABLE VERSION IS A PAGE — 8 September 2026.**
+> **[Does the Arabic Sound Right](https://claude.ai/code/artifact/9ff29617-95eb-44f5-90f5-d3c09909d8a2)**
+>
+> This file stays as the working source and keeps the internal
+> reasoning and the provenance appendix. The page is what goes to the
+> reviewer: the same questions, self-contained, with every internal
+> cross-reference removed, readable on a phone and printable.
+>
+> **Edit here, then republish the page** — the two are not linked, so a
+> change made in only one of them is a brief that disagrees with itself.
+
 ---
 
 ## 0. What we are asking for
