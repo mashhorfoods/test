@@ -334,6 +334,17 @@ Written as the customer, after reading everything:
 
 ### 🟡 MAYBE — I need more information
 
+> **ANSWERED 7 September, the same day.** The verdict below turns on one
+> sentence — *"every single claim on this site comes from the company
+> itself"* — and that sentence is no longer true. Faris Mohammed, Founder &
+> CEO of Al Mada Travel & Tourism Agency, sent a testimonial in writing and
+> agreed to be named. It is on the homepage, under the four deliverables it is
+> about, and at the end of the case study: `docs/122`.
+>
+> **The audit is left exactly as it was written.** It was right, it was right
+> for the right reason, and a first-visit audit edited after the fact to look
+> prescient is worth nothing. §16's first item was the correct first item.
+
 Not "no": the site is professional, the services are clear, the prices are
 published, and the case study is real. It clears the bar most agency sites in
 this bracket do not.
@@ -352,7 +363,7 @@ amount of design work.
 
 ## 16. Top five things to fix
 
-1. **Get one named client testimonial and put it beside the case study.** Al
+1. ✅ **DONE 7 Sep — `docs/122`.** ~~Get one named client testimonial and put it beside the case study.~~ It is beside the case study, on both pages that carry one. Al
    Mada already trusted them with four deliverables. One quote, one name, one
    company — the largest single trust gain available.
 2. **Fix the contact form.** `mailto:` with `method="post"` can silently fail;

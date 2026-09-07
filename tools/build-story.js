@@ -411,6 +411,34 @@ ${last ? '' : `
 `}`;
 }
 
+/* THE CLIENT'S OWN WORDS, if there are any.
+   This file's header says the generator exists so that "the day a real client
+   case study is approved, the chapters are replaced there and this page
+   rebuilds around them". The same applies one level down: a testimonial is
+   OPTIONAL in the data, and a story.json without one renders exactly the page
+   it rendered before. That is deliberate — the alternative is a generator
+   that requires a quotation, which is a generator that invites one to be
+   written when none exists.
+
+   The translation note is not optional when the block is present. Faris
+   Mohammed wrote in English; the Arabic is ours, and an Arabic reader told
+   nothing would reasonably take it for his own words. */
+function testimonial(t) {
+  if (!t) return '';
+  return `
+      <figure class="c-testimonial c-story__testimonial">
+        <blockquote class="c-testimonial__quote">
+          <p>${pair(t.quote)}</p>
+        </blockquote>
+        <figcaption class="c-testimonial__by">
+          <span class="c-testimonial__name">${pair(t.name)}</span>
+          <span class="c-testimonial__role">${pair(t.role)}</span>
+          <span class="c-testimonial__note">${pair(t.note)}</span>
+        </figcaption>
+      </figure>
+`;
+}
+
 const block = `<!-- STORY:START -->
       <header class="c-story__head">
         <p class="t-label c-story__eyebrow">${pair(data.eyebrow)}</p>
@@ -422,6 +450,7 @@ const block = `<!-- STORY:START -->
 ${data.chapters.map((c, i) => renderChapter(c, i, i === data.chapters.length - 1)).join('\n')}
       </div>
 
+${testimonial(data.testimonial)}
       <footer class="c-story__close">
         <p class="c-story__statement">${pair(data.close.statement)}</p>
         <a class="c-link c-story__link" href="${esc(data.close.href)}"${OFFSITE(data.close.href)}>

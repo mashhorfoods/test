@@ -261,6 +261,8 @@ site, with full repository access.**
 
 | ~~**R20**~~ | ~~The admin dashboard~~ | ✅ **7 Sep — `docs/120` (plan), `docs/121` (built).** All nine phases pass their acceptance tests. A static page at the repository root, served by the **review surface**, editing prices and Arabic strings through the GitHub API with a fine-grained token the operator pastes — **no server, AD-01 survives.** Its whole justification is `docs/63`'s own objection to Option 0: a wrong price is now refused *before* the commit rather than as a red build ten minutes later. **The plan was wrong twice and the code said so:** the page does not ship at all (better than the scoped-CSP block that was planned), and `challenge.json` came out of scope because it does not round-trip. **Two validation rules were wrong and the real data proved it** — `level`/`purpose` are paired, not required, and an Arabic field may hold no Arabic when it is a proper noun identical to the English. `qa.js` §33 adds five guards, each negative-tested. **Option 0 is not removed** |
 
+| ~~**R21**~~ | ~~The first client testimonial~~ | ✅ **7 Sep — `docs/122`.** Faris Mohammed, Founder & CEO of Al Mada Travel & Tourism Agency, sent a testimonial in writing and agreed to be named. **This is the item `docs/108`, `docs/112` and `docs/116` all named as the one thing standing between the site and a *yes*, and the only one of them no amount of building could supply** — the verdict turned on the sentence *"every single claim on this site comes from the company itself"*, which is no longer true. Published under the four Al Mada deliverables on the homepage and at the end of the case study, so it reads as a verdict on work the visitor has just looked at rather than an assertion. **The Arabic is ours and says so:** he wrote in English, and publishing our translation under a named man's name without declaring it would be putting words in his mouth in a language he did not use — the one judgement here an owner should overrule if they disagree, and the better fix is to ask him for Arabic. `qa.js` §34 holds every rendering of his words to one source in `story.json`, **negative-tested four ways**, because the quote is published twice and a tidy-up of one copy is all it takes to have a named man saying two different things |
+
 **Note on this container:** WebSearch works; fetching any specific page does
 not (`EGRESS_BLOCKED`, the network policy, not one domain). A competitive
 review can be *sourced* here but never *verified* — `docs/84` §0.
@@ -348,7 +350,7 @@ width it broke at.
 | Harness | Widths | Languages | Pages |
 | --- | --- | --- | --- |
 | `validate.js` | 1280, 390 | English | the journeys it walks |
-| `qa.js` | 390, 1280, 1440 | English throughout; Arabic for §15 buttons | all built pages |
+| `qa.js` | 390, 1280, 1440 | English throughout; **Arabic too** for §15 buttons, §31 counts, §32 region names and §34 attributions | all built pages |
 | **`responsive.js`** | **320, 768, 1024** | **English and Arabic** | **all eight** |
 | **`arabic.js`** | — *(static, no browser)* | **the pairing between them** | **all built pages + `navigation-map.js`** |
 | `a11y.js` | axe defaults | both | all built pages |

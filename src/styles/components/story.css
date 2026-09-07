@@ -535,3 +535,15 @@
   }
 
 }
+
+/* THE CLIENT'S OWN WORDS, at the end of the page about them.
+   `.c-testimonial` carries its own box; this only places it. It takes the
+   close's width rather than the component's own 60ch so the quote and the
+   closing statement below it share one measure — two different line lengths
+   stacked reads as two unrelated blocks. */
+@layer components {
+  .c-story__testimonial {
+    max-inline-size: 42rem;
+    margin-block-start: var(--section-space);
+  }
+}

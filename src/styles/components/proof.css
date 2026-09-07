@@ -320,3 +320,15 @@
     flex-shrink: 0;
   }
 }
+
+/* THE TESTIMONIAL'S OWN MARGIN IS ITS TOP ONE. Here it needs a bottom one
+   too: `.c-proof__more` sits directly beneath it and carries `margin: 0`,
+   which is right against a grid and wrong against a card — the case-study
+   link ended up ~17px under a hard border on desktop, reading as part of the
+   quote's box rather than as the section's closing line. Seen in a
+   screenshot, not in a measurement. */
+@layer components {
+  .c-proof .c-testimonial {
+    margin-block-end: var(--space-32);
+  }
+}
