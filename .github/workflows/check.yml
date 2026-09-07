@@ -142,8 +142,8 @@ jobs:
             exit 1
           }
 
-      # validate.js, qa.js, responsive.js, a11y.js. Each exits non-zero only on
-      # a HIGH finding;
+      # validate.js, qa.js, responsive.js, arabic.js, a11y.js. Each exits
+      # non-zero only on a HIGH finding;
       # MEDIUM and LOW print and pass, which is deliberate (docs/56 §3) — so
       # read the log rather than only the tick.
       #

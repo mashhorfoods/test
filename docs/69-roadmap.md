@@ -343,10 +343,15 @@ width it broke at.
 | `validate.js` | 1280, 390 | English | the journeys it walks |
 | `qa.js` | 390, 1280, 1440 | English throughout; Arabic for §15 buttons | all built pages |
 | **`responsive.js`** | **320, 768, 1024** | **English and Arabic** | **all eight** |
+| **`arabic.js`** | — *(static, no browser)* | **the pairing between them** | **all built pages + `navigation-map.js`** |
 | `a11y.js` | axe defaults | both | all built pages |
 
 `responsive.js` exists to cover the widths and language/page combinations the
-other three never render — not to repeat them. Before it, no check had loaded
+other three never render — not to repeat them. **`arabic.js` renders nothing**:
+it is static analysis of the bilingual layer — pairing, `lang="ar"`, untagged
+Arabic inside English, figures that disagree between the two languages, and the
+pre-composed WhatsApp messages. It cannot tell you whether the Arabic is
+*good* — `docs/91` is the brief that asks a person that. Before it, no check had loaded
 `/privacy`, `/terms`, `/404` or `/accessibility` in Arabic at any width.
 
 **If a harness is added or its coverage changes, this table changes with it.**

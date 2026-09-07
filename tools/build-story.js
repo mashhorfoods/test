@@ -41,8 +41,28 @@ const esc = (s) => String(s)
 /* Both languages ship in the markup and CSS hides the inactive one — the same
    pattern the rest of the site uses, so the page still reads with JavaScript
    off and Arabic stays visible to crawlers. */
+/* ARABIC QUOTED INSIDE ENGLISH PROSE STILL NEEDS lang="ar".
+
+   Chapter 04's English lead quotes the client's own promise —
+   "One promise carries the first screen — رحلتك تبدأ بثقة, your journey
+   begins with confidence" — and that phrase sat bare inside a span marked
+   `data-lang-copy="en"`. A screen reader on the English page pronounces it
+   with an English voice, which produces noise rather than words.
+
+   Nothing caught it: the string is correct, the page is correct, and the
+   Arabic side of the pair is correctly tagged. Only the English side has
+   Arabic in it, and only sometimes. Found 7 Sep by `tools/arabic.js`.
+
+   So the generator tags it, rather than the copy carrying markup — story.json
+   is escaped on the way in (deliberately: it is content, not HTML), so a
+   hand-written `<span>` in the JSON would ship as visible angle brackets.
+   Runs of Arabic letters, with their internal spaces and punctuation, are
+   wrapped after escaping. Every future quotation gets this for free. */
+const AR_RUN = /[\u0600-\u06FF\u0750-\u077F]+(?:[\s«»،؛؟]+[\u0600-\u06FF\u0750-\u077F]+)*/g;
+const tagArabic = (s) => s.replace(AR_RUN, (m) => `<span lang="ar">${m}</span>`);
+
 const pair = (v) =>
-  `<span data-lang-copy="en">${esc(v.en)}</span>`
+  `<span data-lang-copy="en">${tagArabic(esc(v.en))}</span>`
   + `<span data-lang-copy="ar" lang="ar">${esc(v.ar)}</span>`;
 
 /* A close link can now point at a client's live site rather than back into
