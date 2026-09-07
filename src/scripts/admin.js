@@ -150,40 +150,72 @@ async function commitFile(path, message) {
 
 /* Any edit clears the last confirmation. A "Saved" box sitting above a form
    the operator has since changed is a lie by staleness. */
-function field(label, value, help, onInput, { invalid = false } = {}) {
+function field(label, value, help, onInput, { error = null } = {}) {
   const wrap = el('label', 'a-field');
   wrap.append(el('span', 'a-field__label', label));
-  const input = el('input', `a-field__input${invalid ? ' is-invalid' : ''}`);
+  const input = el('input', `a-field__input${error ? ' is-invalid' : ''}`);
   input.type = 'text';
   input.value = value ?? '';
   input.addEventListener('input', () => { state.result = null; onInput(input.value); });
   wrap.append(input);
-  if (help) wrap.append(el('span', 'a-field__help', help));
+  /* THE MESSAGE GOES UNDER ITS OWN FIELD.
+
+     It used to live only in the action bar, as a bulleted list. On an
+     iPhone SE that bar is pinned to the bottom of the screen, and a
+     three-line message made it tall enough to COVER THE FIELD IT WAS ABOUT —
+     the instruction to fix the price sat on top of the price. Visible in a
+     screenshot and invisible in the measurements, which reported a healthy
+     1.4-screen page.
+
+     At the field, the message is next to the thing it describes and the bar
+     shrinks to one line. */
+  if (error) wrap.append(el('span', 'a-field__error', error));
+  else if (help) wrap.append(el('span', 'a-field__help', help));
   return wrap;
 }
 
+/* CATEGORIES COLLAPSE, AND THE REASON IS A PHONE.
+
+   Rendering all four categories open puts 12 cards and 61 inputs on one
+   page. Measured on an iPhone SE that is 10.5 screens, and the Save button
+   sits at the bottom of all of it — so changing one price meant scrolling
+   past every other price to commit it. Fine on a desktop, unusable on the
+   device this was built to be used from.
+
+   Native <details>, the same mechanism the site's FAQ uses: it works with no
+   JavaScript, it is a real disclosure to a screen reader, and the browser
+   handles the keyboard. All four start closed — an operator opening this
+   knows which package they came for, and a closed page opens in one screen. */
 function renderPricing(root, f) {
   const problems = validate('src/data/pricing.json', f.data);
-  const at = (p) => problems.filter((x) => x.path === p);
+  const at = (p) => problems.find((x) => x.path === p)?.message || null;
 
   f.data.categories.forEach((c, ci) => {
-    const sec = el('section', 'a-group');
-    sec.append(el('h3', 'a-group__title', `${c.label} · ${c.labelAr}`));
+    const sec = el('details', 'a-group');
+    /* A category holding an invalid value opens itself, so a problem named in
+       the bar below is never hidden behind a summary the operator must guess
+       at. */
+    const hasProblem = problems.some((x) => x.path.startsWith(`categories[${ci}]`));
+    sec.open = hasProblem;
+    const sum = el('summary', 'a-group__title');
+    sum.append(el('span', null, `${c.label} · ${c.labelAr}`));
+    sum.append(el('span', 'a-group__count', `${c.packages.length}${hasProblem ? ' · needs attention' : ''}`));
+    sec.append(sum);
     c.packages.forEach((k, pi) => {
       const card = el('div', 'a-card');
       card.append(el('h4', 'a-card__title', k.name));
       const p = `categories[${ci}].packages[${pi}]`;
       card.append(field('Price (digits only)', k.price,
         'No currency symbol, no comma. The site adds "From" and "USD".',
-        (v) => { k.price = v; rerender(); }, { invalid: at(`${p}.price`).length > 0 }));
+        (v) => { k.price = v; rerender(); }, { error: at(`${p}.price`) }));
       card.append(field('Delivery — English', k.facts?.delivery?.en, null,
-        (v) => { k.facts.delivery.en = v; rerender(); }, { invalid: at(`${p}.facts.delivery.en`).length > 0 }));
+        (v) => { k.facts.delivery.en = v; rerender(); }, { error: at(`${p}.facts.delivery.en`) }));
       card.append(field('Delivery — Arabic', k.facts?.delivery?.ar, null,
-        (v) => { k.facts.delivery.ar = v; rerender(); }, { invalid: at(`${p}.facts.delivery.ar`).length > 0 }));
+        (v) => { k.facts.delivery.ar = v; rerender(); }, { error: at(`${p}.facts.delivery.ar`) }));
       card.append(field('Revisions — English', k.facts?.revisions?.en, null,
-        (v) => { k.facts.revisions.en = v; rerender(); }, { invalid: at(`${p}.facts.revisions.en`).length > 0 }));
+        (v) => { k.facts.revisions.en = v; rerender(); }, { error: at(`${p}.facts.revisions.en`) }));
       card.append(field('Revisions — Arabic', k.facts?.revisions?.ar, null,
-        (v) => { k.facts.revisions.ar = v; rerender(); }, { invalid: at(`${p}.facts.revisions.ar`).length > 0 }));
+        (v) => { k.facts.revisions.ar = v; rerender(); }, { error: at(`${p}.facts.revisions.ar`) }));
       sec.append(card);
     });
     root.append(sec);
@@ -204,7 +236,7 @@ function renderI18n(root, f) {
       .slice(0, 60)
       .forEach((k) => {
         list.append(field(k, f.data[k], null, (v) => { f.data[k] = v; rerender(); },
-          { invalid: problems.some((x) => x.path === k) }));
+          { error: problems.find((x) => x.path === k)?.message || null }));
       });
   };
   search.addEventListener('input', draw);
@@ -266,20 +298,36 @@ function renderBar() {
    anything is invalid, and the reasons are listed above it by name. This is
    the thing GitHub's web editor cannot do: there, the same mistake is a red
    CI run ten minutes later. */
+/* THE ACTION BAR IS STICKY, for the same reason the categories collapse.
+
+   It carried the validity state, the message field and the Save button at the
+   very bottom of the page — 6,956px down on an iPhone SE. A control you have
+   to hunt for is a control that gets used wrong. It now stays on screen, so
+   the answer to "can I save this yet" is always visible while editing. */
 function renderCommit(f) {
-  const wrap = el('div', 'a-commit');
   const problems = validate(state.active, f.data);
   const changed = SERIALISE(f.data) !== f.original;
 
+  /* NOTHING TO SAVE MEANS NO BAR AT ALL.
+
+     The first version always rendered the status line, the message field and
+     the button. Pinned to the bottom of an iPhone SE that is ~200px of a
+     667px screen — 30% of the display, permanently, saying "No changes yet"
+     and offering a disabled button. Looking at a screenshot showed one
+     category visible where four fit.
+
+     So the bar earns its space by having something to say. Until an edit is
+     made there is nothing to commit and nothing to warn about, and the
+     screen belongs to the thing being edited. */
+  if (!changed && !problems.length) return el('div', 'a-commit a-commit--idle');
+
+  const wrap = el('div', 'a-commit');
+
   if (problems.length) {
-    const box = el('div', 'a-problems');
-    box.append(el('h4', 'a-problems__title', `${problems.length} thing${problems.length === 1 ? '' : 's'} to fix before this can be saved`));
-    const ul = el('ul');
-    problems.slice(0, 12).forEach((p) => ul.append(el('li', null, p.message)));
-    box.append(ul);
-    wrap.append(box);
-  } else if (!changed) {
-    wrap.append(el('p', 'a-note', 'No changes yet.'));
+    /* One line. The detail is at each field, where it belongs — see the note
+       in field() above. A bar that lists problems is a bar that covers them. */
+    wrap.append(el('p', 'a-problems__title',
+      `${problems.length} thing${problems.length === 1 ? '' : 's'} to fix before this can be saved — see the fields marked in red`));
   } else {
     wrap.append(el('p', 'a-note a-note--ok', 'Valid. Saving commits to the repository; the site rebuilds itself.'));
   }

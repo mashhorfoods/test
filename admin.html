@@ -51,8 +51,19 @@
   h4 { font-size: .95rem; margin: 0 0 .5rem; color: var(--color-text-secondary, #b9b9b9); }
   a { color: var(--color-accent, #f4d13f); }
 
+  /* The explanation is orientation, not reference. It earns its space on the
+     sign-in screen, where somebody may be here for the first time; once you
+     are signed in and editing, it is 150px of a phone screen restating what
+     the page in front of you obviously is. `body:has()` keeps that decision
+     in CSS rather than making the script manage it. */
   .a-head { border-block-end: 1px solid var(--color-border, #2e2e2e); padding-block-end: 1rem; margin-block-end: 1.5rem; }
   .a-head p { color: var(--color-text-secondary, #b9b9b9); margin: 0; font-size: .9rem; }
+  body:has(.a-bar) .a-head { padding-block-end: .5rem; margin-block-end: 1rem; }
+  body:has(.a-bar) .a-head p { display: none; }
+  body:has(.a-bar) h1 { font-size: 1.1rem; }
+
+  /* An empty bar takes no space and draws no line. */
+  .a-commit--idle { display: none; }
 
   .a-status { min-block-size: 1.5rem; font-size: .9rem; color: var(--color-text-secondary, #b9b9b9); }
   .a-status.is-error { color: #ff9a9a; }
@@ -72,8 +83,29 @@
   }
   .a-tab.is-active { border-color: var(--color-accent, #f4d13f); color: var(--color-accent, #f4d13f); }
 
-  .a-group { margin-block-end: 2rem; }
-  .a-group__title { color: var(--color-accent, #f4d13f); }
+  /* A collapsed category is one row; the page opens in a screen rather than
+     ten. See the note in admin.js above renderPricing(). */
+  .a-group { margin-block-end: 1rem; border: 1px solid var(--color-border, #2e2e2e); border-radius: var(--radius-md, 8px); }
+  .a-group__title {
+    color: var(--color-accent, #f4d13f); cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    min-block-size: 56px; padding: .5rem 1rem; margin: 0;
+    list-style: none;
+  }
+  .a-group__title::-webkit-details-marker { display: none; }
+  /* A caret drawn in CSS rather than an icon file: this page ships no assets
+     of its own, and a disclosure needs to LOOK like one before it is tapped. */
+  .a-group__title::after {
+    content: ""; inline-size: .55rem; block-size: .55rem; flex: 0 0 auto;
+    border-inline-end: 2px solid currentColor; border-block-end: 2px solid currentColor;
+    rotate: 45deg; margin-inline-start: .25rem;
+    transition: rotate var(--duration-fast, 150ms) ease;
+  }
+  .a-group[open] > .a-group__title::after { rotate: -135deg; }
+  .a-group__count { font-size: .8rem; color: var(--color-text-secondary, #b9b9b9); margin-inline-start: auto; }
+  .a-group > .a-card:first-of-type { margin-block-start: 0; }
+  .a-group > .a-card { margin-inline: 1rem; }
+  .a-group > .a-card:last-child { margin-block-end: 1rem; }
   .a-card {
     border: 1px solid var(--color-border, #2e2e2e); border-radius: var(--radius-md, 8px);
     padding: 1rem; margin-block-end: 1rem; display: grid; gap: .75rem;
@@ -81,6 +113,10 @@
   .a-field { display: grid; gap: .25rem; }
   .a-field__label { font-size: .8rem; color: var(--color-text-secondary, #b9b9b9); }
   .a-field__help { font-size: .75rem; color: var(--color-text-secondary, #b9b9b9); }
+  .a-field__error { font-size: .8rem; color: #ff9a9a; }
+  /* Focusing a field near the foot of the page must not put it under the
+     sticky bar. Roughly the bar's height, plus air. */
+  .a-field__input { scroll-margin-block-end: 9rem; }
   .a-field__input, .a-search {
     min-block-size: 44px; padding: .5rem .75rem; inline-size: 100%;
     background: var(--color-bg-sunken, #0f0f0f); color: inherit;
@@ -102,10 +138,23 @@
   .a-btn--primary:disabled { background: transparent; color: var(--color-text-disabled, #6b6b6b); border-color: var(--color-border, #2e2e2e); cursor: not-allowed; }
   .a-btn--ghost { background: transparent; color: inherit; border-color: var(--color-border, #2e2e2e); }
 
-  .a-commit { display: grid; gap: .75rem; border-block-start: 1px solid var(--color-border, #2e2e2e); padding-block-start: 1rem; margin-block-start: 1rem; }
-  .a-problems { border: 1px solid #ff9a9a; border-radius: var(--radius-md, 8px); padding: .75rem 1rem; }
-  .a-problems__title { color: #ff9a9a; }
-  .a-problems ul { margin: 0; padding-inline-start: 1.25rem; font-size: .9rem; }
+  /* STICKY, so "can I save this yet" is answerable without scrolling. The
+     bar was at the foot of a 7,000px page — 10.4 screens down on an
+     iPhone SE. `bottom: 0` sticky is supported on every browser in the
+     support floor (docs/59). */
+  .a-commit {
+    display: grid; gap: .75rem;
+    position: sticky; inset-block-end: 0; z-index: 2;
+    border-block-start: 1px solid var(--color-border, #2e2e2e);
+    padding-block: .75rem;
+    /* The page background, opaque — a translucent bar over a text field is
+       harder to read than either. */
+    background: var(--color-bg, #141414);
+    margin-block-start: 1rem;
+  }
+  /* The bar overlays the end of the page, so the page ends above it. */
+  .a-body { padding-block-end: 1rem; }
+  .a-problems__title { color: #ff9a9a; margin: 0; font-size: .9rem; }
   .a-note { color: var(--color-text-secondary, #b9b9b9); font-size: .9rem; }
   .a-note--ok { color: var(--color-accent, #f4d13f); }
   .a-result { border: 1px solid var(--color-accent, #f4d13f); border-radius: var(--radius-md, 8px); padding: 1rem; margin-block-end: 1.5rem; display: grid; gap: .5rem; }

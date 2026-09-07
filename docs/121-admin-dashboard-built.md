@@ -126,6 +126,85 @@ and to end in the newline the round-trip test guarantees.
 
 ---
 
+## 5b. The phone pass — what emulation found, and what it cannot
+
+**Asked for on 7 September: test it on a real phone.** That cannot be done
+here, and the limit is worth stating precisely rather than working around:
+**this container has only Chromium.** iOS Safari — the engine that matters
+most in this market — cannot be run at all, which `docs/59` already records as
+a standing constraint. What follows is emulation at four device profiles, and
+emulation is not a phone.
+
+### What the numbers said, and what they missed
+
+Four profiles (iPhone SE 375, iPhone 15 Pro 393, Galaxy S23 360, and 320) all
+came back mechanically clean: **inputs at 16px** so iOS does not zoom on focus,
+**every target ≥44px**, **zero horizontal overflow** at any width.
+
+And the page was **unusable**. To change one price:
+
+```
+iPhone SE   7,024px   10.5 screens   Save button 10.4 screens down
+320px       7,072px   11.1 screens
+```
+
+Twelve cards and sixty-one inputs rendered at once, with the Save button
+beneath all of them. Fine on a desktop; on the device this was built to be
+used from, changing one price meant scrolling past every other price to commit
+it.
+
+### Three fixes, and the third only a screenshot could find
+
+**1. Categories collapse.** Native `<details>`, the same mechanism the site's
+FAQ uses — works with no JavaScript, is a real disclosure to a screen reader,
+and the browser handles the keyboard. All four start closed. **10.5 screens →
+0.7.**
+
+**2. The action bar is sticky.** "Can I save this yet" is now answerable
+without scrolling to find out.
+
+**3. The bar was covering the field it was describing.** This is the one the
+measurements could not see, and it is why the screenshots were taken.
+
+The bar carried the validity state as a bulleted list. Pinned to the bottom of
+an iPhone SE, a three-line message made it tall enough that **the instruction
+to fix the price sat on top of the price.** The Starter card was sliced
+mid-word behind it. Every number said the page was healthy — 1.4 screens, no
+overflow, no small targets.
+
+So the message moved **to its field**, under the input it describes, and the
+bar shrank to one line: *"1 thing to fix before this can be saved — see the
+fields marked in red."* The bar is now **180px of a 900px screen, 20%**, and
+that ratio is asserted in the test.
+
+Two smaller things went with it: the header's explanatory paragraph hides once
+you are signed in — it is orientation for a first visit, not 150px of every
+subsequent one — and **an idle bar renders nothing at all**, because a bar
+saying "No changes yet" over a disabled button is 30% of a phone screen spent
+on nothing.
+
+### The category holding a problem opens itself
+
+Collapsing by default creates a way to hide a defect behind a summary. A
+category with an invalid value opens on render and its summary says *"needs
+attention"*, so nothing the bar mentions is ever out of sight. Asserted.
+
+### What still needs a real device
+
+Emulation cannot answer these, and `docs/117` §2 asks a person some of them:
+
+| | |
+| --- | --- |
+| **iOS Safari at all** | No WebKit here. `position: sticky` bottom, `<details>` styling and `:has()` are all in the support floor, but "in the floor" is not "seen working" |
+| The software keyboard | Whether it covers the field being typed into, and whether the sticky bar rides above or below it |
+| Password managers | Whether one offers to fill the token field, and whether that is wanted |
+| Paste | Whether a 90-character token pastes cleanly from the GitHub app |
+| Real network | Every measurement here is against localhost |
+
+**The five-minute script for an actual phone** is in `docs/89` §3b.
+
+---
+
 ## 6. What it deliberately cannot do
 
 - **Edit anything but those two files.** Not the markup, not the styles, not

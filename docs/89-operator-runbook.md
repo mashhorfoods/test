@@ -107,6 +107,31 @@ numerals (٠-٩) where the site uses 0-9 everywhere.
 Each of those is a real rule the build enforces. The dashboard just tells you
 first.
 
+### Five minutes on your own phone — please actually do this
+
+Everything above was tested by **emulating** four phones. **No real device has
+opened this page**, and this container cannot run iOS Safari at all — which is
+the browser most of this market uses (`docs/59`). Emulation gets layout right
+and gets the things below wrong.
+
+Open `https://mashhorfoods.github.io/test/admin.html` on your phone and check
+six things. **A one-line answer to each is enough**, and "it was fine" is a
+useful answer.
+
+| | What to try | What would be wrong |
+| --- | --- | --- |
+| 1 | **Paste your token** into the field | It does not paste cleanly, or the keyboard covers the field, or a password manager interferes |
+| 2 | Tap **Prices and packages**, then open a category | The disclosure does not open, or the caret does not turn |
+| 3 | Tap a **price field** and type | The page zooms in (it should not), or the keyboard covers what you are typing |
+| 4 | Type `$490` — deliberately wrong | The red message under the field is hidden behind the bar at the bottom, or you cannot see the field and the message at once |
+| 5 | Fix it, then look at the **Save** button | It is off-screen, or you cannot tell whether it is enabled |
+| 6 | Turn the phone **sideways** | Anything overlaps, or the bar covers half the screen |
+
+**Item 4 is the one to watch.** An earlier version had the message covering the
+field it was about — the instruction to fix the price sat on top of the price.
+It was fixed, and it was found by looking at a screenshot rather than by any
+measurement, which is exactly why a real device pass is worth five minutes.
+
 ### If something looks wrong
 
 **The dashboard cannot break the site.** Worst case it commits something the

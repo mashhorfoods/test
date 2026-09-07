@@ -104,14 +104,47 @@ srv.listen(4801, async()=>{
  if (cards >= 12 && inputs >= 60) ok(`P4 — ${cards} packages rendered, ${inputs} fields, populated from the API`);
  else no('P4 — read', `cards=${cards} inputs=${inputs}`);
 
+ // ---- P10: the phone fix — categories start closed, and the page is short
+ const closed = await page.$$eval('.a-group', gs=>gs.filter(g=>!g.open).length);
+ const groups  = await page.$$eval('.a-group', gs=>gs.length);
+ const screens = await page.evaluate(()=>+(document.body.scrollHeight/window.innerHeight).toFixed(1));
+ if (closed === groups && screens < 3) ok(`P10 — all ${groups} categories closed, page opens in ${screens} screens (was 10.5)`);
+ else no('P10 — collapsed', `closed=${closed}/${groups} screens=${screens}`);
+
+ // the action bar is reachable without hunting for it
+ const barSticky = await page.$eval('.a-commit', b=>getComputedStyle(b).position);
+ if (barSticky === 'sticky') ok('P10 — the action bar is sticky, so Save is always on screen');
+ else no('P10 — sticky bar', `position was ${barSticky}`);
+
+ // open the first category to edit — this is now the real interaction
+ await page.click('.a-group__title');
+ await page.waitForTimeout(300);
+
  // ---- P5: invalid blocks the commit
  const priceInput = await page.$('.a-card .a-field__input');
  await priceInput.fill('$490');
  await page.waitForTimeout(300);
  const disabled = await page.$eval('.a-btn--primary', b=>b.disabled);
- const problem = await page.textContent('.a-problems').catch(()=>'');
- if (disabled && /digits only/.test(problem)) ok('P5 — an invalid price disables Save and names the problem');
- else no('P5 — validation', `disabled=${disabled} problem="${problem.slice(0,80)}"`);
+ /* The message must be AT THE FIELD, not only in the bar: the bar is pinned
+    to the bottom of a phone screen and a multi-line message there covered the
+    very input it was about. Asserting the field carries it is what stops that
+    coming back. */
+ const atField = await page.$eval('.a-card .a-field__error', e=>e.textContent).catch(()=>'');
+ const summary = await page.textContent('.a-problems__title').catch(()=>'');
+ if (disabled && /digits only/.test(atField) && /1 thing to fix/.test(summary)) {
+   ok('P5 — an invalid price disables Save, names the problem AT the field, and summarises it in one line');
+ } else no('P5 — validation', `disabled=${disabled} atField="${atField.slice(0,60)}" summary="${summary.slice(0,50)}"`);
+
+ // the bar must not be tall enough to cover what it is describing
+ const barH = await page.$eval('.a-commit', b=>Math.round(b.getBoundingClientRect().height));
+ const vh   = await page.evaluate(()=>window.innerHeight);
+ if (barH < vh*0.35) ok(`P10 — the action bar is ${barH}px of a ${vh}px screen (${Math.round(barH/vh*100)}%)`);
+ else no('P10 — bar height', `${barH}px of ${vh}px — tall enough to cover the field it describes`);
+
+ // a problem must never hide behind a closed summary
+ const problemGroupOpen = await page.$$eval('.a-group', gs=>gs.some(g=>g.open && /needs attention/.test(g.querySelector('summary')?.textContent||'')));
+ if (problemGroupOpen) ok('P10 — the category holding the invalid value opens itself and says so');
+ else no('P10 — auto-open', 'the invalid value is hidden behind a closed summary');
 
  // ---- P5: valid re-enables
  await (await page.$('.a-card .a-field__input')).fill('520');
