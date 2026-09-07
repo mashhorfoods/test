@@ -1040,18 +1040,23 @@
 
 }
 
-@layer components {
-  /* Two packages, not three: a pair should meet in the middle rather than
-     leave a gap where a third card would be.
+/* A COMMENT DEFENDING A RULE THAT WAS NOT THERE.
 
-     Currently unused — E-Commerce was the only two-package category and it was
-     removed. This is NOT dead code: build-pricing.js still emits the class for
-     any category with two packages, so deleting the rule would silently break
-     the next one. */
-  @media (min-width: 48em) {
+   An `@media (min-width: 48em) { }` stood here — empty — under a comment
+   reading: "Two packages, not three: a pair should meet in the middle… This is
+   NOT dead code: build-pricing.js still emits the class for any category with
+   two packages, so deleting the rule would silently break the next one."
 
-      }
-}
+   Checked, on removing it: build-pricing.js emits no such class, and no
+   stylesheet in this project contains a rule for one. There was nothing inside
+   the media query to break, and nothing outside it to protect. The comment was
+   the only thing keeping the block alive, and it was describing CSS that had
+   already gone.
+
+   Found while placing the phone scrollers at the foot of this file — the empty
+   block is what made the file's shape confusing enough to swallow them twice.
+   If a category ever ships with two packages, the rule gets written then,
+   against real output, rather than trusted from a note. */
 
 /* ---------------------------------------------------------------------------
    THIRD-PARTY IMAGE RESILIENCE — Phase 03 PS-10.
@@ -1069,4 +1074,134 @@
 .c-devices__image,
 .c-modules__image {
   background-color: var(--color-surface-2, #262626);
+}
+
+@layer components {
+  /* =======================================================================
+     PHONE — THE THREE VISUAL GRIDS BECOME ONE SWIPE EACH
+
+     MEASURED, on a 393x852 phone, before any of this was written:
+
+       the whole page          23,526px = 27.6 screens
+       the four service blocks  7,442px = 8.7 screens — a third of it
+         #branding .c-brandboard  978px   four boards, stacked
+         #websites .c-devices     930px   one wide frame plus two halves
+         #social   .c-modules     560px
+
+     `docs/108` §10 called scroll fatigue the biggest mobile problem on this
+     site, and `docs/112` had to record that the audit fixes netted to nothing
+     against it: 27.5 screens before, 27.6 after. This is the piece of work
+     that was named there and deferred.
+
+     A grid that stacks is the right answer on a phone for TEXT. For a set of
+     pictures it is the wrong one: four full-width images in a column is four
+     screens of scrolling to see one idea, and nobody scrolls a gallery they
+     did not ask for. Swiping is what a phone does well.
+
+     So on phones only, these become horizontal snapping scrollers — the same
+     mechanics as .c-gallery, which shipped in `docs/86` and has been on
+     /story and the two showcase sections since. Same snap, same peek, same
+     visible scrollbar for a mouse. Nothing is hidden and nothing is removed:
+     the same panels, in the same order, on one axis instead of the other.
+
+     The span rules have to be undone explicitly. .c-device--desktop spans the
+     full row and the lead module spans two of them; in a flex row those
+     properties do nothing, but leaving them would be leaving a trap for the
+     next person who changes the breakpoint.
+     WHY IT IS ITS OWN @layer BLOCK AT THE FOOT OF THE FILE.
+
+     Two goes at placing this failed, and both failures were silent — 978px
+     before and 978px after, twice.
+
+     The first put it above the definitions it overrides. A media query adds
+     no specificity, so `.c-brandboard { display: grid }` further down simply
+     won on source order.
+
+     The second appended it "at the end of the file", which is not the end of
+     the layer: this file closes @layer components and then adds ONE unlayered
+     rule (.c-brandboard__image et al, below). The block landed inside that
+     rule's declarations, where `.c-brandboard` reads as a descendant of
+     `.c-brandboard__image` and matches nothing. The built stylesheet said so
+     plainly and the source did not, because braces still balanced — which is
+     all qa §29 can check.
+
+     Re-entering @layer components in its own block puts it last in that
+     layer, after every rule it has to beat, and outside anything else.
+     ======================================================================= */
+  @media (max-width: 47.99em) {
+    .c-brandboard,
+    .c-devices,
+    .c-modules {
+      display: flex;
+      gap: var(--space-12);
+      grid-template-columns: none;
+      grid-auto-rows: auto;
+
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      /* Logical, so the resting edge follows the reading direction. */
+      scroll-padding-inline-start: 0;
+      overscroll-behavior-inline: contain;
+
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border-strong) transparent;
+    }
+
+    .c-brandboard::-webkit-scrollbar,
+    .c-devices::-webkit-scrollbar,
+    .c-modules::-webkit-scrollbar {
+      block-size: 6px;
+    }
+
+    .c-brandboard::-webkit-scrollbar-thumb,
+    .c-devices::-webkit-scrollbar-thumb,
+    .c-modules::-webkit-scrollbar-thumb {
+      background-color: var(--color-border-strong);
+      border-radius: 999px;
+    }
+
+    /* 78% leaves the next panel peeking, which is the affordance — it is what
+       says "there is more" without a caption saying so. */
+    /* THE FLEX CHILD, NOT THE THING INSIDE IT. `.c-modules` holds <li
+       class="c-modules__item"> and the module lives inside that, so sizing
+       the module left the LIST ITEMS to shrink to their content — five cards
+       56px wide and a scroller with nothing to scroll. Measured: scrollWidth
+       345 against a clientWidth of 345. The other two grids happen to put
+       their panel at the top level, which is why they worked first time. */
+    .c-brandboard__panel,
+    .c-device,
+    .c-modules__item {
+      flex: 0 0 78%;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      min-inline-size: 0;
+    }
+
+    /* The grid placements above, explicitly retired for this width. */
+    .c-device--desktop,
+    .c-modules__module--lead {
+      grid-column: auto;
+      grid-row: auto;
+    }
+
+    /* AND THE HEIGHT THEY WERE BORROWING FROM THE GRID.
+
+       `.c-modules__module` is `block-size: 100%` — 100% of a grid row whose
+       height the grid decided. In a flex row there is no such row, so it
+       resolved to auto, the image inside (`flex: 1; min-block-size: 0`)
+       collapsed to nothing, and the whole scroller came out 112px tall: the
+       card's 7rem floor and no picture at all. It measured as a saving and
+       was a disappearing act. The image gets a definite height here instead,
+       which is what .c-gallery does for the same reason. */
+    .c-modules__item,
+    .c-modules__module {
+      block-size: auto;
+    }
+
+    .c-modules__image {
+      flex: 0 0 auto;
+      block-size: 11rem;
+    }
+  }
 }

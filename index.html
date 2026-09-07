@@ -905,7 +905,14 @@
               consistent, professional presence across every channel.</span><span data-lang-copy="ar" lang="ar">هويات بصرية وأنظمة تصميم تمنح عملك حضورًا متسقًا واحترافيًا في كل قناة.</span></p>
           </div>
 
-          <div class="c-brandboard" data-reveal-group>
+<!-- tabindex="0" because this becomes a horizontal scroller on a
+               phone (service-detail.css, foot of file). axe's
+               scrollable-region-focusable caught both of the other two the
+               moment they started scrolling: a region you can scroll with a
+               finger and not with a keyboard is a region some people cannot
+               read. Same treatment as .c-gallery, which has carried it since
+               docs/86. -->
+          <div class="c-brandboard" data-reveal-group tabindex="0">
           <div class="c-brandboard__panel">
             <img width="740" height="476"
               class="c-brandboard__image"
@@ -1038,7 +1045,7 @@
               build websites ready for real business use.</span><span data-lang-copy="ar" lang="ar">من النطاق والاستضافة إلى التصميم والتطوير والإطلاق — نبني مواقع جاهزة للاستخدام التجاري الفعلي.</span></p>
           </div>
 
-          <div class="c-devices" data-reveal-group>
+          <div class="c-devices" data-reveal-group tabindex="0">
           <figure class="c-device c-device--desktop">
             <img width="801" height="952"
               class="c-device__image"
@@ -1208,7 +1215,7 @@
             </p>
           </header>
 
-          <ul class="c-modules" data-reveal-group role="list">
+          <ul class="c-modules" data-reveal-group role="list" tabindex="0">
             <li class="c-modules__item c-modules__item--lead">
               <div class="c-modules__module">
                 <img width="724" height="985"
