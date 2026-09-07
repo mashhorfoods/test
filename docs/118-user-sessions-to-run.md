@@ -6,6 +6,17 @@ not need to be open while you moderate.
 
 Forty minutes each, five people, one afternoon.
 
+> **THE SENDABLE VERSION IS A PAGE — 8 September 2026.**
+> **[Five Buyer Sessions](https://claude.ai/code/artifact/39267b95-0bcc-4fd5-93b8-c6eef64f2cd1)**
+>
+> This file stays as the working source and keeps the internal
+> reasoning and the provenance appendix. The page is what goes to the
+> reviewer: the same questions, self-contained, with every internal
+> cross-reference removed, readable on a phone and printable.
+>
+> **Edit here, then republish the page** — the two are not linked, so a
+> change made in only one of them is a brief that disagrees with itself.
+
 ---
 
 ## 0. Before the first one
