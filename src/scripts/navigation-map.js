@@ -147,6 +147,7 @@ export const STRINGS = {
     // duplicate of something that lives elsewhere.
     serviceFlow: 'How the connected offering runs',
     notFoundLinks: 'Main destinations',
+    reelVideo: 'Showreel — sixty seconds of recent work',
     backToTop: 'Back to top',
     // The Brand Challenge's copy button restores this after saying what
     // happened. (The Mystery Reward used it too, until docs/111 removed it.)
@@ -217,6 +218,7 @@ export const STRINGS = {
     opensNewTab: '(يفتح في نافذة جديدة)',
     serviceFlow: 'كيف تعمل الخدمة المتكاملة',
     notFoundLinks: 'الوجهات الرئيسية',
+    reelVideo: 'الفيلم الترويجي — ستون ثانية من أعمال حديثة',
     backToTop: 'العودة إلى الأعلى',
     rewardCopy: 'انسخ الرمز',
     galleryScroller: 'الأعمال المسلَّمة — مرّر للمزيد',

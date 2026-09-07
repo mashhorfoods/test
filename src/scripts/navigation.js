@@ -239,11 +239,20 @@ function renderSurfaces() {
     block.hidden = SOCIAL_LINKS.length === 0;
 
     container.replaceChildren(
-      ...SOCIAL_LINKS.map(({ label, href }) => {
+      ...SOCIAL_LINKS.map(({ label, labelAr, href }) => {
         const item = document.createElement('li');
         const link = document.createElement('a');
         link.href = href;
-        link.textContent = label;
+        /* THE ARABIC LABEL EXISTED AND WAS NEVER READ.
+
+           SOCIAL_LINKS has carried labelAr: 'أعمال المؤسس' since the entry was
+           written — the comment beside it argues carefully about what the
+           link should promise — and this line took `label` unconditionally,
+           so the Arabic footer said "Founder's portfolio" in English. A
+           translation that is decided, committed, and then not wired up is
+           the same defect as one that was never written, and it is harder
+           to see: the string is right there in the source. */
+        link.textContent = (currentLang() === 'ar' && labelAr) ? labelAr : label;
         // These are the only off-site destinations on the site. They leave it,
         // so they open in a new tab, say so to a screen reader, and carry the
         // rel that stops the opened page reaching back through window.opener.

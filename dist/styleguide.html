@@ -114,6 +114,7 @@ const STRINGS = {
     // duplicate of something that lives elsewhere.
     serviceFlow: 'How the connected offering runs',
     notFoundLinks: 'Main destinations',
+    reelVideo: 'Showreel — sixty seconds of recent work',
     backToTop: 'Back to top',
     // The Brand Challenge's copy button restores this after saying what
     // happened. (The Mystery Reward used it too, until docs/111 removed it.)
@@ -184,6 +185,7 @@ const STRINGS = {
     opensNewTab: '(يفتح في نافذة جديدة)',
     serviceFlow: 'كيف تعمل الخدمة المتكاملة',
     notFoundLinks: 'الوجهات الرئيسية',
+    reelVideo: 'الفيلم الترويجي — ستون ثانية من أعمال حديثة',
     backToTop: 'العودة إلى الأعلى',
     rewardCopy: 'انسخ الرمز',
     galleryScroller: 'الأعمال المسلَّمة — مرّر للمزيد',
@@ -366,11 +368,11 @@ function renderSurfaces() {
     const block = container.closest('[data-social-block]') ?? container;
     block.hidden = SOCIAL_LINKS.length === 0;
     container.replaceChildren(
-      ...SOCIAL_LINKS.map(({ label, href }) => {
+      ...SOCIAL_LINKS.map(({ label, labelAr, href }) => {
         const item = document.createElement('li');
         const link = document.createElement('a');
         link.href = href;
-        link.textContent = label;
+        link.textContent = (currentLang() === 'ar' && labelAr) ? labelAr : label;
         // These are the only off-site destinations on the site. They leave it,
         // so they open in a new tab, say so to a screen reader, and carry the
         // rel that stops the opened page reaching back through window.opener.

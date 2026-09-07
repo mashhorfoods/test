@@ -201,6 +201,76 @@ does not add a dependency for that.
 
 ---
 
+## 5b. The second pass, as five readers
+
+`§27` of the brief asks for an independent second review once everything
+looks done. It found three more, and all three were the same shape as §3 —
+and a sharper version of it:
+
+> **Not a missing translation. A translation that was decided, written into
+> the repository, and then not wired up.** That is harder to see than an
+> absent one, because the Arabic is sitting right there in the source.
+
+### The first focusable element on the site was in English
+
+`<a class="c-skip-link" href="#main">Skip to content</a>` — a bare string in
+the shell every page is built from. **The very first thing a keyboard or
+screen-reader visitor reaches, on eight pages, in the wrong language.** Found
+by tabbing the homepage in Arabic rather than by any rule.
+
+### The brand tagline said one thing and announced another
+
+The header and footer show **`Digital Agency`** in English on the Arabic page.
+The same element's accessible name is `data-i18n-label="brandHome"` and says
+**`بيكسورا، وكالة رقمية — الصفحة الرئيسية`**, so a screen reader and an eye on
+the same page got different words — and the site had already decided the
+Arabic.
+
+It is not a brand decision that the tagline stays Latin, and the stylesheet
+proves it: `header.css` carries a `[dir="rtl"] .c-brand__tagline` block,
+written because *"Arabic has no letter case and its joins break under heavy
+tracking"*. **A rule written for Arabic that has never had Arabic to style.**
+Six taglines, header and footer, on every page.
+
+### The footer link had an Arabic label that nothing read
+
+`SOCIAL_LINKS` in `navigation-map.js` has carried
+`labelAr: 'أعمال المؤسس'` since the entry was written — the comment beside it
+argues carefully about what the link should promise — and `renderSocial()`
+took `label` unconditionally. **The Arabic footer said "Founder's portfolio"
+in English.**
+
+`404.html` was worse. Its static copy of that list still said **`Website`** —
+the label `navigation-map.js` explicitly records as replaced, because *"as
+'Website' it read as the agency's own site, sitting in a list beside it"*. A
+decision made, written down, and left in place on one page.
+
+### And the guard for all three could not see one of them
+
+`qa.js` §36 was written to ask one question — *can an Arabic visitor reach a
+control whose name is English prose?* — and its first version read the
+accessible name. Reverting the skip link fired. Reverting the footer label
+fired. **Reverting the tagline reported nothing**, because the brand link's
+accessible name is Arabic and always was: the entire defect lives in the gap
+between what a screen reader is told and what a person sees.
+
+A check that stops at the accessible name sees a healthy control and a
+visitor sees an English page. §36 reads both. **Written down because the
+negative test found the guard, not the site** — which is now the fourth time
+this week.
+
+### One thing that looked like a defect and was not
+
+Tabbing the homepage reported the reel `<video>` with no focus indicator, and
+a `video:focus-visible` outline was written for it. Measuring before keeping
+it showed the site's standard `--focus-ring` box-shadow was already there:
+the two flagged stops are inside the video's own control shadow tree, where
+`:focus-visible` does not match the host. **The rule was removed** — it styled
+nothing that was not already styled, which is the exact thing `qa`'s one
+standing low finding counts.
+
+---
+
 ## 6. What was checked and found sound
 
 Not everything looked at was broken, and the ones that were not are worth
@@ -229,7 +299,7 @@ recording so the next pass does not re-audit them:
 | | |
 | --- | --- |
 | `validate` | 0 findings |
-| `qa` | 0 high, 0 medium, 1 pre-existing low — **35 sections** |
+| `qa` | 0 high, 0 medium, 1 pre-existing low — **36 sections** |
 | `responsive` | 0 findings over **80** page/width/language combinations |
 | `arabic` | 0 findings |
 | `a11y` | 0 axe violations |
@@ -237,3 +307,19 @@ recording so the next pass does not re-audit them:
 | `admin:ui` | all checks passed, at 390×667, **17 assertions** |
 | Interaction sweep | 8 pages × 2 languages: 0 dead controls, 0 broken links |
 | New-tab census | 98 links, 0 silent, 0 in the wrong language, 0 doubled |
+| Keyboard journey | 90 tab stops, both languages: every stop has a visible focus ring |
+| JavaScript off | 8 pages: all content, headings, navigation, prices and images present |
+| Alt text | 38 images read in Arabic on the Arabic page, 0 in English |
+| Reduced motion | global, plus the dashboard's one JavaScript scroll |
+
+### Every guard made to fail
+
+| Guard | Negative-tested by |
+| --- | --- |
+| `qa.js` §35 | a note removed (fires), left in one language (fires), and present in both at once (fires) |
+| `qa.js` §36 | each of the three strings reverted to English one at a time. **The tagline test reported nothing while the other two fired** — §36 read only the accessible name, and the tagline's whole defect is that the accessible name was already Arabic. It reads the visible text as well now |
+| `responsive.js` at 375/414 | removing **both halves** of the pricing fix from the built page — 1 HIGH at 375 Arabic, silent when restored |
+| `build.js` comment stripper | the assertion stopped the first build it ran on |
+| Dashboard P11 | typing, one key at a time, rather than `fill()` |
+| Dashboard P6b/c/d | the branch in the PUT body, an armed 409 that is benign, and one that is real |
+| Dashboard P10b | measured against the bar at 390×667, where it fails without the fix |

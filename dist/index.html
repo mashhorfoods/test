@@ -129,6 +129,7 @@ const STRINGS = {
     // duplicate of something that lives elsewhere.
     serviceFlow: 'How the connected offering runs',
     notFoundLinks: 'Main destinations',
+    reelVideo: 'Showreel — sixty seconds of recent work',
     backToTop: 'Back to top',
     // The Brand Challenge's copy button restores this after saying what
     // happened. (The Mystery Reward used it too, until docs/111 removed it.)
@@ -199,6 +200,7 @@ const STRINGS = {
     opensNewTab: '(يفتح في نافذة جديدة)',
     serviceFlow: 'كيف تعمل الخدمة المتكاملة',
     notFoundLinks: 'الوجهات الرئيسية',
+    reelVideo: 'الفيلم الترويجي — ستون ثانية من أعمال حديثة',
     backToTop: 'العودة إلى الأعلى',
     rewardCopy: 'انسخ الرمز',
     galleryScroller: 'الأعمال المسلَّمة — مرّر للمزيد',
@@ -381,11 +383,11 @@ function renderSurfaces() {
     const block = container.closest('[data-social-block]') ?? container;
     block.hidden = SOCIAL_LINKS.length === 0;
     container.replaceChildren(
-      ...SOCIAL_LINKS.map(({ label, href }) => {
+      ...SOCIAL_LINKS.map(({ label, labelAr, href }) => {
         const item = document.createElement('li');
         const link = document.createElement('a');
         link.href = href;
-        link.textContent = label;
+        link.textContent = (currentLang() === 'ar' && labelAr) ? labelAr : label;
         // These are the only off-site destinations on the site. They leave it,
         // so they open in a new tab, say so to a screen reader, and carry the
         // rel that stops the opened page reaching back through window.opener.
@@ -1460,7 +1462,7 @@ if (document.readyState === 'loading') {
     <script defer data-domain="zaokalyamamah.online" src="https://plausible.io/js/script.js"></script>
   </head>
   <body>
-    <a class="c-skip-link" href="#main">Skip to content</a>
+    <a class="c-skip-link" href="#main"><span data-lang-copy="en">Skip to content</span><span data-lang-copy="ar" lang="ar">تخطَّ إلى المحتوى</span></a>
     <header class="c-header" data-header>
       <div class="l-container c-header__inner">
         <div class="c-header__zone">
@@ -1474,7 +1476,7 @@ if (document.readyState === 'loading') {
               <span class="c-brand__word"
                 >PI<span class="c-brand__accent">X</span>ORA</span
               >
-              <span class="c-brand__tagline">Digital Agency</span>
+              <span class="c-brand__tagline"><span data-lang-copy="en">Digital Agency</span><span data-lang-copy="ar" lang="ar">وكالة رقمية</span></span>
             </span>
           </a>
         </div>
@@ -2901,6 +2903,7 @@ if (document.readyState === 'loading') {
           <figure class="c-reel" data-reveal-group>
             <video class="c-reel__video" controls preload="none" playsinline
               poster="./assets/reel-still.webp"
+              aria-label="Showreel — sixty seconds of recent work" data-i18n-label="reelVideo"
               aria-describedby="reel-caption">
               <source src="./assets/reel.webm" type="video/webm" />
               <source src="./assets/reel.mp4" type="video/mp4" />
@@ -3511,7 +3514,7 @@ if (document.readyState === 'loading') {
               aria-label="Pixora, Digital Agency — home" data-i18n-label="brandHome">
               <span class="c-brand" aria-hidden="true">
                 <span class="c-brand__word">PI<span class="c-brand__accent">X</span>ORA</span>
-                <span class="c-brand__tagline">Digital Agency</span>
+                <span class="c-brand__tagline"><span data-lang-copy="en">Digital Agency</span><span data-lang-copy="ar" lang="ar">وكالة رقمية</span></span>
               </span>
             </a>
             <p class="c-footer__statement"><span data-lang-copy="en">Brands, websites, content and advertising — from one partner.</span><span data-lang-copy="ar" lang="ar">علامات ومواقع ومحتوى وإعلانات — من شريك واحد.</span></p>
@@ -3551,7 +3554,7 @@ if (document.readyState === 'loading') {
             <ul class="c-footer__social" data-social-render role="list">
               <li><a href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
               <li><a href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
-              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer">Founder's portfolio<span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
+              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">Founder's portfolio</span><span data-lang-copy="ar" lang="ar">أعمال المؤسس</span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
             </ul>
           </nav>
           <p class="c-footer__copyright">
