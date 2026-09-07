@@ -91,12 +91,13 @@ partial on **five buyers**. Phase 20 is partial on **twenty-eight more days**.
 | Public pages shipped | **8** — home, pricing, about, story, privacy, terms, accessibility, 404 |
 | Languages | 2, full RTL, every string paired |
 | Upload artefact | `pixora-site.zip`, **3.2MB**, rebuilt by one command |
-| Homepage over the wire | 405KB raw · **87KB gzipped** |
-| First screen | **444KB of a 480KB budget** |
+| Homepage over the wire | **371KB raw · 76KB gzipped** — 91KB of authoring commentary no longer ships (`docs/123` §5) |
+| First screen | **411KB of a 480KB budget** |
 | Images | **40, none missing width or height** |
 | Runtime dependencies | **0** |
-| Harnesses, run on every push | **5** — validate · qa (**33** sections) · responsive · **arabic** · a11y |
-| Current result | **all five green** — validate 0 · qa 0 high, 0 medium (1 known low) · responsive 0 over 48 combinations · arabic 0 · axe 0 violations |
+| Named third parties willing to be quoted | **1** — Faris Mohammed, Al Mada, 7 Sep |
+| Harnesses, run on every push | **5** — validate · qa (**35** sections) · responsive (**80** combinations) · **arabic** · a11y |
+| Current result | **all five green** — validate 0 · qa 0 high, 0 medium (1 known low) · responsive 0 over **80** combinations · arabic 0 · axe 0 violations |
 | Catastrophic failure modes controlled | **all of them** — transfer lock, auto-renew, second remote, uptime alarm |
 
 **The site is live, monitored, backed up, legally papered and instrumented.**
@@ -114,7 +115,7 @@ There is no engineering task standing between the current build and a visitor.
 
 ## 4. What is actually left — five things, and only one is ours
 
-### 🔴 One, and it decides the verdict
+### ✅ The one that decided the verdict — CLOSED 7 September
 
 **A named client willing to be quoted.** `docs/108` graded the site 🟡 MAYBE
 for one reason: every claim on it comes from the company itself. `docs/112`
@@ -125,6 +126,16 @@ This is not a design problem and no amount of building fixes it. **One
 sentence from one real client, with their name on it**, moves the site from
 *maybe* to *yes*. It is the highest-value outstanding item in the project by a
 wide margin, and it costs an email.
+
+> **It was answered hours after this was written.** Faris Mohammed, Founder &
+> CEO of Al Mada Travel & Tourism Agency, wrote a testimonial and agreed to be
+> named. It is published on the homepage beneath the four Al Mada deliverables
+> and at the end of the case study — `docs/122`.
+>
+> The paragraph above is left standing because it was right, and because it is
+> now the clearest thing in this document: **the highest-value item in the
+> project was not an engineering task, and it cost an email.** Everything else
+> on this list is still other people's.
 
 ### 🟠 Four human reviews, briefed and waiting
 
@@ -184,9 +195,11 @@ recorded there explicitly so the next reader does not have to work it out.
 - Four reviews are briefed and could all start today.
 - One clock is running and needs nothing.
 - One purchase unblocks the email.
-- **One email to one past client is worth more than everything else on this
-  list combined**, because it is the only item that changes what a stranger
-  concludes about the business in the first ten seconds.
+- ~~**One email to one past client is worth more than everything else on this
+  list combined**~~ — **sent, answered and published the same day.** It was
+  the only item that changes what a stranger concludes in the first ten
+  seconds, and it is the one item on this list that no amount of building
+  could have produced.
 
 The thing to guard against now is the failure mode this revisit found: **a
 list that goes stale in the pessimistic direction.** Phase 19 sat red for

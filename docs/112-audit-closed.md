@@ -14,7 +14,7 @@ it is the one that decides the verdict.**
 
 | | Fix | State | Evidence on the live build |
 | --- | --- | --- | --- |
-| 1 | One named client testimonial | 🔴 **OPEN — owner** | 0 testimonial elements on any page. See §3 |
+| 1 | One named client testimonial | ✅ **CLOSED 7 Sep**, later the same day this was written | Faris Mohammed, Founder & CEO, Al Mada — homepage, under the four deliverables, and the end of the case study. `docs/122` |
 | 2 | Contact form could fail silently | ✅ | `method="get"`, no `enctype`, recovery block present and revealed on submit |
 | 3 | Homepage never said who it serves | ✅ | Hero lead opens "A remote studio for the Gulf and Egypt", above the fold on both desktop and phone |
 | 4 | Value proposition at screen 10 + only one CTA | ✅ | Coordination line now in **section 2 of 15**; two hero CTAs, both above the fold |
@@ -24,7 +24,7 @@ it is the one that decides the verdict.**
 
 | | Row | State |
 | --- | --- | --- |
-| 🔴 | Zero third-party proof | **OPEN — owner** |
+| 🔴 | Zero third-party proof | ✅ **CLOSED 7 Sep** — one named client, in his own words. `docs/122` |
 | 🔴 | Contact form | ✅ |
 | 🔴 | Who it serves | ✅ |
 | 🟠 | Best argument buried | ✅ section 2 |
@@ -89,6 +89,14 @@ it is the one that decides the verdict.**
 
 ## 3. The one that is still open, and why it stays open
 
+> **CLOSED THE SAME DAY (7 September).** Faris Mohammed, Founder & CEO of Al
+> Mada Travel & Tourism Agency, sent a testimonial in writing and agreed to be
+> named. The section below is left exactly as written — it is the record of
+> what the site was, and of the one thing that was worth more than any amount
+> of further building. `docs/122` is what was done with it. **The paragraph
+> beginning "That is not an oversight" was right about the method:** the
+> sentence was obtained, not written.
+
 `docs/108` was a **🟡 MAYBE**, and the reason was one sentence: *"every single
 claim on this site comes from the company itself."*
 
@@ -120,6 +128,11 @@ with four deliverables — not to write one.
 
 ### 🟡 MAYBE — and now for exactly one reason instead of several
 
+> **SUPERSEDED 7 September, hours later.** The one reason is gone. The verdict
+> below stands as the reading of the build it was run against (`fb84b5a`);
+> `docs/122` §1 records what replaced it. Nothing here is edited to look
+> better in hindsight.
+
 The honest reading, and the useful one: **doing fourteen of sixteen items did
 not move the verdict, because the sixteenth is the one that decides it.**
 
@@ -140,7 +153,7 @@ place, for the same reason.
 
 | | Item | Why it is not mine |
 | --- | --- | --- |
-| 🔴 | **One named client testimonial** | Has to be real. It is the verdict |
+| ~~🔴~~ | ~~**One named client testimonial**~~ | ✅ **DONE 7 Sep.** It was real, and it was obtained rather than written — `docs/122` |
 | 🟠 | A mailbox on the domain, then one field in `site.config.json` | The address must receive mail before the site publishes it |
 | 🟠 | A response time you will hold to | "We reply within X" needs a number, not a guess |
 | 🟡 | Industries served, if you want Q8 answered | Facts only you have |

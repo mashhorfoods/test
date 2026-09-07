@@ -19,7 +19,21 @@
 import { FILES, SERIALISE, validate } from './admin-validate.js';
 
 const REPO = 'mashhorfoods/test';
-const BRANCH = 'claude/webstart-project-audit-l7est2';
+/* THE BRANCH IS ASKED FOR, NOT ASSUMED.
+
+   It was a constant, and the constant was a session working branch. That was
+   right when it was written and wrong the moment PR #1 merged and `main`
+   became the default: every save would have landed on a branch nothing
+   deploys from, so the operator would have changed a price, watched a green
+   commit appear, and seen the site not change — with nothing anywhere saying
+   why. A dashboard that silently writes to the wrong place is worse than no
+   dashboard.
+
+   `signIn()` already calls `GET /repos/{repo}` to prove the token can see
+   this repository, and that response carries `default_branch`. So the right
+   value is free, it is always current, and it cannot go stale again. The
+   fallback is only for a response that somehow omits it. */
+const FALLBACK_BRANCH = 'main';
 const API = 'https://api.github.com';
 const KEY = 'pixora:admin:token';
 
@@ -39,6 +53,10 @@ const state = {
   /** path -> { sha, data, original } */
   files: {},
   active: null,
+  /** Which pricing categories the operator has open, kept across a rerender. */
+  openGroups: new Set(),
+  /** Resolved from the repository at sign-in — see FALLBACK_BRANCH above. */
+  branch: FALLBACK_BRANCH,
   /* THE RESULT LIVES IN STATE, NOT IN THE DOM.
 
      It did not, at first: showResult() prepended a box to #app, and the very
@@ -114,8 +132,10 @@ async function signIn(token, remember) {
   const user = await api('/user');
   /* Verifying the account is not enough — a token can be valid and have no
      access to THIS repository, which is the failure the operator would
-     otherwise meet on their first save. */
-  await api(`/repos/${REPO}`);
+     otherwise meet on their first save. The same response names the branch
+     everything downstream deploys from. */
+  const repo = await api(`/repos/${REPO}`);
+  state.branch = repo.default_branch || FALLBACK_BRANCH;
   state.user = user;
   writeToken(token, remember);
   return user;
@@ -124,23 +144,61 @@ async function signIn(token, remember) {
 /* --- reading and writing -------------------------------------------------- */
 
 async function loadFile(path) {
-  const res = await api(`/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(BRANCH)}`);
+  const res = await api(`/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(state.branch)}`);
   const text = fromBase64(res.content);
   const data = JSON.parse(text);
   state.files[path] = { sha: res.sha, data, original: text };
   return state.files[path];
 }
 
+/* SOMEONE ELSE MAY HAVE SAVED SINCE THIS PAGE LOADED.
+
+   The Contents API refuses a PUT whose `sha` is not the file's current one,
+   and the message it returns for that is machine-shaped — "does not match".
+   Two people have write access to this repository, and one of them is a
+   dashboard that keeps a file in memory for as long as the tab is open, so
+   this is a matter of when rather than whether.
+
+   Two cases, and they are not the same:
+     · the file is byte-identical to what was loaded and only its sha moved
+       (a commit that touched it and changed nothing). Nothing is in conflict:
+       take the new sha and save.
+     · the content genuinely differs. Saving would erase whatever the other
+       person wrote, so it stops and says so in words, naming the recovery.
+       The operator's edits are still on screen; nothing is thrown away
+       without them choosing it. */
 async function commitFile(path, message) {
   const f = state.files[path];
   const text = SERIALISE(f.data);
   if (text === f.original) return { unchanged: true };
-  const res = await api(`/repos/${REPO}/contents/${path}`, {
+
+  const put = () => api(`/repos/${REPO}/contents/${path}`, {
     method: 'PUT',
     body: JSON.stringify({
-      message, content: toBase64(text), sha: f.sha, branch: BRANCH,
+      message, content: toBase64(text), sha: f.sha, branch: state.branch,
     }),
   });
+
+  let res;
+  try {
+    res = await put();
+  } catch (e) {
+    if (e.status !== 409 && e.status !== 422) throw e;
+    const current = await api(`/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(state.branch)}`);
+    const serverText = fromBase64(current.content);
+    if (serverText !== f.original) {
+      const err = new Error(
+        'This file was changed on the repository after you opened it, so saving '
+        + 'now would overwrite that change. Your edits are still on this page. '
+        + 'Copy anything you need, reload, and make them again on the current version.',
+      );
+      err.status = e.status;
+      throw err;
+    }
+    f.sha = current.sha;
+    res = await put();
+  }
+
   f.sha = res.content.sha;
   f.original = text;
   return res;
@@ -148,15 +206,32 @@ async function commitFile(path, message) {
 
 /* --- rendering ------------------------------------------------------------ */
 
-/* Any edit clears the last confirmation. A "Saved" box sitting above a form
-   the operator has since changed is a lie by staleness. */
-function field(label, value, help, onInput, { error = null } = {}) {
+/* THE PAGE DOES NOT REBUILD ITSELF WHILE SOMEBODY IS TYPING IN IT.
+
+   It did, and that made the dashboard unusable for the one job it has. Every
+   `input` event called rerender(), which begins with replaceChildren(): the
+   input being typed into was destroyed and replaced a character in, focus
+   fell back to <body>, the open category collapsed, and every keystroke after
+   the first went nowhere. Typing "1234" into a price left "1".
+
+   The acceptance tests all passed, because every one of them used Playwright's
+   `fill()` — which sets `value` and fires a single input event. That is not
+   typing, and it is why nine phases of tests could not see it. `docs/121` §5b
+   said emulation is not a phone; this is the same lesson one level down: a
+   synthetic event is not a person.
+
+   So an edit now updates only what an edit can change — the field's own
+   message, its category's summary, and the action bar — and never the inputs.
+   rerender() still exists for structural changes: signing in, switching file,
+   and the moment after a commit. */
+function field(label, value, help, onInput, { error = null, path = null } = {}) {
   const wrap = el('label', 'a-field');
+  if (path) wrap.dataset.path = path;
   wrap.append(el('span', 'a-field__label', label));
   const input = el('input', `a-field__input${error ? ' is-invalid' : ''}`);
   input.type = 'text';
   input.value = value ?? '';
-  input.addEventListener('input', () => { state.result = null; onInput(input.value); });
+  input.addEventListener('input', () => { state.result = null; onInput(input.value); revalidate(); });
   wrap.append(input);
   /* THE MESSAGE GOES UNDER ITS OWN FIELD.
 
@@ -169,9 +244,104 @@ function field(label, value, help, onInput, { error = null } = {}) {
 
      At the field, the message is next to the thing it describes and the bar
      shrinks to one line. */
-  if (error) wrap.append(el('span', 'a-field__error', error));
-  else if (help) wrap.append(el('span', 'a-field__help', help));
+  const note = el('span', error ? 'a-field__error' : 'a-field__help', error || help || '');
+  note.hidden = !(error || help);
+  note.dataset.help = help || '';
+  wrap.append(note);
   return wrap;
+}
+
+/* Update one already-rendered field in place. The <input> is not touched:
+   it is very likely the element the operator's cursor is in. */
+function refreshField(wrap, error) {
+  const input = wrap.querySelector('.a-field__input');
+  const note = wrap.querySelector('.a-field__error, .a-field__help');
+  if (input) input.classList.toggle('is-invalid', !!error);
+  if (!note) return;
+  const was = note.classList.contains('a-field__error');
+  const help = note.dataset.help || '';
+  note.className = error ? 'a-field__error' : 'a-field__help';
+  note.textContent = error || help;
+  note.hidden = !(error || help);
+  /* Reported rather than acted on: the bar has not been re-rendered yet at
+     this point, so measuring against it here measures the OLD bar. That is
+     exactly how the first attempt failed — the idle bar is display:none, so
+     the message always looked clear of it and the page never scrolled. */
+  return !!error && !was;
+}
+
+/* THE STICKY BAR IS STILL BETWEEN THE OPERATOR AND THE MESSAGE.
+
+   docs/121 §5b moved the validity message out of the action bar and down to
+   its own field, because a three-line bar pinned to the bottom of an iPhone
+   SE was sitting on top of the price it was describing. That was right, and
+   it was not the whole fix: on a 667px screen the field being typed into is
+   often the LAST thing above the bar, so the message that appears underneath
+   it appears underneath the bar.
+
+   Seen in a screenshot, again, with every number healthy — 3.6 screens, no
+   overflow, the bar at 27% of the viewport, and the one sentence the
+   operator needs invisible.
+
+   So a message that has just appeared scrolls itself clear of the bar, and
+   only when it is actually obscured: scrolling the page while somebody types
+   is its own defect, so this does nothing at all when the message can
+   already be read. */
+/* Publish the bar height so the page can end above it rather than under it.
+   Zero when the bar is idle and renders nothing, so a page with nothing to
+   save pays no whitespace for a control that is not there. */
+function syncBarSpace() {
+  const bar = document.querySelector('#app .a-commit:not(.a-commit--idle)');
+  const h = bar ? Math.ceil(bar.getBoundingClientRect().height) : 0;
+  document.documentElement.style.setProperty('--a-bar-h', `${h}px`);
+}
+
+function revealBelowBar(note) {
+  const bar = document.querySelector('#app .a-commit');
+  const floor = window.innerHeight - (bar ? bar.getBoundingClientRect().height : 0);
+  const r = note.getBoundingClientRect();
+  if (r.bottom <= floor && r.top >= 0) return;
+  /* A JavaScript smooth scroll ignores the CSS media query that governs
+     every other animation on this project, so the preference is asked for
+     here rather than assumed. */
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollBy({ top: r.bottom - floor + 16, behavior: still ? 'auto' : 'smooth' });
+}
+
+/* Everything an edit is allowed to change, and nothing else. */
+function revalidate() {
+  const f = state.files[state.active];
+  if (!f) return;
+  const problems = validate(state.active, f.data);
+  const at = (p) => problems.find((x) => x.path === p)?.message || null;
+
+  let appeared = null;
+  document.querySelectorAll('#app [data-path]').forEach((wrap) => {
+    if (refreshField(wrap, at(wrap.dataset.path)) && !appeared) {
+      appeared = wrap.querySelector('.a-field__error');
+    }
+  });
+
+  /* A category that has just become invalid opens itself and says so — and a
+     category the operator opened is never closed underneath them, which is
+     why this only ever sets `open` to true. */
+  document.querySelectorAll('#app [data-group]').forEach((sec) => {
+    const prefix = `categories[${sec.dataset.group}]`;
+    const has = problems.some((x) => x.path.startsWith(prefix));
+    const count = sec.querySelector('.a-group__count');
+    if (count) count.textContent = `${count.dataset.n}${has ? ' · needs attention' : ''}`;
+    if (has) sec.open = true;
+  });
+
+  /* A "Saved." box above a form that has since been edited is a lie by
+     staleness, and state.result was already cleared by the input handler. */
+  const stale = document.querySelector('#app .a-result');
+  if (stale && !state.result) stale.remove();
+
+  const bar = document.querySelector('#app .a-commit');
+  if (bar) bar.replaceWith(renderCommit(f));
+  syncBarSpace();
+  if (appeared) revealBelowBar(appeared);
 }
 
 /* CATEGORIES COLLAPSE, AND THE REASON IS A PHONE.
@@ -192,14 +362,22 @@ function renderPricing(root, f) {
 
   f.data.categories.forEach((c, ci) => {
     const sec = el('details', 'a-group');
+    sec.dataset.group = String(ci);
     /* A category holding an invalid value opens itself, so a problem named in
        the bar below is never hidden behind a summary the operator must guess
-       at. */
+       at. And one the operator had open stays open across a save — collapsing
+       everything after each commit threw away their place on the very screen
+       they were working on. */
     const hasProblem = problems.some((x) => x.path.startsWith(`categories[${ci}]`));
-    sec.open = hasProblem;
+    sec.open = hasProblem || state.openGroups.has(ci);
+    sec.addEventListener('toggle', () => {
+      if (sec.open) state.openGroups.add(ci); else state.openGroups.delete(ci);
+    });
     const sum = el('summary', 'a-group__title');
     sum.append(el('span', null, `${c.label} · ${c.labelAr}`));
-    sum.append(el('span', 'a-group__count', `${c.packages.length}${hasProblem ? ' · needs attention' : ''}`));
+    const count = el('span', 'a-group__count', `${c.packages.length}${hasProblem ? ' · needs attention' : ''}`);
+    count.dataset.n = String(c.packages.length);
+    sum.append(count);
     sec.append(sum);
     c.packages.forEach((k, pi) => {
       const card = el('div', 'a-card');
@@ -207,15 +385,15 @@ function renderPricing(root, f) {
       const p = `categories[${ci}].packages[${pi}]`;
       card.append(field('Price (digits only)', k.price,
         'No currency symbol, no comma. The site adds "From" and "USD".',
-        (v) => { k.price = v; rerender(); }, { error: at(`${p}.price`) }));
+        (v) => { k.price = v; }, { error: at(`${p}.price`), path: `${p}.price` }));
       card.append(field('Delivery — English', k.facts?.delivery?.en, null,
-        (v) => { k.facts.delivery.en = v; rerender(); }, { error: at(`${p}.facts.delivery.en`) }));
+        (v) => { k.facts.delivery.en = v; }, { error: at(`${p}.facts.delivery.en`), path: `${p}.facts.delivery.en` }));
       card.append(field('Delivery — Arabic', k.facts?.delivery?.ar, null,
-        (v) => { k.facts.delivery.ar = v; rerender(); }, { error: at(`${p}.facts.delivery.ar`) }));
+        (v) => { k.facts.delivery.ar = v; }, { error: at(`${p}.facts.delivery.ar`), path: `${p}.facts.delivery.ar` }));
       card.append(field('Revisions — English', k.facts?.revisions?.en, null,
-        (v) => { k.facts.revisions.en = v; rerender(); }, { error: at(`${p}.facts.revisions.en`) }));
+        (v) => { k.facts.revisions.en = v; }, { error: at(`${p}.facts.revisions.en`), path: `${p}.facts.revisions.en` }));
       card.append(field('Revisions — Arabic', k.facts?.revisions?.ar, null,
-        (v) => { k.facts.revisions.ar = v; rerender(); }, { error: at(`${p}.facts.revisions.ar`) }));
+        (v) => { k.facts.revisions.ar = v; }, { error: at(`${p}.facts.revisions.ar`), path: `${p}.facts.revisions.ar` }));
       sec.append(card);
     });
     root.append(sec);
@@ -223,20 +401,24 @@ function renderPricing(root, f) {
 }
 
 function renderI18n(root, f) {
-  const problems = validate('src/data/i18n-ar.json', f.data);
   const keys = Object.keys(f.data).filter((k) => !k.startsWith('_'));
   const search = el('input', 'a-search');
   search.type = 'search';
   search.placeholder = `Filter ${keys.length} strings…`;
   const list = el('div', 'a-list');
   const draw = () => {
+    /* Recomputed on every draw, not captured once at render: the list is
+       redrawn whenever the filter changes, and by then the operator may have
+       fixed or broken something. A stale problem list would mark a field red
+       that is now fine. */
+    const problems = validate('src/data/i18n-ar.json', f.data);
     list.replaceChildren();
     const q = search.value.trim().toLowerCase();
     keys.filter((k) => !q || k.toLowerCase().includes(q) || String(f.data[k]).toLowerCase().includes(q))
       .slice(0, 60)
       .forEach((k) => {
-        list.append(field(k, f.data[k], null, (v) => { f.data[k] = v; rerender(); },
-          { error: problems.find((x) => x.path === k)?.message || null }));
+        list.append(field(k, f.data[k], null, (v) => { f.data[k] = v; },
+          { error: problems.find((x) => x.path === k)?.message || null, path: k }));
       });
   };
   search.addEventListener('input', draw);
@@ -282,6 +464,7 @@ function rerender() {
   app.append(body);
 
   app.append(renderCommit(f));
+  syncBarSpace();
 }
 
 function renderBar() {

@@ -130,6 +130,20 @@ function showReward(root, tierId) {
     claim.setAttribute('data-wa', '');
     claim.setAttribute('target', '_blank');
     claim.setAttribute('rel', 'noopener noreferrer');
+    /* THE BUTTON JUST BECAME AN OFF-SITE LINK, SO IT HAS TO SAY SO.
+       It ships as an in-page link to #contact and only turns into a WhatsApp
+       link once the challenge is won — which is why it had no new-tab note in
+       the markup and could not simply be given one. Built here, as the pair
+       every other note on the site uses, so it follows the language with no
+       key and no JavaScript at read time. Guarded by qa.js §35. */
+    if (!claim.querySelector('[data-newtab-note]')) {
+      const note = document.createElement('span');
+      note.className = 'u-visually-hidden';
+      note.setAttribute('data-newtab-note', '');
+      note.innerHTML = '<span data-lang-copy="en"> (opens in a new tab)</span>'
+        + '<span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span>';
+      claim.append(note);
+    }
     /* For the language showing now; contact.js's observer covers every later
        swap, but this link did not exist when the last one happened. */
     const ar = document.documentElement.lang?.startsWith('ar');

@@ -1259,24 +1259,43 @@ function serve() {
             .filter((el) => el.getBoundingClientRect().height > 0)
             .map((el) => ({ cls: el.className.replace(/\s+/g, '.'), h: Math.round(el.getBoundingClientRect().height) })));
           for (const r of rows) {
+            /* EVERY BUTTON WITH THIS CLASS, NOT THE LAST ONE.
+
+               This kept `rec[lang] = r.h`, so twelve package CTAs sharing one
+               class string collapsed to whichever happened to be measured
+               last. When their heights were uniform that was harmless; the
+               moment one label wrapped it became a lottery — the same build
+               passed locally and failed in CI on 7 September, and both runs
+               were right about the button they happened to sample.
+
+               A range makes it deterministic and strictly stronger: a class
+               that renders at two sizes in one language is now visible, and
+               the comparison between languages is between the same two
+               numbers every time. */
             const key = `${r.cls}|${width}`;
             const rec = heights.get(key) || {};
-            rec[lang] = r.h;
+            const cur = rec[lang] || { min: Infinity, max: -Infinity };
+            cur.min = Math.min(cur.min, r.h);
+            cur.max = Math.max(cur.max, r.h);
+            rec[lang] = cur;
             heights.set(key, rec);
           }
         }
         await p.close();
       }
     }
+    const say = (r) => (r.min === r.max ? `${r.min}px` : `${r.min}-${r.max}px`);
     for (const [key, rec] of heights) {
       const [cls, width] = key.split('|');
       for (const lang of ['en', 'ar']) {
-        if (rec[lang] !== undefined && !SCALE.includes(rec[lang])) {
-          fail('MED', 'controls', `.${cls} renders ${rec[lang]}px at ${width}px in ${lang} — not one of the declared control heights ${SCALE.join('/')} (docs/73)`);
+        if (!rec[lang]) continue;
+        const off = [rec[lang].min, rec[lang].max].filter((h) => !SCALE.includes(h));
+        if (off.length) {
+          fail('MED', 'controls', `.${cls} renders ${[...new Set(off)].join(' and ')}px at ${width}px in ${lang} — not one of the declared control heights ${SCALE.join('/')} (docs/73)`);
         }
       }
-      if (rec.en !== undefined && rec.ar !== undefined && rec.en !== rec.ar) {
-        fail('HIGH', 'controls', `.${cls} is ${rec.en}px in English and ${rec.ar}px in Arabic at ${width}px — the same button is a different size in each language (docs/73)`);
+      if (rec.en && rec.ar && (rec.en.min !== rec.ar.min || rec.en.max !== rec.ar.max)) {
+        fail('HIGH', 'controls', `.${cls} is ${say(rec.en)} in English and ${say(rec.ar)} in Arabic at ${width}px — the same button is a different size in each language (docs/73)`);
       }
     }
   }
@@ -2273,6 +2292,281 @@ function serve() {
         }
       }
     }
+  }
+
+  /* ---- 34 a named person's words, held to one source --------------------
+
+     On 7 September Al Mada's founder sent a testimonial, and this site gained
+     the first sentence on it that the studio did not write about itself. That
+     is worth more than anything else currently published here — and it is
+     also the single most dangerous string in the repository, because it is
+     the only one attributed to a real person by name.
+
+     TWO WAYS IT GOES WRONG, neither of which any other section can see:
+
+       · DRIFT. The quote is published twice — the homepage, under the four
+         deliverables, and the end of the case study. Two copies of a
+         sentence, edited independently, is a named man quoted saying two
+         different things. Nobody would do that deliberately; a tidy-up of
+         one copy's wording is all it takes.
+       · A QUOTE WITH NOBODY BEHIND IT. `/about` publishes the promise that
+         "there is no invented statistic, client or testimonial anywhere on
+         this site". An unattributed quotation — no name, or no role, or one
+         language carrying an attribution the other does not — is exactly
+         what that promise forbids, and it is one deleted span away at any
+         time.
+
+     So: `src/data/story.json` holds the words, and every rendering of them
+     anywhere on the site must match it exactly, in both languages, complete
+     with a name, a role, and the note declaring that the Arabic is our
+     translation. A hand-typed quotation that no source file backs is a
+     finding, not a convenience. */
+  {
+    const storyPath = path.join(ROOT, 'src/data/story.json');
+    const source = fs.existsSync(storyPath)
+      ? JSON.parse(fs.readFileSync(storyPath, 'utf8')).testimonial
+      : null;
+    const norm = (v) => String(v || '').replace(/\s+/g, ' ').trim();
+    const PARTS = ['quote', 'name', 'role', 'note'];
+
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const p = await ctx.newPage();
+    const said = new Map(); // "name·lang" -> { quote, page }
+
+    for (const page of PAGES) {
+      await p.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+      await p.waitForTimeout(200);
+      const blocks = await p.evaluate(() => [...document.querySelectorAll('.c-testimonial')].map((t) => {
+        const say = (part, lang) => {
+          const el = t.querySelector(`.c-testimonial__${part} [data-lang-copy="${lang}"]`);
+          return el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+        };
+        const read = (part) => ({ en: say(part, 'en'), ar: say(part, 'ar') });
+        return { quote: read('quote'), name: read('name'), role: read('role'), note: read('note') };
+      }));
+
+      for (const b of blocks) {
+        /* Both languages, all four parts. A missing Arabic name is a quote
+           attributed to a person in English and to nobody in Arabic. */
+        for (const part of PARTS) {
+          for (const lang of ['en', 'ar']) {
+            if (!b[part][lang]) {
+              fail('HIGH', 'content', `${page}: a testimonial has no ${lang === 'ar' ? 'Arabic' : 'English'} ${part} — a quotation attributed to a real person must carry their name, their role and the note that the Arabic is our translation, in both languages`);
+            }
+          }
+        }
+
+        if (!source) {
+          fail('HIGH', 'content', `${page}: a testimonial is published that no source file holds — src/data/story.json has no testimonial block, so these are words attributed to a named person with nothing behind them`);
+          continue;
+        }
+
+        for (const part of PARTS) {
+          for (const lang of ['en', 'ar']) {
+            const shown = b[part][lang];
+            const held = norm(source[part] && source[part][lang]);
+            if (shown && held && shown !== held) {
+              fail('HIGH', 'content', `${page}: the ${lang === 'ar' ? 'Arabic' : 'English'} ${part} of the ${b.name.en || 'client'} testimonial does not match src/data/story.json — published "${shown.slice(0, 60)}…" against "${held.slice(0, 60)}…". Two copies of one person's words, edited apart`);
+            }
+          }
+        }
+
+        /* Across pages: the same person, twice, saying two things. */
+        for (const lang of ['en', 'ar']) {
+          const who = b.name[lang];
+          if (!who) continue;
+          const key = `${who}·${lang}`;
+          const prev = said.get(key);
+          if (prev && prev.quote !== b.quote[lang]) {
+            fail('HIGH', 'content', `${page}: ${who} is quoted differently here than on ${prev.page} (${lang}) — one person, two sets of words`);
+          } else if (!prev) {
+            said.set(key, { quote: b.quote[lang], page });
+          }
+        }
+      }
+    }
+    await ctx.close();
+  }
+
+  /* ---- 35 every link that leaves the site says so, in the right language --
+
+     THE RULE ALREADY EXISTED AND HAD A HOLE IN THE ONE PLACE THAT MATTERED.
+     On 7 September a census of all 98 `target="_blank"` links found 76 of
+     them carrying `(opens in a new tab)` — LinkedIn, Behance, the founder's
+     portfolio, the client's own site, and even the WhatsApp links inside the
+     legal pages' prose. The 22 that said nothing were **every WhatsApp
+     button on the homepage and the pricing page**: the four service CTAs,
+     all sixteen package CTAs, the contact panel and the form's fallback.
+     The conversion path, and only the conversion path.
+
+     AND THE 76 THAT PASSED WERE ENGLISH ON THE ARABIC PAGE. The note was a
+     hard-coded `<span class="u-visually-hidden"> (opens in a new tab)</span>`
+     with no Arabic sibling, so an Arabic screen-reader user heard an English
+     sentence after every off-site link — 20 of them. Three separate
+     mechanisms were in play (a hard-coded English span, a runtime-translated
+     one in the footer, and the story generator's), which is why no single
+     place was wrong enough to notice.
+
+     A THIRD DEFECT FOUND THE SAME WAY: five `aria-label`s were English on
+     both languages, three of them the direct-contact channels, and two of
+     those held a second copy of the phone number. Those labels are gone —
+     the visible content already names the channel in both languages — and
+     §19 still owns the number.
+
+     So this checks what a screen reader would actually be handed: for the
+     language showing, every `target="_blank"` link must announce the new tab
+     exactly once, in that language. Links inside the other language's half of
+     a bilingual pair are skipped, because the visitor never reaches them. */
+  {
+    const EN = '(opens in a new tab)';
+    const AR = '(يفتح في نافذة جديدة)';
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const p = await ctx.newPage();
+    for (const page of PAGES) {
+      for (const lang of ['en', 'ar']) {
+        await p.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+        await p.waitForTimeout(250);
+        /* SET THE LANGUAGE EXPLICITLY, INCLUDING ENGLISH. One context is
+           reused for every page here, and the choice is remembered, so after
+           the first Arabic pass every later load came back Arabic — and the
+           English pass then reported the footer's Arabic note as "the wrong
+           language" on nine pages. The site was right and the check was
+           wrong, which is the third time a check in this file has been the
+           broken thing. Clicking the toggle for BOTH languages is one line
+           and cannot drift. */
+        const set = await p.evaluate((lang) => { const el = document.querySelector(`[data-lang="${lang}"]`); if (!el) return false; el.click(); return true; }, lang);
+        if (!set) continue;
+        await p.waitForTimeout(400);
+        const rows = await p.evaluate((lang) => [...document.querySelectorAll('a[target="_blank"]')]
+          /* A link living inside the other language's span is never reached. */
+          .filter((a) => { const w = a.closest('[data-lang-copy]'); return !w || w.getAttribute('data-lang-copy') === lang; })
+          .map((a) => {
+            /* aria-label wins outright; otherwise the text of the spans this
+               language actually shows. innerText cannot be used — a link
+               inside a collapsed <details> renders nothing, so innerText is
+               empty and textContent returns both languages at once. */
+            const clone = a.cloneNode(true);
+            clone.querySelectorAll(`[data-lang-copy]:not([data-lang-copy="${lang}"])`).forEach((e) => e.remove());
+            return {
+              name: (a.getAttribute('aria-label') || clone.textContent).replace(/\s+/g, ' ').trim(),
+              where: `${a.tagName.toLowerCase()}.${String(a.className || '').split(' ').filter(Boolean)[0] || ''} → ${(a.href.split('/')[2] || a.href).slice(0, 30)}`,
+            };
+          }), lang);
+
+        for (const r of rows) {
+          const hasEn = r.name.includes('(opens in a new tab)');
+          const hasAr = r.name.includes('(يفتح في نافذة جديدة)');
+          const want = lang === 'ar' ? hasAr : hasEn;
+          const other = lang === 'ar' ? hasEn : hasAr;
+          if (!hasEn && !hasAr) {
+            fail('HIGH', 'a11y', `${page} (${lang}): "${r.name.slice(0, 45)}" (${r.where}) opens a new tab and does not say so — every other off-site link on this site does`);
+          } else if (!want) {
+            fail('HIGH', 'a11y', `${page} (${lang}): "${r.name.slice(0, 45)}" (${r.where}) announces the new tab in the wrong language`);
+          } else if (other) {
+            fail('HIGH', 'a11y', `${page} (${lang}): "${r.name.slice(0, 45)}" (${r.where}) announces the new tab twice, once in each language`);
+          }
+        }
+      }
+    }
+    await ctx.close();
+  }
+
+  /* ---- 36 English words where an Arabic visitor has to read them ---------
+
+     THREE STRINGS WERE ENGLISH ON THE ARABIC PAGE, AND ALL THREE HAD
+     ALREADY BEEN TRANSLATED SOMEWHERE ELSE IN THIS REPOSITORY.
+
+       · The **skip link** — a bare `Skip to content` in the shell every page
+         is built from. The first focusable element on the site, on eight
+         pages, in the wrong language.
+       · The **brand tagline** — `Digital Agency` in the header and the
+         footer, while the same element's accessible name says
+         `بيكسورا، وكالة رقمية`. A screen reader and an eye on one page got
+         different words. `header.css` even carries a
+         `[dir="rtl"] .c-brand__tagline` block explaining that Arabic has no
+         letter case: **a rule written for Arabic that never had Arabic to
+         style.**
+       · The **footer portfolio link** — `SOCIAL_LINKS` has carried
+         `labelAr: 'أعمال المؤسس'` since it was written, and `renderSocial()`
+         took `label` unconditionally. `404.html` was worse: it still said
+         `Website`, the label `navigation-map.js` records as deliberately
+         replaced.
+
+     None of these is a missing translation. Each is a translation that was
+     decided and then not wired up, which is harder to see than an absent one
+     because the Arabic is sitting right there in the source.
+
+     `arabic.js` cannot catch them: it looks for runs of four or more English
+     words, and these are two, three and two. So this asks a narrower
+     question — **can an Arabic visitor reach a control whose name is English
+     prose?** — and takes its allowlist from the data rather than from a
+     hand-kept list, so a new package name never needs anyone to remember
+     this check exists.
+
+     A control living inside the English half of a bilingual pair is skipped:
+     an Arabic visitor never reaches it, and counting it is counting
+     something nobody sees. Two scratch versions of this check without that
+     rule reported twenty findings and every one of them was hidden. */
+  {
+    const pricingData = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/pricing.json'), 'utf8'));
+    /* Product names are Latin in Arabic on purpose — the site writes
+       "اسأل عن باقة Starter". Read from the data so the list cannot go stale. */
+    const productWords = new Set();
+    for (const c of pricingData.categories || []) {
+      for (const w of `${c.label} ${(c.packages || []).map((k) => k.name).join(' ')}`.split(/[^A-Za-z]+/)) {
+        if (w.length > 1) productWords.add(w.toLowerCase());
+      }
+    }
+    /* Names of things, not words of a language. Short and stable on purpose. */
+    for (const w of ['pixora', 'whatsapp', 'linkedin', 'behance', 'instagram', 'facebook',
+      'usd', 'sar', 'aed', 'egp', 'seo', 'google', 'ceo', 'faq', 'al', 'mada', 'muhalab',
+      'salah', 'faris', 'mohammed', 'umrah', 'github', 'gmail', 'com']) productWords.add(w);
+
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const p = await ctx.newPage();
+    for (const page of PAGES) {
+      await p.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+      await p.waitForTimeout(250);
+      const set = await p.evaluate(() => { const el = document.querySelector('[data-lang="ar"]'); if (!el) return false; el.click(); return true; });
+      if (!set) continue;
+      await p.waitForTimeout(400);
+
+      const rows = await p.evaluate(() => [...document.querySelectorAll('a[href],button,summary,input,select,textarea,[tabindex="0"]')]
+        .filter((e) => { const w = e.closest('[data-lang-copy]'); return !w || w.getAttribute('data-lang-copy') === 'ar'; })
+        .map((e) => {
+          const clone = e.cloneNode(true);
+          clone.querySelectorAll('[data-lang-copy="en"]').forEach((x) => x.remove());
+          const text = (clone.textContent || '').replace(/\s+/g, ' ').trim();
+          const label = (e.getAttribute('aria-label') || '').trim();
+          /* BOTH READINGS, because the tagline defect lived in the gap
+             between them: the brand link's aria-label is Arabic and the words
+             printed inside it were English, so a check that stops at the
+             accessible name sees a healthy control and a person sees an
+             English page. The first version of this section did stop there,
+             and its negative test for the tagline reported nothing while the
+             other two fired — which is how it was caught. */
+          return {
+            names: [label, text].filter(Boolean),
+            where: `${e.tagName.toLowerCase()}.${String(e.className || '').split(' ').filter(Boolean)[0] || ''}`,
+          };
+        }).filter((r) => r.names.length));
+
+      for (const r of rows) {
+        for (const name of r.names) {
+          /* Addresses, URLs and numbers are not words of any language. */
+          const prose = name
+            .replace(/[\w.+-]+@[\w.-]+/g, ' ')
+            .replace(/https?:\/\/\S+/g, ' ')
+            .split(/[^A-Za-z]+/)
+            .filter((w) => w.length > 2 && !productWords.has(w.toLowerCase()));
+          if (prose.length) {
+            fail('HIGH', 'i18n', `${page} (ar): "${name.slice(0, 50)}" (${r.where}) is English where an Arabic visitor reads it — ${prose.slice(0, 4).join(', ')}`);
+            break;
+          }
+        }
+      }
+    }
+    await ctx.close();
   }
 
   await browser.close();

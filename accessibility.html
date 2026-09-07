@@ -18,7 +18,26 @@
          exports of the logo, and Organization JSON-LD needs a legal name and
          address. None of those exist in the supplied data.
          =================================================================== -->
+    <!-- THE TITLE IS THE ONLY LINE A STRANGER READS BEFORE DECIDING TO CLICK.
+
+         It was "Pixora — Digital Agency", 23 characters, on a page trying to
+         be found by people searching for branding and web work in this
+         market. It named the company and the category and nothing a buyer
+         types into a search box.
+
+         The brand lockup is kept WHOLE — "Pixora Digital Agency" — because
+         "Digital Agency" is the tagline under the mark in the header and the
+         footer, and a title that contradicts the wordmark is a worse problem
+         than a short one. The rest is what is actually sold and where.
+
+         og:title stays short deliberately: a social card is read by someone
+         who already followed a link, and a keyword line reads as spam there.
+         The two are different jobs and are allowed to differ. -->
     <title>Accessibility — Pixora</title>
+    <!-- The tab and the bookmark follow the language, like everything else
+         on this site. navigation.js reads this; crawlers and the canonical
+         keep the English above. Every page carries its own. -->
+    <meta name="title-ar" content="إمكانية الوصول — بيكسورا" />
     <meta
       name="description"
       content="What this site has been tested for, what it has not, and how to tell us when something does not work."
@@ -92,7 +111,7 @@
   </head>
 
   <body>
-    <a class="c-skip-link" href="#main">Skip to content</a>
+    <a class="c-skip-link" href="#main"><span data-lang-copy="en">Skip to content</span><span data-lang-copy="ar" lang="ar">تخطَّ إلى المحتوى</span></a>
 
     <!-- =================================================================
          HEADER — global component (§24). Identical markup serves every
@@ -116,7 +135,7 @@
               <span class="c-brand__word"
                 >PI<span class="c-brand__accent">X</span>ORA</span
               >
-              <span class="c-brand__tagline">Digital Agency</span>
+              <span class="c-brand__tagline"><span data-lang-copy="en">Digital Agency</span><span data-lang-copy="ar" lang="ar">وكالة رقمية</span></span>
             </span>
           </a>
         </div>
@@ -390,8 +409,8 @@
             <div class="c-verify__links">
               <p class="c-verify__check" data-i18n="verifyCheck">Check us:</p>
               <ul class="c-verify__list">
-                <li><a class="c-link" href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">The work, on Behance</span><span data-lang-copy="ar" lang="ar">الأعمال على Behance</span><span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
-                <li><a class="c-link" href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">The person, on LinkedIn</span><span data-lang-copy="ar" lang="ar">الملف الشخصي على LinkedIn</span><span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+                <li><a class="c-link" href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">The work, on Behance</span><span data-lang-copy="ar" lang="ar">الأعمال على Behance</span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
+                <li><a class="c-link" href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">The person, on LinkedIn</span><span data-lang-copy="ar" lang="ar">الملف الشخصي على LinkedIn</span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
               </ul>
             </div>
           </div>
@@ -405,7 +424,7 @@
               aria-label="Pixora, Digital Agency — home" data-i18n-label="brandHome">
               <span class="c-brand" aria-hidden="true">
                 <span class="c-brand__word">PI<span class="c-brand__accent">X</span>ORA</span>
-                <span class="c-brand__tagline">Digital Agency</span>
+                <span class="c-brand__tagline"><span data-lang-copy="en">Digital Agency</span><span data-lang-copy="ar" lang="ar">وكالة رقمية</span></span>
               </span>
             </a>
             <p class="c-footer__statement"><span data-lang-copy="en">Brands, websites, content and advertising — from one partner.</span><span data-lang-copy="ar" lang="ar">علامات ومواقع ومحتوى وإعلانات — من شريك واحد.</span></p>
@@ -451,9 +470,9 @@
                drift apart. Off-site, so each opens in a new tab and says so. -->
           <nav aria-label="Elsewhere" data-i18n-label="footerElsewhere" data-social-block>
             <ul class="c-footer__social" data-social-render role="list">
-              <li><a href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
-              <li><a href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
-              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer">Founder's portfolio<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
+              <li><a href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
+              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">Founder's portfolio</span><span data-lang-copy="ar" lang="ar">أعمال المؤسس</span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
             </ul>
           </nav>
 

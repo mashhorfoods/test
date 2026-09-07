@@ -94,8 +94,26 @@ at the same settings page — one click, and it is dead everywhere.
    is listed above it by name. Fix that first — **the button will not let you
    commit something the build would reject.**
 4. Write a few words saying what changed, and Save.
-5. It commits to the working branch, then the build runs: it rebuilds the site,
-   runs the five checks, and commits the result back. **About four minutes.**
+5. It commits to **`main`** — the branch the site is built from — then the
+   build runs: it rebuilds the site, runs the five checks, and commits the
+   result back. **About four minutes.**
+
+   > **Corrected 7 September.** This used to say "the working branch", and so
+   > did the code: the branch was a constant, set before `main` existed. A
+   > save would have produced a green commit on a branch nothing deploys
+   > from — the site simply would not have changed, with nothing anywhere
+   > saying why. The dashboard now asks GitHub which branch is the default
+   > and writes to that, so it cannot go stale again.
+
+### If it says the file changed on the repository
+
+Someone else — the other operator, or a commit of yours from another device —
+saved the same file after you opened it. **Nothing has been lost and nothing
+has been overwritten.** Your edits are still on the screen.
+
+Copy anything you need, reload the page, and make the change again on the
+current version. The dashboard refuses rather than guessing, because guessing
+would erase whatever the other person wrote.
 
 ### What it will not let you do
 

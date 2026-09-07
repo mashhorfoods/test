@@ -76,7 +76,14 @@ function build(file) {
       `$1${esc(cfg.description)}$2`)
     .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(cfg.title)}$2`)
     .replace(/(<meta property="og:description"[\s\S]*?content=")[\s\S]*?(")/,
-      `$1${esc(cfg.description)}$2`);
+      `$1${esc(cfg.description)}$2`)
+    /* The Arabic title. The shell carries the homepage's, so a page that
+       forgot to declare one would silently ship the homepage's title in its
+       Arabic tab — which is why this throws instead. */
+    .replace(/(<meta name="title-ar" content=")[^"]*(")/, () => {
+      if (!cfg.titleAr) throw new Error(`${file}: no titleAr in its PAGE block`);
+      return `<meta name="title-ar" content="${esc(cfg.titleAr)}"`;
+    });
 
   out += `<main id="main">\n${body}\n    </main>`;
   out += absolutise(tail, localIds);

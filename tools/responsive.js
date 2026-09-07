@@ -39,7 +39,23 @@ const PORT = 4622;
 
 /* The widths validate.js and qa.js never render. 390/1280/1440 are covered
    there and are deliberately not repeated here. */
-const WIDTHS = [320, 768, 1024];
+/* 375 AND 414 ARE HERE BECAUSE A WHOLE BAND WAS UNGUARDED.
+
+   The first list was 320, 768, 1024 — the widths nothing else rendered. It
+   was reasoned about as "the gaps between the other harnesses", and the
+   reasoning was right about the gaps and wrong about phones: every check on
+   this project rendered 320, 360 or 390 and nothing between 391 and 767.
+
+   On 7 September the pricing cards were found hanging off the page across
+   361-480 — 25px past the right edge in English, 9px off the LEFT of the
+   screen in Arabic — on iPhone SE, mini, XR and Plus, four of the commonest
+   phones there are. Clean at 320. Clean at 360. Clean at 768. The sample
+   stepped over the defect on both sides.
+
+   So the list now covers the phone band rather than sampling it: 320 (the
+   floor), 375 and 414 (the two commonest iPhone widths above 360), then the
+   tablet and small-laptop widths as before. */
+const WIDTHS = [320, 375, 414, 768, 1024];
 const PAGES = ['index.html', 'pricing.html', 'about.html', 'story.html',
   'privacy.html', 'terms.html', 'accessibility.html', '404.html'];
 

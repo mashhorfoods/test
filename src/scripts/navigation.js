@@ -239,11 +239,20 @@ function renderSurfaces() {
     block.hidden = SOCIAL_LINKS.length === 0;
 
     container.replaceChildren(
-      ...SOCIAL_LINKS.map(({ label, href }) => {
+      ...SOCIAL_LINKS.map(({ label, labelAr, href }) => {
         const item = document.createElement('li');
         const link = document.createElement('a');
         link.href = href;
-        link.textContent = label;
+        /* THE ARABIC LABEL EXISTED AND WAS NEVER READ.
+
+           SOCIAL_LINKS has carried labelAr: 'أعمال المؤسس' since the entry was
+           written — the comment beside it argues carefully about what the
+           link should promise — and this line took `label` unconditionally,
+           so the Arabic footer said "Founder's portfolio" in English. A
+           translation that is decided, committed, and then not wired up is
+           the same defect as one that was never written, and it is harder
+           to see: the string is right there in the source. */
+        link.textContent = (currentLang() === 'ar' && labelAr) ? labelAr : label;
         // These are the only off-site destinations on the site. They leave it,
         // so they open in a new tab, say so to a screen reader, and carry the
         // rel that stops the opened page reaching back through window.opener.
@@ -260,8 +269,27 @@ function renderSurfaces() {
   });
 }
 
+/* THE TAB AND THE BOOKMARK FOLLOW THE LANGUAGE TOO.
+
+   Everything visible on this site is paired, and the one string that was not
+   is the one a visitor keeps: the browser tab, the bookmark, the entry in
+   their history. <title> cannot hold a pair, so the English one stays in the
+   markup — that is what a crawler and the canonical URL should see — and the
+   Arabic is read from <meta name="title-ar"> at the moment the language
+   changes.
+
+   The English is captured once at boot rather than re-read, because by the
+   time the visitor switches back this function has already overwritten it. */
+const TITLE_EN = document.title;
+
+function renderTitle() {
+  const ar = document.querySelector('meta[name="title-ar"]')?.content?.trim();
+  document.title = (currentLang() === 'ar' && ar) ? ar : TITLE_EN;
+}
+
 /** Apply chrome strings and CTA labels for the current language. */
 function renderStrings() {
+  renderTitle();
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     el.textContent = t(el.dataset.i18n);
   });

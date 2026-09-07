@@ -18,7 +18,26 @@
          exports of the logo, and Organization JSON-LD needs a legal name and
          address. None of those exist in the supplied data.
          =================================================================== -->
-    <title>Pixora — Digital Agency</title>
+    <!-- THE TITLE IS THE ONLY LINE A STRANGER READS BEFORE DECIDING TO CLICK.
+
+         It was "Pixora — Digital Agency", 23 characters, on a page trying to
+         be found by people searching for branding and web work in this
+         market. It named the company and the category and nothing a buyer
+         types into a search box.
+
+         The brand lockup is kept WHOLE — "Pixora Digital Agency" — because
+         "Digital Agency" is the tagline under the mark in the header and the
+         footer, and a title that contradicts the wordmark is a worse problem
+         than a short one. The rest is what is actually sold and where.
+
+         og:title stays short deliberately: a social card is read by someone
+         who already followed a link, and a keyword line reads as spam there.
+         The two are different jobs and are allowed to differ. -->
+    <title>Pixora Digital Agency — Branding, Websites &amp; Ads, Gulf and Egypt</title>
+    <!-- The tab and the bookmark follow the language, like everything else
+         on this site. navigation.js reads this; crawlers and the canonical
+         keep the English above. Every page carries its own. -->
+    <meta name="title-ar" content="بيكسورا وكالة رقمية — هوية ومواقع وإعلانات في الخليج ومصر" />
     <meta
       name="description"
       content="Branding and design, websites, social media management and digital advertising — delivered together, by one partner."
@@ -92,7 +111,7 @@
   </head>
 
   <body>
-    <a class="c-skip-link" href="#main">Skip to content</a>
+    <a class="c-skip-link" href="#main"><span data-lang-copy="en">Skip to content</span><span data-lang-copy="ar" lang="ar">تخطَّ إلى المحتوى</span></a>
 
     <!-- =================================================================
          HEADER — global component (§24). Identical markup serves every
@@ -116,7 +135,7 @@
               <span class="c-brand__word"
                 >PI<span class="c-brand__accent">X</span>ORA</span
               >
-              <span class="c-brand__tagline">Digital Agency</span>
+              <span class="c-brand__tagline"><span data-lang-copy="en">Digital Agency</span><span data-lang-copy="ar" lang="ar">وكالة رقمية</span></span>
             </span>
           </a>
         </div>
@@ -742,7 +761,7 @@
                 <div class="c-service__content">
                   <div class="c-service__body">
                     <p class="t-body-lg c-service__desc"><span data-lang-copy="en">The complete connected offering, run as one system from brand through to growth rather than as separate projects.</span><span data-lang-copy="ar" lang="ar">العرض المتكامل بالكامل، يُدار كنظام واحد من العلامة حتى النمو بدل أن يكون مشاريع منفصلة.</span></p>
-                <ol class="c-service__flow" aria-label="How the connected offering runs" role="list">
+                <ol class="c-service__flow" aria-label="How the connected offering runs" data-i18n-label="serviceFlow" role="list">
                   <li><span><span data-lang-copy="en">Branding</span><span data-lang-copy="ar" lang="ar">الهوية</span></span></li>
                   <li><span><span data-lang-copy="en">Website</span><span data-lang-copy="ar" lang="ar">الموقع الإلكتروني</span></span></li>
                   <li><span><span data-lang-copy="en">Content</span><span data-lang-copy="ar" lang="ar">المحتوى</span></span></li>
@@ -870,6 +889,36 @@
             </li>
           </ul>
 
+          <!-- =============================================================
+               THE CLIENT'S OWN WORDS — the first sentence on this site that
+               the studio did not write about itself.
+
+               `docs/108` graded this site 🟡 MAYBE for one reason and one
+               only: every claim on it came from us. This is that reason
+               closing. Faris Mohammed sent it in writing, in English, and
+               agreed to be named alongside his title and his company.
+
+               IT SITS UNDER THE EVIDENCE, NOT ABOVE IT. The four deliverables
+               are directly above, so the quote is a verdict on work the
+               reader has just looked at rather than a claim floating on its
+               own — and the case-study link below it is the way to check.
+
+               THE ARABIC IS DECLARED AS OURS. He wrote in English. An Arabic
+               reader who was not told would reasonably believe these were his
+               words in his language, and `/about` promises this site does not
+               do that kind of small dishonesty.
+               ============================================================= -->
+          <figure class="c-testimonial" data-reveal-group>
+            <blockquote class="c-testimonial__quote">
+              <p><span data-lang-copy="en">Working with Pixora was a genuinely impressive experience. They understood our vision from the beginning and translated it into a clear, professional identity that reflects who Al Mada Travel is and where we want to go. The attention to detail, creativity, and professionalism throughout the process made a real difference.</span><span data-lang-copy="ar" lang="ar">كان العمل مع بيكسورا تجربة مميّزة بحق. فهموا رؤيتنا منذ البداية وترجموها إلى هوية واضحة واحترافية تعكس حقيقة وكالة المدى للسفر وإلى أين نريد أن نصل. الاهتمام بالتفاصيل والإبداع والاحترافية طوال مراحل العمل صنع فرقًا حقيقيًا.</span></p>
+            </blockquote>
+            <figcaption class="c-testimonial__by">
+              <span class="c-testimonial__name"><span data-lang-copy="en">Faris Mohammed</span><span data-lang-copy="ar" lang="ar">فارس محمد</span></span>
+              <span class="c-testimonial__role"><span data-lang-copy="en">Founder &amp; CEO, Al Mada Travel &amp; Tourism Agency</span><span data-lang-copy="ar" lang="ar">المؤسس والرئيس التنفيذي، وكالة المدى للسفر والسياحة</span></span>
+              <span class="c-testimonial__note"><span data-lang-copy="en">Sent to us in writing and published with permission.</span><span data-lang-copy="ar" lang="ar">وصلتنا الشهادة كتابةً بالإنجليزية، والنص العربي ترجمتنا، وتُنشر بإذن صاحبها.</span></span>
+            </figcaption>
+          </figure>
+
           <p class="c-proof__more">
             <a class="c-link" href="./story">
               <span data-lang-copy="en">Read the case study</span><span data-lang-copy="ar" lang="ar">اقرأ دراسة الحالة</span>
@@ -986,7 +1035,7 @@
                  opening four different conversations. The WhatsApp message
                  always named the service; the button a screen reader reads
                  did not. -->
-            <span><span data-lang-copy="en">Ask about Branding &amp; Design</span><span data-lang-copy="ar" lang="ar">اسأل عن الهوية والتصميم</span></span>
+            <span><span data-lang-copy="en">Ask about Branding &amp; Design</span><span data-lang-copy="ar" lang="ar">اسأل عن الهوية والتصميم</span></span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span>
             <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
             </svg>
@@ -1152,7 +1201,7 @@
                  opening four different conversations. The WhatsApp message
                  always named the service; the button a screen reader reads
                  did not. -->
-            <span><span data-lang-copy="en">Ask about Websites</span><span data-lang-copy="ar" lang="ar">اسأل عن المواقع الإلكترونية</span></span>
+            <span><span data-lang-copy="en">Ask about Websites</span><span data-lang-copy="ar" lang="ar">اسأل عن المواقع الإلكترونية</span></span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span>
             <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
             </svg>
@@ -1341,7 +1390,7 @@
                  opening four different conversations. The WhatsApp message
                  always named the service; the button a screen reader reads
                  did not. -->
-            <span><span data-lang-copy="en">Ask about Social Media</span><span data-lang-copy="ar" lang="ar">اسأل عن إدارة وسائل التواصل</span></span>
+            <span><span data-lang-copy="en">Ask about Social Media</span><span data-lang-copy="ar" lang="ar">اسأل عن إدارة وسائل التواصل</span></span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span>
             <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
             </svg>
@@ -1479,7 +1528,7 @@
                  opening four different conversations. The WhatsApp message
                  always named the service; the button a screen reader reads
                  did not. -->
-            <span><span data-lang-copy="en">Ask about Marketing &amp; Ads</span><span data-lang-copy="ar" lang="ar">اسأل عن التسويق الرقمي والإعلانات</span></span>
+            <span><span data-lang-copy="en">Ask about Marketing &amp; Ads</span><span data-lang-copy="ar" lang="ar">اسأل عن التسويق الرقمي والإعلانات</span></span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span>
             <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
             </svg>
@@ -2041,6 +2090,7 @@
           <figure class="c-reel" data-reveal-group>
             <video class="c-reel__video" controls preload="none" playsinline
               poster="./src/assets/showpiece/reel-still.webp"
+              aria-label="Showreel — sixty seconds of recent work" data-i18n-label="reelVideo"
               aria-describedby="reel-caption">
               <source src="./src/assets/showpiece/reel.webm" type="video/webm" />
               <source src="./src/assets/showpiece/reel.mp4" type="video/mp4" />
@@ -2618,15 +2668,15 @@
               <li>
                 <a class="c-channel c-channel--primary" href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I%27d%20like%20to%20start%20a%20project." target="_blank" rel="noopener noreferrer"
                   data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I%27d%20like%20to%20start%20a%20project." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A8%D8%AF%D8%A1%20%D9%85%D8%B4%D8%B1%D9%88%D8%B9."
-                  aria-label="Message us on WhatsApp on +249 962672192">
+                  data-reveal>
                   <span class="c-channel__label"><span data-lang-copy="en">WhatsApp</span><span data-lang-copy="ar" lang="ar">واتساب</span></span>
-                  <span class="c-channel__value">+249 962672192</span>
+                  <span class="c-channel__value">+249 962672192</span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span>
                   <svg class="c-channel__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" /></svg>
                 </a>
               </li>
               <li>
                 <a class="c-channel" href="tel:+249119005441"
-                  aria-label="Call us on +249 119005441">
+                  >
                   <span class="c-channel__label"><span data-lang-copy="en">Phone</span><span data-lang-copy="ar" lang="ar">الهاتف</span></span>
                   <span class="c-channel__value">+249 119005441</span>
                   <svg class="c-channel__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" /></svg>
@@ -2634,7 +2684,7 @@
               </li>
               <li>
                 <a class="c-channel" href="mailto:muhalabsalah@gmail.com"
-                  aria-label="Email us on muhalabsalah@gmail.com">
+                  >
                   <span class="c-channel__label"><span data-lang-copy="en">Email</span><span data-lang-copy="ar" lang="ar">البريد الإلكتروني</span></span>
                   <span class="c-channel__value">muhalabsalah@gmail.com</span>
                   <svg class="c-channel__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" /></svg>
@@ -2756,6 +2806,7 @@
                 <p class="c-contact__fallback-actions">
                   <a class="c-btn c-btn--secondary c-btn--sm" data-contact-fallback-wa href="#contact" target="_blank" rel="noopener noreferrer">
                     <span data-lang-copy="en">Send it on WhatsApp</span><span data-lang-copy="ar" lang="ar">أرسلها عبر واتساب</span>
+                    <span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span>
                   </a>
                   <button class="c-btn c-btn--secondary c-btn--sm" type="button" data-contact-copy-address>
                     <span data-lang-copy="en">Copy the email address</span><span data-lang-copy="ar" lang="ar">انسخ عنوان البريد</span>
@@ -2831,8 +2882,8 @@
             <div class="c-verify__links">
               <p class="c-verify__check" data-i18n="verifyCheck">Check us:</p>
               <ul class="c-verify__list">
-                <li><a class="c-link" href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">The work, on Behance</span><span data-lang-copy="ar" lang="ar">الأعمال على Behance</span><span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
-                <li><a class="c-link" href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">The person, on LinkedIn</span><span data-lang-copy="ar" lang="ar">الملف الشخصي على LinkedIn</span><span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+                <li><a class="c-link" href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">The work, on Behance</span><span data-lang-copy="ar" lang="ar">الأعمال على Behance</span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
+                <li><a class="c-link" href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">The person, on LinkedIn</span><span data-lang-copy="ar" lang="ar">الملف الشخصي على LinkedIn</span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
               </ul>
             </div>
           </div>
@@ -2846,7 +2897,7 @@
               aria-label="Pixora, Digital Agency — home" data-i18n-label="brandHome">
               <span class="c-brand" aria-hidden="true">
                 <span class="c-brand__word">PI<span class="c-brand__accent">X</span>ORA</span>
-                <span class="c-brand__tagline">Digital Agency</span>
+                <span class="c-brand__tagline"><span data-lang-copy="en">Digital Agency</span><span data-lang-copy="ar" lang="ar">وكالة رقمية</span></span>
               </span>
             </a>
             <p class="c-footer__statement"><span data-lang-copy="en">Brands, websites, content and advertising — from one partner.</span><span data-lang-copy="ar" lang="ar">علامات ومواقع ومحتوى وإعلانات — من شريك واحد.</span></p>
@@ -2892,9 +2943,9 @@
                drift apart. Off-site, so each opens in a new tab and says so. -->
           <nav aria-label="Elsewhere" data-i18n-label="footerElsewhere" data-social-block>
             <ul class="c-footer__social" data-social-render role="list">
-              <li><a href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
-              <li><a href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
-              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer">Founder's portfolio<span class="u-visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
+              <li><a href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer">Behance<span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
+              <li><a href="https://muhalabsalah.github.io/muhalabsalah/" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">Founder's portfolio</span><span data-lang-copy="ar" lang="ar">أعمال المؤسس</span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
             </ul>
           </nav>
 

@@ -46,7 +46,16 @@
     "      deliverable, not from the published site. They sit inside quotation",
     "      marks, so they must match what is live, exactly.",
     "Nothing here is known to be wrong. Each is carrying more confidence than its",
-    "sourcing supports, and one message to the client settles all three."
+    "sourcing supports, and one message to the client settles all three.",
+    "",
+    "A CLIENT QUOTATION ARRIVED (7 September 2026). The paragraph above says a",
+    "quotation from the client is deliberately absent because none was supplied.",
+    "That is no longer true and the paragraph is left standing as the record of",
+    "what was known then. Faris Mohammed, Founder & CEO, sent one in writing and",
+    "agreed to be named. It is in `testimonial` below, on the homepage under the",
+    "four deliverables, and at the end of this page. THE REST OF THAT PARAGRAPH",
+    "STILL HOLDS: no before-and-after claim, no traffic, booking or revenue",
+    "figure. A testimonial is not a number and is not being counted as one."
   ],
   "eyebrow": {
     "en": "Case study",
@@ -209,6 +218,50 @@
       ]
     }
   ],
+  "testimonial": {
+    "_note": [
+      "ADDED 7 September 2026. This file's _provenance said, of a client",
+      "quotation: 'None of it was supplied, and the rule that has governed this",
+      "project from the first stage is that nothing is invented.' It has now been",
+      "supplied. Faris Mohammed sent it in writing, in English, and agreed to be",
+      "named with his title and his company.",
+      "",
+      "THE ARABIC IS OURS AND SAYS SO. He wrote in English. Publishing a",
+      "translation under a named man's name without saying it is a translation",
+      "would be putting words in his mouth in a language he did not use, so the",
+      "note under the attribution declares it -- in both languages.",
+      "",
+      "STILL DELIBERATELY ABSENT: any number. No traffic, booking or revenue",
+      "figure has been supplied, and chapter 05 gains one when one arrives and",
+      "not before. A testimonial is not a metric and is not being used as one.",
+      "",
+      "THE TRANSLATION IS THE OWNER'S DECISION, TAKEN 7 September 2026. Asked",
+      "whether to request Arabic from Faris or to translate it ourselves, the",
+      "owner answered: translate it. So this is settled and not provisional.",
+      "",
+      "WHAT DOES NOT CHANGE IS THE DISCLOSURE. The note under the attribution",
+      "still says the testimonial arrived in English and that the Arabic is",
+      "ours. Being authorised to translate a named man's words is not the same",
+      "as being authorised to present our sentences as his, and the second one",
+      "was never asked for. The line stays."
+    ],
+    "quote": {
+      "en": "Working with Pixora was a genuinely impressive experience. They understood our vision from the beginning and translated it into a clear, professional identity that reflects who Al Mada Travel is and where we want to go. The attention to detail, creativity, and professionalism throughout the process made a real difference.",
+      "ar": "كان العمل مع بيكسورا تجربة مميّزة بحق. فهموا رؤيتنا منذ البداية وترجموها إلى هوية واضحة واحترافية تعكس حقيقة وكالة المدى للسفر وإلى أين نريد أن نصل. الاهتمام بالتفاصيل والإبداع والاحترافية طوال مراحل العمل صنع فرقًا حقيقيًا."
+    },
+    "name": {
+      "en": "Faris Mohammed",
+      "ar": "فارس محمد"
+    },
+    "role": {
+      "en": "Founder & CEO, Al Mada Travel & Tourism Agency",
+      "ar": "المؤسس والرئيس التنفيذي، وكالة المدى للسفر والسياحة"
+    },
+    "note": {
+      "en": "Sent to us in writing and published with permission.",
+      "ar": "وصلتنا الشهادة كتابةً بالإنجليزية، والنص العربي ترجمتنا، وتُنشر بإذن صاحبها."
+    }
+  },
   "close": {
     "statement": {
       "en": "Al Mada's site is live. Open it, then look at the poster and the profile — the brand is the same object in three places.",
