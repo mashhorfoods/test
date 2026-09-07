@@ -185,14 +185,48 @@
 
   /* THE NARROWEST PHONES.
 
-     At 320px the reward panel gives its call to action 222px of room and
+     At 320px the reward panel gave its call to action 222px of room and
      "Reveal my reward" asked for 232. `white-space: nowrap` means a button
      cannot answer that by wrapping, and 32px of padding either side of a
-     16-character label is most of the difference. The padding gives way
-     first; the label is the part that has to survive. */
+     16-character label is most of the difference. So the padding gave way
+     and the label survived.
+
+     THAT FIX WAS RIGHT FOR SIXTEEN CHARACTERS AND WRONG AS A RULE, which is
+     what `tools/responsive.js` found the first time anything rendered
+     /pricing at 320px. "Ask about Ads Performance" is twenty-five characters,
+     and no amount of padding covers the difference: `white-space: nowrap`
+     made the button's min-content the FLOOR of the card holding it, so nine
+     of twelve pricing tiers laid out between 324px and 352px wide inside a
+     272px column. Nothing scrolled and nothing looked broken, because
+     `01-reset.css` clips the overflow — the right-hand edge of nine cards was
+     simply not on the screen. Measured: 9 of 12 over at 320, 3 of 12 at 360;
+     relaxing this one property takes both to zero.
+
+     So on the narrowest phones a long label wraps. A button on two lines at
+     320px is ordinary; a card with its edge cut off is not. `nowrap` still
+     holds everywhere else, which is where it was earning its keep — this is
+     the width at which it stopped. */
   @media (max-width: 22.5em) {
     .c-btn {
       padding-inline: var(--space-16);
+      white-space: normal;
+      /* The label is a span and the span is what wraps, so the button needs
+         its own line box back — `line-height: 1` on a two-line label sets the
+         lines solid. `.c-btn *` overrides this for the span, so it is set
+         there too, right below.
+
+         NOTHING SETS `block-size` HERE, deliberately. The first draft added
+         `block-size: auto` to let the button grow, which it does not need —
+         it has `min-block-size`, not a fixed height. What that line WOULD
+         have done is out-rank `.c-btn--icon { block-size: var(--control-height) }`
+         on source order at equal specificity, and turned the one control
+         whose shape carries all its meaning back into a rectangle below
+         360px. Same trap as `docs/113` §1 and `docs/103`. */
+      line-height: var(--leading-snug);
+    }
+
+    .c-btn * {
+      line-height: var(--leading-snug);
     }
 
     .c-btn--lg {

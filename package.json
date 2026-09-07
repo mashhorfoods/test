@@ -5,14 +5,15 @@
   "description": "Pixora — a bilingual static site. Edit src/, run npm run build, upload the zip.",
   "scripts": {
     "build": "node build.js",
-    "check": "node tools/validate.js && node tools/qa.js && node tools/a11y.js",
+    "check": "node tools/validate.js && node tools/qa.js && node tools/responsive.js && node tools/a11y.js",
     "release": "npm run build && npm run check",
     "film": "node tools/build-showpiece.js",
     "film:clips": "node tools/build-hero-from-clips.js",
     "reel": "node tools/build-reel.js",
     "card": "node tools/build-share-card.js",
     "icon": "node tools/build-icon.js",
-    "a11y": "node tools/a11y.js"
+    "a11y": "node tools/a11y.js",
+    "responsive": "node tools/responsive.js"
   },
   "devDependencies": {
     "axe-core": "^4.13.0",

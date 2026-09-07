@@ -318,6 +318,27 @@ same way everything else does.
 
 ---
 
+## 5c. Harnesses — what each one actually renders
+
+Added 7 September after `docs/115` found a page nothing had ever loaded at the
+width it broke at.
+
+| Harness | Widths | Languages | Pages |
+| --- | --- | --- | --- |
+| `validate.js` | 1280, 390 | English | the journeys it walks |
+| `qa.js` | 390, 1280, 1440 | English throughout; Arabic for §15 buttons | all built pages |
+| **`responsive.js`** | **320, 768, 1024** | **English and Arabic** | **all eight** |
+| `a11y.js` | axe defaults | both | all built pages |
+
+`responsive.js` exists to cover the widths and language/page combinations the
+other three never render — not to repeat them. Before it, no check had loaded
+`/privacy`, `/terms`, `/404` or `/accessibility` in Arabic at any width.
+
+**If a harness is added or its coverage changes, this table changes with it.**
+A gap nobody has written down is a gap nobody will look for.
+
+---
+
 ## 6. The rule for this file
 
 Same as `docs/62`: an item leaves by being **done and verified** or

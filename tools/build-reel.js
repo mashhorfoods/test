@@ -96,6 +96,15 @@ function hasAudio(file) {
   return /Stream #\d+:\d+.*: Audio:/.test(out);
 }
 
+/** The source's own width, or null if it cannot be read. */
+function sourceWidth(file) {
+  let out = '';
+  try { execFileSync(ffmpeg(), ['-i', file], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }); }
+  catch (e) { out = `${e.stdout || ''}${e.stderr || ''}`; }
+  const m = out.match(/Stream #\d+:\d+[^\n]*: Video:[^\n]*?, (\d+)x(\d+)/);
+  return m ? Number(m[1]) : null;
+}
+
 /* Width from bitrate, not from the source. These are the rungs where VP9 at
    this rate still holds detail rather than smearing it; below 300kbps there
    is no width that looks good and 640 is simply the least bad. */
@@ -169,7 +178,17 @@ function main() {
      target, not on it. Without the margin roughly one encode in three came
      in a hair over and was deleted, which is a slow way to learn. */
   const videoKbps = Math.max(120, Math.floor((totalKbps - audioKbps) * 0.94));
-  const width = forcedWidth || widthFor(videoKbps);
+  /* NEVER UPSCALE. The ladder picks a width the bitrate can carry, which on a
+     generous budget is 1280 — and `scale=1280:-2` applied to a 640-wide source
+     spends real bits inventing pixels that are not in the master. Caught on a
+     640x360 test clip that came out 1280 wide and 2.3MB. A forced --width is
+     still honoured: if somebody asks for an upscale by name they get one. */
+  const srcW = sourceWidth(source);
+  const wanted = forcedWidth || widthFor(videoKbps);
+  const width = forcedWidth ? wanted : Math.min(wanted, srcW || wanted);
+  if (!forcedWidth && srcW && width < wanted) {
+    console.log(`  ·  note       source is ${srcW}px wide; not upscaling to ${wanted}`);
+  }
 
   console.log(`\n  build-reel`);
   console.log(`  ·  source     ${path.basename(source)}  ${mb(fs.statSync(source).size)}  ${full.toFixed(1)}s`);
@@ -214,9 +233,16 @@ function main() {
 
   /* --- the still ---------------------------------------------------------
      A second in, not frame zero: reels commonly open on black, and a poster
-     of black is the blank rectangle the poster exists to prevent. */
+     of black is the blank rectangle the poster exists to prevent.
+
+     ONE SEEK, ADDED UP. This first passed `-ss <from> -ss 1` before `-i`, and
+     two `-ss` in the same position do not compose — the later one replaces the
+     earlier. So with `--from 00:00:30` the poster came from one second into
+     the FILE while the reel started at thirty: a poster of a frame the video
+     never shows. Silent, and only visible if you knew both numbers. */
+  const stillAt = start + Math.min(1, length / 2);
   console.log('  ·  still …');
-  run([...(from ? ['-ss', String(from)] : []), '-ss', String(Math.min(1, length / 2)),
+  run(['-ss', String(stillAt),
     '-i', source, '-frames:v', '1', '-vf', vf, '-c:v', 'libwebp', '-quality', '80', still]);
 
   fs.rmSync(tmp, { recursive: true, force: true });
