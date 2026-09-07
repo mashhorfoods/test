@@ -9,6 +9,7 @@
     "release": "npm run build && npm run check",
     "film": "node tools/build-showpiece.js",
     "film:clips": "node tools/build-hero-from-clips.js",
+    "reel": "node tools/build-reel.js",
     "card": "node tools/build-share-card.js",
     "icon": "node tools/build-icon.js",
     "a11y": "node tools/a11y.js"

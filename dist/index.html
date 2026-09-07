@@ -3385,17 +3385,24 @@ if (document.readyState === 'loading') {
                The poster is painted before any of that, so the block is never
                a black rectangle.
 
-               TO REPLACE: drop the real file over
-               src/assets/showpiece/reel-placeholder.webm and the real still
-               over reel-still.svg, keeping both names. Nothing else changes.
-               docs/53 budgets video at 2MB across the whole site and qa.js §7
-               enforces it — the hero pair is 1.6MB of that, so a replacement
-               reel has roughly 400KB before the check fails. -->
+               TO REPLACE: do not hand-drop a file here. Run
+
+                 npm run reel -- /path/to/the-master.mov
+
+               and tools/build-reel.js writes all three of these names from
+               the export, inside the budget, refusing to write at all if it
+               cannot fit. The master never enters the repository.
+
+               qa.js §7 caps click-to-play video at 6MB across the pair —
+               separately from the hero's 2MB, because the hero is paid for by
+               every desktop visitor and this is paid for only by someone who
+               presses play. -->
           <figure class="c-reel" data-reveal-group>
             <video class="c-reel__video" controls preload="none" playsinline
-              poster="./assets/reel-still.svg"
+              poster="./assets/reel-still.webp"
               aria-describedby="reel-caption">
-              <source src="./assets/reel-placeholder.webm" type="video/webm" />
+              <source src="./assets/reel.webm" type="video/webm" />
+              <source src="./assets/reel.mp4" type="video/mp4" />
               <p class="c-reel__fallback"><span data-lang-copy="en">Your browser cannot play this video.</span><span data-lang-copy="ar" lang="ar">متصفحك لا يستطيع تشغيل هذا الفيديو.</span></p>
             </video>
             <figcaption class="c-reel__caption" id="reel-caption">
@@ -3407,111 +3414,78 @@ if (document.readyState === 'loading') {
             aria-label="Selected work — scroll for more" data-i18n-label="galleryScroller">
               <li class="c-gallery__item">
                 <figure style="margin:0">
-                  <img class="c-gallery__image" src="./assets/work-01.svg"
-                    alt="Work sample 1 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 1 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 1 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
-                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <img class="c-gallery__image" src="./assets/work-1.webp"
+                    alt="A gold geometric monogram, embossed on dark textured card and lit from one side." data-alt-en="A gold geometric monogram, embossed on dark textured card and lit from one side." data-alt-ar="شعار هندسي ذهبي مطبوع بارزًا على ورق داكن الملمس، تضيئه إضاءة من جانب واحد."
+                    width="900" height="834" loading="lazy" decoding="async" />
                   <figcaption class="c-gallery__caption">
-                    <span class="c-gallery__count" aria-hidden="true">01/10</span>
-                    <span data-lang-copy="en">Work sample 1</span><span data-lang-copy="ar" lang="ar">نموذج عمل 1</span>
+                    <span class="c-gallery__count" aria-hidden="true">01/07</span>
+                    <span data-lang-copy="en">Monogram, embossed</span><span data-lang-copy="ar" lang="ar">شعار مطبوع بارزًا</span>
                   </figcaption>
                 </figure>
               </li>
               <li class="c-gallery__item">
                 <figure style="margin:0">
-                  <img class="c-gallery__image" src="./assets/work-02.svg"
-                    alt="Work sample 2 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 2 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 2 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
-                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <img class="c-gallery__image" src="./assets/work-2.webp"
+                    alt="The Ajwa Flavors logo — a green botanical wreath around the name — debossed on an ivory business card, with wheat ears and bay leaves laid around it." data-alt-en="The Ajwa Flavors logo — a green botanical wreath around the name — debossed on an ivory business card, with wheat ears and bay leaves laid around it." data-alt-ar="شعار أجوا فليفرز — إكليل نباتي أخضر يحيط بالاسم — مطبوع غائرًا على بطاقة عمل عاجية، وحولها سنابل قمح وأوراق غار."
+                    width="900" height="812" loading="lazy" decoding="async" />
                   <figcaption class="c-gallery__caption">
-                    <span class="c-gallery__count" aria-hidden="true">02/10</span>
-                    <span data-lang-copy="en">Work sample 2</span><span data-lang-copy="ar" lang="ar">نموذج عمل 2</span>
+                    <span class="c-gallery__count" aria-hidden="true">02/07</span>
+                    <span data-lang-copy="en">Identity on a business card</span><span data-lang-copy="ar" lang="ar">الهوية على بطاقة عمل</span>
                   </figcaption>
                 </figure>
               </li>
               <li class="c-gallery__item">
                 <figure style="margin:0">
-                  <img class="c-gallery__image" src="./assets/work-03.svg"
-                    alt="Work sample 3 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 3 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 3 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
-                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <img class="c-gallery__image" src="./assets/work-3.webp"
+                    alt="The NexTech logo, its N drawn as a circuit board, on a glass sign above an open-plan office." data-alt-en="The NexTech logo, its N drawn as a circuit board, on a glass sign above an open-plan office." data-alt-ar="شعار نكس تك، وحرف N فيه مرسوم كلوحة دوائر إلكترونية، على لافتة زجاجية فوق مكتب مفتوح."
+                    width="900" height="822" loading="lazy" decoding="async" />
                   <figcaption class="c-gallery__caption">
-                    <span class="c-gallery__count" aria-hidden="true">03/10</span>
-                    <span data-lang-copy="en">Work sample 3</span><span data-lang-copy="ar" lang="ar">نموذج عمل 3</span>
+                    <span class="c-gallery__count" aria-hidden="true">03/07</span>
+                    <span data-lang-copy="en">Office signage</span><span data-lang-copy="ar" lang="ar">لافتة مكتبية</span>
                   </figcaption>
                 </figure>
               </li>
               <li class="c-gallery__item">
                 <figure style="margin:0">
-                  <img class="c-gallery__image" src="./assets/work-04.svg"
-                    alt="Work sample 4 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 4 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 4 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
-                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <img class="c-gallery__image" src="./assets/work-4.webp"
+                    alt="A Box Store retail interior: the illuminated wall sign, phones on lit display shelves, and a branded carrier bag on the counter." data-alt-en="A Box Store retail interior: the illuminated wall sign, phones on lit display shelves, and a branded carrier bag on the counter." data-alt-ar="واجهة داخلية لمتجر بوكس ستور: لافتة الحائط المضاءة، وهواتف على أرفف عرض مضاءة، وكيس يحمل العلامة على المنضدة."
+                    width="900" height="978" loading="lazy" decoding="async" />
                   <figcaption class="c-gallery__caption">
-                    <span class="c-gallery__count" aria-hidden="true">04/10</span>
-                    <span data-lang-copy="en">Work sample 4</span><span data-lang-copy="ar" lang="ar">نموذج عمل 4</span>
+                    <span class="c-gallery__count" aria-hidden="true">04/07</span>
+                    <span data-lang-copy="en">Retail interior</span><span data-lang-copy="ar" lang="ar">تجهيز متجر</span>
                   </figcaption>
                 </figure>
               </li>
               <li class="c-gallery__item">
                 <figure style="margin:0">
-                  <img class="c-gallery__image" src="./assets/work-05.svg"
-                    alt="Work sample 5 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 5 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 5 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
-                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <img class="c-gallery__image" src="./assets/work-5.webp"
+                    alt="A carved wooden shopfront sign in Arabic, with a pen nib worked into the lettering, lit at dusk above a bookshop." data-alt-en="A carved wooden shopfront sign in Arabic, with a pen nib worked into the lettering, lit at dusk above a bookshop." data-alt-ar="لافتة واجهة محل منحوتة في الخشب بحروف عربية، وقد دُمج سنّ قلم في الحروف، مضاءة عند الغروب فوق مكتبة."
+                    width="900" height="828" loading="lazy" decoding="async" />
                   <figcaption class="c-gallery__caption">
-                    <span class="c-gallery__count" aria-hidden="true">05/10</span>
-                    <span data-lang-copy="en">Work sample 5</span><span data-lang-copy="ar" lang="ar">نموذج عمل 5</span>
+                    <span class="c-gallery__count" aria-hidden="true">05/07</span>
+                    <span data-lang-copy="en">Shopfront sign</span><span data-lang-copy="ar" lang="ar">لافتة واجهة</span>
                   </figcaption>
                 </figure>
               </li>
               <li class="c-gallery__item">
                 <figure style="margin:0">
-                  <img class="c-gallery__image" src="./assets/work-06.svg"
-                    alt="Work sample 6 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 6 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 6 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
-                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <img class="c-gallery__image" src="./assets/work-6.webp"
+                    alt="A Mashhor Foodstuff Trading box photographed from above on a wooden table, surrounded by grains, pulses, herbs and dried citrus." data-alt-en="A Mashhor Foodstuff Trading box photographed from above on a wooden table, surrounded by grains, pulses, herbs and dried citrus." data-alt-ar="علبة مشهور لتجارة المواد الغذائية مصوّرة من أعلى على طاولة خشبية، وحولها حبوب وبقوليات وأعشاب وشرائح حمضيات مجففة."
+                    width="900" height="600" loading="lazy" decoding="async" />
                   <figcaption class="c-gallery__caption">
-                    <span class="c-gallery__count" aria-hidden="true">06/10</span>
-                    <span data-lang-copy="en">Work sample 6</span><span data-lang-copy="ar" lang="ar">نموذج عمل 6</span>
+                    <span class="c-gallery__count" aria-hidden="true">06/07</span>
+                    <span data-lang-copy="en">Packaging</span><span data-lang-copy="ar" lang="ar">التغليف</span>
                   </figcaption>
                 </figure>
               </li>
               <li class="c-gallery__item">
                 <figure style="margin:0">
-                  <img class="c-gallery__image" src="./assets/work-07.svg"
-                    alt="Work sample 7 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 7 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 7 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
-                    width="1200" height="800" loading="lazy" decoding="async" />
+                  <img class="c-gallery__image" src="./assets/work-7.webp"
+                    alt="The Teela colour palette board: deep olive, soft ivory, warm stone, dark moss and champagne gold, with the extended tints named beneath." data-alt-en="The Teela colour palette board: deep olive, soft ivory, warm stone, dark moss and champagne gold, with the extended tints named beneath." data-alt-ar="لوحة ألوان تيلا: زيتوني غامق، وعاجي ناعم، وحجري دافئ، وطحلبي داكن، وذهبي شامبانيا، وتحتها التدرجات الموسّعة بأسمائها."
+                    width="900" height="600" loading="lazy" decoding="async" />
                   <figcaption class="c-gallery__caption">
-                    <span class="c-gallery__count" aria-hidden="true">07/10</span>
-                    <span data-lang-copy="en">Work sample 7</span><span data-lang-copy="ar" lang="ar">نموذج عمل 7</span>
-                  </figcaption>
-                </figure>
-              </li>
-              <li class="c-gallery__item">
-                <figure style="margin:0">
-                  <img class="c-gallery__image" src="./assets/work-08.svg"
-                    alt="Work sample 8 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 8 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 8 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
-                    width="1200" height="800" loading="lazy" decoding="async" />
-                  <figcaption class="c-gallery__caption">
-                    <span class="c-gallery__count" aria-hidden="true">08/10</span>
-                    <span data-lang-copy="en">Work sample 8</span><span data-lang-copy="ar" lang="ar">نموذج عمل 8</span>
-                  </figcaption>
-                </figure>
-              </li>
-              <li class="c-gallery__item">
-                <figure style="margin:0">
-                  <img class="c-gallery__image" src="./assets/work-09.svg"
-                    alt="Work sample 9 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 9 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 9 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
-                    width="1200" height="800" loading="lazy" decoding="async" />
-                  <figcaption class="c-gallery__caption">
-                    <span class="c-gallery__count" aria-hidden="true">09/10</span>
-                    <span data-lang-copy="en">Work sample 9</span><span data-lang-copy="ar" lang="ar">نموذج عمل 9</span>
-                  </figcaption>
-                </figure>
-              </li>
-              <li class="c-gallery__item">
-                <figure style="margin:0">
-                  <img class="c-gallery__image" src="./assets/work-10.svg"
-                    alt="Work sample 10 of 10 — placeholder artwork to be replaced with the real image." data-alt-en="Work sample 10 of 10 — placeholder artwork to be replaced with the real image." data-alt-ar="نموذج عمل 10 من 10 — صورة مؤقتة تُستبدل بالصورة الحقيقية."
-                    width="1200" height="800" loading="lazy" decoding="async" />
-                  <figcaption class="c-gallery__caption">
-                    <span class="c-gallery__count" aria-hidden="true">10/10</span>
-                    <span data-lang-copy="en">Work sample 10</span><span data-lang-copy="ar" lang="ar">نموذج عمل 10</span>
+                    <span class="c-gallery__count" aria-hidden="true">07/07</span>
+                    <span data-lang-copy="en">Colour palette</span><span data-lang-copy="ar" lang="ar">لوحة الألوان</span>
                   </figcaption>
                 </figure>
               </li>

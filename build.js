@@ -486,14 +486,18 @@ for (const page of ['index.html', 'styleguide.html', 'story.html', 'about.html',
      in showpiece/ and must land in assets/ with its reference rewritten, and
      the image pass above only knows about images. Replacing the file and
      keeping the name is the whole handover. */
-  for (const name of ['hero.webm', 'hero.mp4', 'reel-placeholder.webm', 'reel-still.svg']) {
+  for (const name of ['hero.webm', 'hero.mp4', 'reel.webm', 'reel.mp4', 'reel-still.webp']) {
     const film = path.join(ROOT, 'src/assets/showpiece', name);
     if (!fs.existsSync(film)) continue;
     fs.mkdirSync(assets, { recursive: true });
     fs.copyFileSync(film, path.join(assets, name));
     fs.writeFileSync(
       page,
-      fs.readFileSync(page, 'utf8').replace(`./src/assets/showpiece/${name}`, `./assets/${name}`),
+      /* replaceAll, not replace. One reference per file was true while the
+         reel had a single <source>; it now has two encodes and a poster, and
+         a name that appears twice would have had its second reference left
+         pointing into src/ — a 404 in the built page and nowhere else. */
+      fs.readFileSync(page, 'utf8').replaceAll(`./src/assets/showpiece/${name}`, `./assets/${name}`),
     );
     shipped.push(`${name} ${kb(fs.statSync(film).size)}`);
   }

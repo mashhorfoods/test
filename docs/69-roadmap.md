@@ -295,8 +295,8 @@ already exists noted so the ask is not accidentally satisfied twice:
 
 | # | Work | Already on the site | State |
 | --- | --- | --- | --- |
-| **C1** | A slideshow somewhere new | `docs/86` — scroll-snap gallery, currently on `/story`. No JS required, no auto-advance, RTL for free | **Queued — after the redesign.** The component exists; the open question is *where a second one earns its place*, which the competitive pass should inform |
-| **C2** | A video somewhere new | The hero showpiece — one budgeted clip, desktop only, phone gets a still (`docs/53`) | **Queued — after the redesign.** Any second video re-opens the weight question `docs/98` §5 just closed, so it needs a budget line before it needs a player |
+| ~~**C1**~~ | ~~A slideshow somewhere new~~ | `docs/86` — scroll-snap gallery, currently on `/story` | ✅ **DONE 7 Sep — `docs/114`.** Seven photographs of real branding work, supplied by the owner, placed in `#work`. Bilingual alt text, captions numbered `01/07`…`07/07`, ten placeholder SVGs deleted. Page budget raised 1024→1200KB in a commit message, first-screen budget untouched |
+| **C2** | A video somewhere new | The hero showpiece — one budgeted clip, desktop only, phone gets a still (`docs/53`) | 🟡 **Road built 7 Sep — `docs/114`. Footage outstanding.** `npm run reel -- <master>` encodes any export into `reel.webm`/`reel.mp4`/`reel-still.webp` inside budget and refuses to write if it cannot fit. `qa.js` §7 now weighs click-to-play video (6MB) separately from video every visitor pays for (2MB) — the two were one number, which had left the reel a 350KB allowance. **Owner: run the one command; do not upload the 35MB master** |
 
 **Neither starts before the redesign work above it is done** — that is the
 owner's instruction and it is also the right order: both are placement
