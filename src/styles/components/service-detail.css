@@ -657,11 +657,31 @@
       padding: var(--space-24);
     }
 
+    /* THE LABEL STAYS ON ONE LINE, AND THE ARROW IS WHAT PAYS FOR IT.
+
+       Letting it wrap was the first answer here and CI refused it, correctly:
+       qa's control check compares the same button in both languages, and a
+       label that wraps in Arabic and not in English makes one control two
+       different sizes — 48px against 56px at 375px, and 48px against 67px at
+       320px, where the wrap rule in button.css has been doing this since
+       docs/115 and nothing had rendered the two languages side by side at
+       that width to notice.
+
+       So the button keeps its shape, which is what docs/115 wanted, and the
+       room comes from the two things on it that are not the label: 16px of
+       side padding becomes 12px, and the arrow — decorative, aria-hidden,
+       and already dropped in print — is not drawn. Measured at 320, 360,
+       375, 390, 414 and 460 in both languages: every CTA is 48px, none wraps,
+       and none reaches past its card. */
     .c-tier__cta,
     .c-detail__action {
-      padding-inline: var(--space-16);
-      white-space: normal;
-      line-height: var(--leading-snug);
+      padding-inline: var(--space-12);
+      white-space: nowrap;
+    }
+
+    .c-tier__cta .c-btn__icon,
+    .c-detail__action .c-btn__icon {
+      display: none;
     }
 
     .c-tier__ribbon {

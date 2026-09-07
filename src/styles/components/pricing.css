@@ -46,11 +46,36 @@
   /* .c-btn is nowrap, so "Request a Custom Quote" set a 300px min-content
      floor and pushed the block past a 272px column at 320px. Let this one
      label wrap; the button is the only place the phrase appears, and a
-     two-line button at 320px beats a clipped one. */
+     two-line button at 320px beats a clipped one.
+
+     THAT WAS HALF AN ANSWER, AND THE OTHER HALF WAS INVISIBLE FOR WEEKS.
+     The English label wraps and the Arabic one does not, so this control was
+     67px in English against 48px in Arabic at 320 and 360, and 56 against 48
+     at 375 and 390 — the same button, two sizes, depending on the language.
+     `qa.js` §15 exists to catch exactly that and could not see it: it kept
+     one sample per class name, and something else with this class was always
+     measured last. It records a range now.
+
+     So the room comes from the two parts of the button that are not the
+     label, as it does for the package CTAs in `service-detail.css`: the
+     arrow is decoration and is not drawn, and the side padding tightens.
+     Measured at 320, 360, 375, 390, 414, 600, 900 and 1280 in both
+     languages: 48px everywhere, nothing wrapped, nothing clipped. */
   .c-quote .c-btn {
     max-inline-size: 100%;
     white-space: normal;
     text-wrap: balance;
+  }
+
+  @media (max-width: 30em) {
+    .c-quote .c-btn {
+      white-space: nowrap;
+      padding-inline: var(--space-12);
+    }
+
+    .c-quote .c-btn__icon {
+      display: none;
+    }
   }
 
   .c-quote__body {

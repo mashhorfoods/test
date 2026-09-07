@@ -1259,24 +1259,43 @@ function serve() {
             .filter((el) => el.getBoundingClientRect().height > 0)
             .map((el) => ({ cls: el.className.replace(/\s+/g, '.'), h: Math.round(el.getBoundingClientRect().height) })));
           for (const r of rows) {
+            /* EVERY BUTTON WITH THIS CLASS, NOT THE LAST ONE.
+
+               This kept `rec[lang] = r.h`, so twelve package CTAs sharing one
+               class string collapsed to whichever happened to be measured
+               last. When their heights were uniform that was harmless; the
+               moment one label wrapped it became a lottery — the same build
+               passed locally and failed in CI on 7 September, and both runs
+               were right about the button they happened to sample.
+
+               A range makes it deterministic and strictly stronger: a class
+               that renders at two sizes in one language is now visible, and
+               the comparison between languages is between the same two
+               numbers every time. */
             const key = `${r.cls}|${width}`;
             const rec = heights.get(key) || {};
-            rec[lang] = r.h;
+            const cur = rec[lang] || { min: Infinity, max: -Infinity };
+            cur.min = Math.min(cur.min, r.h);
+            cur.max = Math.max(cur.max, r.h);
+            rec[lang] = cur;
             heights.set(key, rec);
           }
         }
         await p.close();
       }
     }
+    const say = (r) => (r.min === r.max ? `${r.min}px` : `${r.min}-${r.max}px`);
     for (const [key, rec] of heights) {
       const [cls, width] = key.split('|');
       for (const lang of ['en', 'ar']) {
-        if (rec[lang] !== undefined && !SCALE.includes(rec[lang])) {
-          fail('MED', 'controls', `.${cls} renders ${rec[lang]}px at ${width}px in ${lang} — not one of the declared control heights ${SCALE.join('/')} (docs/73)`);
+        if (!rec[lang]) continue;
+        const off = [rec[lang].min, rec[lang].max].filter((h) => !SCALE.includes(h));
+        if (off.length) {
+          fail('MED', 'controls', `.${cls} renders ${[...new Set(off)].join(' and ')}px at ${width}px in ${lang} — not one of the declared control heights ${SCALE.join('/')} (docs/73)`);
         }
       }
-      if (rec.en !== undefined && rec.ar !== undefined && rec.en !== rec.ar) {
-        fail('HIGH', 'controls', `.${cls} is ${rec.en}px in English and ${rec.ar}px in Arabic at ${width}px — the same button is a different size in each language (docs/73)`);
+      if (rec.en && rec.ar && (rec.en.min !== rec.ar.min || rec.en.max !== rec.ar.max)) {
+        fail('HIGH', 'controls', `.${cls} is ${say(rec.en)} in English and ${say(rec.ar)} in Arabic at ${width}px — the same button is a different size in each language (docs/73)`);
       }
     }
   }

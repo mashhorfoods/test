@@ -271,6 +271,53 @@ standing low finding counts.
 
 ---
 
+## 5c. CI refused the pricing fix, and it was right
+
+The `.c-tiers` fix in §4 came with a second half — letting the package CTA's
+label wrap on phones, so the button could not overflow the card it sits in.
+Locally, five harnesses green. **CI failed.**
+
+```
+HIGH [controls] .c-btn.c-btn--secondary.c-tier__cta is 48px in English
+     and 56px in Arabic at 390px — the same button is a different size
+     in each language (docs/73)
+```
+
+A label that wraps in one language and not the other makes one control two
+sizes. `qa.js` §15 exists for exactly that, and it caught a defect the local
+run had reported clean — because §15 kept **one sample per class name** and
+twelve package CTAs share one. Whichever was measured last won. Both runs
+were right about the button they happened to sample.
+
+**Fixed at the button, not at the breakpoint.** The label stays on one line
+and the room comes from the two things on the button that are not the label:
+side padding tightens, and the arrow — decorative, `aria-hidden`, and already
+dropped in print — is not drawn on phones. Measured at 320, 360, 375, 390,
+414 and 460 in both languages: every CTA 48px, none wrapping, none reaching
+past its card.
+
+### And §15 records a range now, which immediately found another
+
+One sample per class was a lottery; min and max is deterministic. The first
+run of the stronger version reported:
+
+```
+HIGH .c-btn.c-btn--primary is 48-56px in English and 48px in Arabic at 390px
+```
+
+**"Request a Custom Quote"** — a pre-existing defect with nothing to do with
+this session's changes. `pricing.css` had deliberately let that one label wrap
+so it would not overflow a 272px column at 320px, and half the consequence was
+never looked at: the English wraps and the Arabic does not, so the button was
+**67px against 48px at 320 and 360, and 56 against 48 at 375 and 390.** Same
+fix, same reasoning: 48px at every width in both languages.
+
+Two real defects from one harness improvement, and the improvement was
+prompted by a CI failure that the local run could not reproduce. **A check
+that samples is a check that sometimes agrees with you.**
+
+---
+
 ## 6. What was checked and found sound
 
 Not everything looked at was broken, and the ones that were not are worth
@@ -299,7 +346,7 @@ recording so the next pass does not re-audit them:
 | | |
 | --- | --- |
 | `validate` | 0 findings |
-| `qa` | 0 high, 0 medium, 1 pre-existing low — **36 sections** |
+| `qa` | 0 high, 0 medium, 1 pre-existing low — **36 sections**, §15 strengthened |
 | `responsive` | 0 findings over **80** page/width/language combinations |
 | `arabic` | 0 findings |
 | `a11y` | 0 axe violations |
