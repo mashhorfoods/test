@@ -127,7 +127,7 @@ You need the repository on a machine with Node 22:
 ```
 npm install
 node build.js        # regenerates dist/ — the thing that actually ships
-npm run check        # validate.js, qa.js, responsive.js, a11y.js
+npm run check        # validate.js, qa.js, responsive.js, arabic.js, a11y.js
 ```
 
 **Commit `dist/` along with your change.** CI checks that the committed `dist/`
@@ -164,6 +164,7 @@ npm run check
 | `validate.js` | Walks the buyer journeys at 1280 and 390. **0 findings or something is broken** |
 | `qa.js` | 30 sections over the built files. **0 high and 0 medium is the standard** |
 | `responsive.js` | 320/768/1024 × 8 pages × English and Arabic — 48 combinations. **0 high is the standard** |
+| `arabic.js` | The bilingual layer: pairing, `lang="ar"`, untagged Arabic inside English, figures that disagree between the languages, the WhatsApp messages. **Static, no browser, fast.** 0 high is the standard — and it cannot tell you whether the Arabic is *good*, which is what `docs/91` asks a person |
 | `a11y.js` | axe-core. **0 violations is the standard** |
 
 Which widths each one actually renders is tabled in `docs/69` §5d. That table

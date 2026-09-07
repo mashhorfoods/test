@@ -64,10 +64,10 @@ red.
 | 12 | Prototype & validation | 🟡 **B5** — logic validated four ways; comprehension untested |
 | 13 | Responsive & accessibility | ✅ + **B3, B6** |
 | 14 | Development architecture | ✅ |
-| 15 | Admin dashboard | ✅ **decided, not deferred** — Option 0, `docs/63`, tested end to end |
+| 15 | Admin dashboard | ✅ **BUILT 7 Sep** — `docs/120`, `docs/121`. This row read "decided, not deferred — Option 0" when written this morning; the owner asked for a dashboard the same afternoon and Option 1 was built, no server, AD-01 intact |
 | 16 | Security / secure SDLC | ✅ |
 | 17 | Development | ✅ |
-| 18 | QA & release readiness | ✅ **four harnesses** |
+| 18 | QA & release readiness | ✅ **five harnesses** — `arabic.js` was added 7 Sep, after this row said four |
 | 19 | Launch & handover | ✅ **DONE 4 Sep** — §1 above |
 | 20 | Post-launch optimization | 🟡 **RUNNING.** Instrumented 5 Sep; the first monthly review falls due ~5 Oct |
 
@@ -95,12 +95,20 @@ partial on **five buyers**. Phase 20 is partial on **twenty-eight more days**.
 | First screen | **444KB of a 480KB budget** |
 | Images | **40, none missing width or height** |
 | Runtime dependencies | **0** |
-| Harnesses, run on every push | **4** — validate · qa (30 sections) · responsive · a11y |
-| Current result | 0 · 0 high 0 medium (1 known low) · 0 over 48 combinations · 0 axe violations |
+| Harnesses, run on every push | **5** — validate · qa (**33** sections) · responsive · **arabic** · a11y |
+| Current result | 0 · 0 high 0 medium (1 known low) · 0 over 48 combinations · 0 · 0 axe violations |
 | Catastrophic failure modes controlled | **all of them** — transfer lock, auto-renew, second remote, uptime alarm |
 
 **The site is live, monitored, backed up, legally papered and instrumented.**
 There is no engineering task standing between the current build and a visitor.
+
+> **Four numbers in this section went stale within nine hours of being
+> written** — the harness count, the qa section count, phase 15 and phase 18 —
+> because `arabic.js` and the dashboard both landed the same afternoon.
+> Corrected above, and noted rather than silently patched: this document's own
+> §1 is about a checklist that misdirected work for three days by being stale,
+> and it would be a poor advertisement for the point if it were quietly wrong
+> about itself.
 
 ---
 

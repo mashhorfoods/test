@@ -9,7 +9,8 @@
 | Future | `pixora.net` or similar | one field in `site.config.json`, then rebuild |
 
 **Before every upload:** `npm run release` — that is `node build.js` followed by
-all four harnesses (`validate.js` · `qa.js` · `responsive.js` · `a11y.js`).
+all five harnesses (`validate.js` · `qa.js` · `responsive.js` · `arabic.js` ·
+`a11y.js`).
 What each one actually renders is tabled in `docs/69` §5d; run them individually
 with `npm run check`, `npm run responsive`, `npm run a11y`.
 
@@ -81,7 +82,19 @@ tools/validate.js           Walks the buyer journeys at 1280 and 390
 tools/qa.js                 30 sections over the built files
 tools/responsive.js         320/768/1024 x 8 pages x EN+AR — the widths and
                             combinations the other two never render
+tools/arabic.js             The bilingual layer, statically — pairing, lang,
+                            figures that disagree, the WhatsApp messages
 tools/a11y.js               axe-core
+
+  --- the dashboard (docs/120, docs/121) ---
+admin.html                  Prices and Arabic strings, edited in a form and
+                            committed through the GitHub API. NOT built, NOT
+                            in SHIP, NOT on the live host — qa.js §33 enforces
+                            all three
+src/scripts/admin-validate.js  The data rules, imported by the page AND the
+                            tests so they cannot drift
+tools/admin-test.mjs        Round-trip + 22 negative tests
+tools/admin-ui-test.cjs     P2-P7 in a browser, GitHub API stubbed
 src/scripts/                Vanilla ES modules, no dependencies
   main.js                   Entry point
   navigation-map.js         Single source of section order and labels
