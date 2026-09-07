@@ -188,6 +188,19 @@ rests on.
 | Enquiries outgrow a WhatsApp inbox and need a record with a status | **Option 2** — and note that is a CRM, not a CMS |
 | Something becomes genuinely dynamic — bookings, stock, accounts | **Option 2**, and `docs/58` §7 fires |
 
+> **REVERSED 7 September 2026 — `docs/120`, built in `docs/121`.** The owner
+> asked for a dashboard. **Option 1 was built**, in a variant this document did
+> not cost: a fine-grained personal access token pasted by the operator, rather
+> than OAuth and the broker it needs. A broker is a server; this has none, so
+> **AD-01 survives**.
+>
+> The recommendation below was right for the question it was asked and is left
+> exactly as written. What changed is not the reasoning but the decision, and
+> the one line of this document that justifies the reversal is its own
+> objection to Option 0: *"a missing comma is a broken build — caught by CI,
+> but caught **after** you press commit."* That is what the dashboard fixes,
+> and if it had not fixed it the thing should not have been built.
+
 ## Decided, 5 September 2026
 
 **Option 0, one person only.** The owner answered Q1 — no second content

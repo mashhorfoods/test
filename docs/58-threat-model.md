@@ -168,6 +168,46 @@ second UptimeRobot keyword monitor at the site and have it watch a response
 **header** rather than the body. The uptime monitor from A3 already proves the
 page is there; nothing yet proves the headers came with it.
 
+### T9 — A dashboard token in a browser · **medium** — *added 7 September 2026*
+
+`docs/120` reversed the no-dashboard decision and `docs/121` built it. A
+credential now exists in a browser that did not exist before, and this is its
+honest entry rather than a footnote in the build write-up.
+
+**What the credential is.** A GitHub fine-grained personal access token,
+scoped to **one repository** with **Contents: read and write** and nothing
+else, carrying a **required expiry**. It is pasted by the operator and stored
+in `sessionStorage` — gone when the tab closes — unless they explicitly tick
+"remember on this device", which moves it to `localStorage` and says so in a
+sentence.
+
+**Blast radius if it leaks.** Someone can commit to this repository. They
+cannot reach the live host, the domain, the registrar, the analytics, the
+account's other repositories, or any setting. CI runs on every push, the five
+harnesses would very likely refuse the change, and every commit carries an
+author and a diff.
+
+**What contains it.**
+
+| | |
+| --- | --- |
+| The page never reaches the live host | Absent from `SHIP`, absent from `dist/`, absent from `site.config.json`. **`qa.js` §33 fails the build if any of those stops being true**, and each of the five checks is negative-tested |
+| The site's CSP is untouched | `api.github.com` is permitted nowhere on the live host, because the page that needs it is not there. It runs on the review surface instead — `docs/120` §4.1 |
+| No script can read it | The site forbids inline and off-origin script. There is no path onto the page for something that would want the token |
+| It is not in the markup | `qa.js` §33 greps the file for anything token-shaped, because a credential pasted once and committed by accident is exactly the failure this design is arranged around |
+
+**What does NOT contain it:** a compromised operator machine. The token is
+then readable — as their logged-in GitHub session already is. **T9 does not
+create that exposure and does not remove it.** It is bounded by T1, which is
+ranked higher and mitigated by 2FA and the transfer lock.
+
+**Revocation is one click** at
+`github.com/settings/personal-access-tokens`, and it is the first thing to do
+if a device is lost. That is a better position than the OAuth variant, where
+revoking means finding an app authorisation.
+
+---
+
 ### T7 — Denial of service · **low, and not ours**
 
 A static site on shared hosting. Absorbing traffic is the host's problem, and

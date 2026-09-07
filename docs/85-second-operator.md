@@ -1,5 +1,13 @@
 # A second person on the site — what that actually requires
 
+> **Amended 7 September 2026.** This document concluded *"Option 0 extended —
+> full repo access, nothing new to build."* The owner has since asked for a
+> dashboard and it has been built (`docs/120`, `docs/121`). **Everything else
+> here still holds**: the second operator still needs the branch protection in
+> §6 before an invitation goes out, and leads are still not stored by this
+> site. The dashboard changes what the operator *edits with*, not what they can
+> reach or what the site keeps.
+
 **6 September 2026.** The owner reopened the admin dashboard question and
 decided: a second person will run the page, with full access. `docs/69` §5 had
 priced three options and named this exact trigger — *"a second content editor is

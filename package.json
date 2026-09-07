@@ -15,7 +15,8 @@
     "a11y": "node tools/a11y.js",
     "responsive": "node tools/responsive.js",
     "arabic": "node tools/arabic.js",
-    "admin:test": "node tools/admin-test.mjs"
+    "admin:test": "node tools/admin-test.mjs",
+    "admin:ui": "node tools/admin-ui-test.cjs"
   },
   "devDependencies": {
     "axe-core": "^4.13.0",

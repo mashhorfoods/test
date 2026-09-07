@@ -206,7 +206,12 @@ Parallel with P1. Nothing here waits on anything else here.
 
 ---
 
-## 5. The dashboard — decided, 6 September 2026
+## 5. The dashboard — decided 6 September, built 7 September
+
+> **Built — `docs/120`, `docs/121`.** The section below records the 6 September
+> decision (Option 0 extended, nothing new to build) and is left as written.
+> On 7 September the owner asked for a dashboard and **Option 1 was built**, in
+> a variant needing no broker. D1 below is unaffected and still owner-blocked.
 
 **The trigger fired.** This section used to price three options against a
 future decision; the owner has now made it: **a second person will run the
@@ -253,6 +258,8 @@ site, with full repository access.**
 | ~~**R18**~~ | ~~Second full test~~ | ✅ **7 Sep — `docs/115`.** **The test was wrong three times before the site was wrong once.** A widened sweep reported 42 findings, 40 of them its own — a language selector this site has never used, a selector list returning by document order, and a console filter matching text that does not contain the URL. Then the guard could not fire at all, twice: `overflow-x: clip` on html *and* body pins `scrollWidth` to the viewport, and the ancestor walk that replaced it reached body and excused everything. **The real find: nine of twelve pricing cards laying out 352px wide in a 272px column at 320px**, clipped in silence, because `white-space: nowrap` on a CTA made the button's min-content the floor of its card. Fixed at the component root. `tools/responsive.js` added and wired into `npm run check` — 320/768/1024 × 8 pages × both languages |
 
 | ~~**R19**~~ | ~~The four review packs~~ | ✅ **7 Sep — `docs/119`.** All four human reviews now have a send-ready pack: `docs/91` (Arabic, re-cut — **118 new strings** measured since it was written), `docs/90` (legal, **§3.9 added** for a Terms clause that says of itself it is not final), `docs/118` (buyers — new, a moderator's sheet rather than an argument) and `docs/117` (screen reader — new, rewritten for a page that gained six scroll regions and an FAQ). **Preparing them found three live defects, none of which any harness reported:** the homepage said "Ten pieces" over seven photographs in both languages; three scroll regions had `tabindex="0"` and no name at all; and one i18n key was overwriting two distinct gallery labels with a single generic string. `qa.js` §31 and §32 added and negative-tested — **and the first negative test was wrong**, because the page re-applies its own labels at runtime and repaired the mutation before the check looked |
+
+| ~~**R20**~~ | ~~The admin dashboard~~ | ✅ **7 Sep — `docs/120` (plan), `docs/121` (built).** All nine phases pass their acceptance tests. A static page at the repository root, served by the **review surface**, editing prices and Arabic strings through the GitHub API with a fine-grained token the operator pastes — **no server, AD-01 survives.** Its whole justification is `docs/63`'s own objection to Option 0: a wrong price is now refused *before* the commit rather than as a red build ten minutes later. **The plan was wrong twice and the code said so:** the page does not ship at all (better than the scoped-CSP block that was planned), and `challenge.json` came out of scope because it does not round-trip. **Two validation rules were wrong and the real data proved it** — `level`/`purpose` are paired, not required, and an Arabic field may hold no Arabic when it is a proper noun identical to the English. `qa.js` §33 adds five guards, each negative-tested. **Option 0 is not removed** |
 
 **Note on this container:** WebSearch works; fetching any specific page does
 not (`EGRESS_BLOCKED`, the network policy, not one domain). A competitive

@@ -58,6 +58,68 @@ the log — it names the file and the reason.
 
 ---
 
+## 3b. The dashboard — prices and Arabic strings, from a phone
+
+**Added 7 September 2026.** `docs/120` is the plan, `docs/121` the build.
+
+**`https://mashhorfoods.github.io/test/admin.html`**
+
+It edits two files — prices and packages, and the Arabic string map — and
+**nothing else**. It checks everything before it will let you save, which is
+the one thing editing JSON in GitHub cannot do: there, a wrong price is a red
+build ten minutes later.
+
+### First time: make a token
+
+1. `github.com/settings/personal-access-tokens` → **Generate new token**.
+2. **Repository access → Only select repositories → `mashhorfoods/test`.**
+3. **Permissions → Repository permissions → Contents → Read and write.**
+   Nothing else. Do not grant anything else.
+4. **Expiration:** set one. 90 days is sensible.
+5. Copy it. It is shown once.
+
+Paste it into the dashboard. Tick *"remember on this device"* only on a device
+that is yours and locked — without it, the token is forgotten when you close
+the tab, which is the right default on a shared or borrowed machine.
+
+**Forget token** clears it from both places. Lost the device? Revoke the token
+at the same settings page — one click, and it is dead everywhere.
+
+### Changing a price
+
+1. **Prices and packages** → find the package → change the number.
+2. Digits only. **No `$`, no comma, no space.** The site adds "From" and
+   "USD" itself.
+3. Watch the **Save** button. If it is grey, something is wrong and the reason
+   is listed above it by name. Fix that first — **the button will not let you
+   commit something the build would reject.**
+4. Write a few words saying what changed, and Save.
+5. It commits to the working branch, then the build runs: it rebuilds the site,
+   runs the five checks, and commits the result back. **About four minutes.**
+
+### What it will not let you do
+
+A price with a currency symbol · a package with no name · two packages with
+the same name · a level or purpose in one language and not the other · a
+feature with no Arabic · a missing delivery or revisions promise · Eastern
+numerals (٠-٩) where the site uses 0-9 everywhere.
+
+Each of those is a real rule the build enforces. The dashboard just tells you
+first.
+
+### If something looks wrong
+
+**The dashboard cannot break the site.** Worst case it commits something the
+harnesses refuse, CI goes red, and the live site keeps serving what it already
+had — nothing is deployed automatically. Tell whoever maintains the code, or
+revert the commit in GitHub.
+
+**GitHub's web editor still works** and is not going away. If the dashboard is
+down, unreachable or behaving oddly, edit `src/data/pricing.json` there exactly
+as before. §4 below is that road.
+
+---
+
 ## 4. The other path: editing anything else
 
 You need the repository on a machine with Node 22:

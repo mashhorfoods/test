@@ -103,22 +103,45 @@ Each has an acceptance test. **A phase is not done until its test passes.**
 | **P5** | **Validate before commit — the reason this exists.** Mirror every rule `qa.js` enforces on the data, client-side, and refuse to commit while any fails | Introduce each class of error in the form; each is blocked with a message naming the field. **A commit cannot be made while invalid** |
 | **P6** | **Write.** PUT the changed file with its `sha` and a real commit message | A change committed from the dashboard appears in the repository, authored by the token's owner, with a message naming what changed |
 | **P7** | **What happens next.** Show the commit, the CI run, and in plain words that the site rebuilds itself | After committing, the page links the commit and reports the check run's state |
-| **P8** | **The guards.** `qa` checks the admin page cannot leak: noindex, absent from the sitemap, unlinked, no token in the markup, and its own CSP | Each guard negative-tested by reintroducing the defect it was written for |
+| **P8** | **The guards.** The admin page must never reach the live host: absent from `SHIP`, absent from `dist/`, absent from the sitemap, `noindex`, linked from nowhere, and carrying no credential in its markup | Each guard negative-tested by reintroducing the defect it was written for |
 | **P9** | **Documentation.** `docs/89` runbook gains a section; `docs/63` and `docs/85` are amended with the reversal; `docs/58` gains the threat entry | The runbook is enough to use it without asking anyone |
 
 ---
 
 ## 4. The two technical facts that shape the build
 
-### 4.1 The CSP is one header for the whole site
+### 4.1 The CSP is one header for the whole site — and the answer is not to change it
 
 `tools/build-deploy.js` emits a single `Header set Content-Security-Policy`
-covering every page, and it ends `connect-src 'self'` plus Plausible.
+covering every page, ending `connect-src 'self'` plus Plausible. The dashboard
+must reach `https://api.github.com`, and **loosening the global policy for one
+page visitors never see is the wrong trade.**
 
-The dashboard must reach `https://api.github.com`. **Adding that to the global
-policy would loosen every public page for the sake of one that visitors never
-see.** So `.htaccess` gains a `<Files "admin.html">` block with its own policy —
-scoped, and the only place `api.github.com` is ever permitted.
+This section originally proposed a `<Files "admin.html">` block in `.htaccess`
+to scope the exception. **Reading `tools/build-zip.js` produced a better
+answer, and it is recorded here rather than the first idea being left in
+place.**
+
+`SHIP` is an explicit allow-list of what the upload archive contains, and
+`styleguide.html` is already deliberately absent from it — built into `dist/`,
+never sent to the host. **The dashboard takes the same road, one step further:
+it is not built at all.**
+
+`admin.html` lives at the repository root and is served by the **review
+surface** — GitHub Pages, `mashhorfoods.github.io/test/` — which `docs/44` §1
+already distinguishes from the live host. That surface serves the modular
+source and has no `.htaccess`, so there is no CSP to fight.
+
+| | Consequence |
+| --- | --- |
+| The live site's CSP | **Untouched.** `api.github.com` is never permitted there, because the page that needs it is never there |
+| The live site's attack surface | **Unchanged.** The file does not exist on that host |
+| Reachable from a phone | **Yes** — it is a public HTTPS URL, which was the requirement |
+| Accidentally shipping it | **Cannot happen silently.** `SHIP` is a list, and P8 adds a guard that fails if `admin.html` ever appears in it or in `dist/` |
+
+The page being publicly readable is not itself a risk: it is a client for an
+API that refuses to do anything without a token. The token is the credential,
+and §5 is about the token.
 
 ### 4.2 CI already does the second half
 
