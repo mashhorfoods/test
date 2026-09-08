@@ -4,3 +4,7 @@ node_modules/
 
 # The upload package is generated; do not commit the binary.
 pixora-site.zip
+
+# The review pages are assembled from bN-body.html + _base.css by
+# docs/review-packs/assemble.js. The source is committed; the output is not.
+docs/review-packs/b?.html

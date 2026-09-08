@@ -2095,9 +2095,17 @@ function serve() {
     for (const f of sheets) {
       for (const m of strip(fs.readFileSync(f, 'utf8')).matchAll(/(--[\w-]+)\s*:/g)) defined.add(m[1]);
     }
-    /* Properties handed in from outside the stylesheets count as defined. */
+    /* Properties handed in from outside the stylesheets count as defined.
+
+       `docs` is skipped, and the reason is that this list decides what counts
+       as DEFINED: anything it reads makes the check below more permissive. The
+       four reviewer briefs live in docs/review-packs and carry a whole
+       stylesheet of their own inlined into each assembled page — `--paper`,
+       `--ink`, `--accent` and the rest. None of it is the site's, none of it
+       reaches a visitor, and a token that exists only there must not silence a
+       typo in `src/styles`. Skipping it makes the guard stricter, not looser. */
     const walkAny = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
-      if (['node_modules', '.git', 'dist'].includes(e.name)) return [];
+      if (['node_modules', '.git', 'dist', 'docs'].includes(e.name)) return [];
       const full = path.join(dir, e.name);
       return e.isDirectory() ? walkAny(full) : /\.(html|js|mjs|json)$/.test(e.name) ? [full] : [];
     });

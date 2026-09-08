@@ -1,0 +1,263 @@
+/* Shared across the four review briefs. Warm neutrals biased toward the
+   studio's gold; sans throughout; the Arabic set in the sibling of the body
+   face so the strings under review sit natively in the page. */
+:root {
+  --paper: #fbf9f4;
+  --surface: #f4f0e5;
+  --ink: #1c1a15;
+  --muted: #6c6656;
+  --rule: #ddd6c4;
+  --rule-soft: #ebe5d6;
+  --accent: #8f6f08;
+  --accent-soft: #f3e6b4;
+  --flag: #9c3418;
+  --flag-soft: #f6e0d8;
+  --shadow: 0 1px 0 rgba(28, 26, 21, .06);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #16150f;
+    --surface: #201e17;
+    --ink: #f2eee2;
+    --muted: #a49c86;
+    --rule: #35322a;
+    --rule-soft: #272419;
+    --accent: #f4d13f;
+    --accent-soft: #3a3213;
+    --flag: #e5896d;
+    --flag-soft: #3a231b;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #16150f;
+  --surface: #201e17;
+  --ink: #f2eee2;
+  --muted: #a49c86;
+  --rule: #35322a;
+  --rule-soft: #272419;
+  --accent: #f4d13f;
+  --accent-soft: #3a3213;
+  --flag: #e5896d;
+  --flag-soft: #3a231b;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-text-size-adjust: 100%;
+}
+
+:where(a) { color: var(--accent); text-underline-offset: 3px; }
+:where(a):hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+.skip {
+  position: absolute; inset-inline-start: -9999px; top: 0;
+  background: var(--ink); color: var(--paper);
+  padding: .6rem 1rem; z-index: 20; text-decoration: none;
+}
+.skip:focus { inset-inline-start: 0; }
+
+/* ---- masthead ---------------------------------------------------------- */
+.top {
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface);
+}
+.top__in {
+  max-width: 62rem; margin: 0 auto; padding: 1.15rem 1.5rem;
+  display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; align-items: baseline;
+}
+.wordmark {
+  font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700; font-size: .95rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ink);
+}
+.wordmark b { color: var(--accent); font-weight: 700; }
+.top__label {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .74rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted);
+}
+.top__label::before { content: "/ "; opacity: .55; }
+
+/* ---- page frame -------------------------------------------------------- */
+.wrap { max-width: 62rem; margin: 0 auto; padding: 0 1.5rem 5rem; }
+
+.lede { padding: 3rem 0 2.25rem; border-bottom: 1px solid var(--rule); }
+h1 {
+  font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700; letter-spacing: -.021em; line-height: 1.06;
+  font-size: clamp(2.1rem, 1.35rem + 3vw, 3.5rem);
+  margin: 0 0 1rem; text-wrap: balance; max-width: 18ch;
+}
+.standfirst { font-size: 1.16rem; line-height: 1.55; max-width: 40ch; margin: 0; color: var(--ink); }
+
+.facts {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1.4rem 2rem; margin-top: 2.25rem; padding-top: 1.5rem;
+  border-top: 1px solid var(--rule-soft);
+}
+.facts div { display: flex; flex-direction: column; gap: .3rem; }
+.facts dt, .fact__k {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .7rem; letter-spacing: .11em; text-transform: uppercase; color: var(--muted);
+}
+.facts dd, .fact__v { margin: 0; font-weight: 500; font-size: 1.02rem; }
+
+/* ---- the spine --------------------------------------------------------- */
+section.step {
+  display: grid; grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 0 2.5rem; padding: 2.75rem 0; border-bottom: 1px solid var(--rule-soft);
+}
+section.step:last-of-type { border-bottom: 0; }
+.rail { display: flex; flex-direction: column; gap: .55rem; align-items: flex-start; }
+.num {
+  font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700; font-size: 1.5rem; letter-spacing: -.02em;
+  color: var(--rule); line-height: 1; font-variant-numeric: tabular-nums;
+}
+.chip {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .66rem; letter-spacing: .09em; text-transform: uppercase;
+  padding: .28rem .5rem; border: 1px solid var(--rule); color: var(--muted);
+  white-space: nowrap;
+}
+.chip--first { background: var(--accent-soft); border-color: transparent; color: var(--ink); font-weight: 600; }
+.chip--cost { background: var(--flag-soft); border-color: transparent; color: var(--flag); font-weight: 600; }
+
+.body { min-width: 0; max-width: 66ch; }
+.body > * + * { margin-top: 1.05rem; }
+h2 {
+  font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600; letter-spacing: -.014em; line-height: 1.16;
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 1.85rem); margin: 0; text-wrap: balance;
+}
+h3 {
+  font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600; font-size: 1.08rem; letter-spacing: -.005em;
+  margin: 2rem 0 0; text-wrap: balance;
+}
+h3 + * { margin-top: .5rem; }
+p { margin: 0; }
+strong { font-weight: 600; }
+
+ul, ol { margin: 0; padding-inline-start: 1.15rem; }
+li + li { margin-top: .5rem; }
+li::marker { color: var(--accent); }
+
+/* ---- quoted material --------------------------------------------------- */
+blockquote {
+  margin: 0; padding: .1rem 0 .1rem 1.15rem;
+  border-inline-start: 3px solid var(--accent); font-size: 1.02rem;
+}
+blockquote p + p { margin-top: .6rem; }
+
+.note {
+  background: var(--surface); border: 1px solid var(--rule);
+  padding: 1.1rem 1.25rem; font-size: .98rem;
+}
+.note--cost { border-color: var(--flag); background: var(--flag-soft); }
+.note__k {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .68rem; letter-spacing: .11em; text-transform: uppercase;
+  color: var(--muted); display: block; margin-bottom: .45rem;
+}
+.note--cost .note__k { color: var(--flag); }
+
+/* Arabic under review: the sibling of the body face, set larger because it is
+   the thing being read rather than an example of it. */
+.ar, [lang="ar"] {
+  font-family: "IBM Plex Sans Arabic", "IBM Plex Sans", sans-serif;
+  font-size: 1.12em; line-height: 1.85;
+}
+bdi.ar { display: inline-block; }
+
+.mono, code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .88em; background: var(--surface); padding: .1em .35em;
+  border: 1px solid var(--rule-soft);
+}
+
+/* ---- tables ------------------------------------------------------------ */
+.scroller { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .97rem; }
+th, td { text-align: start; padding: .7rem .9rem .7rem 0; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+th {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); font-weight: 400; border-bottom-color: var(--rule);
+}
+tbody tr:last-child td { border-bottom: 0; }
+td:last-child, th:last-child { padding-inline-end: 0; }
+
+/* ---- foot -------------------------------------------------------------- */
+.foot {
+  margin-top: 3.5rem; padding-top: 1.75rem; border-top: 1px solid var(--rule);
+  color: var(--muted); font-size: .93rem; display: flex; flex-wrap: wrap;
+  gap: .5rem 2rem; justify-content: space-between;
+}
+
+@media (max-width: 46rem) {
+  body { font-size: 16px; }
+  section.step { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 2.25rem 0; }
+  .rail { flex-direction: row; align-items: center; gap: .7rem; margin-bottom: .9rem; }
+  .num { font-size: 1.15rem; }
+}
+
+@media print {
+  :root { --paper: #fff; --surface: #fff; --ink: #000; --muted: #444;
+          --rule: #bbb; --rule-soft: #ddd; --accent: #000; --accent-soft: #eee;
+          --flag: #000; --flag-soft: #f0f0f0; }
+  .skip, .top { display: none; }
+  body { font-size: 11pt; }
+  section.step { break-inside: avoid; grid-template-columns: 6rem minmax(0,1fr); }
+  h1 { font-size: 22pt; }
+  a { text-decoration: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* ---- three fixes from looking at these on a phone ---------------------- */
+
+/* Two paragraphs inside a note ran together — only blockquotes had the rule. */
+.note > * + * { margin-top: .6rem; }
+
+/* A standalone link in the facts row measured 19px tall: under the 24px
+   minimum, and these are the links the reviewer is meant to tap. */
+.facts a { display: inline-block; padding-block: .22rem; }
+
+/* A THREE-COLUMN TABLE ON A PHONE IS THREE NARROW COLUMNS.
+   At 375px the five-task table gave every row five or six lines in a 142px
+   column — and that page is read mid-session, glancing between a participant
+   and the sheet. Below 34em the rows become blocks and each cell carries its
+   own column name, so nothing is lost with the header. */
+@media (max-width: 34em) {
+  .stack thead {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+  .stack tr {
+    display: block; padding: 1.1rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .stack tr:last-child { border-bottom: 0; }
+  .stack td { display: block; border: 0; padding: 0; }
+  .stack td + td { margin-top: .7rem; }
+  .stack td[data-label]::before {
+    content: attr(data-label);
+    display: block; margin-bottom: .15rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .66rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+}
