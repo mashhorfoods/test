@@ -89,14 +89,24 @@ export function jsonFileStore(file, io) {
   };
 }
 
-/** The three stores the domain needs, named so a caller cannot mix them up. */
-export function repositories({ clients, orders, projects }) {
-  for (const [name, store] of Object.entries({ clients, orders, projects })) {
+/**
+ * The stores the domain needs, named so a caller cannot mix them up.
+ *
+ * `tasks` and `audit` arrived with Phase 3 and are OPTIONAL: an operations
+ * instance built without them is exactly Phase 2, which is how the Phase 2
+ * suite goes on running untouched while the execution layer exists.
+ */
+export function repositories({ clients, orders, projects, tasks = null, audit = null }) {
+  const required = { clients, orders, projects };
+  const optional = {};
+  if (tasks) optional.tasks = tasks;
+  if (audit) optional.audit = audit;
+  for (const [name, store] of Object.entries({ ...required, ...optional })) {
     for (const m of ['get', 'put', 'all', 'find']) {
       if (typeof (store || {})[m] !== 'function') {
         throw new Error(`repository: the "${name}" store has no ${m}() — it does not satisfy the contract`);
       }
     }
   }
-  return { clients, orders, projects };
+  return { clients, orders, projects, tasks: tasks || memoryStore(), audit: audit || memoryStore() };
 }

@@ -1,0 +1,94 @@
+{
+  "_comment": [
+    "AUTOMATION RULES — event, condition, action. As data, so a rule can be read,",
+    "disabled or added without touching the engine.",
+    "",
+    "WHAT THIS IS NOT. Not an event bus, not a queue, not a scheduler. Rules are",
+    "evaluated synchronously when a domain operation records an event, and each",
+    "action calls a DOMAIN OPERATION — never a repository, never a status field.",
+    "An automation rule has exactly the permissions an operator has, and fewer:",
+    "src/operations/automation.js refuses any action not on the allowlist.",
+    "",
+    "IDEMPOTENCY IS PER RULE PER SUBJECT. `idempotencyKey` is a template; the",
+    "engine renders it and refuses to run the same rule twice for the same key.",
+    "That is what makes a redelivered event harmless.",
+    "",
+    "LOOPS. `maxRuns` caps a rule per key, and the engine will not recurse more",
+    "than `cascadeDepth` levels — so an action that causes an event that fires",
+    "the same rule stops rather than spiralling."
+  ],
+  "version": 1,
+  "cascadeDepth": 4,
+  "rules": [
+    {
+      "id": "auto.unblock-next",
+      "name": { "en": "When a task completes, release what was waiting on it", "ar": "عند اكتمال مهمة، أطلق ما كان ينتظرها" },
+      "enabled": true,
+      "trigger": { "event": "task.completed", "entityType": "task" },
+      "conditions": [
+        { "path": "task.dependents.length", "operator": "gt", "value": 0 }
+      ],
+      "actions": [
+        { "operation": "refreshTaskReadiness", "args": { "projectId": "{{task.projectId}}" } }
+      ],
+      "idempotencyKey": "auto.unblock-next:{{task.id}}",
+      "maxRuns": 1
+    },
+    {
+      "id": "auto.rework-on-rejection",
+      "name": { "en": "A rejected task goes back to be reworked, not lost", "ar": "المهمة المرفوضة تعود لإعادة العمل، لا تضيع" },
+      "enabled": true,
+      "trigger": { "event": "task.rejected", "entityType": "task" },
+      "conditions": [
+        { "path": "task.attemptCount", "operator": "lt", "path2": "task.maxAttempts" }
+      ],
+      "actions": [
+        { "operation": "reopenForRework", "args": { "taskId": "{{task.id}}" } }
+      ],
+      "idempotencyKey": "auto.rework:{{task.id}}:{{task.attemptCount}}",
+      "maxRuns": 1
+    },
+    {
+      "id": "auto.escalate-exhausted",
+      "name": { "en": "A task that has used every attempt goes to a person", "ar": "المهمة التي استنفدت محاولاتها تُحال إلى شخص" },
+      "enabled": true,
+      "trigger": { "event": "task.rejected", "entityType": "task" },
+      "conditions": [
+        { "path": "task.attemptCount", "operator": "gte", "path2": "task.maxAttempts" }
+      ],
+      "actions": [
+        { "operation": "escalateTask", "args": { "taskId": "{{task.id}}", "reason": "every attempt has been used" } }
+      ],
+      "idempotencyKey": "auto.escalate:{{task.id}}",
+      "maxRuns": 1
+    },
+    {
+      "id": "auto.agent-eligibility",
+      "name": { "en": "When a task is ready, work out whether an agent could do it", "ar": "عند جاهزية مهمة، احسب ما إذا كان وكيل يستطيع تنفيذها" },
+      "enabled": true,
+      "trigger": { "event": "task.ready", "entityType": "task" },
+      "conditions": [
+        { "path": "task.aiEligible", "operator": "eq", "value": true }
+      ],
+      "actions": [
+        { "operation": "evaluateAgentEligibility", "args": { "taskId": "{{task.id}}" } }
+      ],
+      "idempotencyKey": "auto.eligibility:{{task.id}}",
+      "maxRuns": 1
+    },
+    {
+      "id": "auto.escalate-no-agent",
+      "name": { "en": "No agent can do it, so a person must", "ar": "لا وكيل يستطيع تنفيذها، فليقم بها شخص" },
+      "enabled": true,
+      "trigger": { "event": "agent.execution.failed", "entityType": "task" },
+      "conditions": [
+        { "path": "task.attemptCount", "operator": "gte", "path2": "task.maxAttempts" }
+      ],
+      "actions": [
+        { "operation": "escalateTask", "args": { "taskId": "{{task.id}}", "reason": "the agent failed on every attempt" } }
+      ],
+      "idempotencyKey": "auto.agent-escalate:{{task.id}}",
+      "maxRuns": 1
+    }
+  ]
+}

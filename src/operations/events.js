@@ -37,7 +37,40 @@ export const EVENTS = {
 
   WORKFLOW_STARTED: 'workflow.started',
   WORKFLOW_COMPLETED: 'workflow.completed',
+
+  /* --- Phase 3: execution ------------------------------------------------
+     These are the names an automation rule triggers on and an audit line
+     records. Fixed now, before anything subscribes to them, because renaming
+     an event later means finding every rule that named it. */
+  TASK_CREATED: 'task.created',
+  TASK_READY: 'task.ready',
+  TASK_ASSIGNED: 'task.assigned',
+  TASK_STARTED: 'task.started',
+  TASK_INPUT_REQUESTED: 'task.input_requested',
+  TASK_BLOCKED: 'task.blocked',
+  TASK_UNBLOCKED: 'task.unblocked',
+  TASK_SUBMITTED: 'task.submitted',
+  TASK_REJECTED: 'task.rejected',
+  TASK_APPROVED: 'task.approved',
+  TASK_COMPLETED: 'task.completed',
+  TASK_CANCELLED: 'task.cancelled',
+  TASK_ESCALATED: 'task.escalated',
+
+  QA_PASSED: 'qa.passed',
+  QA_FAILED: 'qa.failed',
+
+  AUTOMATION_TRIGGERED: 'automation.triggered',
+  AUTOMATION_SKIPPED: 'automation.skipped',
+
+  AGENT_EXECUTION_STARTED: 'agent.execution.started',
+  AGENT_EXECUTION_COMPLETED: 'agent.execution.completed',
+  AGENT_EXECUTION_FAILED: 'agent.execution.failed',
+  AGENT_DISABLED: 'agent.disabled',
 };
+
+/** The actors a change may be attributed to. Default deny is enforced elsewhere;
+    this is the vocabulary the audit trail records. */
+export const ACTOR_TYPES = ['human', 'system', 'automation', 'ai_agent'];
 
 const KNOWN = new Set(Object.values(EVENTS));
 

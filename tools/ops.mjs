@@ -36,10 +36,17 @@ const read = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
 const ops = createOperations({
   catalogue: read('catalogue/catalogue.json'),
   statuses: read('src/data/operations/statuses.json'),
+  /* Phase 3. The execution policy, the automation rules and the agent registry
+     are data; without them this is exactly the Phase 2 tool. */
+  execution: read('src/data/operations/execution.json'),
+  automationRules: read('src/data/operations/automation.json'),
+  agentRegistry: read('src/data/operations/agents.json'),
   stores: {
     clients: jsonFileStore(path.join(OPS, 'clients.json'), fs),
     orders: jsonFileStore(path.join(OPS, 'orders.json'), fs),
     projects: jsonFileStore(path.join(OPS, 'projects.json'), fs),
+    tasks: jsonFileStore(path.join(OPS, 'tasks.json'), fs),
+    audit: jsonFileStore(path.join(OPS, 'audit.json'), fs),
   },
 });
 
@@ -83,6 +90,34 @@ ops — orders, clients and projects
   project pipelines <projectId>
   project progress  <projectId>
   project status    <projectId> <state> [--reason "..."]
+  project tasks     <projectId>          (generate — idempotent)
+
+  task   list       [--project <id>] [--status <s>] [--service <id>]
+  task   show       <taskId>
+  task   why        <taskId>             (why it exists, what is in its way)
+  task   assign     <taskId> <assignee> [--type human|ai]
+  task   start      <taskId>
+  task   input      <taskId> --key K --value V
+  task   need       <taskId> --reason "..."
+  task   output     <taskId> --key K --value V
+  task   submit     <taskId>
+  task   qa         <taskId> --criterion ID --result passed|failed [--by X]
+  task   qa-all     <taskId> [--by X]
+  task   approve    <taskId> --by X
+  task   complete   <taskId>
+  task   reject     <taskId> --reason "..."
+  task   retry      <taskId>
+  task   block      <taskId> --reason "..."
+  task   unblock    <taskId>
+  task   cancel     <taskId> [--reason "..."]
+
+  agent  list
+  agent  status     <agentId> active|paused|disabled
+  agent  eligible   <taskId> [--agent <agentId>]
+  agent  kill       on|off
+
+  audit  list       [--project <id>] [--entity <id>] [--actor human|system|automation|ai_agent]
+  rules  list
 
   list   clients | orders | projects
   states order | project | pipelineInstance | workflowInstance
@@ -131,11 +166,91 @@ const commands = {
 
   project: {
     show() { out(ops.getProject(positional[0]) || die(`no project ${positional[0]}`)); },
+    tasks() {
+      const r = ops.generateTasksFromWorkflow(positional[0]);
+      if (!r.ok) return problems(r);
+      console.error(`${r.created.length} created, ${r.existing} already existed`);
+      return out(r.tasks.map((t) => ({ id: t.id, feature: t.featureId, stage: t.stageId, status: t.status, deps: t.dependencies.length })));
+    },
     pipelines() { out(ops.getProjectPipelines(positional[0]) || die(`no project ${positional[0]}`)); },
     progress() { out(ops.projectProgress(positional[0]) || die(`no project ${positional[0]}`)); },
     status() {
       const r = ops.setProjectStatus(positional[0], positional[1], { reason: flags.reason || null });
       return r.ok ? out(r.project) : problems(r);
+    },
+  },
+
+  task: {
+    list() {
+      const filter = {};
+      if (flags.project) filter.projectId = flags.project;
+      if (flags.status) filter.status = flags.status;
+      if (flags.service) filter.serviceId = flags.service;
+      out(ops.getTasks(filter).map((t) => ({
+        id: t.id, status: t.status, feature: t.featureId, stage: t.stageId,
+        owner: t.ownerRole, assignedTo: t.assignedTo, executor: t.executorType,
+        quantity: t.quantity, approval: t.approvalRequired, ai: t.aiEligible,
+        blocked: t.blockedReason, waitingOn: t.dependencies.length,
+      })));
+    },
+    show() { out(ops.getTask(positional[0]) || die(`no task ${positional[0]}`)); },
+    why() { out(ops.explainTask(positional[0]) || die(`no task ${positional[0]}`)); },
+    assign() {
+      const r = ops.assignTask(positional[0], { assignee: positional[1], executorType: flags.type || 'human' });
+      return r.ok ? out(r.task) : problems(r);
+    },
+    start() { const r = ops.startTask(positional[0]); return r.ok ? out(r.task) : problems(r); },
+    input() { const r = ops.provideInput(positional[0], { key: flags.key, value: flags.value }); return r.ok ? out(r.task) : problems(r); },
+    need() { const r = ops.requestInput(positional[0], { reason: flags.reason }); return r.ok ? out(r.task) : problems(r); },
+    output() { const r = ops.recordOutput(positional[0], { key: flags.key, value: flags.value }); return r.ok ? out(r.task) : problems(r); },
+    submit() { const r = ops.submitTaskForReview(positional[0]); return r.ok ? out(r.task) : problems(r); },
+    qa() {
+      const r = ops.judgeQa(positional[0], { criterionId: flags.criterion, result: flags.result, by: flags.by || 'operator' });
+      return r.ok ? out(r.task.qaCriteria) : problems(r);
+    },
+    'qa-all'() { const r = ops.passAllQa(positional[0], { by: flags.by || 'operator' }); return r.ok ? out(r.task.qaCriteria) : problems(r); },
+    approve() {
+      if (!flags.by) die('approve needs --by "who" — an approval nobody signed is not one');
+      const r = ops.approveTask(positional[0], { by: flags.by });
+      return r.ok ? out(r.task) : problems(r);
+    },
+    complete() { const r = ops.completeTask(positional[0]); return r.ok ? out(r.task) : problems(r); },
+    reject() { const r = ops.rejectTask(positional[0], { reason: flags.reason }); return r.ok ? out(r.task) : problems(r); },
+    retry() { const r = ops.retryTask(positional[0]); return r.ok ? out(r.task) : problems(r); },
+    block() { const r = ops.blockTask({ taskId: positional[0], reason: flags.reason }); return r.ok ? out(r.task) : problems(r); },
+    unblock() { const r = ops.unblockTask(positional[0]); return r.ok ? out(r.task) : problems(r); },
+    cancel() { const r = ops.cancelTask(positional[0], { reason: flags.reason || null }); return r.ok ? out(r.task) : problems(r); },
+  },
+
+  agent: {
+    list() {
+      out(ops.listAgents().map((a) => ({
+        id: a.id, name: a.name.en, status: a.status, capabilities: a.capabilities,
+        allowedOperations: a.allowedOperations, maxConcurrent: a.maxConcurrentTasks,
+        integration: (a.metadata || {}).integration,
+      })));
+    },
+    status() { const r = ops.setAgentStatus(positional[0], positional[1]); return r.ok ? out(r.agent) : problems(r); },
+    eligible() { const r = ops.evaluateAgentEligibility({ taskId: positional[0], agentId: flags.agent || null }); return r.ok ? out(r) : problems(r); },
+    kill() { const r = ops.setKillSwitch(positional[0] === 'on'); return r.ok ? out(r) : problems(r); },
+  },
+
+  audit: {
+    list() {
+      let rows = ops.audit.all();
+      if (flags.project) rows = rows.filter((e) => e.projectId === flags.project);
+      if (flags.entity) rows = rows.filter((e) => e.entityId === flags.entity);
+      if (flags.actor) rows = rows.filter((e) => e.actorType === flags.actor);
+      out(rows.map((e) => ({ at: e.at, actor: `${e.actorType}:${e.actor}`, action: e.action, entity: e.entityId, from: e.from, to: e.to, reason: e.reason, rule: e.ruleId })));
+    },
+  },
+
+  rules: {
+    list() {
+      out(ops.automationRules().map((r) => ({
+        id: r.id, name: r.name.en, enabled: r.enabled, on: r.trigger.event,
+        does: r.actions.map((a) => a.operation), maxRuns: r.maxRuns,
+      })));
     },
   },
 
@@ -150,9 +265,10 @@ const commands = {
     projects() {
       out(ops.listProjects().map((p) => ({
         id: p.id, name: p.name, status: p.status, order: p.orderId, client: p.clientId,
-        services: p.services, progress: ops.projectProgress(p.id),
+        services: p.services, progress: ops.projectProgress(p.id), execution: ops.executionProgress(p.id),
       })));
     },
+    tasks() { commands.task.list(); },
   },
 
   states: {

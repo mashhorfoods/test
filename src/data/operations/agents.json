@@ -1,0 +1,77 @@
+{
+  "_comment": [
+    "THE AGENT REGISTRY.",
+    "",
+    "An agent is an EXECUTOR. It is not the owner of the database, the business",
+    "rules, the pricing or the project state. Everything it may do is on",
+    "`allowedOperations`, and anything not listed is denied — default deny, not",
+    "default allow with exceptions.",
+    "",
+    "NOTHING HERE EXECUTES ANYTHING TODAY. There is no model call, no API key and",
+    "no network access in this repository. These entries define the CONTRACT an",
+    "integration would have to satisfy: which capabilities it claims, which task",
+    "types it may take, which operations it may call, what it must be given and",
+    "what it must return. The test suite drives them through a deterministic",
+    "mock executor, which is clearly labelled as such and is never the code path",
+    "a real agent would use (docs/130 §9).",
+    "",
+    "`status: paused` is deliberate for every entry. An agent nobody has",
+    "connected must not be assignable, and shipping them active would mean the",
+    "kill switch defaults to off."
+  ],
+  "version": 1,
+  "globalKillSwitch": false,
+  "agents": [
+    {
+      "id": "agent.draft-copywriter",
+      "name": { "en": "Draft copywriter", "ar": "كاتب المسودات" },
+      "description": {
+        "en": "Drafts captions, ad copy and short documents for a person to finish and sign.",
+        "ar": "يكتب مسودات التعليقات ونصوص الإعلانات والمستندات القصيرة ليكملها شخص ويوقّعها."
+      },
+      "capabilities": ["cap.copywriting"],
+      "supportedTaskTypes": ["content", "document"],
+      "allowedOperations": ["getTask", "getTaskEnvelope", "startAgentExecution", "submitAgentOutput", "reportTaskFailure"],
+      "inputRequirements": ["brief", "brand-voice"],
+      "outputTypes": ["text"],
+      "status": "paused",
+      "maxConcurrentTasks": 2,
+      "version": "0.1.0",
+      "metadata": { "integration": "none", "note": "Contract only. No model is wired to this." }
+    },
+    {
+      "id": "agent.qa-reader",
+      "name": { "en": "Automated quality reader", "ar": "قارئ الجودة الآلي" },
+      "description": {
+        "en": "Checks that the required outputs exist and are the declared shape. It judges presence, never taste.",
+        "ar": "يتحقق من وجود المخرجات المطلوبة ومطابقتها للشكل المعلن. يحكم على الوجود، لا على الذوق."
+      },
+      "capabilities": ["cap.quality-review"],
+      "supportedTaskTypes": ["verify"],
+      "allowedOperations": ["getTask", "getTaskEnvelope", "startAgentExecution", "submitAgentOutput", "reportTaskFailure"],
+      "inputRequirements": ["output"],
+      "outputTypes": ["report"],
+      "status": "paused",
+      "maxConcurrentTasks": 4,
+      "version": "0.1.0",
+      "metadata": { "integration": "none", "note": "Contract only. No model is wired to this." }
+    },
+    {
+      "id": "agent.reporting",
+      "name": { "en": "Reporting assistant", "ar": "مساعد التقارير" },
+      "description": {
+        "en": "Collects figures from their source and drafts the monthly reading for a person to interpret and send.",
+        "ar": "يجمع الأرقام من مصدرها ويصوغ القراءة الشهرية ليفسّرها شخص ويرسلها."
+      },
+      "capabilities": ["cap.analytics"],
+      "supportedTaskTypes": ["report"],
+      "allowedOperations": ["getTask", "getTaskEnvelope", "startAgentExecution", "submitAgentOutput", "reportTaskFailure"],
+      "inputRequirements": ["platform-access"],
+      "outputTypes": ["report"],
+      "status": "paused",
+      "maxConcurrentTasks": 2,
+      "version": "0.1.0",
+      "metadata": { "integration": "none", "note": "Contract only. No model is wired to this." }
+    }
+  ]
+}

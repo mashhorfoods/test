@@ -1,0 +1,102 @@
+{
+  "_comment": [
+    "EXECUTION POLICY — the four things a task needs that the catalogue does not",
+    "already say.",
+    "",
+    "WHAT IS DELIBERATELY NOT HERE. No task definitions. A workflow-template",
+    "stage in workflows.json already carries an objective, inputs, actions,",
+    "tools, an output, a validation sentence, an owning role, a duration and the",
+    "stage that follows it — which is a task template in everything but name.",
+    "Writing a second copy of those under a new heading would be the exact",
+    "duplication Phase 1 spent a week removing. src/operations/task-template.js",
+    "DERIVES the template from the catalogue; this file adds only what the",
+    "catalogue has never had a reason to hold.",
+    "",
+    "Four things:",
+    "  capabilities   the vocabulary an agent is matched against. Roles are who",
+    "                 does the work; capabilities are what the work needs. A",
+    "                 role maps to capabilities, so a stage owned by a designer",
+    "                 requires design capabilities without anyone typing them",
+    "                 onto four hundred stages.",
+    "  executors      who may execute a stage, derived from the feature's own",
+    "                 automationPotential. `none` means a person, always.",
+    "  qa             how a quality check is judged: by a machine, by a person,",
+    "                 or both. Defaults, overridable per feature.",
+    "  limits         retry, timeout and escalation. An agent that never stops",
+    "                 is worse than one that never starts."
+  ],
+  "version": 1,
+
+  "capabilities": [
+    { "id": "cap.strategy", "name": { "en": "Strategy and direction", "ar": "الاستراتيجية والاتجاه" } },
+    { "id": "cap.graphic-design", "name": { "en": "Graphic design", "ar": "التصميم الجرافيكي" } },
+    { "id": "cap.identity-design", "name": { "en": "Identity design", "ar": "تصميم الهوية" } },
+    { "id": "cap.social-media-design", "name": { "en": "Social media design", "ar": "تصميم وسائل التواصل" } },
+    { "id": "cap.copywriting", "name": { "en": "Copywriting", "ar": "كتابة المحتوى" } },
+    { "id": "cap.web-development", "name": { "en": "Web development", "ar": "تطوير الويب" } },
+    { "id": "cap.deployment", "name": { "en": "Deployment and hosting", "ar": "النشر والاستضافة" } },
+    { "id": "cap.video-production", "name": { "en": "Video and photography", "ar": "الفيديو والتصوير" } },
+    { "id": "cap.community-management", "name": { "en": "Community management", "ar": "إدارة المجتمع" } },
+    { "id": "cap.paid-advertising", "name": { "en": "Paid advertising", "ar": "الإعلانات المدفوعة" } },
+    { "id": "cap.analytics", "name": { "en": "Analytics and reporting", "ar": "التحليلات والتقارير" } },
+    { "id": "cap.quality-review", "name": { "en": "Quality review", "ar": "مراجعة الجودة" } },
+    { "id": "cap.client-communication", "name": { "en": "Client communication", "ar": "التواصل مع العميل" } }
+  ],
+
+  "_roleCapabilities": [
+    "WHAT EACH ROLE CAN DO. A stage owned by role.designer requires the",
+    "capabilities listed here, so agent matching is structured rather than a",
+    "guess at what 'Produce genuinely distinct options.' might need.",
+    "role.client is absent on purpose: the client is not matched to anything."
+  ],
+  "roleCapabilities": {
+    "role.strategist": ["cap.strategy", "cap.analytics"],
+    "role.designer": ["cap.graphic-design", "cap.identity-design", "cap.social-media-design"],
+    "role.developer": ["cap.web-development", "cap.deployment"],
+    "role.copywriter": ["cap.copywriting"],
+    "role.producer": ["cap.video-production"],
+    "role.social_manager": ["cap.community-management", "cap.social-media-design"],
+    "role.ads_specialist": ["cap.paid-advertising", "cap.analytics"],
+    "role.qa": ["cap.quality-review"],
+    "role.account_manager": ["cap.client-communication"],
+    "role.client": []
+  },
+
+  "_executors": [
+    "WHO MAY EXECUTE, read off the feature's own automationPotential rather",
+    "than decided again here. `assist` means an agent may draft and a person",
+    "finishes — so the task is agent-eligible but its output always goes to a",
+    "person. `none` means no agent, ever, whatever an automation rule wants."
+  ],
+  "executors": {
+    "none":    { "allowed": ["human"],           "aiEligible": false, "note": "A person. Nothing about this is a machine's to do." },
+    "assist":  { "allowed": ["human", "ai"],     "aiEligible": true,  "requiresHumanReview": true, "note": "An agent may draft it; a person finishes and signs it." },
+    "partial": { "allowed": ["human", "ai"],     "aiEligible": true,  "requiresHumanReview": true, "note": "An agent may do most of it; a person checks the result." },
+    "full":    { "allowed": ["human", "ai"],     "aiEligible": true,  "requiresHumanReview": false, "note": "An agent may complete it. QA still applies." }
+  },
+
+  "_qa": [
+    "HOW A QUALITY CHECK IS JUDGED. The catalogue writes checks as sentences a",
+    "person can act on — 'Text contrast measured, not eyeballed' — which is the",
+    "right way to write them and the wrong way to evaluate them by machine. So",
+    "every check defaults to a human judgement, and a check becomes automatic",
+    "only where something can actually run it. Claiming otherwise would be a QA",
+    "engine that passes everything."
+  ],
+  "qa": {
+    "defaultValidationMode": "human",
+    "modes": ["automatic", "human", "hybrid"],
+    "outputPresenceIsAutomatic": true
+  },
+
+  "_limits": [
+    "An agent that never stops is worse than one that never starts.",
+    "These are the defaults; a task template may lower them, never raise them."
+  ],
+  "limits": {
+    "maxAttempts": 3,
+    "executionTimeoutMinutes": 30,
+    "escalateTo": "role.account_manager",
+    "automationMaxRunsPerEvent": 1
+  }
+}

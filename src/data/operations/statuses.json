@@ -16,7 +16,9 @@
     "",
     "`terminal: true` marks a state nothing leaves. `active: false` marks a state",
     "that is not live work — used to answer \"which projects are running?\"",
-    "without a second list somewhere that can disagree with this one."
+    "without a second list somewhere that can disagree with this one.",
+    "",
+    "Phase 3 adds `task`. It is a fifth machine, not a widening of the other four: a task is where work actually happens, and the states it needs — waiting for input, in review, rejected — describe a piece of work, not a project."
   ],
   "version": 1,
   "machines": {
@@ -24,41 +26,96 @@
       "initial": "draft",
       "states": {
         "draft": {
-          "label": { "en": "Draft", "ar": "مسودة" },
-          "description": { "en": "Built but not yet sent to us.", "ar": "تم تكوينه ولم يُرسل إلينا بعد." },
-          "to": ["submitted", "cancelled"]
+          "label": {
+            "en": "Draft",
+            "ar": "مسودة"
+          },
+          "description": {
+            "en": "Built but not yet sent to us.",
+            "ar": "تم تكوينه ولم يُرسل إلينا بعد."
+          },
+          "to": [
+            "submitted",
+            "cancelled"
+          ]
         },
         "submitted": {
-          "label": { "en": "Submitted", "ar": "مُرسل" },
-          "description": { "en": "The client has sent it. The commercial scope is frozen from here.", "ar": "أرسله العميل. النطاق التجاري مُثبَّت من هنا." },
-          "to": ["under_review", "cancelled"],
+          "label": {
+            "en": "Submitted",
+            "ar": "مُرسل"
+          },
+          "description": {
+            "en": "The client has sent it. The commercial scope is frozen from here.",
+            "ar": "أرسله العميل. النطاق التجاري مُثبَّت من هنا."
+          },
+          "to": [
+            "under_review",
+            "cancelled"
+          ],
           "freezesScope": true
         },
         "under_review": {
-          "label": { "en": "Under review", "ar": "قيد المراجعة" },
-          "description": { "en": "We are reading it and checking we can do it.", "ar": "نقرأه ونتأكد أن بإمكاننا تنفيذه." },
-          "to": ["approved", "rejected", "cancelled"]
+          "label": {
+            "en": "Under review",
+            "ar": "قيد المراجعة"
+          },
+          "description": {
+            "en": "We are reading it and checking we can do it.",
+            "ar": "نقرأه ونتأكد أن بإمكاننا تنفيذه."
+          },
+          "to": [
+            "approved",
+            "rejected",
+            "cancelled"
+          ]
         },
         "approved": {
-          "label": { "en": "Approved", "ar": "معتمد" },
-          "description": { "en": "Accepted. Ready to become a project.", "ar": "مقبول. جاهز ليصبح مشروعًا." },
-          "to": ["converted_to_project", "cancelled"]
+          "label": {
+            "en": "Approved",
+            "ar": "معتمد"
+          },
+          "description": {
+            "en": "Accepted. Ready to become a project.",
+            "ar": "مقبول. جاهز ليصبح مشروعًا."
+          },
+          "to": [
+            "converted_to_project",
+            "cancelled"
+          ]
         },
         "rejected": {
-          "label": { "en": "Rejected", "ar": "مرفوض" },
-          "description": { "en": "We are not taking it, and the record says why.", "ar": "لن ننفذه، والسجل يوضح السبب." },
+          "label": {
+            "en": "Rejected",
+            "ar": "مرفوض"
+          },
+          "description": {
+            "en": "We are not taking it, and the record says why.",
+            "ar": "لن ننفذه، والسجل يوضح السبب."
+          },
           "to": [],
           "terminal": true
         },
         "converted_to_project": {
-          "label": { "en": "Converted to project", "ar": "حُوِّل إلى مشروع" },
-          "description": { "en": "A project exists for it. The order is now history.", "ar": "يوجد مشروع مقابل له. الطلب الآن سجل تاريخي." },
+          "label": {
+            "en": "Converted to project",
+            "ar": "حُوِّل إلى مشروع"
+          },
+          "description": {
+            "en": "A project exists for it. The order is now history.",
+            "ar": "يوجد مشروع مقابل له. الطلب الآن سجل تاريخي."
+          },
           "to": [],
           "terminal": true
         },
         "cancelled": {
-          "label": { "en": "Cancelled", "ar": "ملغى" },
-          "description": { "en": "Withdrawn before it became work.", "ar": "سُحب قبل أن يتحول إلى عمل." },
+          "label": {
+            "en": "Cancelled",
+            "ar": "ملغى"
+          },
+          "description": {
+            "en": "Withdrawn before it became work.",
+            "ar": "سُحب قبل أن يتحول إلى عمل."
+          },
           "to": [],
           "terminal": true
         }
@@ -67,35 +124,413 @@
     "project": {
       "initial": "not_started",
       "states": {
-        "not_started": { "label": { "en": "Not started", "ar": "لم يبدأ" }, "to": ["planning", "in_progress", "on_hold", "cancelled"], "active": false },
-        "planning": { "label": { "en": "Planning", "ar": "التخطيط" }, "to": ["in_progress", "waiting_for_client", "on_hold", "cancelled"], "active": true },
-        "in_progress": { "label": { "en": "In progress", "ar": "قيد التنفيذ" }, "to": ["waiting_for_client", "review", "on_hold", "completed", "cancelled"], "active": true },
-        "waiting_for_client": { "label": { "en": "Waiting for the client", "ar": "بانتظار العميل" }, "to": ["in_progress", "review", "on_hold", "cancelled"], "active": true },
-        "review": { "label": { "en": "In review", "ar": "قيد المراجعة" }, "to": ["in_progress", "waiting_for_client", "completed", "on_hold", "cancelled"], "active": true },
-        "completed": { "label": { "en": "Completed", "ar": "مكتمل" }, "to": [], "terminal": true, "active": false },
-        "on_hold": { "label": { "en": "On hold", "ar": "متوقف مؤقتًا" }, "to": ["planning", "in_progress", "waiting_for_client", "review", "cancelled"], "active": false },
-        "cancelled": { "label": { "en": "Cancelled", "ar": "ملغى" }, "to": [], "terminal": true, "active": false }
+        "not_started": {
+          "label": {
+            "en": "Not started",
+            "ar": "لم يبدأ"
+          },
+          "to": [
+            "planning",
+            "in_progress",
+            "on_hold",
+            "cancelled"
+          ],
+          "active": false
+        },
+        "planning": {
+          "label": {
+            "en": "Planning",
+            "ar": "التخطيط"
+          },
+          "to": [
+            "in_progress",
+            "waiting_for_client",
+            "on_hold",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "in_progress": {
+          "label": {
+            "en": "In progress",
+            "ar": "قيد التنفيذ"
+          },
+          "to": [
+            "waiting_for_client",
+            "review",
+            "on_hold",
+            "completed",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "waiting_for_client": {
+          "label": {
+            "en": "Waiting for the client",
+            "ar": "بانتظار العميل"
+          },
+          "to": [
+            "in_progress",
+            "review",
+            "on_hold",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "review": {
+          "label": {
+            "en": "In review",
+            "ar": "قيد المراجعة"
+          },
+          "to": [
+            "in_progress",
+            "waiting_for_client",
+            "completed",
+            "on_hold",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "completed": {
+          "label": {
+            "en": "Completed",
+            "ar": "مكتمل"
+          },
+          "to": [],
+          "terminal": true,
+          "active": false
+        },
+        "on_hold": {
+          "label": {
+            "en": "On hold",
+            "ar": "متوقف مؤقتًا"
+          },
+          "to": [
+            "planning",
+            "in_progress",
+            "waiting_for_client",
+            "review",
+            "cancelled"
+          ],
+          "active": false
+        },
+        "cancelled": {
+          "label": {
+            "en": "Cancelled",
+            "ar": "ملغى"
+          },
+          "to": [],
+          "terminal": true,
+          "active": false
+        }
       }
     },
     "pipelineInstance": {
       "initial": "not_started",
       "states": {
-        "not_started": { "label": { "en": "Not started", "ar": "لم تبدأ" }, "to": ["in_progress", "blocked", "cancelled"], "active": false },
-        "in_progress": { "label": { "en": "In progress", "ar": "قيد التنفيذ" }, "to": ["blocked", "completed", "cancelled"], "active": true },
-        "blocked": { "label": { "en": "Blocked", "ar": "متعثرة" }, "to": ["in_progress", "cancelled"], "active": true },
-        "completed": { "label": { "en": "Completed", "ar": "مكتملة" }, "to": [], "terminal": true, "active": false },
-        "cancelled": { "label": { "en": "Cancelled", "ar": "ملغاة" }, "to": [], "terminal": true, "active": false }
+        "not_started": {
+          "label": {
+            "en": "Not started",
+            "ar": "لم تبدأ"
+          },
+          "to": [
+            "in_progress",
+            "blocked",
+            "cancelled"
+          ],
+          "active": false
+        },
+        "in_progress": {
+          "label": {
+            "en": "In progress",
+            "ar": "قيد التنفيذ"
+          },
+          "to": [
+            "blocked",
+            "completed",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "blocked": {
+          "label": {
+            "en": "Blocked",
+            "ar": "متعثرة"
+          },
+          "to": [
+            "in_progress",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "completed": {
+          "label": {
+            "en": "Completed",
+            "ar": "مكتملة"
+          },
+          "to": [],
+          "terminal": true,
+          "active": false
+        },
+        "cancelled": {
+          "label": {
+            "en": "Cancelled",
+            "ar": "ملغاة"
+          },
+          "to": [],
+          "terminal": true,
+          "active": false
+        }
       }
     },
     "workflowInstance": {
       "initial": "not_started",
       "states": {
-        "not_started": { "label": { "en": "Not started", "ar": "لم يبدأ" }, "to": ["in_progress", "blocked", "cancelled"], "active": false },
-        "in_progress": { "label": { "en": "In progress", "ar": "قيد التنفيذ" }, "to": ["awaiting_approval", "blocked", "completed", "cancelled"], "active": true },
-        "awaiting_approval": { "label": { "en": "Awaiting approval", "ar": "بانتظار الموافقة" }, "to": ["in_progress", "completed", "blocked", "cancelled"], "active": true },
-        "blocked": { "label": { "en": "Blocked", "ar": "متعثر" }, "to": ["in_progress", "cancelled"], "active": true },
-        "completed": { "label": { "en": "Completed", "ar": "مكتمل" }, "to": [], "terminal": true, "active": false },
-        "cancelled": { "label": { "en": "Cancelled", "ar": "ملغى" }, "to": [], "terminal": true, "active": false }
+        "not_started": {
+          "label": {
+            "en": "Not started",
+            "ar": "لم يبدأ"
+          },
+          "to": [
+            "in_progress",
+            "blocked",
+            "cancelled"
+          ],
+          "active": false
+        },
+        "in_progress": {
+          "label": {
+            "en": "In progress",
+            "ar": "قيد التنفيذ"
+          },
+          "to": [
+            "awaiting_approval",
+            "blocked",
+            "completed",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "awaiting_approval": {
+          "label": {
+            "en": "Awaiting approval",
+            "ar": "بانتظار الموافقة"
+          },
+          "to": [
+            "in_progress",
+            "completed",
+            "blocked",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "blocked": {
+          "label": {
+            "en": "Blocked",
+            "ar": "متعثر"
+          },
+          "to": [
+            "in_progress",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "completed": {
+          "label": {
+            "en": "Completed",
+            "ar": "مكتمل"
+          },
+          "to": [],
+          "terminal": true,
+          "active": false
+        },
+        "cancelled": {
+          "label": {
+            "en": "Cancelled",
+            "ar": "ملغى"
+          },
+          "to": [],
+          "terminal": true,
+          "active": false
+        }
+      }
+    },
+    "task": {
+      "initial": "pending",
+      "states": {
+        "pending": {
+          "label": {
+            "en": "Pending",
+            "ar": "قيد الانتظار"
+          },
+          "description": {
+            "en": "Created, and waiting on something it depends on.",
+            "ar": "أُنشئت وتنتظر ما تعتمد عليه."
+          },
+          "to": [
+            "ready",
+            "blocked",
+            "cancelled"
+          ],
+          "active": false
+        },
+        "ready": {
+          "label": {
+            "en": "Ready",
+            "ar": "جاهزة"
+          },
+          "description": {
+            "en": "Everything it needs exists. Nobody has picked it up.",
+            "ar": "كل ما تحتاجه متوفر. لم يلتقطها أحد بعد."
+          },
+          "to": [
+            "assigned",
+            "blocked",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "assigned": {
+          "label": {
+            "en": "Assigned",
+            "ar": "مُسندة"
+          },
+          "description": {
+            "en": "It has an executor — a person or an agent.",
+            "ar": "لها منفّذ — شخص أو وكيل."
+          },
+          "to": [
+            "in_progress",
+            "ready",
+            "blocked",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "in_progress": {
+          "label": {
+            "en": "In progress",
+            "ar": "قيد التنفيذ"
+          },
+          "description": {
+            "en": "Being worked on.",
+            "ar": "العمل جارٍ عليها."
+          },
+          "to": [
+            "waiting_for_input",
+            "review",
+            "blocked",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "waiting_for_input": {
+          "label": {
+            "en": "Waiting for input",
+            "ar": "بانتظار مُدخل"
+          },
+          "description": {
+            "en": "Stopped for something somebody else has to supply.",
+            "ar": "متوقفة بانتظار شيء يقدّمه طرف آخر."
+          },
+          "to": [
+            "in_progress",
+            "blocked",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "review": {
+          "label": {
+            "en": "In review",
+            "ar": "قيد المراجعة"
+          },
+          "description": {
+            "en": "Output submitted. QA and, where required, a person.",
+            "ar": "سُلّم الناتج. الجودة، ومن يوافق عند اللزوم."
+          },
+          "to": [
+            "approved",
+            "rejected",
+            "blocked",
+            "cancelled"
+          ],
+          "active": true,
+          "requiresOutput": true
+        },
+        "rejected": {
+          "label": {
+            "en": "Rejected",
+            "ar": "مرفوضة"
+          },
+          "description": {
+            "en": "Sent back with a reason. Not the end — the rework path.",
+            "ar": "أُعيدت مع السبب. ليست النهاية — بل مسار إعادة العمل."
+          },
+          "to": [
+            "in_progress",
+            "blocked",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "approved": {
+          "label": {
+            "en": "Approved",
+            "ar": "معتمدة"
+          },
+          "description": {
+            "en": "QA passed and, where required, a person signed it.",
+            "ar": "اجتازت الجودة، ووقّع عليها شخص عند اللزوم."
+          },
+          "to": [
+            "completed",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "completed": {
+          "label": {
+            "en": "Completed",
+            "ar": "مكتملة"
+          },
+          "description": {
+            "en": "Done. Whatever depends on it may now start.",
+            "ar": "انتهت. ما يعتمد عليها يمكن أن يبدأ الآن."
+          },
+          "to": [],
+          "terminal": true,
+          "active": false
+        },
+        "blocked": {
+          "label": {
+            "en": "Blocked",
+            "ar": "متعثرة"
+          },
+          "description": {
+            "en": "Something is in the way, and the record says what.",
+            "ar": "هناك ما يعيقها، والسجل يوضح ما هو."
+          },
+          "to": [
+            "ready",
+            "in_progress",
+            "cancelled"
+          ],
+          "active": true
+        },
+        "cancelled": {
+          "label": {
+            "en": "Cancelled",
+            "ar": "ملغاة"
+          },
+          "description": {
+            "en": "Called off. It does not come back.",
+            "ar": "أُلغيت. ولا تعود."
+          },
+          "to": [],
+          "terminal": true,
+          "active": false
+        }
       }
     }
   }
