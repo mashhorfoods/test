@@ -415,7 +415,13 @@ function buildPage(file) {
    Order matters: pricing and i18n write index.html, story writes story.html,
    and pages reads the finished index.html as its shell. */
 console.log('— content —');
+/* The catalogue first: it validates the service architecture and writes the
+   projection the builder is rendered from, so a broken reference or a
+   dependency cycle stops the build here rather than shipping a builder that
+   lets a visitor assemble a scope nobody can execute. */
+require('./tools/build-catalogue.js');
 require('./tools/build-pricing.js');
+require('./tools/build-builder.js');
 require('./tools/build-i18n.js');
 require('./tools/build-story.js');
 require('./tools/build-challenge.js');

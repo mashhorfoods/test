@@ -1,0 +1,1166 @@
+{
+  "_comment": [
+    "FEATURES — Social Media Management (svc.social). Schema commentary lives",
+    "once, in features.branding.json.",
+    "",
+    "THIS SERVICE IS A MONTHLY LOOP, so most rows are priced per month or per",
+    "item per month. `recurrence` says which; the builder renders monthly",
+    "totals separately from one-time ones, because adding them together would",
+    "be a number that means nothing.",
+    "",
+    "TWO NAMING COLLISIONS RESOLVED HERE (docs/124 §2). `Copywriting` was used",
+    "for organic social copy AND for paid ad copy; they are different work",
+    "with different approval paths, so they stay two features —",
+    "feat.social.copywriting and feat.marketing.ad_copy. `Post design` /",
+    "`Design` / `Graphic Design` were three names for one thing and are now",
+    "one: feat.social.post_design."
+  ],
+  "service": "svc.social",
+  "features": [
+    {
+      "id": "feat.social.account_setup",
+      "name": {
+        "en": "Account creation and setup",
+        "ar": "إنشاء الحسابات وإعدادها"
+      },
+      "description": {
+        "en": "Creating or repairing the accounts, filling out every profile field, and getting publishing access.",
+        "ar": "إنشاء الحسابات أو إصلاحها، وتعبئة كل حقول الملف، والحصول على صلاحية النشر."
+      },
+      "purpose": {
+        "en": "Half of a weak presence is an unfinished profile.",
+        "ar": "نصف ضعف الحضور سببه ملف غير مكتمل."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "once",
+      "inputs": [
+        "The platform list",
+        "Existing account access, or the decision to create new ones",
+        "Profile copy and imagery"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.social_profile"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.provision",
+      "executionSteps": [
+        "Audit what already exists before creating anything — duplicate accounts are worse than none.",
+        "Create or claim, with the client as owner and us as a manager.",
+        "Fill every profile field, including the ones nobody fills.",
+        "Enable two-factor authentication on the client's own device."
+      ],
+      "tools": [
+        "Platform business tools",
+        "Password manager"
+      ],
+      "outputs": [
+        "Accounts the client owns and we can publish to"
+      ],
+      "deliverables": [
+        "Account list with roles",
+        "Completed profiles"
+      ],
+      "qualityChecks": [
+        "Client is the owner on every account",
+        "Two-factor on, with the client holding the second factor",
+        "No duplicate or orphaned account left live"
+      ],
+      "completionCriteria": "A test post published and removed on every in-scope platform.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 6
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.platform_management",
+      "name": {
+        "en": "Platform management",
+        "ar": "إدارة المنصات"
+      },
+      "description": {
+        "en": "Running the account day to day on each platform in scope.",
+        "ar": "تشغيل الحساب يوميًا على كل منصة ضمن النطاق."
+      },
+      "purpose": {
+        "en": "The unit a social package is actually sized by.",
+        "ar": "الوحدة التي تُقاس بها باقة التواصل فعليًا."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "Publishing access",
+        "The agreed platform list"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.social.account_setup"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.recurring_service",
+      "executionSteps": [
+        "Keep each platform's profile current.",
+        "Adapt each month's content to each platform rather than cross-posting one file.",
+        "Watch each platform's own changes and say when one affects the plan."
+      ],
+      "tools": [
+        "Platform business tools",
+        "Scheduler"
+      ],
+      "outputs": [
+        "Each platform kept current"
+      ],
+      "deliverables": [
+        "An active, current account per platform"
+      ],
+      "qualityChecks": [
+        "No platform left without a post for longer than the plan allows",
+        "Nothing cross-posted at the wrong ratio"
+      ],
+      "completionCriteria": "The month's plan delivered on every platform in scope.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 8
+      },
+      "pricing": {
+        "type": "unit",
+        "from": 60,
+        "period": "monthly",
+        "unit": {
+          "en": "platform",
+          "ar": "منصة"
+        },
+        "unitPlural": {
+          "en": "platforms",
+          "ar": "منصات"
+        },
+        "defaultQty": 2,
+        "minQty": 1,
+        "maxQty": 6
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.content_calendar",
+      "name": {
+        "en": "Content calendar",
+        "ar": "تقويم المحتوى"
+      },
+      "description": {
+        "en": "What goes out, on which platform, on which day — agreed before the month starts.",
+        "ar": "ما يُنشر وعلى أي منصة وفي أي يوم — يُتفق عليه قبل بدء الشهر."
+      },
+      "purpose": {
+        "en": "So nobody is writing a post on the morning it goes out.",
+        "ar": "حتى لا يُكتب المنشور صباح يوم نشره."
+      },
+      "category": "planning",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "The platform list",
+        "The month's post count",
+        "Client dates that must be covered",
+        "Last month's report, from month two"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.social.content_strategy"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.plan",
+      "executionSteps": [
+        "Start from the client's own calendar — launches, seasons, holidays.",
+        "Assign a purpose to every slot, not just a topic.",
+        "Send it for approval before anything is produced."
+      ],
+      "tools": [
+        "Calendar or sheet",
+        "Scheduler"
+      ],
+      "outputs": [
+        "An approved month of slots"
+      ],
+      "deliverables": [
+        "The calendar, in a form the client can comment on"
+      ],
+      "qualityChecks": [
+        "Post count matches the package",
+        "Every client-supplied date covered",
+        "No slot without a stated purpose"
+      ],
+      "completionCriteria": "Client has approved the calendar before production starts.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per month."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 5
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 60,
+        "period": "monthly"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.content_strategy",
+      "name": {
+        "en": "Content strategy",
+        "ar": "استراتيجية المحتوى"
+      },
+      "description": {
+        "en": "Who we are talking to, what we say, in what proportions, and how we will know it worked.",
+        "ar": "لمن نتحدث، وماذا نقول، وبأي نسب، وكيف نعرف أنه نجح."
+      },
+      "purpose": {
+        "en": "So the calendar has a reason and not just a rhythm.",
+        "ar": "حتى يكون للتقويم سبب لا إيقاع فقط."
+      },
+      "category": "planning",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "quarterly",
+      "inputs": [
+        "Business objective",
+        "Audience",
+        "Competitor accounts",
+        "Whatever historical performance exists"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.plan",
+      "executionSteps": [
+        "Read the existing account before proposing anything.",
+        "Define pillars with a proportion each, so the mix is decidable rather than argued monthly.",
+        "Set a target that can be measured with a number the platform actually reports.",
+        "Write the tone in examples, not adjectives."
+      ],
+      "tools": [
+        "Platform analytics",
+        "Document editor"
+      ],
+      "outputs": [
+        "An approved strategy"
+      ],
+      "deliverables": [
+        "Strategy document with pillars, proportions, tone examples and a target"
+      ],
+      "qualityChecks": [
+        "Every pillar has a proportion",
+        "The target is a number the platform reports",
+        "Tone shown with real example sentences in both languages where the brand is bilingual"
+      ],
+      "completionCriteria": "Client has approved the strategy and the first calendar is built from it.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Per strategy period."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 6,
+        "max": 20
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 180
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.copywriting",
+      "name": {
+        "en": "Content writing",
+        "ar": "كتابة المحتوى"
+      },
+      "description": {
+        "en": "The words for each post, written in the brand's voice, in the languages you publish in.",
+        "ar": "نصوص كل منشور، بصوت العلامة، وباللغات التي تنشر بها."
+      },
+      "purpose": {
+        "en": "The half of a post that people actually read.",
+        "ar": "النصف الذي يقرأه الناس فعلًا من المنشور."
+      },
+      "category": "content",
+      "selectable": true,
+      "addonGroup": "addon.content",
+      "addonOrder": 4,
+      "_addonName": "THE PUBLISHED ADD-ON WORDING, kept exactly as it shipped. An add-on names the UNIT YOU BUY, which is not always the capability's own name — you buy 'a single social media post design', the capability is 'social media post design'. Preserving these verbatim is also what makes this change provably display-neutral: the generated add-ons section is byte-for-byte the hand-typed one it replaces, except for the single defect it fixes.",
+      "addonName": {
+        "en": "Content writing",
+        "ar": "كتابة محتوى"
+      },
+      "recurrence": "monthly",
+      "inputs": [
+        "Approved calendar",
+        "Tone examples",
+        "Any product or offer detail that must be accurate"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.social.content_calendar"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.content",
+      "executionSteps": [
+        "Write to the slot's stated purpose, not to a word count.",
+        "Write Arabic as Arabic, never as a translation of the English draft.",
+        "Check every factual claim against something the client supplied.",
+        "Leave the call to action explicit."
+      ],
+      "tools": [
+        "Document editor"
+      ],
+      "outputs": [
+        "Approved copy per post"
+      ],
+      "deliverables": [
+        "Copy in every language in scope, per post"
+      ],
+      "qualityChecks": [
+        "No claim that cannot be traced to something the client wrote",
+        "Arabic reads as written, not translated",
+        "Within each platform's own limit",
+        "Prices, dates and phone numbers proofread against the source"
+      ],
+      "completionCriteria": "Copy approved for every post in the month's calendar.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per piece."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 0.4,
+        "max": 1.2
+      },
+      "pricing": {
+        "type": "unit",
+        "from": 20,
+        "unit": {
+          "en": "piece",
+          "ar": "نص"
+        },
+        "unitPlural": {
+          "en": "pieces",
+          "ar": "نصوص"
+        },
+        "defaultQty": 8,
+        "minQty": 1,
+        "maxQty": 60
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.post_design",
+      "name": {
+        "en": "Post design",
+        "ar": "تصميم المنشورات"
+      },
+      "description": {
+        "en": "The visual for each post, made in the brand's system.",
+        "ar": "العنصر البصري لكل منشور، ضمن نظام العلامة."
+      },
+      "purpose": {
+        "en": "What stops the scroll.",
+        "ar": "ما يوقف التمرير."
+      },
+      "category": "content",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "Approved copy",
+        "Brand assets",
+        "Any supplied photography"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.social_design_system",
+          "feat.social.copywriting"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_asset",
+      "executionSteps": [
+        "Design from the brand's layouts where they exist.",
+        "Set the copy in the design, at its real length.",
+        "Export at each platform's stated size."
+      ],
+      "tools": [
+        "Vector editor",
+        "Image editor"
+      ],
+      "outputs": [
+        "Approved artwork per post"
+      ],
+      "deliverables": [
+        "Artwork at platform size, per post, per platform"
+      ],
+      "qualityChecks": [
+        "Legible at feed size on a phone",
+        "Nothing important under a platform overlay",
+        "Arabic shaped and laid out right-to-left"
+      ],
+      "completionCriteria": "Artwork approved for every post in the month's calendar.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per design."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 0.5,
+        "max": 1.5
+      },
+      "pricing": {
+        "type": "unit",
+        "from": 15,
+        "period": "monthly",
+        "unit": {
+          "en": "post",
+          "ar": "منشور"
+        },
+        "unitPlural": {
+          "en": "posts",
+          "ar": "منشورات"
+        },
+        "defaultQty": 8,
+        "minQty": 1,
+        "maxQty": 60
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.reels",
+      "name": {
+        "en": "Reels",
+        "ar": "Reels"
+      },
+      "_latinName": "The platform's own product name. It is written Reels in Arabic too, on this site and everywhere else, so the two labels are identical on purpose rather than by an untranslated oversight.",
+      "latinName": true,
+      "description": {
+        "en": "Short vertical video, cut and captioned for the feed.",
+        "ar": "فيديو رأسي قصير، يُقصّ ويُترجم للعرض في التغذية."
+      },
+      "purpose": {
+        "en": "The format the platforms currently reward most.",
+        "ar": "الصيغة التي تكافئها المنصات أكثر حاليًا."
+      },
+      "category": "content",
+      "selectable": true,
+      "addonGroup": "addon.content",
+      "addonOrder": 5,
+      "_addonName": "THE PUBLISHED ADD-ON WORDING, kept exactly as it shipped. An add-on names the UNIT YOU BUY, which is not always the capability's own name — you buy 'a single social media post design', the capability is 'social media post design'. Preserving these verbatim is also what makes this change provably display-neutral: the generated add-ons section is byte-for-byte the hand-typed one it replaces, except for the single defect it fixes.",
+      "addonName": {
+        "en": "Reel design",
+        "ar": "تصميم Reel"
+      },
+      "recurrence": "monthly",
+      "inputs": [
+        "Footage, ours or the client's",
+        "A script or a hook",
+        "Music with a licence that covers commercial use"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.videography",
+          "feat.social.content_calendar"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.content",
+      "executionSteps": [
+        "Write the first three seconds before cutting anything else.",
+        "Cut vertical, at the platform's own ratio.",
+        "Burn in captions — most of the audience watches with sound off.",
+        "Use only music the client is licensed to use commercially."
+      ],
+      "tools": [
+        "Video editor",
+        "Caption tool"
+      ],
+      "outputs": [
+        "Approved reel"
+      ],
+      "deliverables": [
+        "Vertical video file per reel",
+        "Caption text"
+      ],
+      "qualityChecks": [
+        "Readable with sound off",
+        "Nothing important inside the platform's UI overlay",
+        "Music licence confirmed, not assumed",
+        "Arabic captions shaped and right-to-left"
+      ],
+      "completionCriteria": "Every ordered reel approved and scheduled.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per reel."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1.5,
+        "max": 5
+      },
+      "pricing": {
+        "type": "unit",
+        "from": 45,
+        "period": "monthly",
+        "unit": {
+          "en": "reel",
+          "ar": "ريل"
+        },
+        "unitPlural": {
+          "en": "reels",
+          "ar": "ريلز"
+        },
+        "defaultQty": 4,
+        "minQty": 1,
+        "maxQty": 30
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.stories",
+      "name": {
+        "en": "Stories",
+        "ar": "القصص"
+      },
+      "description": {
+        "en": "Daily short-lived posts — the account's pulse between the planned posts.",
+        "ar": "منشورات يومية قصيرة العمر — نبض الحساب بين المنشورات المجدولة."
+      },
+      "purpose": {
+        "en": "What makes an account look alive rather than scheduled.",
+        "ar": "ما يجعل الحساب يبدو حيًا لا مجدولًا."
+      },
+      "category": "content",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "Brand assets",
+        "Whatever the client is actually doing this week"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.social.publishing"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.content",
+      "executionSteps": [
+        "Agree a weekly rhythm rather than a story count.",
+        "Produce to the brand's story frames.",
+        "Use the platform's own features — polls, questions — where they earn a reply."
+      ],
+      "tools": [
+        "Vector editor",
+        "Platform app"
+      ],
+      "outputs": [
+        "Published stories"
+      ],
+      "deliverables": [
+        "Story artwork",
+        "Highlights kept where agreed"
+      ],
+      "qualityChecks": [
+        "Nothing important under the platform's own UI",
+        "Links working where used",
+        "Highlights covers consistent"
+      ],
+      "completionCriteria": "The agreed weekly rhythm maintained for the month.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Stories expire; corrections are republished, not revised."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 8
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 50,
+        "period": "monthly"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.video_editing",
+      "name": {
+        "en": "Video editing",
+        "ar": "مونتاج الفيديو"
+      },
+      "description": {
+        "en": "Editing supplied or shot footage into a finished piece, with captions and grading.",
+        "ar": "تحرير اللقطات المصوَّرة أو المسلَّمة إلى مادة نهائية، مع الترجمة والتدرّج اللوني."
+      },
+      "purpose": {
+        "en": "For video longer or more considered than a reel.",
+        "ar": "للفيديو الأطول أو الأكثر إعدادًا من الريل."
+      },
+      "category": "content",
+      "selectable": true,
+      "addonGroup": "addon.content",
+      "addonOrder": 6,
+      "_addonName": "THE PUBLISHED ADD-ON WORDING, kept exactly as it shipped. An add-on names the UNIT YOU BUY, which is not always the capability's own name — you buy 'a single social media post design', the capability is 'social media post design'. Preserving these verbatim is also what makes this change provably display-neutral: the generated add-ons section is byte-for-byte the hand-typed one it replaces, except for the single defect it fixes.",
+      "addonName": {
+        "en": "Video editing",
+        "ar": "مونتاج فيديو"
+      },
+      "recurrence": "per-item",
+      "inputs": [
+        "Footage",
+        "A script or structure",
+        "Target length and platform",
+        "Licensed music"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.videography"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.content",
+      "executionSteps": [
+        "Assemble to the structure before touching the grade.",
+        "Show a rough cut for approval before finishing.",
+        "Grade, mix and caption.",
+        "Export per destination, not once."
+      ],
+      "tools": [
+        "Video editor",
+        "Audio tools"
+      ],
+      "outputs": [
+        "Finished video"
+      ],
+      "deliverables": [
+        "Master file",
+        "Per-platform exports",
+        "Caption file"
+      ],
+      "qualityChecks": [
+        "Audio levels consistent across the whole piece",
+        "Captions accurate, and shaped correctly in Arabic",
+        "Music licence confirmed",
+        "Exports checked on a phone, not only on the editing monitor"
+      ],
+      "completionCriteria": "Final approved and every export delivered.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "One at rough cut, one after. Changes after the final are quoted."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 12
+      },
+      "pricing": {
+        "type": "unit",
+        "from": 60,
+        "unit": {
+          "en": "video",
+          "ar": "فيديو"
+        },
+        "unitPlural": {
+          "en": "videos",
+          "ar": "مقاطع"
+        },
+        "defaultQty": 1,
+        "minQty": 1,
+        "maxQty": 20
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.publishing",
+      "name": {
+        "en": "Publishing and scheduling",
+        "ar": "النشر والجدولة"
+      },
+      "description": {
+        "en": "Scheduling every approved item and confirming it actually went out.",
+        "ar": "جدولة كل عنصر معتمد والتأكد من نشره فعليًا."
+      },
+      "purpose": {
+        "en": "A scheduled post that silently failed is the same as no post.",
+        "ar": "المنشور المجدول الذي فشل صامتًا كأنه لم يُنشر."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "Approved copy and artwork",
+        "Approved calendar",
+        "Publishing access"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.social.account_setup"
+        ],
+        "recommends": [
+          "feat.social.content_calendar"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.recurring_service",
+      "executionSteps": [
+        "Schedule to the approved calendar.",
+        "Check each item's preview on the platform before it goes.",
+        "Verify publication on the platform itself, not in the scheduler's status column.",
+        "Republish anything that failed, the same day."
+      ],
+      "tools": [
+        "Scheduler",
+        "Platform apps"
+      ],
+      "outputs": [
+        "Published posts"
+      ],
+      "deliverables": [
+        "A published month matching the approved calendar"
+      ],
+      "qualityChecks": [
+        "Every scheduled item verified live on the platform",
+        "Nothing published to the wrong account",
+        "Failures caught the same day, not at the monthly report"
+      ],
+      "completionCriteria": "Every item in the month's calendar confirmed live.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "full",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1.5,
+        "max": 6
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.community_monitoring",
+      "name": {
+        "en": "Community monitoring",
+        "ar": "متابعة التفاعل والتعليقات"
+      },
+      "description": {
+        "en": "Watching comments and messages, answering the routine ones and escalating the rest.",
+        "ar": "متابعة التعليقات والرسائل، والرد على المعتاد منها وتصعيد ما عداه."
+      },
+      "purpose": {
+        "en": "So a question does not sit unanswered for a week.",
+        "ar": "حتى لا يبقى سؤال دون إجابة لأسبوع."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "Inbox access",
+        "An agreed response window",
+        "Answers to the questions that recur"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.social.account_setup"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.recurring_service",
+      "executionSteps": [
+        "Check on the agreed schedule.",
+        "Answer from the agreed answer list.",
+        "Escalate anything outside it rather than guessing.",
+        "Hide or report abuse to the agreed rule."
+      ],
+      "tools": [
+        "Platform inboxes"
+      ],
+      "outputs": [
+        "An answered inbox"
+      ],
+      "deliverables": [
+        "Responses within the agreed window",
+        "An escalation log"
+      ],
+      "qualityChecks": [
+        "No message older than the agreed window",
+        "Nothing answered outside the agreed answer list",
+        "Complaints escalated the same day"
+      ],
+      "completionCriteria": "The month closes with no message outside the response window.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 8
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 60,
+        "period": "monthly"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.community_management",
+      "name": {
+        "en": "Community management",
+        "ar": "إدارة مجتمع المتابعين"
+      },
+      "description": {
+        "en": "Monitoring, plus starting conversations, handling complaints and growing the audience deliberately.",
+        "ar": "المتابعة، مع بدء المحادثات ومعالجة الشكاوى وتنمية الجمهور عن قصد."
+      },
+      "purpose": {
+        "en": "The difference between answering and being present.",
+        "ar": "الفرق بين الرد وبين الحضور."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "Inbox access",
+        "An escalation path with a named person on the client's side",
+        "A complaints policy"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.social.account_setup"
+        ],
+        "recommends": [
+          "feat.social.publishing"
+        ],
+        "conflicts": [],
+        "supersedes": [
+          "feat.social.community_monitoring"
+        ]
+      },
+      "workflow": "wf.recurring_service",
+      "executionSteps": [
+        "Everything in monitoring.",
+        "Engage with the accounts worth engaging with, deliberately, not by volume.",
+        "Handle complaints in public briefly and in private fully.",
+        "Report anything that looks like a pattern rather than an incident."
+      ],
+      "tools": [
+        "Platform inboxes",
+        "Platform business tools"
+      ],
+      "outputs": [
+        "An actively managed community"
+      ],
+      "deliverables": [
+        "Responses within the window",
+        "Outbound engagement",
+        "An escalation and complaints log"
+      ],
+      "qualityChecks": [
+        "No complaint left in public without a reply",
+        "Escalations reached a named person, not an inbox",
+        "No engagement bought or automated"
+      ],
+      "completionCriteria": "The month closes with every complaint resolved or handed over with a named owner.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 5,
+        "max": 16
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 120,
+        "period": "monthly"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.hashtag_research",
+      "name": {
+        "en": "Hashtag and keyword research",
+        "ar": "بحث الوسوم والكلمات المفتاحية"
+      },
+      "description": {
+        "en": "Finding the tags and search terms your audience actually uses, and refreshing them as they change.",
+        "ar": "إيجاد الوسوم والكلمات التي يستخدمها جمهورك فعلًا، وتحديثها مع تغيّرها."
+      },
+      "purpose": {
+        "en": "How people who do not follow you find you.",
+        "ar": "الطريقة التي يجدك بها من لا يتابعك."
+      },
+      "category": "planning",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "Sector and audience",
+        "The languages the audience searches in",
+        "Competitor accounts"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.social.content_strategy"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.plan",
+      "executionSteps": [
+        "Research in every language the audience actually searches in, Arabic included.",
+        "Build sets by size band rather than one list of the largest tags.",
+        "Check each set against the platform's own current behaviour, not last year's advice.",
+        "Retire tags that stopped working."
+      ],
+      "tools": [
+        "Platform search",
+        "Analytics"
+      ],
+      "outputs": [
+        "Tag and keyword sets"
+      ],
+      "deliverables": [
+        "Sets grouped by size band, per language"
+      ],
+      "qualityChecks": [
+        "Every tag checked as currently live and not restricted",
+        "Arabic terms researched natively, not translated",
+        "No set left unchanged for more than a quarter"
+      ],
+      "completionCriteria": "Sets delivered and applied to the month's calendar.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Refreshed on the agreed cycle."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 4
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 40,
+        "period": "monthly"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.report",
+      "name": {
+        "en": "Monthly performance report",
+        "ar": "تقرير أداء شهري"
+      },
+      "description": {
+        "en": "What was published, what it did, and what we are changing because of it.",
+        "ar": "ما نُشر، وما الذي حققه، وما الذي سنغيّره بناءً عليه."
+      },
+      "purpose": {
+        "en": "So the spend is judged on a number rather than a feeling.",
+        "ar": "حتى يُحكم على الإنفاق برقم لا بانطباع."
+      },
+      "category": "reporting",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "A complete calendar month of published activity",
+        "Platform analytics access",
+        "The strategy's stated target"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.social.publishing"
+        ],
+        "recommends": [
+          "feat.social.content_strategy"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.report",
+      "executionSteps": [
+        "Pull the numbers from the platforms themselves.",
+        "Compare against the previous month and against the stated target, not against nothing.",
+        "Name the best and worst performing post and say why, in one line each.",
+        "End with what changes next month — a report with no decision in it is a receipt."
+      ],
+      "tools": [
+        "Platform analytics",
+        "Document editor"
+      ],
+      "outputs": [
+        "A monthly report"
+      ],
+      "deliverables": [
+        "Report document",
+        "Raw figures on request"
+      ],
+      "qualityChecks": [
+        "Every figure traceable to a platform screen",
+        "No metric included that nobody will act on",
+        "At least one decision stated for next month",
+        "Sent within the agreed number of days after month end"
+      ],
+      "completionCriteria": "Report sent and next month's plan carries at least one decision from it.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Corrections only."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1.5,
+        "max": 5
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.strategy_review",
+      "name": {
+        "en": "Monthly strategy review",
+        "ar": "مراجعة استراتيجية شهرية"
+      },
+      "description": {
+        "en": "A call to go through the report together and decide the next month.",
+        "ar": "مكالمة لمراجعة التقرير معًا وتحديد خطة الشهر التالي."
+      },
+      "purpose": {
+        "en": "Because a report nobody discusses changes nothing.",
+        "ar": "لأن تقريرًا لا يُناقش لا يغيّر شيئًا."
+      },
+      "category": "reporting",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "The month's report",
+        "The client's own view of what happened in the business"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.social.report"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.report",
+      "executionSteps": [
+        "Send the report before the call, not during it.",
+        "Open with the decision to be made, not with the numbers.",
+        "Write down what was agreed and send it the same day."
+      ],
+      "tools": [
+        "Video call",
+        "Document editor"
+      ],
+      "outputs": [
+        "Agreed decisions for the coming month"
+      ],
+      "deliverables": [
+        "A written note of what was agreed"
+      ],
+      "qualityChecks": [
+        "Report sent at least a day before",
+        "Every decision written down with an owner",
+        "Note sent the same day"
+      ],
+      "completionCriteria": "Decisions written, sent, and reflected in the next calendar.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "none",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 2
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 50,
+        "period": "monthly"
+      },
+      "status": "active"
+    }
+  ]
+}

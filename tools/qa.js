@@ -2577,6 +2577,174 @@ function serve() {
     await ctx.close();
   }
 
+
+  /* ---- 37 The builder cannot offer a scope nobody could execute ----------
+
+     The package builder lets a visitor assemble their own scope out of
+     sixty-eight features. The brief that commissioned it is explicit that it
+     "must not allow logically impossible scopes" — a website deployed but
+     never built, a retargeting campaign with no conversion tracking behind
+     it, a campaign optimised before it was set up.
+
+     The rules that prevent that live in `data-requires`, `data-supersedes`
+     and `data-conflicts` on each row, written there by
+     tools/build-builder.js from the catalogue. `tools/build-catalogue.js`
+     already refuses to build a catalogue whose references do not resolve —
+     so this is NOT a second copy of that check. It asks a different question:
+     did the rules SURVIVE THE JOURNEY onto the page? A reference that resolves
+     in the source and points at a row this page does not carry is a rule that
+     silently does nothing, which is the failure mode this project has now hit
+     eighteen times.
+
+     It reads the built page, not the source, for exactly that reason. */
+  {
+    const KINDS = new Set(['included', 'fixed', 'unit', 'project', 'quote']);
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const p = await ctx.newPage();
+
+    for (const page of PAGES) {
+      await p.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+      const rows = await p.evaluate(() => [...document.querySelectorAll('.c-pick[data-feature]')].map((li) => ({
+        id: li.dataset.feature,
+        service: li.dataset.service || '',
+        kind: li.dataset.priceType || '',
+        price: li.dataset.price || '',
+        requires: (li.getAttribute('data-requires') || '').split(/\s+/).filter(Boolean),
+        supersedes: (li.getAttribute('data-supersedes') || '').split(/\s+/).filter(Boolean),
+        conflicts: (li.getAttribute('data-conflicts') || '').split(/\s+/).filter(Boolean),
+        qty: (() => {
+          const q = li.querySelector('[data-qty]');
+          return q ? { value: Number(q.value), min: Number(q.min), max: Number(q.max) } : null;
+        })(),
+        digits: /\d/.test((li.querySelector('.c-pick__price') || {}).textContent || ''),
+      })));
+      if (!rows.length) continue;
+
+      const present = new Set(rows.map((r) => r.id));
+      for (const r of rows) {
+        for (const [rel, list] of [['requires', r.requires], ['supersedes', r.supersedes], ['conflicts', r.conflicts]]) {
+          for (const ref of list) {
+            if (!present.has(ref)) {
+              fail('HIGH', 'builder', `${page}: ${r.id} ${rel} ${ref}, which is not on this page — the rule does nothing`);
+            }
+            if (ref === r.id) fail('HIGH', 'builder', `${page}: ${r.id} ${rel} itself`);
+          }
+        }
+        if (!KINDS.has(r.kind)) {
+          fail('HIGH', 'builder', `${page}: ${r.id} has price kind "${r.kind}", which the builder cannot total`);
+        }
+        /* THE BRIEF'S OWN RULE: where a price cannot reasonably be
+           calculated, show a custom quote rather than invent a figure. */
+        if (r.kind === 'quote' && (r.price || r.digits)) {
+          fail('HIGH', 'builder', `${page}: ${r.id} is quote-only and still prints a figure`);
+        }
+        if (r.kind === 'unit') {
+          if (!r.qty) fail('HIGH', 'builder', `${page}: ${r.id} is priced per unit with no quantity control`);
+          else if (!(r.qty.min <= r.qty.value && r.qty.value <= r.qty.max)) {
+            fail('HIGH', 'builder', `${page}: ${r.id} opens at ${r.qty.value}, outside its own ${r.qty.min}–${r.qty.max}`);
+          }
+        }
+        if (!r.service) fail('HIGH', 'builder', `${page}: ${r.id} belongs to no service`);
+      }
+    }
+    await ctx.close();
+  }
+
+  /* ---- 38 Nothing internal reaches a visitor -----------------------------
+
+     The service catalogue behind the builder carries a great deal a visitor
+     must never meet: workflow ids, pipeline stages, execution steps, tool
+     lists, quality checks, effort estimates, automation ratings, internal
+     status. The brief is unambiguous — "do not expose workflow IDs,
+     automation logic, internal statuses, technical schemas, agent
+     terminology, or internal operational complexity to visitors."
+
+     tools/build-catalogue.js keeps that promise by ALLOWLIST: a field reaches
+     the public projection only by being named, so adding one upstream cannot
+     publish it by accident. This checks the promise was actually kept, in the
+     bytes that ship, because an allowlist is a mechanism and a mechanism can
+     be edited.
+
+     Feature ids themselves DO ship, on `data-feature`. That is deliberate and
+     is not what the rule is about: an id is the join a CRM, a quotation or an
+     agent needs, it is invisible on the page, and it says nothing about how
+     the work is done. Workflow ids say how. */
+  {
+    const FORBIDDEN = [
+      ['wf.', 'a workflow id'],
+      ['pipe.', 'a pipeline id'],
+      ['automationPotential', 'an automation rating'],
+      ['executionSteps', 'execution steps'],
+      ['qualityChecks', 'quality checks'],
+      ['completionCriteria', 'completion criteria'],
+      ['humanApprovalRequired', 'an approval flag'],
+      ['estimatedEffort', 'an effort estimate'],
+      ['revisionRules', 'internal revision rules'],
+      ['workflowOverrides', 'a workflow override'],
+    ];
+    for (const page of PAGES) {
+      const html = fs.readFileSync(path.join(DIST, page), 'utf8');
+      for (const [token, what] of FORBIDDEN) {
+        if (html.includes(token)) {
+          fail('HIGH', 'builder', `${page} ships ${what} ("${token}") — internal catalogue data reached a visitor`);
+        }
+      }
+    }
+  }
+
+  /* ---- 39 Every generated name names itself in both languages ------------
+
+     "Company Profile" shipped for weeks as a bare English string inside the
+     add-ons list, while its ten neighbours each carried the two-span pair the
+     rest of the site uses. It was hand-typed markup, so nothing could have
+     told anyone: there was no rule for it to break.
+
+     The add-ons and the builder are generated now, which removes the way that
+     defect was introduced. This removes the way it could come back — because
+     a generator is only as bilingual as its data, and a new row with a
+     missing `ar` would produce exactly the same silent English string. */
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const p = await ctx.newPage();
+    for (const page of PAGES) {
+      await p.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+      const bad = await p.evaluate(() => {
+        const out = [];
+        const SELECTORS = ['.c-addon__name', '.c-pick__label', '.c-build__name', '.c-addons__category'];
+        for (const sel of SELECTORS) {
+          for (const el of document.querySelectorAll(sel)) {
+            const en = el.querySelectorAll('[data-lang-copy="en"]').length;
+            const ar = el.querySelectorAll('[data-lang-copy="ar"]').length;
+            /* A heading can legitimately hold more than one pair — the add-on
+               category headings carry their name AND a hidden count, and the
+               first version of this check called all five of them defects.
+               What matters is that the two languages are matched, and that no
+               words sit OUTSIDE a pair. */
+            const clone = el.cloneNode(true);
+            clone.querySelectorAll('[data-lang-copy], [aria-hidden="true"]').forEach((x) => x.remove());
+            /* Digits and punctuation belong to no language. */
+            const loose = (clone.textContent || '').replace(/[\s\d.,:;/()·—–-]+/g, '');
+            if (en < 1 || ar < 1 || en !== ar || loose) {
+              out.push({
+                sel,
+                text: (el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 40),
+                en, ar, loose: loose.slice(0, 30),
+              });
+            }
+          }
+        }
+        return out;
+      });
+      for (const b of bad) {
+        const why = b.loose
+          ? `the words "${b.loose}" sit outside any language pair`
+          : `it carries ${b.en} English and ${b.ar} Arabic label(s)`;
+        fail('HIGH', 'i18n', `${page}: ${b.sel} "${b.text}" — ${why}; a generated name must say itself in both languages and in neither by accident`);
+      }
+    }
+    await ctx.close();
+  }
+
   await browser.close();
   server.close();
 

@@ -1,0 +1,564 @@
+/* =============================================================================
+   PACKAGE BUILDER — /pricing#build
+   The one interactive surface on this site that lets a visitor assemble
+   something rather than choose between things already assembled.
+
+   NOT .c-tier, AND NOT .c-addon.
+   A tier is a package someone else decided. An add-on is a module attached to
+   one. This is neither: it is a list of decisions, and the component it most
+   resembles is the site's own form, not its price cards. So it uses the row
+   idiom — control, name, description, price — at a density that survives
+   sixty-eight of them on one page, rather than sixty-eight cards.
+
+   THE LIST IS DISCLOSED, for the same measured reason the add-ons are: five
+   services' worth of features rendered open would be the longest thing on the
+   longest page of the site. Native <details>, so the whole catalogue is
+   present and readable with no JavaScript at all — which is the point. What
+   the script adds is the arithmetic and the dependency rules, never the
+   information.
+
+   THE SCOPE PANEL COMES FIRST ON A PHONE, and its totals line sticks under
+   the header. A running estimate a visitor cannot see while they tick is not
+   a running estimate; and a sticky panel is one line tall here, not a
+   floating card, so it cannot cover the row being read.
+   ============================================================================= */
+
+@layer components {
+
+  /* ---- the section ------------------------------------------------------ */
+
+  .c-build-wrap {
+    margin-block-start: var(--space-96);
+    padding-block-start: var(--space-64);
+    border-block-start: 1px solid var(--color-border-subtle);
+  }
+
+  .c-build-head {
+    max-width: 46rem;
+    margin-block-end: var(--space-48);
+  }
+
+  .c-build-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.2rem + 2.4vw, 2.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--space-16);
+    text-wrap: balance;
+  }
+
+  .c-build-lead {
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 42rem;
+  }
+
+  /* ---- layout ----------------------------------------------------------- */
+
+  .c-build {
+    margin: 0;
+  }
+
+  .c-build__grid {
+    display: grid;
+    /* minmax(0, 1fr) rather than the implicit auto track: a long unbroken
+       feature name must not widen the column past its share. The tier grid
+       learned this the expensive way. */
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-32);
+  }
+
+  @media (min-width: 60em) {
+    .c-build__grid {
+      grid-template-columns: minmax(0, 1fr) 21rem;
+      gap: var(--space-48);
+      align-items: start;
+    }
+  }
+
+  .c-build__services { min-width: 0; }
+
+  /* ---- one service ------------------------------------------------------ */
+
+  .c-build__service {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .c-build__service + .c-build__service {
+    margin-block-start: var(--space-16);
+  }
+
+  .c-build__summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-8) var(--space-16);
+    padding: var(--space-24);
+    cursor: pointer;
+    list-style: none;
+    /* 48px at the narrowest, because this is the control that opens the whole
+       thing and it is the first one a thumb meets. */
+    min-block-size: 48px;
+  }
+
+  .c-build__summary::-webkit-details-marker { display: none; }
+
+  .c-build__summary:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .c-build__name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    letter-spacing: -0.01em;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .c-build__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-8);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .c-build__chosen {
+    color: var(--color-text-accent);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The disclosure mark. A chevron drawn in CSS rather than an eleventh
+     inline SVG on a page that already carries a great many. */
+  .c-build__mark {
+    inline-size: 0.6rem;
+    block-size: 0.6rem;
+    border-inline-end: 2px solid currentcolor;
+    border-block-end: 2px solid currentcolor;
+    transform: rotate(45deg);
+    transform-origin: center;
+    transition: transform var(--dur-fast, 160ms) var(--ease-out);
+    flex: 0 0 auto;
+    opacity: 0.55;
+  }
+
+  .c-build__service[open] > .c-build__summary .c-build__mark {
+    transform: rotate(-135deg);
+  }
+
+  .c-build__panel {
+    padding: 0 var(--space-24) var(--space-24);
+    border-block-start: 1px solid var(--color-border-subtle);
+    padding-block-start: var(--space-24);
+  }
+
+  .c-build__desc,
+  .c-build__composed {
+    margin: 0 0 var(--space-24);
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    max-width: 44rem;
+  }
+
+  .c-build__note {
+    margin: 0 0 var(--space-24);
+    padding: var(--space-12) var(--space-16);
+    background: var(--color-surface-accent);
+    border-inline-start: 3px solid var(--color-border-accent);
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .c-build__included-title {
+    margin-block: var(--space-32) var(--space-12);
+    color: var(--color-text-muted);
+  }
+
+  /* ---- one choice ------------------------------------------------------- */
+
+  .c-build__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .c-pick {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    padding-block: var(--space-16);
+    border-block-start: 1px solid var(--color-border-subtle);
+  }
+
+  .c-pick:first-child { border-block-start: 0; padding-block-start: 0; }
+
+  .c-pick__control {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-12);
+    /* The whole row is the target, so it has to be one. */
+    min-block-size: 44px;
+    padding-block: var(--space-8);
+    cursor: pointer;
+  }
+
+  /* THE CONTROL IS STILL A NATIVE CHECKBOX. It is stretched over the label it
+     belongs to rather than replaced: it keeps its role, its keyboard
+     behaviour and its accessible name, and it gains the 44px target an 18px
+     glyph cannot have. What you see is the box below; what you press is this. */
+  .c-pick__input {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .c-pick__input:disabled { cursor: not-allowed; }
+
+  .c-pick__box {
+    inline-size: 1.15rem;
+    block-size: 1.15rem;
+    flex: 0 0 auto;
+    margin-block-start: 0.15rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-xs);
+    background: var(--color-bg);
+    transition: background-color var(--dur-fast, 160ms) var(--ease-out),
+                border-color var(--dur-fast, 160ms) var(--ease-out);
+  }
+
+  .c-pick__input:checked + .c-pick__box {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  /* THE TICK IS TWO BORDERS ON A ROTATED BOX, not an inline SVG: sixty-eight
+     rows would otherwise carry sixty-eight copies of the same path. The first
+     attempt drew it with crossed linear-gradients and rendered a smudge at
+     18px — a checkmark is two strokes meeting at a point, and a gradient stop
+     cannot make a point.
+
+     It is CENTRED rather than positioned from an edge, so it needs no RTL
+     rule: a checkmark is a checkmark in both directions and must not mirror. */
+  .c-pick__input:checked + .c-pick__box::after {
+    content: "";
+    inline-size: 0.3rem;
+    block-size: 0.58rem;
+    margin-block-start: -0.16rem;
+    border: solid var(--color-text-on-accent);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .c-pick__input:focus-visible + .c-pick__box {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .c-pick__label {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    min-block-size: 1.5rem;
+  }
+
+  .c-pick__body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-4) var(--space-16);
+    padding-inline-start: calc(1.15rem + var(--space-12));
+  }
+
+  .c-pick__desc {
+    flex: 1 1 18rem;
+    min-width: 0;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .c-pick__price {
+    flex: 0 0 auto;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: var(--color-text-primary);
+  }
+
+  .c-pick__from,
+  .c-pick__per,
+  .c-pick__currency {
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+
+  .c-pick__amount { font-weight: 600; }
+
+  .c-pick__price--included,
+  .c-pick__price--quote {
+    color: var(--color-text-muted);
+    font-style: normal;
+  }
+
+  .c-pick__per { white-space: nowrap; }
+
+  /* Quantity. Revealed by the script when the row is selected — a stepper
+     beside an unchosen thing is a control that does nothing. */
+  .c-pick__qty {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    flex: 0 0 auto;
+  }
+
+  .c-pick__qty-input {
+    inline-size: 4.5rem;
+    min-block-size: 44px;
+    padding: var(--space-4) var(--space-8);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-control);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    font: inherit;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  .c-pick__qty-input:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .c-pick__qty-unit {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Why a row changed. Written by the script when a choice pulls another one
+     in, or replaces one. It is the sentence that stops the dependency rules
+     from being invisible magic. */
+  .c-pick__note {
+    flex: 1 1 100%;
+    font-size: 0.8125rem;
+    color: var(--color-text-accent);
+  }
+
+  .c-pick--fixed .c-pick__label { cursor: default; font-weight: 500; }
+
+  .c-pick__tick {
+    inline-size: 1.15rem;
+    block-size: 1.15rem;
+    flex: 0 0 auto;
+    margin-block-start: 0.15rem;
+    border: 1px solid var(--color-border-strong);
+    background:
+      linear-gradient(45deg, transparent 44%, var(--color-text-muted) 44%, var(--color-text-muted) 56%, transparent 56%) center / 0.55rem 0.05rem no-repeat;
+    opacity: 0.7;
+  }
+
+  /* A row the visitor cannot choose right now, because something it replaces
+     or requires decided that for it. Never display:none — a row that vanishes
+     as you tick is a row you cannot find again. */
+  .c-pick[data-state="blocked"] {
+    opacity: 0.55;
+  }
+
+  .c-pick[data-state="blocked"] .c-pick__input { cursor: not-allowed; }
+
+  /* ---- the scope panel --------------------------------------------------- */
+
+  .c-build__scope {
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-sunken, var(--color-surface));
+    padding: var(--space-24);
+  }
+
+  @media (max-width: 59.999em) {
+    /* First on a phone: the estimate has to be somewhere the visitor has
+       already been, not somewhere they have to scroll past sixty-eight rows
+       to reach. */
+    .c-build__scope { order: -1; }
+  }
+
+  @media (min-width: 60em) {
+    .c-build__scope {
+      position: sticky;
+      inset-block-start: calc(var(--header-height) + var(--space-24));
+      max-block-size: calc(100vh - var(--header-height) - var(--space-48));
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+  }
+
+  .c-build__scope-title {
+    margin: 0 0 var(--space-16);
+    color: var(--color-text-muted);
+  }
+
+  .c-build__empty {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .c-build__chosen-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+  }
+
+  .c-build__chosen-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-12);
+    padding-block: var(--space-8);
+    border-block-start: 1px solid var(--color-border-subtle);
+  }
+
+  .c-build__chosen-list li:first-child { border-block-start: 0; }
+
+  .c-build__chosen-service {
+    display: block;
+    margin-block: var(--space-16) var(--space-4);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .c-build__chosen-price {
+    flex: 0 0 auto;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .c-build__totals {
+    margin-block-start: var(--space-24);
+    padding-block-start: var(--space-16);
+    border-block-start: 2px solid var(--color-border-strong);
+  }
+
+  @media (max-width: 59.999em) {
+    /* One line, stuck under the header while the list scrolls behind it. It
+       is a line and not a card on purpose: it cannot cover the row being
+       read. */
+    .c-build__totals {
+      position: sticky;
+      inset-block-start: var(--header-height);
+      z-index: 2;
+      background: var(--color-bg-sunken, var(--color-surface));
+      padding-block-end: var(--space-8);
+    }
+  }
+
+  .c-build__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-12);
+    margin: 0;
+  }
+
+  .c-build__total + .c-build__total { margin-block-start: var(--space-8); }
+
+  .c-build__total-label {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .c-build__total-figure {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  .c-build__total-figure [data-i18n="currency"] {
+    font-size: 0.75em;
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+
+  .c-build__quoted {
+    margin: var(--space-12) 0 0;
+    font-size: 0.8125rem;
+    color: var(--color-text-accent);
+  }
+
+  .c-build__caveat {
+    margin: var(--space-16) 0 var(--space-24);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+  }
+
+  .c-build__send { inline-size: 100%; justify-content: center; }
+
+  .c-build__noscript {
+    margin: var(--space-16) 0 0;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+  }
+
+  /* ---- the phone ---------------------------------------------------------
+     The same lesson the tier CTA taught on 8 September: a button that fits in
+     English and wraps in Arabic is two different controls. Nothing here wraps
+     at 320px. */
+  @media (max-width: 30em) {
+    .c-build__summary,
+    .c-build__panel { padding-inline: var(--space-16); }
+    .c-build__scope { padding: var(--space-16); }
+    .c-pick__body { padding-inline-start: 0; }
+    .c-build__send { padding-inline: var(--space-12); white-space: nowrap; }
+    .c-build__send .c-btn__icon { display: none; }
+  }
+
+  /* ---- right to left ------------------------------------------------------
+     Almost nothing to do: the layout is built on logical properties. The
+     chevron is the exception, because it is a rotation and rotations do not
+     mirror themselves. */
+  [dir="rtl"] .c-build__mark {
+    transform: rotate(135deg);
+  }
+
+  [dir="rtl"] .c-build__service[open] > .c-build__summary .c-build__mark {
+    transform: rotate(-45deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .c-build__mark,
+    .c-pick__box { transition: none; }
+  }
+
+  /* Forced colours: the tick glyph is a background image, and background
+     images are dropped. */
+  @media (forced-colors: active) {
+    .c-pick__tick { border: 1px solid CanvasText; background: none; }
+    .c-pick[data-state="blocked"] { opacity: 1; }
+    /* Background images are dropped in forced colours, so the tick would
+       vanish and a checked box would look like an unchecked one. The border
+       carries the state instead. */
+    .c-pick__box { border-color: CanvasText; }
+    .c-pick__input:checked + .c-pick__box {
+      background-color: Highlight;
+      border-color: Highlight;
+    }
+    .c-pick__input:checked + .c-pick__box::after { border-color: HighlightText; }
+  }
+}

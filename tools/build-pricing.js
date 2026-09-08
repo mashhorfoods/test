@@ -39,6 +39,7 @@ const CONFIG = path.join(ROOT, 'site.config.json');
 const SOURCE = JSON.parse(fs.readFileSync(DATA, 'utf8'));
 const data = SOURCE.categories;
 const TERMS = (SOURCE.terms || {}).shared || {};
+const BY_CATEGORY = (SOURCE.terms || {}).byCategory || {};
 
 /* SCOPE FACTS (wireframe W1, PS-05). A published price that is never explained
    makes the buyer guess what is missing, and at this band the guess is
@@ -46,16 +47,38 @@ const TERMS = (SOURCE.terms || {}).shared || {};
    renders nothing at all, rather than a label with a blank beside it. */
 const has = (v) => Boolean(v && (v.en || '').trim());
 
-function renderFacts(pkg) {
+function renderFacts(pkg, category) {
   const rows = [
     ['Delivery', 'التسليم', pkg.facts?.delivery],
     ['Revisions', 'التعديلات', pkg.facts?.revisions],
     ['You own', 'ملكيتك', TERMS.ownership],
   ].filter(([, , v]) => has(v));
 
-  const excludes = (TERMS.excludes || []).filter(has);
+  const local = BY_CATEGORY[category.id] || {};
+
+  /* EXCLUSIONS ARE THE STUDIO'S, EXCEPT WHERE A CATEGORY CONTRADICTS ONE.
+     Every website package lists "Domain registration" and "Hosting" as
+     included features, and the shared exclusions on the same card said domain
+     and hosting were not included — live, in both languages, on the card a
+     buyer decides from (docs/124 §5.1). `notFor` withdraws a shared line from
+     the categories it is untrue for, and the category states the accurate
+     version itself. A line with no `notFor` still applies everywhere, so this
+     cannot quietly widen. */
+  const excludes = [
+    ...(TERMS.excludes || []).filter((e) => !(e.notFor || []).includes(category.id)),
+    ...(local.excludes || []),
+  ].filter(has);
+
+  /* "What 'from' depends on" EXPLAINS A WORD THE CARD MAY NOT USE. It is
+     branding's sentence — concepts, applications, one language or two — and it
+     rendered under all twelve packages, nine of which quote a fixed price and
+     never print the word "from" (docs/124 §5.2). It now renders only where the
+     package actually carries `priceFrom`, and only from the category that
+     wrote it. */
+  const fromDepends = pkg.priceFrom ? (local.fromDepends || TERMS.fromDepends) : null;
+
   const extras = [
-    ['What "from" depends on', 'ما الذي يحدد السعر', TERMS.fromDepends],
+    ['What "from" depends on', 'ما الذي يحدد السعر', fromDepends],
     ['Payment', 'الدفع', TERMS.payment],
   ].filter(([, , v]) => has(v));
 
@@ -286,7 +309,7 @@ ${pkg.features.map(featureItem).join('\n')}
               <span class="c-tier__billing" data-i18n="${pkg.billing}">${pkg.billing === 'billingMonthly' ? 'Monthly' : 'One-time'}</span>
             </p>
 ${disclosure}
-${renderFacts(pkg)}${waCta({
+${renderFacts(pkg, category)}${waCta({
     href: waLink(cardMessage(pkg, category, 'en')),
     hrefAr: waLink(cardMessage(pkg, category, 'ar')),
     labelEn: `Ask about ${esc(pkg.name)}`,
@@ -373,6 +396,26 @@ ${data.map((c) => {
                 </a>
               </li>`;
   }).join('\n')}
+              <!-- THE FIFTH ENTRY IS NOT A SERVICE, and it deliberately does
+                   not pretend to be one: no price floor, no package count,
+                   because it has neither. It is the answer to the question the
+                   four above raise for anyone none of them fits, and the
+                   quiet block at the bottom of the page was the only route to
+                   it — which is the same mistake the pricing page itself was
+                   built to fix (docs/84 §2.1). -->
+              <li class="c-index__item c-index__item--build">
+                <a class="c-index__link" href="#build">
+                  <span class="c-index__name">${pair({ en: 'Build your own', ar: 'كوّن باقتك' })}</span>
+                  <span class="c-index__meta">
+                    <span class="c-index__count">${pair({
+    en: 'Every service, feature by feature', ar: 'كل خدمة، ميزةً ميزة',
+  })}</span>
+                  </span>
+                  <svg class="c-index__go u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none" />
+                  </svg>
+                </a>
+              </li>
             </ul>
           </nav>
           <!-- PACKAGES:index:END -->`;

@@ -1,0 +1,910 @@
+{
+  "_comment": [
+    "FEATURES — Websites (svc.websites). Field meanings: see",
+    "features.branding.json, which carries the schema commentary once.",
+    "",
+    "TWO ROWS HERE SETTLE A CONTRADICTION docs/124 §5.1 found on the live",
+    "site. The website packages list 'Domain registration' and 'Hosting' as",
+    "included features while the shared exclusions on the same card said",
+    "domain and hosting were not included. The truth is in between and is now",
+    "written down: WE ARRANGE BOTH; THE CLIENT PAYS THE REGISTRAR AND THE",
+    "HOST. That is what `thirdPartyCost` records, and it is why the exclusion",
+    "is being scoped per category rather than deleted."
+  ],
+  "service": "svc.websites",
+  "features": [
+    {
+      "id": "feat.websites.domain",
+      "name": {
+        "en": "Domain registration",
+        "ar": "تسجيل النطاق"
+      },
+      "description": {
+        "en": "We check the name, register it and configure it — in your name, on your account.",
+        "ar": "نتحقق من الاسم ونسجّله ونضبط إعداداته — باسمك وعلى حسابك."
+      },
+      "purpose": {
+        "en": "So the address belongs to you, not to your agency.",
+        "ar": "حتى يكون العنوان ملكك أنت، لا ملك الوكالة."
+      },
+      "category": "infrastructure",
+      "selectable": true,
+      "addonGroup": null,
+      "thirdPartyCost": {
+        "payer": "client",
+        "note": {
+          "en": "The registrar's yearly fee is paid by you, to the registrar.",
+          "ar": "الرسوم السنوية للمُسجِّل تدفعها أنت مباشرة للمُسجِّل."
+        }
+      },
+      "inputs": [
+        "Preferred names, in order",
+        "The legal entity or person the domain is registered to",
+        "Billing details for the registrar"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.provision",
+      "executionSteps": [
+        "Check availability across the preferred names and the extensions worth holding.",
+        "Register in the client's name, on an account the client controls.",
+        "Configure DNS and enable auto-renew.",
+        "Record the expiry date and who holds the account."
+      ],
+      "tools": [
+        "Registrar",
+        "DNS console"
+      ],
+      "outputs": [
+        "A registered domain under the client's control"
+      ],
+      "deliverables": [
+        "Registrar account details",
+        "DNS record sheet",
+        "Expiry date"
+      ],
+      "qualityChecks": [
+        "Registrant is the client, not us",
+        "Auto-renew is on",
+        "WHOIS privacy set as the client chose",
+        "Expiry recorded somewhere a person will see it before it happens"
+      ],
+      "completionCriteria": "Domain resolves and the client can log in to the registrar account themselves.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "A different name is a new registration and a new fee."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 0.5,
+        "max": 2
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.hosting",
+      "name": {
+        "en": "Hosting",
+        "ar": "الاستضافة"
+      },
+      "description": {
+        "en": "We choose, provision and configure the hosting the site needs, with TLS.",
+        "ar": "نختار الاستضافة المناسبة ونجهّزها ونضبطها، مع شهادة تشفير."
+      },
+      "purpose": {
+        "en": "So the site is somewhere it will stay up.",
+        "ar": "حتى يكون الموقع في مكان يبقى فيه يعمل."
+      },
+      "category": "infrastructure",
+      "selectable": true,
+      "addonGroup": null,
+      "thirdPartyCost": {
+        "payer": "client",
+        "note": {
+          "en": "The host's fee is paid by you, to the host.",
+          "ar": "رسوم الاستضافة تدفعها أنت مباشرة لمزوّد الاستضافة."
+        }
+      },
+      "inputs": [
+        "Expected traffic and region",
+        "Whether the site is static or needs a server",
+        "Billing details for the host"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.domain"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.provision",
+      "executionSteps": [
+        "Choose a host that matches what the site actually is, not the largest plan available.",
+        "Provision on an account the client controls.",
+        "Point the domain, issue TLS and force HTTPS.",
+        "Set up backups and record where they go."
+      ],
+      "tools": [
+        "Hosting console",
+        "DNS console"
+      ],
+      "outputs": [
+        "Provisioned hosting under the client's control"
+      ],
+      "deliverables": [
+        "Hosting account details",
+        "TLS confirmation",
+        "Backup location"
+      ],
+      "qualityChecks": [
+        "HTTPS forced, HTTP redirects",
+        "Certificate auto-renews",
+        "A backup has been taken and restored once, not merely configured",
+        "Account owner is the client"
+      ],
+      "completionCriteria": "Site reachable over HTTPS on the client's domain and the client can log in to the host.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "A migration to a different host is quoted separately."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 3
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.uiux",
+      "name": {
+        "en": "Website UI/UX design",
+        "ar": "تصميم واجهة وتجربة الموقع"
+      },
+      "description": {
+        "en": "Every page designed at desktop and phone widths before anything is built.",
+        "ar": "تصميم كل صفحة بعرض سطح المكتب والهاتف قبل بدء التنفيذ."
+      },
+      "purpose": {
+        "en": "So the argument about the layout happens in a design, not in code.",
+        "ar": "حتى يحدث النقاش حول التخطيط في التصميم لا في الكود."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Agreed sitemap",
+        "Brand assets, ours or the client's",
+        "Real content, or a realistic stand-in for it"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.logo",
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_concept",
+      "executionSteps": [
+        "Design the phone width first, because it is the one that has to give something up.",
+        "Design every page in scope, not a representative one.",
+        "Define the states nobody remembers: empty, loading, error, long text, no image.",
+        "Specify type, spacing and colour as tokens, not as pixel values on a page."
+      ],
+      "tools": [
+        "Design tool",
+        "Contrast checker"
+      ],
+      "outputs": [
+        "Approved designs for every page in scope"
+      ],
+      "deliverables": [
+        "Design file with desktop and phone widths",
+        "Token sheet"
+      ],
+      "qualityChecks": [
+        "Every page designed at both widths",
+        "Text contrast checked, not eyeballed",
+        "Arabic layout designed right-to-left where the site is bilingual",
+        "Every interactive element has a visible focus state in the design"
+      ],
+      "completionCriteria": "Client has approved the designs at both widths in writing.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Revision of the approved direction. A new direction restarts the stage and is quoted."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 8,
+        "max": 60
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 200
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.development",
+      "name": {
+        "en": "Website development",
+        "ar": "تطوير الموقع"
+      },
+      "description": {
+        "en": "The approved design, built as a working site.",
+        "ar": "تنفيذ التصميم المعتمد كموقع يعمل."
+      },
+      "purpose": {
+        "en": "The part that turns a picture into something people can use.",
+        "ar": "الجزء الذي يحوّل الصورة إلى شيء يستخدمه الناس."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved design",
+        "Final copy",
+        "Final images",
+        "Any third-party keys the site needs"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.uiux"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.build",
+      "executionSteps": [
+        "Build semantic markup first, then style it.",
+        "Build every page in the approved design, and every state defined with it.",
+        "Optimise images at build time rather than shipping what was supplied.",
+        "Keep it working with JavaScript off wherever the page is content rather than an application."
+      ],
+      "tools": [
+        "Editor",
+        "Build tooling",
+        "Browser dev tools"
+      ],
+      "outputs": [
+        "A working site on a staging address"
+      ],
+      "deliverables": [
+        "Source code",
+        "Staging URL"
+      ],
+      "qualityChecks": [
+        "Matches the approved design at both widths",
+        "No console errors on any page",
+        "Every image sized and given dimensions so nothing shifts as it loads",
+        "Headings form a real outline"
+      ],
+      "completionCriteria": "Every page in scope built and reviewable on staging.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Build corrections are not revisions. Design changes after approval are quoted."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 10,
+        "max": 80
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 250
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.responsive",
+      "name": {
+        "en": "Responsive implementation",
+        "ar": "تنفيذ متجاوب"
+      },
+      "description": {
+        "en": "The site working at phone, tablet and desktop widths — not shrunk, laid out.",
+        "ar": "الموقع يعمل بعرض الهاتف واللوحي وسطح المكتب — بتخطيط حقيقي لا بتصغير."
+      },
+      "purpose": {
+        "en": "Most of your visitors are holding a phone.",
+        "ar": "معظم زوارك يحملون هاتفًا."
+      },
+      "category": "core",
+      "selectable": false,
+      "addonGroup": null,
+      "inputs": [
+        "Approved design at both widths"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.uiux"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.build",
+      "executionSteps": [
+        "Build fluid layouts rather than fixed breakpoints wherever the content allows.",
+        "Check every page at 320, 375, 414, 768, 1024 and 1280.",
+        "Check the same widths in the second language where the site is bilingual."
+      ],
+      "tools": [
+        "Browser dev tools",
+        "Real devices"
+      ],
+      "outputs": [
+        "A site that holds at every tested width"
+      ],
+      "deliverables": [
+        "The same site — this is a property of it, not a separate file"
+      ],
+      "qualityChecks": [
+        "No horizontal scrollbar at 320px on any page",
+        "No tap target under 44px",
+        "Nothing clipped or overlapping at any tested width, in either language"
+      ],
+      "completionCriteria": "Every page passes at every tested width, in every language in scope.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Corrections, not revisions."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 3,
+        "max": 16
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.setup",
+      "name": {
+        "en": "Website setup",
+        "ar": "إعداد الموقع"
+      },
+      "description": {
+        "en": "Analytics, search-console verification, sitemap, metadata and the share cards.",
+        "ar": "التحليلات وتوثيق أدوات البحث وخريطة الموقع وبيانات الوصف وبطاقات المشاركة."
+      },
+      "purpose": {
+        "en": "The work nobody sees that decides whether anybody finds the site.",
+        "ar": "العمل الذي لا يراه أحد ويحدد ما إذا كان أحد سيجد الموقع."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "A built site",
+        "Analytics account, ours to create or the client's",
+        "Page titles and descriptions"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.development"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.build",
+      "executionSteps": [
+        "Write a title and description for every page — never one for all of them.",
+        "Add structured data where the content genuinely fits a type.",
+        "Generate a sitemap and a robots file.",
+        "Install analytics and confirm a real event arrives.",
+        "Produce the share card and check it in the platforms' own preview tools."
+      ],
+      "tools": [
+        "Analytics console",
+        "Search console",
+        "Share debuggers"
+      ],
+      "outputs": [
+        "An instrumented, indexable site"
+      ],
+      "deliverables": [
+        "Analytics access",
+        "Search console verification",
+        "Sitemap",
+        "Share card"
+      ],
+      "qualityChecks": [
+        "Every page has its own title and description",
+        "Sitemap lists every page and no page that does not exist",
+        "A test pageview appears in analytics",
+        "Share card renders in at least two platforms' preview tools"
+      ],
+      "completionCriteria": "Analytics receiving, search console verified, sitemap submitted.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Corrections, not revisions."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 6
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 80
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.integrations",
+      "name": {
+        "en": "Required integrations",
+        "ar": "التكاملات المطلوبة"
+      },
+      "description": {
+        "en": "Forms, booking, payment, mapping, chat or whatever the site has to talk to.",
+        "ar": "النماذج أو الحجز أو الدفع أو الخرائط أو المحادثة أو ما يحتاج الموقع للاتصال به."
+      },
+      "purpose": {
+        "en": "The difference between a brochure and something that does work for you.",
+        "ar": "الفرق بين موقع تعريفي وموقع ينجز لك عملًا."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "The list of services to integrate",
+        "Accounts and keys for each",
+        "What should happen when one of them fails"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.development"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.build",
+      "executionSteps": [
+        "Confirm each service is one the client already pays for, or agree who will.",
+        "Integrate one at a time and test each end to end before starting the next.",
+        "Handle the failure path explicitly — a form that silently loses a message is worse than no form.",
+        "Keep keys out of the source."
+      ],
+      "tools": [
+        "The service's own console",
+        "Editor",
+        "Browser dev tools"
+      ],
+      "outputs": [
+        "Working integrations"
+      ],
+      "deliverables": [
+        "Configured integrations",
+        "A note of what each does and who owns the account"
+      ],
+      "qualityChecks": [
+        "Each integration tested end to end, with the result seen at the other end",
+        "Failure path produces a message the visitor can act on",
+        "No key committed to the source",
+        "Nothing loads a third-party script that the page can work without"
+      ],
+      "completionCriteria": "Every integration in scope demonstrated working, including its failure path.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Additional integrations are quoted."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 3,
+        "max": 30
+      },
+      "pricing": {
+        "type": "project",
+        "from": 120
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.testing",
+      "name": {
+        "en": "Testing",
+        "ar": "الاختبار"
+      },
+      "description": {
+        "en": "Every page, every width, every browser we support, and every form actually submitted.",
+        "ar": "كل صفحة وكل عرض وكل متصفح مدعوم، مع إرسال كل نموذج فعليًا."
+      },
+      "purpose": {
+        "en": "So the visitor is not the person who finds the bug.",
+        "ar": "حتى لا يكون الزائر هو من يكتشف الخلل."
+      },
+      "category": "operations",
+      "selectable": false,
+      "addonGroup": null,
+      "inputs": [
+        "A complete build on staging",
+        "The supported browser list"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.development"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.verify",
+      "executionSteps": [
+        "Walk every page at every supported width, in every language.",
+        "Submit every form and confirm the message arrives somewhere a person reads.",
+        "Follow every link, including the ones in the footer.",
+        "Run an accessibility check and read the results rather than the score.",
+        "Measure the largest page on a throttled connection."
+      ],
+      "tools": [
+        "Browsers",
+        "Accessibility checker",
+        "Throttled network"
+      ],
+      "outputs": [
+        "A test record"
+      ],
+      "deliverables": [
+        "A written list of what was checked and what was found"
+      ],
+      "qualityChecks": [
+        "No broken link",
+        "Every form's message received and read",
+        "No accessibility violation left unexplained",
+        "No console error on any page"
+      ],
+      "completionCriteria": "Every check passed, or the exception written down and accepted by the client.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Fixes, not revisions."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 12
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.deployment",
+      "name": {
+        "en": "Deployment",
+        "ar": "النشر"
+      },
+      "description": {
+        "en": "Putting the tested site live on your own domain.",
+        "ar": "نشر الموقع المُختبَر على نطاقك الخاص."
+      },
+      "purpose": {
+        "en": "The moment it stops being ours.",
+        "ar": "اللحظة التي يتوقف فيها عن كونه لنا."
+      },
+      "category": "operations",
+      "selectable": false,
+      "addonGroup": null,
+      "inputs": [
+        "A tested build",
+        "Client sign-off on staging",
+        "Live hosting and domain"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.testing",
+          "feat.websites.hosting"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.release",
+      "executionSteps": [
+        "Deploy, then re-check the live site rather than trusting the deploy.",
+        "Confirm HTTPS, the sitemap and analytics on the live address.",
+        "Keep the previous state recoverable until the client has confirmed."
+      ],
+      "tools": [
+        "Hosting console",
+        "Browsers"
+      ],
+      "outputs": [
+        "A live site"
+      ],
+      "deliverables": [
+        "The live URL"
+      ],
+      "qualityChecks": [
+        "Live site re-checked page by page, not assumed identical to staging",
+        "HTTPS forced on the live address",
+        "A rollback is possible and has been identified before deploying"
+      ],
+      "completionCriteria": "Live site verified by us and confirmed by the client.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Fixes, not revisions."
+      },
+      "automationPotential": "full",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 4
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.handover",
+      "name": {
+        "en": "Delivery ready for use",
+        "ar": "تسليم جاهز للاستخدام"
+      },
+      "description": {
+        "en": "Accounts, credentials and a short written guide to running it.",
+        "ar": "الحسابات وبيانات الدخول ودليل مختصر لتشغيله."
+      },
+      "purpose": {
+        "en": "So you can run it, change it or take it elsewhere.",
+        "ar": "حتى تتمكن من تشغيله أو تعديله أو نقله إلى جهة أخرى."
+      },
+      "category": "handover",
+      "selectable": false,
+      "addonGroup": null,
+      "inputs": [
+        "A live site",
+        "Every account created during the project"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.deployment"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.handover",
+      "executionSteps": [
+        "Transfer every account to the client's ownership.",
+        "Hand over credentials through something that is not email.",
+        "Write a short guide covering the three things they will actually need to do.",
+        "Remove our own standing access unless the client asks us to keep it."
+      ],
+      "tools": [
+        "Password manager",
+        "Document editor"
+      ],
+      "outputs": [
+        "A client who owns and can operate the site"
+      ],
+      "deliverables": [
+        "Credential handover",
+        "Account ownership transfer",
+        "Operating guide",
+        "Source code"
+      ],
+      "qualityChecks": [
+        "Every account owned by the client",
+        "Client has logged in to each one at least once",
+        "Guide written for someone who was not in the project"
+      ],
+      "completionCriteria": "Client confirms in writing that they hold every account and can log in.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 4
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.extra_page",
+      "name": {
+        "en": "Additional website page",
+        "ar": "صفحة إضافية للموقع"
+      },
+      "description": {
+        "en": "One more page, designed and built to match the rest of the site.",
+        "ar": "صفحة إضافية، تُصمَّم وتُنفَّذ لتطابق بقية الموقع."
+      },
+      "purpose": {
+        "en": "For the page the scope did not know about.",
+        "ar": "للصفحة التي لم يكن النطاق يعلم بها."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": "addon.digital",
+      "addonOrder": 8,
+      "_addonName": "THE PUBLISHED ADD-ON WORDING, kept exactly as it shipped. An add-on names the UNIT YOU BUY, which is not always the capability's own name — you buy 'a single social media post design', the capability is 'social media post design'. Preserving these verbatim is also what makes this change provably display-neutral: the generated add-ons section is byte-for-byte the hand-typed one it replaces, except for the single defect it fixes.",
+      "addonName": {
+        "en": "Additional website page",
+        "ar": "صفحة Website إضافية"
+      },
+      "inputs": [
+        "The page's purpose",
+        "Its content",
+        "The existing site's design system"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.development"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.build",
+      "executionSteps": [
+        "Design the page from the site's existing system rather than as a one-off.",
+        "Build it.",
+        "Add it to the navigation and the sitemap."
+      ],
+      "tools": [
+        "Design tool",
+        "Editor"
+      ],
+      "outputs": [
+        "One additional page"
+      ],
+      "deliverables": [
+        "The live page"
+      ],
+      "qualityChecks": [
+        "Indistinguishable in style from the pages around it",
+        "Present in the sitemap and the navigation",
+        "Checked at every supported width"
+      ],
+      "completionCriteria": "Page live and reachable from the navigation.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per page."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 3,
+        "max": 8
+      },
+      "pricing": {
+        "type": "unit",
+        "from": 70,
+        "unit": {
+          "en": "page",
+          "ar": "صفحة"
+        },
+        "unitPlural": {
+          "en": "pages",
+          "ar": "صفحات"
+        },
+        "defaultQty": 1,
+        "minQty": 1,
+        "maxQty": 30
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.extra_landing",
+      "name": {
+        "en": "Additional landing page",
+        "ar": "صفحة هبوط إضافية"
+      },
+      "description": {
+        "en": "A standalone page built for one campaign, with its own message and one action.",
+        "ar": "صفحة مستقلة لحملة واحدة، برسالة واحدة وإجراء واحد."
+      },
+      "purpose": {
+        "en": "So a campaign sends people somewhere built for it.",
+        "ar": "حتى ترسل الحملة الناس إلى صفحة مبنية لها."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": "addon.digital",
+      "addonOrder": 7,
+      "_addonName": "THE PUBLISHED ADD-ON WORDING, kept exactly as it shipped. An add-on names the UNIT YOU BUY, which is not always the capability's own name — you buy 'a single social media post design', the capability is 'social media post design'. Preserving these verbatim is also what makes this change provably display-neutral: the generated add-ons section is byte-for-byte the hand-typed one it replaces, except for the single defect it fixes.",
+      "addonName": {
+        "en": "Additional landing page",
+        "ar": "Landing Page إضافية"
+      },
+      "inputs": [
+        "The campaign's offer and audience",
+        "The single action the page exists to produce",
+        "Copy and imagery"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.websites.hosting",
+          "feat.marketing.conversion_tracking"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.build",
+      "executionSteps": [
+        "Write or agree the single action before designing anything.",
+        "Design and build the page to that one action.",
+        "Instrument the conversion so the campaign can be judged."
+      ],
+      "tools": [
+        "Design tool",
+        "Editor",
+        "Analytics console"
+      ],
+      "outputs": [
+        "One live landing page"
+      ],
+      "deliverables": [
+        "The live page",
+        "A recorded conversion event"
+      ],
+      "qualityChecks": [
+        "Exactly one primary action on the page",
+        "Loads in under two seconds on a throttled connection",
+        "Conversion event fires and is visible in analytics"
+      ],
+      "completionCriteria": "Page live and a test conversion recorded end to end.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per page."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 5,
+        "max": 14
+      },
+      "pricing": {
+        "type": "unit",
+        "from": 120,
+        "unit": {
+          "en": "landing page",
+          "ar": "صفحة هبوط"
+        },
+        "unitPlural": {
+          "en": "landing pages",
+          "ar": "صفحات هبوط"
+        },
+        "defaultQty": 1,
+        "minQty": 1,
+        "maxQty": 20
+      },
+      "status": "active"
+    }
+  ]
+}

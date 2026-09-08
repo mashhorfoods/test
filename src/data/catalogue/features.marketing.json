@@ -1,0 +1,1266 @@
+{
+  "_comment": [
+    "FEATURES — Digital Marketing & Advertising (svc.marketing). Schema",
+    "commentary lives once, in features.branding.json.",
+    "",
+    "THE BUDGET IS NEVER OURS. Every row here prices MANAGEMENT. What the",
+    "client spends with the platforms is separate, is paid by the client, and",
+    "is recorded on the service, not smuggled into a feature price.",
+    "",
+    "THREE AUDIENCE ROWS, NOT ONE. `Audience Targeting`, `Audience Research`",
+    "and `Audience Segmentation` looked like three names for one thing",
+    "(docs/124 §2) and are not: they are a ladder — apply what is known,",
+    "find out what is not, then split it. They stay three, and `conflicts`",
+    "stops a scope from buying the same rung twice."
+  ],
+  "service": "svc.marketing",
+  "features": [
+    {
+      "id": "feat.marketing.platform_management",
+      "name": {
+        "en": "Advertising platform management",
+        "ar": "إدارة المنصات الإعلانية"
+      },
+      "description": {
+        "en": "Running your advertising account on each platform in scope.",
+        "ar": "تشغيل حسابك الإعلاني على كل منصة ضمن النطاق."
+      },
+      "purpose": {
+        "en": "The unit an advertising package is sized by.",
+        "ar": "الوحدة التي تُقاس بها الباقة الإعلانية."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "Partner access to the client's ad account",
+        "A billing method on the client's account",
+        "The platform list"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.recurring_service",
+      "executionSteps": [
+        "Take partner access, never account ownership.",
+        "Confirm billing sits on the client's own method.",
+        "Keep each platform's account structure legible to someone who inherits it."
+      ],
+      "tools": [
+        "Meta Business Manager",
+        "Google Ads",
+        "TikTok Ads Manager",
+        "Snapchat Ads Manager"
+      ],
+      "outputs": [
+        "A managed ad account per platform"
+      ],
+      "deliverables": [
+        "Structured, documented ad accounts"
+      ],
+      "qualityChecks": [
+        "Client owns every account",
+        "Billing on the client's method",
+        "Naming convention consistent enough to read a year later"
+      ],
+      "completionCriteria": "The month's campaigns delivered on every platform in scope.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 10
+      },
+      "pricing": {
+        "type": "unit",
+        "from": 90,
+        "period": "monthly",
+        "unit": {
+          "en": "platform",
+          "ar": "منصة"
+        },
+        "unitPlural": {
+          "en": "platforms",
+          "ar": "منصات"
+        },
+        "defaultQty": 1,
+        "minQty": 1,
+        "maxQty": 5
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.campaign_setup",
+      "name": {
+        "en": "Campaign setup",
+        "ar": "إعداد الحملات"
+      },
+      "description": {
+        "en": "Building the campaign — objective, structure, audiences, placements, budget and schedule.",
+        "ar": "بناء الحملة — الهدف والهيكل والجماهير والمواضع والميزانية والجدولة."
+      },
+      "purpose": {
+        "en": "Everything a campaign does afterwards depends on how it was built.",
+        "ar": "كل ما تفعله الحملة لاحقًا يعتمد على طريقة بنائها."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "per-campaign",
+      "inputs": [
+        "Approved objective and target",
+        "Approved audience",
+        "Approved creative and copy",
+        "Confirmed budget",
+        "A working destination"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.marketing.platform_management"
+        ],
+        "recommends": [
+          "feat.marketing.conversion_tracking"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.campaign",
+      "executionSteps": [
+        "Choose the objective that matches the result being paid for, not the one that reports the best numbers.",
+        "Build the structure so each variable can be read separately later.",
+        "Set budgets and a schedule the client has confirmed in writing.",
+        "Review every ad against the platform's policy before submitting."
+      ],
+      "tools": [
+        "Platform ads managers"
+      ],
+      "outputs": [
+        "A live campaign"
+      ],
+      "deliverables": [
+        "Built campaigns, ad sets and ads",
+        "A structure note"
+      ],
+      "qualityChecks": [
+        "Objective matches the agreed result",
+        "Budget matches the written confirmation, to the currency",
+        "Every destination link opens the right page and carries its tracking",
+        "No ad approved that breaks a platform policy"
+      ],
+      "completionCriteria": "Campaign live, delivering, and spending at the agreed daily rate.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Restructuring an approved campaign is optimisation, not revision."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 10
+      },
+      "pricing": {
+        "type": "unit",
+        "from": 80,
+        "unit": {
+          "en": "campaign",
+          "ar": "حملة"
+        },
+        "unitPlural": {
+          "en": "campaigns",
+          "ar": "حملات"
+        },
+        "defaultQty": 1,
+        "minQty": 1,
+        "maxQty": 20
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.campaign_strategy",
+      "name": {
+        "en": "Campaign strategy",
+        "ar": "استراتيجية الحملات"
+      },
+      "description": {
+        "en": "What we are trying to make happen, for whom, at what cost per result.",
+        "ar": "ما الذي نريد تحقيقه، ولمن، وبأي تكلفة لكل نتيجة."
+      },
+      "purpose": {
+        "en": "So spending can be judged rather than defended.",
+        "ar": "حتى يُحكم على الإنفاق بدل تبريره."
+      },
+      "category": "planning",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "quarterly",
+      "inputs": [
+        "Business objective",
+        "Monthly budget",
+        "Margin or value per customer",
+        "Any past campaign data"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.plan",
+      "executionSteps": [
+        "Establish what a customer is worth before deciding what a click may cost.",
+        "Set a target cost per result and say what happens if it is not met.",
+        "Choose platforms by where the audience is, not by where the budget is easiest to spend.",
+        "Write the plan down and have the client agree the target in writing."
+      ],
+      "tools": [
+        "Platform analytics",
+        "Document editor"
+      ],
+      "outputs": [
+        "An agreed campaign strategy"
+      ],
+      "deliverables": [
+        "Strategy document with target cost per result and a stop condition"
+      ],
+      "qualityChecks": [
+        "A target the client agreed to be measured against",
+        "A stated stop condition, so a failing campaign has an ending",
+        "No projected figure presented as a promise"
+      ],
+      "completionCriteria": "Client has agreed the target and the stop condition in writing.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Per strategy period."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 4,
+        "max": 14
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 150
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.audience_targeting",
+      "name": {
+        "en": "Audience targeting",
+        "ar": "استهداف الجمهور"
+      },
+      "description": {
+        "en": "Setting the campaign's audience from what the business already knows about its customers.",
+        "ar": "ضبط جمهور الحملة بناءً على ما يعرفه العمل عن عملائه أصلًا."
+      },
+      "purpose": {
+        "en": "The first and cheapest lever on what an ad costs.",
+        "ar": "أول وأرخص عامل يؤثر في تكلفة الإعلان."
+      },
+      "category": "planning",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "per-campaign",
+      "inputs": [
+        "Who the client believes their customer is",
+        "Geography and language",
+        "Any customer list the client may lawfully use"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.plan",
+      "executionSteps": [
+        "Write the audience in words before building it in a tool.",
+        "Build it on the platform, and check its size is neither absurd nor empty.",
+        "Exclude existing customers where paying to reach them again is waste."
+      ],
+      "tools": [
+        "Platform audience tools"
+      ],
+      "outputs": [
+        "A defined audience"
+      ],
+      "deliverables": [
+        "Saved audiences with a written definition each"
+      ],
+      "qualityChecks": [
+        "Audience size plausible for the budget",
+        "Exclusions applied",
+        "Any uploaded list carries consent the client can evidence"
+      ],
+      "completionCriteria": "Audience built, sized and approved before the campaign goes live.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per campaign."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 4
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 50
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.audience_research",
+      "name": {
+        "en": "Audience research",
+        "ar": "بحث الجمهور"
+      },
+      "description": {
+        "en": "Finding out who actually responds, rather than assuming who should.",
+        "ar": "معرفة من يستجيب فعلًا بدل افتراض من ينبغي أن يستجيب."
+      },
+      "purpose": {
+        "en": "The assumption about the customer is usually the expensive mistake.",
+        "ar": "الافتراض حول العميل هو الخطأ الأكثر كلفة عادةً."
+      },
+      "category": "planning",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "quarterly",
+      "inputs": [
+        "Existing campaign or site analytics",
+        "Competitor advertising, publicly visible",
+        "The client's own sales knowledge"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.marketing.audience_targeting"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.plan",
+      "executionSteps": [
+        "Read what past campaigns and site analytics already show before researching anything new.",
+        "Look at what competitors are actually running, in the platforms' public ad libraries.",
+        "Write findings as differences from the client's assumption — that is the useful part.",
+        "Propose the audiences worth testing, in priority order."
+      ],
+      "tools": [
+        "Platform analytics",
+        "Public ad libraries",
+        "Site analytics"
+      ],
+      "outputs": [
+        "Research findings and a tested-audience proposal"
+      ],
+      "deliverables": [
+        "Findings document",
+        "A prioritised audience list"
+      ],
+      "qualityChecks": [
+        "Every finding traceable to a source, not to an impression",
+        "The client's assumption stated and either confirmed or contradicted explicitly"
+      ],
+      "completionCriteria": "Findings delivered and at least one audience from them entered testing.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per research cycle."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 3,
+        "max": 12
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 110
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.audience_segmentation",
+      "name": {
+        "en": "Audience segmentation",
+        "ar": "تقسيم الجمهور"
+      },
+      "description": {
+        "en": "Splitting the audience into groups that get different messages, and budgeting each separately.",
+        "ar": "تقسيم الجمهور إلى مجموعات تتلقى رسائل مختلفة، وتخصيص ميزانية لكل منها."
+      },
+      "purpose": {
+        "en": "One message to everyone is the cheapest way to waste a budget.",
+        "ar": "رسالة واحدة للجميع هي أسرع طريقة لإهدار الميزانية."
+      },
+      "category": "planning",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "per-campaign",
+      "inputs": [
+        "Research findings",
+        "Enough budget for each segment to reach significance",
+        "Creative that differs by segment"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.marketing.audience_research"
+        ],
+        "recommends": [],
+        "conflicts": [],
+        "supersedes": [
+          "feat.marketing.audience_targeting"
+        ]
+      },
+      "workflow": "wf.plan",
+      "executionSteps": [
+        "Split only where the message genuinely differs — a split with the same ad in both is a smaller budget, not a strategy.",
+        "Check each segment can reach significance at the available budget.",
+        "Build exclusions between segments so they do not bid against each other."
+      ],
+      "tools": [
+        "Platform audience tools"
+      ],
+      "outputs": [
+        "Mutually exclusive segments with their own creative and budget"
+      ],
+      "deliverables": [
+        "Segment definitions",
+        "Per-segment budget split"
+      ],
+      "qualityChecks": [
+        "Segments mutually exclusive",
+        "Each large enough to produce a readable result",
+        "Each has creative that differs, not just a different name"
+      ],
+      "completionCriteria": "Segments live, non-overlapping, and each producing readable data.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per campaign."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 8
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 90
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.ad_copy",
+      "name": {
+        "en": "Ad copy",
+        "ar": "نصوص الإعلانات"
+      },
+      "description": {
+        "en": "The headlines, body text and calls to action, written for each placement's limits.",
+        "ar": "العناوين والنصوص وعبارات الحث، مكتوبة وفق حدود كل موضع."
+      },
+      "purpose": {
+        "en": "The line that gets the click.",
+        "ar": "الجملة التي تحقق النقرة."
+      },
+      "category": "content",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "per-campaign",
+      "inputs": [
+        "The offer, exactly as it may lawfully be stated",
+        "Audience definition",
+        "Each placement's character limits"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.marketing.audience_targeting"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.content",
+      "executionSteps": [
+        "Write several distinct angles, not several rewordings of one.",
+        "Write Arabic natively where the audience reads Arabic.",
+        "Stay inside each placement's limits at the limit, not at the average.",
+        "Check every claim against the platform's advertising policy before submitting."
+      ],
+      "tools": [
+        "Document editor",
+        "Platform policy references"
+      ],
+      "outputs": [
+        "Approved ad copy per placement"
+      ],
+      "deliverables": [
+        "Copy variants per placement, per language"
+      ],
+      "qualityChecks": [
+        "Every claim substantiated by something the client supplied",
+        "Within each placement's limit",
+        "No prohibited claim under the platform's policy",
+        "Arabic written natively, not translated"
+      ],
+      "completionCriteria": "Copy approved by the client and accepted by the platform.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per campaign."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 5
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 50
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.ad_creative",
+      "name": {
+        "en": "Ad design",
+        "ar": "تصميم الإعلانات"
+      },
+      "description": {
+        "en": "The image or video for each ad, built to the placement's own size and rules.",
+        "ar": "الصورة أو الفيديو لكل إعلان، بمقاس الموضع وقواعده."
+      },
+      "purpose": {
+        "en": "What the money is actually buying attention for.",
+        "ar": "ما يشتري المال الانتباه له فعلًا."
+      },
+      "category": "content",
+      "selectable": true,
+      "addonGroup": "addon.design",
+      "addonOrder": 2,
+      "addonName": {
+        "en": "Ad design",
+        "ar": "تصميم إعلان"
+      },
+      "recurrence": "per-campaign",
+      "inputs": [
+        "Approved ad copy",
+        "Brand assets",
+        "Product imagery or footage"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.ad_templates",
+          "feat.marketing.ad_copy"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_asset",
+      "executionSteps": [
+        "Design from the brand's ad frames where they exist.",
+        "Produce every ratio the chosen placements require.",
+        "Keep the message readable at feed size before anything else.",
+        "Check each against the platform's creative policy."
+      ],
+      "tools": [
+        "Vector editor",
+        "Image editor",
+        "Video editor"
+      ],
+      "outputs": [
+        "Approved creative per placement"
+      ],
+      "deliverables": [
+        "Artwork or video at each required size"
+      ],
+      "qualityChecks": [
+        "Readable at feed size on a phone",
+        "Every required ratio present",
+        "Nothing important under a platform overlay",
+        "Passes the platform's creative policy"
+      ],
+      "completionCriteria": "Every ordered creative approved and accepted by the platform.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per design."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 0.7,
+        "max": 3
+      },
+      "pricing": {
+        "type": "unit",
+        "from": 20,
+        "unit": {
+          "en": "design",
+          "ar": "تصميم"
+        },
+        "unitPlural": {
+          "en": "designs",
+          "ar": "تصاميم"
+        },
+        "defaultQty": 2,
+        "minQty": 1,
+        "maxQty": 40
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.conversion_tracking",
+      "name": {
+        "en": "Conversion tracking",
+        "ar": "تتبّع التحويلات"
+      },
+      "description": {
+        "en": "Installing and verifying the measurement that says whether an ad produced a result.",
+        "ar": "تركيب وتوثيق القياس الذي يحدد ما إذا كان الإعلان قد حقق نتيجة."
+      },
+      "purpose": {
+        "en": "Without this, every other number is traffic, not results.",
+        "ar": "بدون هذا، تبقى كل الأرقام زيارات لا نتائج."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "once",
+      "inputs": [
+        "A destination we can place a tag on",
+        "Permission to place it",
+        "A definition of what counts as a conversion"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.websites.setup"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.build",
+      "executionSteps": [
+        "Agree what counts as a conversion, in one sentence, before installing anything.",
+        "Install the platform's tag and define the event.",
+        "Complete the action yourself and confirm it arrives.",
+        "Set up server-side or enhanced matching where the platform supports it and the client consents."
+      ],
+      "tools": [
+        "Tag manager",
+        "Platform events manager",
+        "Browser dev tools"
+      ],
+      "outputs": [
+        "Verified conversion measurement"
+      ],
+      "deliverables": [
+        "Installed tag",
+        "Defined events",
+        "A recorded test conversion"
+      ],
+      "qualityChecks": [
+        "A real test conversion seen end to end, not a tag that merely fires",
+        "No double counting",
+        "Consent handling in place where the audience is covered by it"
+      ],
+      "completionCriteria": "A test conversion visible in the platform's own reporting.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Additional events are quoted."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 6
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 70
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.retargeting",
+      "name": {
+        "en": "Retargeting",
+        "ar": "إعادة الاستهداف"
+      },
+      "description": {
+        "en": "Advertising again to people who already visited or engaged.",
+        "ar": "إعادة الإعلان لمن سبق أن زار أو تفاعل."
+      },
+      "purpose": {
+        "en": "Usually the cheapest result in the account.",
+        "ar": "عادةً أرخص نتيجة في الحساب."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "per-campaign",
+      "inputs": [
+        "Working conversion tracking",
+        "Enough traffic to build an audience",
+        "A different message for people who already know you"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.marketing.conversion_tracking",
+          "feat.marketing.campaign_setup"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.campaign",
+      "executionSteps": [
+        "Build the audience from the tracked events, and wait until it is large enough to serve.",
+        "Write a message for someone who has already seen the first one.",
+        "Cap frequency — retargeting is the campaign that most easily becomes harassment.",
+        "Exclude people who already converted."
+      ],
+      "tools": [
+        "Platform audience tools",
+        "Platform ads managers"
+      ],
+      "outputs": [
+        "A live retargeting campaign"
+      ],
+      "deliverables": [
+        "Retargeting audiences and campaigns"
+      ],
+      "qualityChecks": [
+        "Converters excluded",
+        "Frequency capped",
+        "Audience large enough to deliver",
+        "Creative differs from the prospecting campaign"
+      ],
+      "completionCriteria": "Campaign live, delivering, with converters excluded and frequency capped.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1.5,
+        "max": 6
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 70
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.monitoring",
+      "name": {
+        "en": "Campaign monitoring",
+        "ar": "متابعة الحملات"
+      },
+      "description": {
+        "en": "Watching delivery and spend so a problem is caught in hours, not at month end.",
+        "ar": "متابعة الأداء والإنفاق حتى تُكتشف المشكلة خلال ساعات لا في نهاية الشهر."
+      },
+      "purpose": {
+        "en": "A campaign that stopped delivering costs you the whole week silently.",
+        "ar": "الحملة التي تتوقف عن العمل تكلّفك الأسبوع كله بصمت."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "A live campaign",
+        "The agreed target and stop condition"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.marketing.campaign_setup"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.recurring_service",
+      "executionSteps": [
+        "Check delivery, spend rate and cost per result on the agreed schedule.",
+        "Flag anything outside the agreed band the day it happens.",
+        "Check ad status — a disapproved ad reports as spending nothing, not as an error."
+      ],
+      "tools": [
+        "Platform ads managers",
+        "Alerts"
+      ],
+      "outputs": [
+        "Problems caught early"
+      ],
+      "deliverables": [
+        "An issue log with dates"
+      ],
+      "qualityChecks": [
+        "No day of zero delivery unexplained",
+        "Spend within the agreed daily band",
+        "No disapproved ad left sitting"
+      ],
+      "completionCriteria": "The month closes with every delivery interruption explained and dated.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "full",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 5
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.optimization",
+      "name": {
+        "en": "Campaign optimization",
+        "ar": "تحسين الحملات"
+      },
+      "description": {
+        "en": "Adjusting audiences, placements, bids and structure to bring the cost per result down.",
+        "ar": "تعديل الجماهير والمواضع والمزايدات والهيكل لخفض تكلفة النتيجة."
+      },
+      "purpose": {
+        "en": "The part of the fee that pays for itself, or does not.",
+        "ar": "الجزء من الرسوم الذي يغطي نفسه، أو لا يغطيها."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "A live campaign with enough data to read",
+        "The agreed target"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.marketing.campaign_setup"
+        ],
+        "recommends": [
+          "feat.marketing.monitoring",
+          "feat.marketing.conversion_tracking"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.optimise",
+      "executionSteps": [
+        "Wait for enough data before changing anything — most optimisation is reading noise.",
+        "Change one variable at a time, and write down the number that justified it.",
+        "Turn off what is losing before adding what might win.",
+        "Leave the winning ad set alone."
+      ],
+      "tools": [
+        "Platform ads managers"
+      ],
+      "outputs": [
+        "A lower cost per result, or a documented reason it did not fall"
+      ],
+      "deliverables": [
+        "A change log with the figure behind each change"
+      ],
+      "qualityChecks": [
+        "No change made on fewer results than the platform's own learning threshold",
+        "One variable at a time",
+        "Every change recorded with its justification",
+        "The winner left running"
+      ],
+      "completionCriteria": "The month closes with a change log and a stated direction for the next.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 12
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 90,
+        "period": "monthly"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.creative_optimization",
+      "name": {
+        "en": "Creative optimization",
+        "ar": "تحسين التصاميم"
+      },
+      "description": {
+        "en": "Replacing tired creative before performance falls, rather than after.",
+        "ar": "استبدال التصاميم المستهلكة قبل تراجع الأداء لا بعده."
+      },
+      "purpose": {
+        "en": "Every ad wears out. The question is whether you notice first.",
+        "ar": "كل إعلان يستهلك. السؤال هو من يلاحظ أولًا."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "Frequency and cost-per-result trend by creative",
+        "New creative ready to rotate in"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.marketing.campaign_setup"
+        ],
+        "recommends": [
+          "feat.marketing.ad_creative"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.optimise",
+      "executionSteps": [
+        "Track cost per result per creative, not per campaign.",
+        "Rotate on the trend, before the drop, not after it.",
+        "Keep the format that works and change the message, or the reverse — never both at once."
+      ],
+      "tools": [
+        "Platform ads managers",
+        "Vector editor"
+      ],
+      "outputs": [
+        "A refreshed creative set"
+      ],
+      "deliverables": [
+        "Rotated creative",
+        "A performance note per creative"
+      ],
+      "qualityChecks": [
+        "No creative left running past its measured fatigue point",
+        "Replacement differs in one dimension, so the result is readable"
+      ],
+      "completionCriteria": "The month closes with creative rotated on evidence rather than on schedule.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1.5,
+        "max": 8
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 70,
+        "period": "monthly"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.budget_optimization",
+      "name": {
+        "en": "Budget optimization",
+        "ar": "تحسين الميزانية"
+      },
+      "description": {
+        "en": "Moving budget towards what is working, within the total you set.",
+        "ar": "نقل الميزانية نحو ما ينجح، ضمن الإجمالي الذي حددته."
+      },
+      "purpose": {
+        "en": "The same money, spent where it returns most.",
+        "ar": "المال نفسه، منفقًا حيث يعود بأكثر."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "The agreed total budget",
+        "Cost per result by campaign and segment"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.marketing.campaign_setup"
+        ],
+        "recommends": [
+          "feat.marketing.optimization"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.optimise",
+      "executionSteps": [
+        "Never exceed the client's written total — reallocate inside it.",
+        "Move in steps small enough not to reset the platform's learning.",
+        "Record the before and after cost per result for each move."
+      ],
+      "tools": [
+        "Platform ads managers"
+      ],
+      "outputs": [
+        "Budget allocated to what performs"
+      ],
+      "deliverables": [
+        "Allocation log with before and after figures"
+      ],
+      "qualityChecks": [
+        "Monthly total never exceeded",
+        "No move large enough to reset learning unnecessarily",
+        "Every move recorded"
+      ],
+      "completionCriteria": "The month closes within the agreed total, with each reallocation recorded.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 5
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 60,
+        "period": "monthly"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.ab_testing",
+      "name": {
+        "en": "A/B testing",
+        "ar": "اختبارات A/B"
+      },
+      "description": {
+        "en": "Running two versions against each other properly, so the result means something.",
+        "ar": "تشغيل نسختين إحداهما مقابل الأخرى بشكل صحيح، حتى تعني النتيجة شيئًا."
+      },
+      "purpose": {
+        "en": "So a decision rests on a measurement rather than on a preference.",
+        "ar": "حتى يقوم القرار على قياس لا على تفضيل."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "Two versions differing in one thing",
+        "Budget enough for each arm to reach significance",
+        "A stated hypothesis"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.marketing.campaign_setup"
+        ],
+        "recommends": [
+          "feat.marketing.conversion_tracking"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.optimise",
+      "executionSteps": [
+        "Write the hypothesis and the winning condition before starting.",
+        "Change one variable. A test of two different ads tells you nothing about why.",
+        "Use the platform's own split-test tool so the audiences do not overlap.",
+        "Run to the stated sample, then stop — reading it early is how a coin flip becomes a strategy."
+      ],
+      "tools": [
+        "Platform split-test tools"
+      ],
+      "outputs": [
+        "A decided question"
+      ],
+      "deliverables": [
+        "Test record with hypothesis, arms, sample and outcome"
+      ],
+      "qualityChecks": [
+        "Exactly one variable differs",
+        "Audiences do not overlap",
+        "Run to the stated sample before being read",
+        "An inconclusive result recorded as inconclusive, not as a preference"
+      ],
+      "completionCriteria": "Test concluded at the stated sample and the outcome applied or explicitly rejected.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 8
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 80,
+        "period": "monthly"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.report",
+      "name": {
+        "en": "Monthly performance report",
+        "ar": "تقرير أداء شهري"
+      },
+      "description": {
+        "en": "Spend, results, cost per result, and what changes next month.",
+        "ar": "الإنفاق والنتائج وتكلفة النتيجة، وما الذي سيتغير الشهر القادم."
+      },
+      "purpose": {
+        "en": "The only honest way to judge whether the advertising is worth doing.",
+        "ar": "الطريقة الوحيدة الصادقة للحكم على جدوى الإعلان."
+      },
+      "category": "reporting",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "A complete calendar month of spend",
+        "Platform reporting",
+        "The agreed target"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.marketing.campaign_setup"
+        ],
+        "recommends": [
+          "feat.marketing.conversion_tracking"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.report",
+      "executionSteps": [
+        "Report spend, results and cost per result — in that order, because that is the order they matter.",
+        "Compare against the agreed target, including when the comparison is unflattering.",
+        "Say what changed during the month and what it did.",
+        "End with the decision for next month."
+      ],
+      "tools": [
+        "Platform reporting",
+        "Document editor"
+      ],
+      "outputs": [
+        "A monthly report"
+      ],
+      "deliverables": [
+        "Report document",
+        "Raw platform export on request"
+      ],
+      "qualityChecks": [
+        "Every figure traceable to a platform screen",
+        "The target stated and the result compared to it, whichever way it went",
+        "Spend reconciles with the client's own platform invoice",
+        "At least one decision stated for next month"
+      ],
+      "completionCriteria": "Report sent within the agreed window and reconciled against the platform invoice.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Corrections only."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1.5,
+        "max": 5
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.marketing.strategy_meeting",
+      "name": {
+        "en": "Monthly strategy meeting",
+        "ar": "اجتماع استراتيجي شهري"
+      },
+      "description": {
+        "en": "A call to read the month together and set the next one's target.",
+        "ar": "مكالمة لقراءة الشهر معًا وتحديد هدف الشهر التالي."
+      },
+      "purpose": {
+        "en": "Because the decision that matters is usually not one we can make alone.",
+        "ar": "لأن القرار المهم عادةً لا نستطيع اتخاذه وحدنا."
+      },
+      "category": "reporting",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "The month's report",
+        "The client's own sales figures where they will share them"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.marketing.report"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.report",
+      "executionSteps": [
+        "Send the report first.",
+        "Open with the decision, not the dashboard.",
+        "Agree next month's target and budget in the call.",
+        "Write it down and send it the same day."
+      ],
+      "tools": [
+        "Video call",
+        "Document editor"
+      ],
+      "outputs": [
+        "An agreed target and budget for the coming month"
+      ],
+      "deliverables": [
+        "A written note of what was agreed"
+      ],
+      "qualityChecks": [
+        "Report sent at least a day before",
+        "Next month's budget confirmed in writing",
+        "Note sent the same day"
+      ],
+      "completionCriteria": "Target and budget agreed in writing before the new month starts.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "none",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 2
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 50,
+        "period": "monthly"
+      },
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "_comment": [
+    "ADD-ON GROUPS — the five headings the add-ons are published under.",
+    "",
+    "AN ADD-ON IS NOT A DIFFERENT KIND OF THING FROM A FEATURE. Before this",
+    "existed the eleven add-ons were hand-typed markup in index.html with",
+    "hard-coded prices, hand-typed index numbers and hand-typed group counts —",
+    "and one of them, Company Profile, had no Arabic label at all (docs/124",
+    "§1.4). They are now ordinary catalogue features that carry an",
+    "`addonGroup`, which is the only thing that made them a separate category:",
+    "where they are PUBLISHED, not what they are.",
+    "",
+    "So the same row can be a package inclusion and a purchasable add-on",
+    "without being written twice — feat.marketing.ad_creative is exactly that",
+    "— and adding a twelfth add-on is one `addonGroup` on one feature, with",
+    "the index numbers and the counts generated.",
+    "",
+    "`order` is publication order. Ids are permanent."
+  ],
+
+  "version": 1,
+
+  "groups": [
+    {
+      "id": "addon.design",
+      "order": 1,
+      "label": { "en": "Design", "ar": "التصميم" }
+    },
+    {
+      "id": "addon.content",
+      "order": 2,
+      "label": { "en": "Content", "ar": "المحتوى" }
+    },
+    {
+      "id": "addon.digital",
+      "order": 3,
+      "label": { "en": "Digital", "ar": "الرقمي" }
+    },
+    {
+      "id": "addon.media",
+      "order": 4,
+      "label": { "en": "Media", "ar": "الوسائط" }
+    },
+    {
+      "id": "addon.branding",
+      "order": 5,
+      "label": { "en": "Branding", "ar": "الهوية" }
+    }
+  ],
+
+  "counts": {
+    "_comment": [
+      "THE WHOLE NOUN PHRASE, not a numeral with a plural glued on. Arabic",
+      "counts one, two and three-to-ten differently, so `${n} إضافات` is wrong",
+      "for one and wrong for two. build-pricing.js already learned this for",
+      "packages; the same table, for the same reason."
+    ],
+    "1": { "en": "1 add-on", "ar": "إضافة واحدة" },
+    "2": { "en": "2 add-ons", "ar": "إضافتان" },
+    "3": { "en": "3 add-ons", "ar": "ثلاث إضافات" },
+    "4": { "en": "4 add-ons", "ar": "أربع إضافات" },
+    "5": { "en": "5 add-ons", "ar": "خمس إضافات" },
+    "6": { "en": "6 add-ons", "ar": "ست إضافات" }
+  }
+}

@@ -30,7 +30,24 @@
       "beside it, and never a guess in place of a value.",
       "",
       "`shared` applies to every package. Per-package `facts` (delivery, revisions)",
-      "live on the package itself, beside its price."
+      "live on the package itself, beside its price.",
+      "",
+      "TWO THINGS HERE WERE TOO WIDE, AND BOTH WERE LIVE ON THE SITE UNTIL",
+      "8 SEPTEMBER 2026 (docs/124 §5).",
+      "",
+      "1. `shared.excludes` rendered under EVERY card, and one of its lines said",
+      "   domain and hosting were not included — on cards whose own feature list",
+      "   promised 'Domain registration' and 'Hosting'. The buyer could not tell",
+      "   which half was true, and it was the half that costs money every year.",
+      "   The truth is in between: WE ARRANGE BOTH, YOU PAY THE REGISTRAR AND THE",
+      "   HOST. An exclusion may now carry `notFor`, and the website category",
+      "   states the accurate version in `byCategory`.",
+      "",
+      "2. `shared.fromDepends` explained what a 'from' price depends on in terms of",
+      "   identity concepts and applications — branding's sentence — and rendered",
+      "   under all twelve packages, including nine that quote a FIXED price and",
+      "   never use the word 'from'. It now lives under the category it describes",
+      "   and renders only on packages that actually carry `priceFrom`."
     ],
     "shared": {
       "ownership": {
@@ -40,10 +57,6 @@
       "payment": {
         "en": "50% to start, 50% before handover. Monthly packages are paid at the start of each month.",
         "ar": "50% عند البدء و50% قبل التسليم. والباقات الشهرية تُدفع في بداية كل شهر."
-      },
-      "fromDepends": {
-        "en": "The number of concepts, how many applications you need, and whether the identity works in one language or two.",
-        "ar": "عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين."
       },
       "excludes": [
         {
@@ -60,13 +73,33 @@
         },
         {
           "en": "Domain, hosting and paid third-party services",
-          "ar": "النطاق والاستضافة والخدمات الخارجية المدفوعة"
+          "ar": "النطاق والاستضافة والخدمات الخارجية المدفوعة",
+          "notFor": [
+            "websites"
+          ],
+          "_note": "Websites include arranging both; the fees are still the client's. See byCategory.websites."
         },
         {
           "en": "Written content, unless the package includes it or you add it",
           "ar": "كتابة المحتوى، ما لم تشمله الباقة أو تُضِفه"
         }
       ]
+    },
+    "byCategory": {
+      "branding": {
+        "fromDepends": {
+          "en": "The number of concepts, how many applications you need, and whether the identity works in one language or two.",
+          "ar": "عدد المقترحات، وعدد التطبيقات التي تحتاجها، وما إذا كانت الهوية بلغة واحدة أم بلغتين."
+        }
+      },
+      "websites": {
+        "excludes": [
+          {
+            "en": "Registrar and hosting fees — we arrange both, in your name; you pay the provider",
+            "ar": "رسوم النطاق والاستضافة — نتولّى تجهيزهما باسمك، وتدفع الرسوم للمزوّد مباشرة"
+          }
+        ]
+      }
     }
   },
   "categories": [
@@ -88,36 +121,44 @@
           "features": [
             {
               "carry": false,
+              "ref": "feat.branding.logo",
               "en": "Professional logo design",
               "ar": "تصميم شعار احترافي"
             },
             {
               "carry": false,
+              "ref": "feat.branding.color_system",
               "en": "Color selection",
               "ar": "اختيار الألوان"
             },
             {
               "carry": false,
+              "ref": "feat.branding.type_system",
               "en": "Font selection",
               "ar": "اختيار الخطوط"
             },
             {
               "carry": false,
+              "ref": "feat.branding.identity_card",
               "en": "Basic brand identity card",
               "ar": "بطاقة هوية أساسية للعلامة"
             },
             {
               "carry": false,
+              "ref": "feat.branding.social_profile",
               "en": "Profile picture and cover design",
               "ar": "تصميم صورة الملف والغلاف"
             },
             {
               "carry": false,
+              "ref": "feat.branding.social_posts",
+              "qty": 3,
               "en": "3 social media designs",
               "ar": "3 تصاميم لوسائل التواصل"
             },
             {
               "carry": false,
+              "ref": "feat.branding.files_basic",
               "en": "Basic final files",
               "ar": "ملفات نهائية أساسية"
             }
@@ -151,51 +192,62 @@
           "features": [
             {
               "carry": false,
+              "ref": "feat.branding.logo",
               "en": "Professional logo",
               "ar": "شعار احترافي"
             },
             {
               "carry": false,
+              "ref": "feat.branding.color_system",
               "en": "Complete color system",
               "ar": "نظام ألوان متكامل"
             },
             {
               "carry": false,
+              "ref": "feat.branding.type_system",
               "en": "Typography System",
               "ar": "نظام الخطوط"
             },
             {
               "carry": false,
+              "ref": "feat.branding.guidelines_short",
               "en": "Short Brand Guidelines",
               "ar": "دليل علامة مختصر"
             },
             {
               "carry": false,
+              "ref": "feat.branding.business_card",
               "en": "Business card design",
               "ar": "تصميم بطاقة أعمال"
             },
             {
               "carry": false,
+              "ref": "feat.branding.letterhead",
               "en": "Letterhead design",
               "ar": "تصميم ورق رسمي"
             },
             {
               "carry": false,
+              "ref": "feat.branding.social_profile",
               "en": "Social media profile / cover design",
               "ar": "تصميم ملف وغلاف لوسائل التواصل"
             },
             {
               "carry": false,
+              "ref": "feat.branding.social_posts",
+              "qty": 6,
               "en": "6 social media designs",
               "ar": "6 تصاميم لوسائل التواصل"
             },
             {
               "carry": false,
+              "ref": "feat.branding.ad_templates_basic",
               "en": "Basic advertising templates",
               "ar": "قوالب إعلانية أساسية"
             },
             {
               "carry": false,
+              "ref": "feat.branding.files_source",
               "en": "Source and final files",
               "ar": "الملفات المصدرية والنهائية"
             }
@@ -227,45 +279,55 @@
             {
               "carry": true,
               "en": "Everything in Professional",
-              "ar": "كل ما في باقة Professional"
+              "ar": "كل ما في باقة Professional",
+              "ref": null
             },
             {
               "carry": false,
+              "ref": "feat.branding.guidelines_full",
               "en": "Complete Brand Guidelines",
               "ar": "دليل علامة متكامل"
             },
             {
               "carry": false,
+              "ref": "feat.branding.visual_language",
               "en": "Visual Language",
               "ar": "لغة بصرية"
             },
             {
               "carry": false,
+              "ref": "feat.branding.social_design_system",
               "en": "Social Media Design System",
               "ar": "نظام تصميم لوسائل التواصل"
             },
             {
               "carry": false,
+              "ref": "feat.branding.ad_templates",
               "en": "Advertising Templates",
               "ar": "قوالب إعلانية"
             },
             {
               "carry": false,
+              "ref": "feat.branding.presentation_template",
               "en": "Presentation Template",
               "ar": "قالب Presentation"
             },
             {
               "carry": false,
+              "ref": "feat.branding.profile_template",
               "en": "Business Profile Template",
               "ar": "قالب ملف تعريفي"
             },
             {
               "carry": false,
+              "ref": "feat.branding.content_templates",
+              "qty": 10,
               "en": "10 reusable content templates",
               "ar": "10 قوالب محتوى قابلة لإعادة الاستخدام"
             },
             {
               "carry": false,
+              "ref": "feat.branding.brand_assets",
               "en": "Complete Brand Assets",
               "ar": "أصول العلامة كاملة"
             }
@@ -304,26 +366,31 @@
           "features": [
             {
               "carry": false,
+              "ref": "feat.websites.domain",
               "en": "Domain registration",
               "ar": "تسجيل النطاق"
             },
             {
               "carry": false,
+              "ref": "feat.websites.hosting",
               "en": "Hosting",
               "ar": "الاستضافة"
             },
             {
               "carry": false,
+              "ref": "feat.websites.uiux",
               "en": "Website UI/UX design",
               "ar": "تصميم واجهة وتجربة الموقع"
             },
             {
               "carry": false,
+              "ref": "feat.websites.responsive",
               "en": "Responsive implementation",
               "ar": "تنفيذ متجاوب"
             },
             {
               "carry": false,
+              "ref": "feat.websites.handover",
               "en": "Delivery ready for use",
               "ar": "تسليم جاهز للاستخدام"
             }
@@ -353,41 +420,49 @@
           "features": [
             {
               "carry": false,
+              "ref": "feat.websites.domain",
               "en": "Domain registration",
               "ar": "تسجيل النطاق"
             },
             {
               "carry": false,
+              "ref": "feat.websites.hosting",
               "en": "Hosting",
               "ar": "الاستضافة"
             },
             {
               "carry": false,
+              "ref": "feat.websites.uiux",
               "en": "Website UI/UX design",
               "ar": "تصميم واجهة وتجربة الموقع"
             },
             {
               "carry": false,
+              "ref": "feat.websites.development",
               "en": "Website development",
               "ar": "تطوير الموقع"
             },
             {
               "carry": false,
+              "ref": "feat.websites.responsive",
               "en": "Responsive implementation",
               "ar": "تنفيذ متجاوب"
             },
             {
               "carry": false,
+              "ref": "feat.websites.setup",
               "en": "Website setup",
               "ar": "إعداد الموقع"
             },
             {
               "carry": false,
+              "ref": "feat.websites.testing",
               "en": "Testing",
               "ar": "الاختبار"
             },
             {
               "carry": false,
+              "ref": "feat.websites.handover",
               "en": "Delivery ready for use",
               "ar": "تسليم جاهز للاستخدام"
             }
@@ -417,51 +492,61 @@
           "features": [
             {
               "carry": false,
+              "ref": "feat.websites.domain",
               "en": "Domain registration",
               "ar": "تسجيل النطاق"
             },
             {
               "carry": false,
+              "ref": "feat.websites.hosting",
               "en": "Hosting",
               "ar": "الاستضافة"
             },
             {
               "carry": false,
+              "ref": "feat.websites.uiux",
               "en": "Website UI/UX design",
               "ar": "تصميم واجهة وتجربة الموقع"
             },
             {
               "carry": false,
+              "ref": "feat.websites.development",
               "en": "Website development",
               "ar": "تطوير الموقع"
             },
             {
               "carry": false,
+              "ref": "feat.websites.responsive",
               "en": "Responsive implementation",
               "ar": "تنفيذ متجاوب"
             },
             {
               "carry": false,
+              "ref": "feat.websites.setup",
               "en": "Website setup",
               "ar": "إعداد الموقع"
             },
             {
               "carry": false,
+              "ref": "feat.websites.integrations",
               "en": "Required integrations",
               "ar": "التكاملات المطلوبة"
             },
             {
               "carry": false,
+              "ref": "feat.websites.testing",
               "en": "Testing",
               "ar": "الاختبار"
             },
             {
               "carry": false,
+              "ref": "feat.websites.deployment",
               "en": "Deployment",
               "ar": "النشر"
             },
             {
               "carry": false,
+              "ref": "feat.websites.handover",
               "en": "Delivery ready for use",
               "ar": "تسليم جاهز للاستخدام"
             }
@@ -499,41 +584,51 @@
           "features": [
             {
               "carry": false,
+              "ref": "feat.social.platform_management",
+              "qty": 2,
               "en": "Management of 2 platforms",
               "ar": "إدارة منصتين"
             },
             {
               "carry": false,
+              "ref": "feat.social.content_calendar",
               "en": "Content Calendar",
               "ar": "تقويم المحتوى"
             },
             {
               "carry": false,
+              "ref": "feat.social.post_design",
+              "qty": 8,
               "en": "8 posts per month",
               "ar": "8 منشورات شهريًا"
             },
             {
               "carry": false,
+              "ref": "feat.social.copywriting",
               "en": "Content writing",
               "ar": "كتابة المحتوى"
             },
             {
               "carry": false,
+              "ref": "feat.social.post_design",
               "en": "Post design",
               "ar": "تصميم المنشورات"
             },
             {
               "carry": false,
+              "ref": "feat.social.publishing",
               "en": "Publishing and scheduling",
               "ar": "النشر والجدولة"
             },
             {
               "carry": false,
+              "ref": "feat.social.hashtag_research",
               "en": "Hashtag Research",
               "ar": "بحث الوسوم"
             },
             {
               "carry": false,
+              "ref": "feat.social.report",
               "en": "Brief monthly report",
               "ar": "تقرير شهري مختصر"
             }
@@ -564,56 +659,70 @@
           "features": [
             {
               "carry": false,
+              "ref": "feat.social.platform_management",
+              "qty": 3,
               "en": "Management of up to 3 platforms",
               "ar": "إدارة حتى 3 منصات"
             },
             {
               "carry": false,
+              "ref": "feat.social.content_strategy",
               "en": "Content Strategy",
               "ar": "استراتيجية المحتوى"
             },
             {
               "carry": false,
+              "ref": "feat.social.post_design",
+              "qty": 12,
               "en": "12 posts per month",
               "ar": "12 منشورًا شهريًا"
             },
             {
               "carry": false,
+              "ref": "feat.social.reels",
+              "qty": 4,
               "en": "4 Reels per month",
               "ar": "4 Reels شهريًا"
             },
             {
               "carry": false,
+              "ref": "feat.social.copywriting",
               "en": "Content writing",
               "ar": "كتابة المحتوى"
             },
             {
               "carry": false,
+              "ref": "feat.social.post_design",
               "en": "Design",
               "ar": "التصميم"
             },
             {
               "carry": false,
+              "ref": "feat.social.publishing",
               "en": "Publishing and scheduling",
               "ar": "النشر والجدولة"
             },
             {
               "carry": false,
+              "ref": "feat.social.stories",
               "en": "Stories",
               "ar": "القصص"
             },
             {
               "carry": false,
+              "ref": "feat.social.community_monitoring",
               "en": "Community Monitoring",
               "ar": "متابعة التفاعل والتعليقات"
             },
             {
               "carry": false,
+              "ref": "feat.social.hashtag_research",
               "en": "Hashtag & Keyword Research",
               "ar": "بحث الوسوم والكلمات المفتاحية"
             },
             {
               "carry": false,
+              "ref": "feat.social.report",
               "en": "Monthly performance report",
               "ar": "تقرير أداء شهري"
             }
@@ -641,61 +750,76 @@
           "features": [
             {
               "carry": false,
+              "ref": "feat.social.platform_management",
+              "qty": 5,
               "en": "Management of up to 5 platforms",
               "ar": "إدارة حتى 5 منصات"
             },
             {
               "carry": false,
+              "ref": "feat.social.content_strategy",
               "en": "Complete content strategy",
               "ar": "استراتيجية محتوى كاملة"
             },
             {
               "carry": false,
+              "ref": "feat.social.post_design",
+              "qty": 16,
               "en": "16 posts per month",
               "ar": "16 منشورًا شهريًا"
             },
             {
               "carry": false,
+              "ref": "feat.social.reels",
+              "qty": 8,
               "en": "8 Reels per month",
               "ar": "8 Reels شهريًا"
             },
             {
               "carry": false,
+              "ref": "feat.social.stories",
               "en": "Stories",
               "ar": "القصص"
             },
             {
               "carry": false,
+              "ref": "feat.social.copywriting",
               "en": "Copywriting",
               "ar": "كتابة المحتوى الإعلاني"
             },
             {
               "carry": false,
+              "ref": "feat.social.post_design",
               "en": "Graphic Design",
               "ar": "التصميم الجرافيكي"
             },
             {
               "carry": false,
+              "ref": "feat.social.video_editing",
               "en": "Video Editing",
               "ar": "مونتاج الفيديو"
             },
             {
               "carry": false,
+              "ref": "feat.social.publishing",
               "en": "Publishing & Scheduling",
               "ar": "النشر والجدولة"
             },
             {
               "carry": false,
+              "ref": "feat.social.community_management",
               "en": "Community Management",
               "ar": "إدارة مجتمع المتابعين"
             },
             {
               "carry": false,
+              "ref": "feat.social.report",
               "en": "Monthly Performance Report",
               "ar": "تقرير أداء شهري"
             },
             {
               "carry": false,
+              "ref": "feat.social.strategy_review",
               "en": "Monthly Strategy Review",
               "ar": "مراجعة استراتيجية شهرية"
             }
@@ -731,41 +855,51 @@
           "features": [
             {
               "carry": false,
+              "ref": "feat.marketing.platform_management",
+              "qty": 1,
               "en": "One advertising platform managed",
               "ar": "إدارة منصة إعلانية واحدة"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.campaign_setup",
               "en": "Campaign setup",
               "ar": "إعداد الحملات"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.audience_targeting",
               "en": "Audience Targeting",
               "ar": "استهداف الجمهور"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.ad_copy",
               "en": "Ad Copy",
               "ar": "نصوص الإعلانات"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.ad_creative",
+              "qty": 2,
               "en": "Up to 2 ad designs",
               "ar": "تصميم حتى 2 إعلان"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.monitoring",
               "en": "Campaign Monitoring",
               "ar": "متابعة الحملات"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.optimization",
               "en": "Basic Optimization",
               "ar": "تحسين أساسي"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.report",
               "en": "Monthly report",
               "ar": "تقرير شهري"
             }
@@ -798,51 +932,63 @@
           "features": [
             {
               "carry": false,
+              "ref": "feat.marketing.platform_management",
+              "qty": 1,
               "en": "Meta Ads management",
               "ar": "إدارة Meta Ads"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.platform_management",
               "en": "Facebook + Instagram",
               "ar": "Facebook + Instagram"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.campaign_setup",
+              "qty": 4,
               "en": "Up to 4 campaigns",
               "ar": "حتى 4 حملات"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.audience_research",
               "en": "Audience Research",
               "ar": "بحث الجمهور"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.ad_creative",
               "en": "Ad Creative",
               "ar": "تصاميم إعلانية"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.ad_copy",
               "en": "Copywriting",
               "ar": "كتابة المحتوى الإعلاني"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.optimization",
               "en": "Campaign Optimization",
               "ar": "تحسين الحملات"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.retargeting",
               "en": "Retargeting",
               "ar": "إعادة الاستهداف"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.conversion_tracking",
               "en": "Conversion Tracking",
               "ar": "تتبّع التحويلات"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.report",
               "en": "Monthly performance report",
               "ar": "تقرير أداء شهري"
             }
@@ -872,56 +1018,68 @@
           "features": [
             {
               "carry": false,
+              "ref": "feat.marketing.platform_management",
+              "qty": 2,
               "en": "Meta + Google Ads",
               "ar": "إعلانات Meta و Google"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.campaign_strategy",
               "en": "Campaign Strategy",
               "ar": "استراتيجية الحملات"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.audience_segmentation",
               "en": "Audience Segmentation",
               "ar": "تقسيم الجمهور"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.campaign_setup",
               "en": "Multiple Campaigns",
               "ar": "حملات متعددة"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.retargeting",
               "en": "Retargeting",
               "ar": "إعادة الاستهداف"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.conversion_tracking",
               "en": "Conversion Tracking",
               "ar": "تتبّع التحويلات"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.ab_testing",
               "en": "A/B Testing",
               "ar": "اختبارات A/B"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.creative_optimization",
               "en": "Creative Optimization",
               "ar": "تحسين التصاميم"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.budget_optimization",
               "en": "Budget Optimization",
               "ar": "تحسين الميزانية"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.report",
               "en": "Performance Report",
               "ar": "تقرير الأداء"
             },
             {
               "carry": false,
+              "ref": "feat.marketing.strategy_meeting",
               "en": "Monthly Strategy Meeting",
               "ar": "اجتماع استراتيجي شهري"
             }

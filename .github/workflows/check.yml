@@ -95,6 +95,7 @@ jobs:
           OFFENDERS="$(echo "$CHANGED" | grep -v '^$' \
             | grep -vE '^src/data/[^/]+\.json$' \
             | grep -vE '^dist/' \
+            | grep -vE '^catalogue/' \
             | grep -vE '^docs/' \
             | grep -vE '^(index|story|about|pricing|privacy|terms|accessibility|styleguide|404)\.html$' \
             | grep -vE '^src/pages/' || true)"
@@ -135,10 +136,10 @@ jobs:
       - name: The committed dist must match a fresh build
         if: steps.scope.outputs.data_only != 'true'
         run: |
-          git diff --exit-code -- dist src/data/lastmod.json || {
+          git diff --exit-code -- dist src/data/lastmod.json catalogue || {
             echo
-            echo "dist/ is stale — src/ was changed without running 'npm run build'."
-            echo "Run 'npm run release' and commit dist/ (and src/data/lastmod.json)."
+            echo "dist/ or catalogue/ is stale — src/ was changed without running 'npm run build'."
+            echo "Run 'npm run release' and commit dist/, catalogue/ and src/data/lastmod.json."
             exit 1
           }
 
@@ -163,19 +164,24 @@ jobs:
       #   - only after `npm run check` has passed;
       #   - it commits the BUILD OUTPUT only. It never edits source.
       #
+      # `catalogue/` is build output too: tools/build-catalogue.js generates it
+      # from src/data/catalogue/. It is committed for the same reason dist/ is
+      # — it is what an automation or an agent reads, and a repository whose
+      # source and whose export disagree is worse than one that has neither.
+      #
       # No loop: pushes made with GITHUB_TOKEN do not trigger workflows. Even if
       # they did, the next run would find dist/ already matching and commit
       # nothing.
       - name: Rebuild dist for a data-only edit
         if: steps.scope.outputs.data_only == 'true' && github.event_name == 'push'
         run: |
-          if git diff --quiet -- dist src/data/lastmod.json; then
+          if git diff --quiet -- dist src/data/lastmod.json catalogue; then
             echo "dist/ already matches the data — nothing to commit."
             exit 0
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dist src/data/lastmod.json
+          git add dist src/data/lastmod.json catalogue
           git commit -m "Rebuild dist for ${GITHUB_SHA:0:7}
 
           Data was edited without a local build — see .github/workflows/check.yml.

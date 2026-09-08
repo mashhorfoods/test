@@ -1,0 +1,441 @@
+{
+  "_comment": [
+    "SERVICES — the canonical record of what this studio sells.",
+    "",
+    "Before this file existed the five services lived only as hand-written",
+    "markup in index.html, and service 04 was called four different things in",
+    "four places on one page (docs/124 §3). One name per service now lives",
+    "here, and everything that renders a service name reads it from here.",
+    "",
+    "`id` is language-neutral and permanent. It is what a CRM, a project",
+    "management board, a quotation or an agent keys on, and it must never be",
+    "translated, renamed or reused.",
+    "",
+    "`legacyCategory` is the id this service's packages carry in",
+    "src/data/pricing.json. It is a JOIN, not a duplicate: the packages and",
+    "their prices stay exactly where they are.",
+    "",
+    "`pipeline` is PART 02 of the brief: the ordered sequence a service is",
+    "actually executed in. Each stage names the features that belong to it, so",
+    "a selected scope can be sorted into an executable order rather than a",
+    "shopping list. Stage ids are permanent for the same reason feature ids",
+    "are.",
+    "",
+    "NOTHING IN THIS FILE REACHES A VISITOR WHOLE. tools/build-catalogue.js",
+    "emits a public projection carrying labels, descriptions, pricing and",
+    "dependencies only. Pipelines, stages and automation fields stay here."
+  ],
+
+  "version": 1,
+
+  "services": [
+    {
+      "id": "svc.branding",
+      "order": 1,
+      "legacyCategory": "branding",
+      "name": { "en": "Branding & Design", "ar": "الهوية والتصميم" },
+      "summary": {
+        "en": "One consistent look across every channel.",
+        "ar": "مظهر واحد متسق في كل قناة."
+      },
+      "description": {
+        "en": "Logo, identity and visual systems that give your business one consistent look across every channel.",
+        "ar": "شعار وهوية وأنظمة بصرية تمنح عملك مظهرًا واحدًا متسقًا في كل قناة."
+      },
+      "aliases": ["Identity & Design", "Branding"],
+      "pipeline": {
+        "id": "pipe.branding",
+        "stages": [
+          {
+            "id": "pipe.branding.discover",
+            "name": { "en": "Discover", "ar": "الاستكشاف" },
+            "objective": "Establish what the business is, who it speaks to, and what the identity has to survive.",
+            "entry": "Signed scope and a completed brand questionnaire.",
+            "exit": "A written direction the client has agreed to in words, before anything is drawn.",
+            "features": []
+          },
+          {
+            "id": "pipe.branding.core",
+            "name": { "en": "Core identity", "ar": "جوهر الهوية" },
+            "objective": "Build the three things everything else is derived from.",
+            "entry": "Agreed direction.",
+            "exit": "Logo, colour system and type system approved.",
+            "features": ["feat.branding.logo", "feat.branding.color_system", "feat.branding.type_system"]
+          },
+          {
+            "id": "pipe.branding.system",
+            "name": { "en": "System", "ar": "النظام" },
+            "objective": "Turn the core into rules other people can follow without asking.",
+            "entry": "Core identity approved.",
+            "exit": "Guidelines and visual language documented.",
+            "features": [
+              "feat.branding.identity_card",
+              "feat.branding.guidelines_short",
+              "feat.branding.guidelines_full",
+              "feat.branding.visual_language"
+            ]
+          },
+          {
+            "id": "pipe.branding.apply",
+            "name": { "en": "Apply", "ar": "التطبيق" },
+            "objective": "Apply the system to the surfaces the business actually uses.",
+            "entry": "Core identity approved. Guidelines where the scope includes them.",
+            "exit": "Every applied item approved at its own revision limit.",
+            "features": [
+              "feat.branding.business_card",
+              "feat.branding.letterhead",
+              "feat.branding.social_profile",
+              "feat.branding.social_posts",
+              "feat.branding.social_design_system",
+              "feat.branding.ad_templates_basic",
+              "feat.branding.ad_templates",
+              "feat.branding.presentation_template",
+              "feat.branding.presentation_design",
+              "feat.branding.profile_template",
+              "feat.branding.company_profile",
+              "feat.branding.content_templates"
+            ]
+          },
+          {
+            "id": "pipe.branding.capture",
+            "name": { "en": "Capture", "ar": "التصوير" },
+            "objective": "Produce original imagery where the identity needs it and stock will not do.",
+            "entry": "Approved direction. A shot list agreed with the client.",
+            "exit": "Selected, retouched files delivered.",
+            "features": ["feat.branding.photography", "feat.branding.videography"]
+          },
+          {
+            "id": "pipe.branding.handover",
+            "name": { "en": "Handover", "ar": "التسليم" },
+            "objective": "Hand over files the client owns and can use without us.",
+            "entry": "Every in-scope item approved.",
+            "exit": "Archive delivered and receipt confirmed.",
+            "features": [
+              "feat.branding.files_basic",
+              "feat.branding.files_source",
+              "feat.branding.brand_assets"
+            ]
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "svc.websites",
+      "order": 2,
+      "legacyCategory": "websites",
+      "name": { "en": "Websites", "ar": "المواقع الإلكترونية" },
+      "summary": {
+        "en": "Designed, built, and handed over working.",
+        "ar": "يُصمَّم ويُبنى ويُسلَّم وهو يعمل."
+      },
+      "description": {
+        "en": "Design, build and deployment — handed over as a working website, with domain and hosting arranged.",
+        "ar": "تصميم وتطوير ونشر — يُسلَّم موقعًا يعمل، مع تجهيز النطاق والاستضافة."
+      },
+      "aliases": ["Website"],
+      "pipeline": {
+        "id": "pipe.websites",
+        "stages": [
+          {
+            "id": "pipe.websites.plan",
+            "name": { "en": "Plan", "ar": "التخطيط" },
+            "objective": "Agree what pages exist, what each is for, and what the site has to do.",
+            "entry": "Signed scope.",
+            "exit": "An agreed sitemap and a content list naming who supplies each item.",
+            "features": []
+          },
+          {
+            "id": "pipe.websites.infrastructure",
+            "name": { "en": "Infrastructure", "ar": "البنية" },
+            "objective": "Secure the address and the place the site will live.",
+            "entry": "A chosen name, confirmed available, and the client's decision on who holds the account.",
+            "exit": "Domain registered and hosting provisioned, both in the client's name.",
+            "features": ["feat.websites.domain", "feat.websites.hosting"]
+          },
+          {
+            "id": "pipe.websites.design",
+            "name": { "en": "Design", "ar": "التصميم" },
+            "objective": "Design every page at every width before any of it is built.",
+            "entry": "Agreed sitemap. Brand assets, ours or the client's.",
+            "exit": "Design approved at desktop and phone widths.",
+            "features": ["feat.websites.uiux"]
+          },
+          {
+            "id": "pipe.websites.build",
+            "name": { "en": "Build", "ar": "التنفيذ" },
+            "objective": "Build the approved design as a working site.",
+            "entry": "Approved design. Final copy and images in hand.",
+            "exit": "Every page built, responsive, and matching the approved design.",
+            "features": [
+              "feat.websites.development",
+              "feat.websites.responsive",
+              "feat.websites.setup",
+              "feat.websites.integrations",
+              "feat.websites.extra_page",
+              "feat.websites.extra_landing"
+            ]
+          },
+          {
+            "id": "pipe.websites.verify",
+            "name": { "en": "Verify", "ar": "الفحص" },
+            "objective": "Prove it works before anyone else sees it.",
+            "entry": "Build complete on a staging address.",
+            "exit": "Every check passed and recorded.",
+            "features": ["feat.websites.testing"]
+          },
+          {
+            "id": "pipe.websites.launch",
+            "name": { "en": "Launch", "ar": "الإطلاق" },
+            "objective": "Put it live and hand over the keys.",
+            "entry": "Testing passed. Client sign-off on the staging site.",
+            "exit": "Live on the client's domain, credentials transferred, receipt confirmed.",
+            "features": ["feat.websites.deployment", "feat.websites.handover"]
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "svc.social",
+      "order": 3,
+      "legacyCategory": "social",
+      "name": { "en": "Social Media Management", "ar": "إدارة وسائل التواصل" },
+      "summary": {
+        "en": "Strategy, content and publishing, handled.",
+        "ar": "استراتيجية ومحتوى ونشر، نتولّاها عنك."
+      },
+      "description": {
+        "en": "Strategy, content and publishing across your channels, with community monitoring and performance analysis.",
+        "ar": "استراتيجية ومحتوى ونشر عبر قنواتك، مع متابعة المجتمع وتحليل الأداء."
+      },
+      "aliases": ["Social Media"],
+      "recurring": true,
+      "pipeline": {
+        "id": "pipe.social",
+        "_comment": "A MONTHLY LOOP, not a line. Onboarding runs once; plan, produce, publish, engage and report run every month, and the report feeds the next month's plan.",
+        "stages": [
+          {
+            "id": "pipe.social.onboard",
+            "name": { "en": "Onboard", "ar": "التهيئة" },
+            "objective": "Get access to the accounts and agree the voice.",
+            "entry": "Signed scope.",
+            "exit": "Publishing access confirmed on every in-scope platform.",
+            "features": ["feat.social.account_setup", "feat.social.platform_management"],
+            "once": true
+          },
+          {
+            "id": "pipe.social.plan",
+            "name": { "en": "Plan", "ar": "التخطيط" },
+            "objective": "Decide what goes out this month, and why.",
+            "entry": "Approved voice. Last month's report, from month two onward.",
+            "exit": "A calendar the client has approved.",
+            "features": [
+              "feat.social.content_strategy",
+              "feat.social.content_calendar",
+              "feat.social.hashtag_research"
+            ]
+          },
+          {
+            "id": "pipe.social.produce",
+            "name": { "en": "Produce", "ar": "الإنتاج" },
+            "objective": "Make everything the calendar promised.",
+            "entry": "Approved calendar. Brand assets and any client-supplied material.",
+            "exit": "Every item approved at its revision limit and scheduled.",
+            "features": [
+              "feat.social.copywriting",
+              "feat.social.post_design",
+              "feat.social.reels",
+              "feat.social.stories",
+              "feat.social.video_editing"
+            ]
+          },
+          {
+            "id": "pipe.social.publish",
+            "name": { "en": "Publish", "ar": "النشر" },
+            "objective": "Put it out on time, on the right account.",
+            "entry": "Approved content, scheduled.",
+            "exit": "Every scheduled item live, verified on the platform itself.",
+            "features": ["feat.social.publishing"]
+          },
+          {
+            "id": "pipe.social.engage",
+            "name": { "en": "Engage", "ar": "التفاعل" },
+            "objective": "Answer people, and escalate what we cannot answer.",
+            "entry": "Published content.",
+            "exit": "No unanswered message older than the agreed response window.",
+            "features": ["feat.social.community_monitoring", "feat.social.community_management"]
+          },
+          {
+            "id": "pipe.social.report",
+            "name": { "en": "Report", "ar": "التقرير" },
+            "objective": "Say what happened and what changes next month.",
+            "entry": "A complete calendar month of published activity.",
+            "exit": "Report sent. Next month's plan carries at least one decision taken from it.",
+            "features": ["feat.social.report", "feat.social.strategy_review"]
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "svc.marketing",
+      "order": 4,
+      "legacyCategory": "marketing",
+      "name": { "en": "Digital Marketing & Advertising", "ar": "التسويق الرقمي والإعلانات" },
+      "summary": {
+        "en": "Paid campaigns, targeted and measured.",
+        "ar": "حملات مدفوعة، موجَّهة ومقاسة."
+      },
+      "description": {
+        "en": "Paid campaigns across the major platforms, with audience targeting, campaign management, optimization and tracking.",
+        "ar": "حملات مدفوعة على المنصات الرئيسية، مع استهداف الجمهور وإدارة الحملات وتحسينها وتتبع النتائج."
+      },
+      "aliases": ["Marketing & Ads", "Digital Marketing & Ads", "Digital Marketing", "Advertising"],
+      "recurring": true,
+      "note": {
+        "en": "The advertising budget itself is not included in the management fee. The package price covers managing your campaigns; what you spend with the platforms is separate and paid by you.",
+        "ar": "ميزانية الإعلانات نفسها غير مشمولة في رسوم الإدارة."
+      },
+      "pipeline": {
+        "id": "pipe.marketing",
+        "_comment": "Setup runs once per campaign. Measure and optimise run continuously; report and review close each month and set the next month's target.",
+        "stages": [
+          {
+            "id": "pipe.marketing.access",
+            "name": { "en": "Access", "ar": "الوصول" },
+            "objective": "Get into the ad accounts, legitimately and reversibly.",
+            "entry": "Signed scope.",
+            "exit": "Partner access granted on every in-scope platform, with the client owning the account.",
+            "features": ["feat.marketing.platform_management"],
+            "once": true
+          },
+          {
+            "id": "pipe.marketing.strategy",
+            "name": { "en": "Strategy", "ar": "الاستراتيجية" },
+            "objective": "Decide who we are talking to and what counts as success.",
+            "entry": "Account access. An agreed objective and a monthly budget figure from the client.",
+            "exit": "A written target, a defined audience, and a conversion the client agrees to be measured on.",
+            "features": [
+              "feat.marketing.campaign_strategy",
+              "feat.marketing.audience_targeting",
+              "feat.marketing.audience_research",
+              "feat.marketing.audience_segmentation"
+            ]
+          },
+          {
+            "id": "pipe.marketing.produce",
+            "name": { "en": "Produce", "ar": "الإنتاج" },
+            "objective": "Make the ads.",
+            "entry": "Approved audience and target. Brand assets.",
+            "exit": "Copy and creative approved, and compliant with each platform's policy.",
+            "features": ["feat.marketing.ad_copy", "feat.marketing.ad_creative"]
+          },
+          {
+            "id": "pipe.marketing.instrument",
+            "name": { "en": "Instrument", "ar": "التتبّع" },
+            "objective": "Make the result measurable before the money starts moving.",
+            "entry": "A destination we can put a tag on, and the client's permission to place it.",
+            "exit": "A test conversion recorded end to end.",
+            "features": ["feat.marketing.conversion_tracking"]
+          },
+          {
+            "id": "pipe.marketing.launch",
+            "name": { "en": "Launch", "ar": "الإطلاق" },
+            "objective": "Build the campaign and turn it on.",
+            "entry": "Approved creative. Tracking verified. Budget confirmed in writing.",
+            "exit": "Campaign live, delivering, and spending at the agreed daily rate.",
+            "features": ["feat.marketing.campaign_setup", "feat.marketing.retargeting"]
+          },
+          {
+            "id": "pipe.marketing.optimise",
+            "name": { "en": "Optimise", "ar": "التحسين" },
+            "objective": "Improve the result while it runs, without breaking what works.",
+            "entry": "A live campaign with enough data to read.",
+            "exit": "Each change recorded with the number that justified it.",
+            "features": [
+              "feat.marketing.monitoring",
+              "feat.marketing.optimization",
+              "feat.marketing.creative_optimization",
+              "feat.marketing.budget_optimization",
+              "feat.marketing.ab_testing"
+            ]
+          },
+          {
+            "id": "pipe.marketing.report",
+            "name": { "en": "Report", "ar": "التقرير" },
+            "objective": "Say what the money bought, and what changes next month.",
+            "entry": "A complete calendar month of spend.",
+            "exit": "Report sent with spend, result and cost per result, and a decision for next month.",
+            "features": ["feat.marketing.report", "feat.marketing.strategy_meeting"]
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "svc.integrated",
+      "order": 5,
+      "legacyCategory": null,
+      "name": { "en": "Integrated Digital Solutions", "ar": "الحلول الرقمية المتكاملة" },
+      "summary": {
+        "en": "All of the above, run as one system.",
+        "ar": "كل ما سبق، يُدار كنظامٍ واحد."
+      },
+      "description": {
+        "en": "The complete connected offering, run as one system from brand through to growth rather than as separate projects.",
+        "ar": "العرض المتكامل بالكامل، يُدار كنظام واحد من العلامة حتى النمو بدل أن يكون مشاريع منفصلة."
+      },
+      "composes": ["svc.branding", "svc.websites", "svc.social", "svc.marketing"],
+      "pricing": { "type": "quote" },
+      "_note": [
+        "THIS SERVICE HAS NO PACKAGES AND NO PRICE, and that is the truth about",
+        "it rather than a gap. It is the other four run together, so its price",
+        "is whatever the chosen scope is; the brief's instruction is to show",
+        "'Custom quote' rather than invent a number, and that is what it does.",
+        "",
+        "Its pipeline is the four services' pipelines in dependency order, not",
+        "a sixth set of stages. A composition that had its own hidden workflow",
+        "would be a fifth service pretending to be a bundle."
+      ],
+      "pipeline": {
+        "id": "pipe.integrated",
+        "composed": true,
+        "stages": [
+          {
+            "id": "pipe.integrated.foundation",
+            "name": { "en": "Identity & Design", "ar": "الهوية والتصميم" },
+            "objective": "Build the foundation.",
+            "entry": "Signed scope across the composed services.",
+            "exit": "Brand core approved — everything downstream depends on it.",
+            "delegatesTo": "pipe.branding"
+          },
+          {
+            "id": "pipe.integrated.presence",
+            "name": { "en": "Websites", "ar": "المواقع الإلكترونية" },
+            "objective": "Create the digital presence.",
+            "entry": "Brand core approved.",
+            "exit": "Site live on the client's domain.",
+            "delegatesTo": "pipe.websites"
+          },
+          {
+            "id": "pipe.integrated.engagement",
+            "name": { "en": "Social Media Management", "ar": "إدارة وسائل التواصل" },
+            "objective": "Build ongoing engagement.",
+            "entry": "Brand core approved. A destination to send people to.",
+            "exit": "The monthly loop running.",
+            "delegatesTo": "pipe.social"
+          },
+          {
+            "id": "pipe.integrated.growth",
+            "name": { "en": "Digital Marketing", "ar": "التسويق الرقمي" },
+            "objective": "Reach the right audience.",
+            "entry": "A live destination and measurable conversions.",
+            "exit": "Campaigns live and reporting monthly.",
+            "delegatesTo": "pipe.marketing"
+          }
+        ]
+      }
+    }
+  ]
+}

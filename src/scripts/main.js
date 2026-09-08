@@ -17,6 +17,7 @@ import { initFocus } from './focus.js';
 import { initAnalytics } from './analytics.js';
 import { initHeroFilm } from './hero-film.js';
 import { initChallenge } from './challenge.js';
+import { initBuilder } from './builder.js';
 
 function boot() {
   // Before the rest: every other module's links inherit this behaviour.
@@ -34,6 +35,11 @@ function boot() {
   // Marketing, not machinery: it enhances a panel that already reads correctly
   // without it, and is a no-op on every page that has no challenge.
   initChallenge();
+  // The package builder. A no-op on every page but /pricing, and there it
+  // enhances a catalogue that is already complete in the markup: with this
+  // module absent the page is still every service, every feature and every
+  // price, in both languages.
+  initBuilder();
   // Last: it only listens, and it must never be the reason something else
   // failed to initialise.
   initAnalytics();

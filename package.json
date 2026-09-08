@@ -2,10 +2,11 @@
   "name": "pixora-site",
   "version": "1.0.0",
   "private": true,
-  "description": "Pixora — a bilingual static site. Edit src/, run npm run build, upload the zip.",
+  "description": "Pixora \u2014 a bilingual static site. Edit src/, run npm run build, upload the zip.",
   "scripts": {
     "build": "node build.js",
-    "check": "node tools/validate.js && node tools/qa.js && node tools/responsive.js && node tools/arabic.js && node tools/a11y.js",
+    "catalogue": "node tools/build-catalogue.js && node tools/build-builder.js",
+    "check": "node tools/validate.js && node tools/qa.js && node tools/responsive.js && node tools/arabic.js && node tools/a11y.js && node tools/builder-test.cjs",
     "release": "npm run build && npm run check",
     "film": "node tools/build-showpiece.js",
     "film:clips": "node tools/build-hero-from-clips.js",
@@ -16,7 +17,8 @@
     "responsive": "node tools/responsive.js",
     "arabic": "node tools/arabic.js",
     "admin:test": "node tools/admin-test.mjs",
-    "admin:ui": "node tools/admin-ui-test.cjs"
+    "admin:ui": "node tools/admin-ui-test.cjs",
+    "builder:test": "node tools/builder-test.cjs"
   },
   "devDependencies": {
     "axe-core": "^4.13.0",

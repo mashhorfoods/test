@@ -1734,6 +1734,7 @@
               priced once we know the scope.</span><span data-lang-copy="ar" lang="ar">خدمات مفردة يمكن إضافتها إلى أي باقة. الأسعار تبدأ من الأرقام أدناه؛ وما يُسعَّر حسب العدد أو حسب المشروع يُحدَّد بعد معرفة النطاق.</span></p>
           </header>
 
+          <!-- ADDONS:START -->
           <div class="c-addons">
             <details class="c-addons__group" data-reveal-group open>
               <summary class="c-addons__summary">
@@ -1848,7 +1849,6 @@
                   </span>
                 </span>
               </li>
-
               <li class="c-addon">
                 <span class="c-addon__index" aria-hidden="true">08</span>
                 <span class="c-addon__name"><span data-lang-copy="en">Additional website page</span><span data-lang-copy="ar" lang="ar">صفحة Website إضافية</span></span>
@@ -1898,7 +1898,7 @@
               <ul class="c-addons__grid" role="list">
               <li class="c-addon">
                 <span class="c-addon__index" aria-hidden="true">11</span>
-                <span class="c-addon__name">Company Profile</span>
+                <span class="c-addon__name"><span data-lang-copy="en">Company Profile</span><span data-lang-copy="ar" lang="ar">ملف تعريفي للشركة</span></span>
                 <span class="c-addon__price">
                   <span class="c-addon__from" data-i18n="priceFrom">From</span>
                   <span class="c-addon__figure">
@@ -1910,6 +1910,7 @@
               </ul>
             </details>
           </div>
+          <!-- ADDONS:END -->
 
           <div class="c-quote" data-reveal>
             <div>
@@ -1929,6 +1930,21 @@
               </svg>
             </a>
           </div>
+
+          <!-- One quiet text link, not a second CTA — the same device the
+               service blocks use for a route to the page that holds the
+               detail. The builder lives on /pricing because that is where the
+               packages it is an alternative to already are; a visitor who has
+               just read eleven add-ons and still not found their scope is
+               exactly the person it was built for. -->
+          <p class="c-detail__more" data-reveal>
+            <a class="c-link" href="./pricing#build">
+              <span data-lang-copy="en">Or build your own package, feature by feature</span><span data-lang-copy="ar" lang="ar">أو كوّن باقتك بنفسك، ميزةً ميزة</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="u-flip-rtl">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none" />
+              </svg>
+            </a>
+          </p>
         </div>
       </section>
 

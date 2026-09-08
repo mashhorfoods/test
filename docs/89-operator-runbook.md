@@ -34,10 +34,29 @@ ask.
 | Homepage words | `index.html` | Needs a build (§4) |
 | About / Pricing / Privacy / Terms / Accessibility words | `src/pages/*.html` | Needs a build (§4) |
 | Phone, WhatsApp, email | `src/scripts/navigation-map.js` **and** `site.config.json` | Needs a build. Change both or the page and the button disagree |
+| **Add-ons — names, prices, groups** | `src/data/catalogue/features.*.json` | Needs a build (§4) |
+| **What a service is made of, and what it costs** | `src/data/catalogue/features.*.json` | Needs a build (§4) |
+| **A service's name, or how it is executed** | `src/data/catalogue/services.json` | Needs a build (§4) |
 
 **A price lives in `pricing.json` and nowhere else.** Editing a number you can
 see in a built page is undone by the next build — the page is generated from
 the data, not the other way round.
+
+### The catalogue, in one paragraph
+
+`src/data/catalogue/` is the studio's service architecture: five services,
+sixty-eight features, and how each one is actually executed. **The add-ons on
+the homepage and the package builder on `/pricing` are both generated from
+it**, so a new add-on is one entry in one file rather than markup typed into
+`index.html`, and it appears numbered, in both languages, in both places.
+
+It also holds a great deal a visitor never sees — pipelines, workflows, quality
+checks — and `tools/build-catalogue.js` refuses to build if anything there
+stops adding up: a missing Arabic label, a dependency that points at nothing, a
+feature that requires something it also replaces. **Read what it prints.** It
+also lists *advisories*, which are not failures: they are places where a
+package promises something the catalogue says needs something else the package
+does not mention. Those are yours to settle, not the build's — `docs/125` §4.
 
 ---
 

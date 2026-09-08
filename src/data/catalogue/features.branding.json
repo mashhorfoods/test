@@ -1,0 +1,1788 @@
+{
+  "_comment": [
+    "FEATURES — Branding & Design (svc.branding).",
+    "",
+    "One row per capability, with a permanent language-neutral id. The EN/AR",
+    "labels here are the ONLY place those words are authored; index.html and",
+    "pricing.json stop carrying their own copies.",
+    "",
+    "PUBLIC vs INTERNAL. `name`, `description`, `purpose` and `pricing` are",
+    "public — the builder renders them. Everything from `inputs` down is",
+    "internal and is stripped by tools/build-catalogue.js before anything",
+    "reaches a browser. The brief is explicit: a visitor sees no workflow ids,",
+    "no automation fields, no internal status.",
+    "",
+    "`automationPotential` is an honest four-point scale, not aspiration:",
+    "  none    — judgement or craft; an agent would produce something worse",
+    "  assist  — an agent prepares, a person decides",
+    "  partial — an agent does most of it, a person approves before it ships",
+    "  full    — an agent can complete it unattended once inputs are present",
+    "",
+    "`pricing.type` is the distinction the builder must show the buyer:",
+    "  included — part of the service, no separate charge",
+    "  fixed    — a fixed price, once",
+    "  unit     — priced per item, with a quantity",
+    "  project  — scoped per project, with a floor",
+    "  quote    — cannot be priced without talking; shows Custom quote, never",
+    "             an invented number"
+  ],
+  "service": "svc.branding",
+  "features": [
+    {
+      "id": "feat.branding.logo",
+      "name": {
+        "en": "Logo design",
+        "ar": "تصميم الشعار"
+      },
+      "description": {
+        "en": "A primary mark, drawn for your business, delivered in every format you will need it in.",
+        "ar": "علامة أساسية مصمّمة خصيصًا لعملك، تُسلَّم بكل الصيغ التي ستحتاجها."
+      },
+      "purpose": {
+        "en": "The one thing everything else in the identity is built from.",
+        "ar": "الأساس الذي تُبنى عليه بقية عناصر الهوية."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Brand questionnaire",
+        "Business name in every language it will appear in",
+        "Sector and competitor references",
+        "Any existing mark being replaced"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.design_concept",
+      "executionSteps": [
+        "Read the questionnaire and write a one-paragraph direction before drawing.",
+        "Sketch and develop distinct concepts — distinct in idea, not in colourway.",
+        "Present concepts in context, never as a mark floating on white.",
+        "Take the chosen concept through the agreed revision rounds.",
+        "Construct the final mark on a grid and build the format set."
+      ],
+      "tools": [
+        "Vector editor",
+        "Type library",
+        "Mockup set"
+      ],
+      "outputs": [
+        "Approved primary mark",
+        "Clear-space and minimum-size rules"
+      ],
+      "deliverables": [
+        "SVG",
+        "PDF",
+        "EPS",
+        "PNG at three sizes",
+        "One-colour and reversed versions"
+      ],
+      "qualityChecks": [
+        "Legible at 16px and at three metres",
+        "Works in one colour and reversed out",
+        "No effect that fails in print",
+        "Name spelled correctly in every language it carries",
+        "No resemblance found in a reverse-image and trademark search"
+      ],
+      "completionCriteria": "Client has approved one mark in writing and the full format set has been delivered and opened.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Refinement of the chosen concept. A new direction restarts the concept stage and is quoted."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 10,
+        "max": 26
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 250
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.color_system",
+      "name": {
+        "en": "Colour system",
+        "ar": "نظام الألوان"
+      },
+      "description": {
+        "en": "A defined palette — primary, secondary and neutrals — with the values for screen and for print.",
+        "ar": "لوحة ألوان محدَّدة — أساسية وثانوية ومحايدة — بقيمها للشاشة وللطباعة."
+      },
+      "purpose": {
+        "en": "So two people designing on different days produce the same colours.",
+        "ar": "حتى ينتج شخصان يعملان في يومين مختلفين الألوان نفسها."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved logo",
+        "Where the brand will appear — screen, print, signage, or all three"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.design_system",
+      "executionSteps": [
+        "Derive the palette from the approved mark, not from a trend.",
+        "Set roles: primary, secondary, neutral, and one state colour if the brand needs it.",
+        "Specify HEX, RGB, CMYK and Pantone where print is in scope.",
+        "Test every text-on-background pair that the brand will actually use."
+      ],
+      "tools": [
+        "Vector editor",
+        "Contrast checker"
+      ],
+      "outputs": [
+        "Named palette with roles and values"
+      ],
+      "deliverables": [
+        "Palette sheet",
+        "Swatch file"
+      ],
+      "qualityChecks": [
+        "Every text pair meets 4.5:1, or is documented as display-only",
+        "CMYK conversions checked, not assumed",
+        "Palette survives greyscale"
+      ],
+      "completionCriteria": "Palette approved and every value present for every medium in scope.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Adjustment within the approved direction."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 3,
+        "max": 8
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 90
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.type_system",
+      "name": {
+        "en": "Typography system",
+        "ar": "نظام الخطوط"
+      },
+      "description": {
+        "en": "The typefaces the brand uses, the sizes and weights for each role, and — where the brand is bilingual — the Arabic face that pairs with them.",
+        "ar": "الخطوط التي تستخدمها العلامة، ومقاساتها وأوزانها لكل استخدام، والخط العربي المقابل إن كانت العلامة بلغتين."
+      },
+      "purpose": {
+        "en": "So headings, body and captions look deliberate rather than picked each time.",
+        "ar": "حتى تبدو العناوين والنصوص والتعليقات مقصودة لا مختارة في كل مرة."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved logo",
+        "Which languages the brand publishes in",
+        "Licence budget, or a constraint to open-licensed faces"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.design_system",
+      "executionSteps": [
+        "Choose a display and a text face that hold up at the sizes actually used.",
+        "Where the brand is bilingual, pair an Arabic face by proportion and weight, never by name.",
+        "Define a scale with roles rather than a list of sizes.",
+        "Confirm the licence covers web, print and handover to the client."
+      ],
+      "tools": [
+        "Type library",
+        "Vector editor"
+      ],
+      "outputs": [
+        "Named type scale with roles"
+      ],
+      "deliverables": [
+        "Type sheet",
+        "Font files or licence links"
+      ],
+      "qualityChecks": [
+        "Arabic and Latin sit on a shared optical baseline at every size",
+        "Every weight used is actually available in the licence",
+        "Body face legible at 14px on a phone"
+      ],
+      "completionCriteria": "Scale approved and the licence position confirmed in writing.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Adjustment within the approved direction."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 3,
+        "max": 9
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 90
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.identity_card",
+      "name": {
+        "en": "Basic brand identity card",
+        "ar": "بطاقة هوية أساسية للعلامة"
+      },
+      "description": {
+        "en": "A single sheet holding the mark, the colours and the type — the short version of a guideline.",
+        "ar": "صفحة واحدة تجمع الشعار والألوان والخطوط — النسخة المختصرة من دليل العلامة."
+      },
+      "purpose": {
+        "en": "Enough to hand a printer or a freelancer without writing an email.",
+        "ar": "تكفي لتسليمها لمطبعة أو مصمم مستقل دون شرح إضافي."
+      },
+      "category": "system",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved logo",
+        "Approved palette",
+        "Approved type scale"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo",
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.document",
+      "executionSteps": [
+        "Lay out mark, clear space, palette values and type scale on one sheet.",
+        "Export as a PDF that prints correctly at A4."
+      ],
+      "tools": [
+        "Layout editor"
+      ],
+      "outputs": [
+        "One-sheet identity summary"
+      ],
+      "deliverables": [
+        "PDF"
+      ],
+      "qualityChecks": [
+        "Every value on the sheet matches the source files",
+        "Prints legibly in one colour"
+      ],
+      "completionCriteria": "PDF delivered and every value cross-checked against the approved systems.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Corrections only."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 4
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 60
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.guidelines_short",
+      "name": {
+        "en": "Short brand guidelines",
+        "ar": "دليل علامة مختصر"
+      },
+      "description": {
+        "en": "A compact document covering the mark, its misuse, the palette, the type and the basic applications.",
+        "ar": "مستند مختصر يغطي الشعار وسوء استخدامه والألوان والخطوط والتطبيقات الأساسية."
+      },
+      "purpose": {
+        "en": "So the brand survives being used by someone who was not in the room.",
+        "ar": "حتى تبقى العلامة سليمة بيد من لم يشارك في تصميمها."
+      },
+      "category": "system",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved logo",
+        "Approved palette",
+        "Approved type scale"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo",
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.document",
+      "executionSteps": [
+        "Document the mark: construction, clear space, minimum size, approved versions.",
+        "Show misuse explicitly — the rules people break are the ones worth drawing.",
+        "Document palette and type with their values.",
+        "Show two or three applications in context."
+      ],
+      "tools": [
+        "Layout editor"
+      ],
+      "outputs": [
+        "Guidelines document"
+      ],
+      "deliverables": [
+        "PDF"
+      ],
+      "qualityChecks": [
+        "Every rule shown as well as stated",
+        "No value that disagrees with the source files",
+        "Readable on a phone as well as printed"
+      ],
+      "completionCriteria": "Document delivered and every value cross-checked against the approved systems.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Corrections and clarifications."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 6,
+        "max": 12
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 180
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.guidelines_full",
+      "name": {
+        "en": "Complete brand guidelines",
+        "ar": "دليل علامة متكامل"
+      },
+      "description": {
+        "en": "The full document — mark, system, voice, imagery, layout rules and every application in scope.",
+        "ar": "المستند الكامل — الشعار والنظام ونبرة الصوت والصور وقواعد التنسيق وكل التطبيقات ضمن النطاق."
+      },
+      "purpose": {
+        "en": "The version an agency, a printer and a new hire can all work from.",
+        "ar": "النسخة التي يمكن أن تعمل بها وكالة ومطبعة وموظف جديد على حد سواء."
+      },
+      "category": "system",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved logo",
+        "Approved palette",
+        "Approved type scale",
+        "Approved visual language",
+        "Every approved application"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo",
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "recommends": [
+          "feat.branding.visual_language"
+        ],
+        "conflicts": [],
+        "supersedes": [
+          "feat.branding.guidelines_short",
+          "feat.branding.identity_card"
+        ]
+      },
+      "workflow": "wf.document",
+      "executionSteps": [
+        "Everything in the short guidelines, at full depth.",
+        "Add the visual language: imagery, graphic devices, iconography, motion where it exists.",
+        "Add layout rules — grid, margins, hierarchy — with worked examples.",
+        "Add the applications the project actually produced, in context.",
+        "Add a file index naming where every asset lives."
+      ],
+      "tools": [
+        "Layout editor",
+        "Vector editor"
+      ],
+      "outputs": [
+        "Full guidelines document"
+      ],
+      "deliverables": [
+        "PDF",
+        "Editable source"
+      ],
+      "qualityChecks": [
+        "Every rule shown as well as stated",
+        "No value that disagrees with the source files",
+        "File index resolves to files that exist in the handover archive"
+      ],
+      "completionCriteria": "Document delivered, index verified against the handover archive.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Corrections and clarifications."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 16,
+        "max": 34
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 450
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.visual_language",
+      "name": {
+        "en": "Visual language",
+        "ar": "لغة بصرية"
+      },
+      "description": {
+        "en": "The brand's non-logo vocabulary — graphic devices, imagery direction, iconography and the way things are cropped and composed.",
+        "ar": "مفردات العلامة خارج الشعار — العناصر الجرافيكية واتجاه الصور والأيقونات وطريقة القص والتكوين."
+      },
+      "purpose": {
+        "en": "What makes a post recognisable as yours before the logo appears.",
+        "ar": "ما يجعل المنشور معروفًا أنه لك قبل أن يظهر الشعار."
+      },
+      "category": "system",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved core identity",
+        "Where the brand publishes most"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo",
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.design_system",
+      "executionSteps": [
+        "Define two or three devices that can be recombined, not a decoration set.",
+        "Set an imagery direction with real reference images, and say what is excluded.",
+        "Draw an icon set only where the brand will actually use one.",
+        "Prove the language on three unrelated layouts."
+      ],
+      "tools": [
+        "Vector editor",
+        "Image library"
+      ],
+      "outputs": [
+        "Device set",
+        "Imagery direction",
+        "Icon set where in scope"
+      ],
+      "deliverables": [
+        "Vector source",
+        "Direction sheet"
+      ],
+      "qualityChecks": [
+        "Recognisable with the logo removed",
+        "Works on a photo and on a flat colour",
+        "Holds at a phone's width"
+      ],
+      "completionCriteria": "Language approved and demonstrated on three layouts.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Adjustment within the approved direction."
+      },
+      "automationPotential": "none",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 8,
+        "max": 20
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 240
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.business_card",
+      "name": {
+        "en": "Business card design",
+        "ar": "تصميم بطاقة أعمال"
+      },
+      "description": {
+        "en": "Both sides, set up for print.",
+        "ar": "الوجهان، جاهزان للطباعة."
+      },
+      "purpose": {
+        "en": "The application people still ask for first.",
+        "ar": "التطبيق الذي ما زال يُطلب أولًا."
+      },
+      "category": "application",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved core identity",
+        "Names, titles and contact details as they should be printed, in every language"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo"
+        ],
+        "recommends": [
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_asset",
+      "executionSteps": [
+        "Lay out both sides at the agreed size.",
+        "Set bleed, trim and safe area.",
+        "Proof every detail against what the client wrote, not against what it should say."
+      ],
+      "tools": [
+        "Layout editor"
+      ],
+      "outputs": [
+        "Print-ready artwork"
+      ],
+      "deliverables": [
+        "Print PDF with bleed",
+        "Editable source"
+      ],
+      "qualityChecks": [
+        "3mm bleed present",
+        "No text inside 4mm of trim",
+        "Every phone number and address proofread against the client's own written copy",
+        "CMYK, not RGB"
+      ],
+      "completionCriteria": "Print-ready file delivered and the client has confirmed the details are correct.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Layout and detail corrections."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 5
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 60
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.letterhead",
+      "name": {
+        "en": "Letterhead design",
+        "ar": "تصميم ورق رسمي"
+      },
+      "description": {
+        "en": "A letterhead set up for print and as an editable document.",
+        "ar": "ورق رسمي جاهز للطباعة وكمستند قابل للتحرير."
+      },
+      "purpose": {
+        "en": "So an ordinary letter still looks like it came from you.",
+        "ar": "حتى يبدو الخطاب العادي صادرًا عنك."
+      },
+      "category": "application",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved core identity",
+        "Registered company details as they must legally appear"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo"
+        ],
+        "recommends": [
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_asset",
+      "executionSteps": [
+        "Set the sheet with a body area that a typist can actually use.",
+        "Produce both a print artwork and an editable document version."
+      ],
+      "tools": [
+        "Layout editor",
+        "Word processor"
+      ],
+      "outputs": [
+        "Print artwork",
+        "Editable template"
+      ],
+      "deliverables": [
+        "Print PDF",
+        "DOCX template"
+      ],
+      "qualityChecks": [
+        "Body area does not collide with the header at any page length",
+        "Editable version keeps the type when opened on a machine without the fonts"
+      ],
+      "completionCriteria": "Both versions delivered and the editable one opened successfully by the client.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Layout and detail corrections."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 4
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 50
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.social_profile",
+      "name": {
+        "en": "Profile picture and cover design",
+        "ar": "تصميم صورة الملف والغلاف"
+      },
+      "description": {
+        "en": "Profile and cover artwork cut to each platform's own dimensions.",
+        "ar": "صورة الملف والغلاف بمقاسات كل منصة."
+      },
+      "purpose": {
+        "en": "So the mark survives a circular crop and a phone-width cover.",
+        "ar": "حتى يبقى الشعار سليمًا داخل قص دائري وغلاف بعرض الهاتف."
+      },
+      "category": "application",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved logo",
+        "The list of platforms in use"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.design_asset",
+      "executionSteps": [
+        "Build a profile mark that survives a circular crop at 40px.",
+        "Cut covers to each platform's current safe area, not to last year's."
+      ],
+      "tools": [
+        "Vector editor",
+        "Image editor"
+      ],
+      "outputs": [
+        "Profile and cover set per platform"
+      ],
+      "deliverables": [
+        "PNG per platform, at the platform's stated size"
+      ],
+      "qualityChecks": [
+        "Nothing important inside the crop on any platform",
+        "Mark legible at 40px",
+        "Cover checked at phone width, where the safe area is narrowest"
+      ],
+      "completionCriteria": "Set delivered for every platform in scope and checked live on at least one.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Crop and detail corrections."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 3
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 40
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.social_posts",
+      "name": {
+        "en": "Social media post design",
+        "ar": "تصميم منشورات لوسائل التواصل"
+      },
+      "description": {
+        "en": "Individual post designs, made from the brand's own system rather than a template pack.",
+        "ar": "تصاميم منشورات منفردة، مبنية على نظام العلامة لا على قوالب جاهزة."
+      },
+      "purpose": {
+        "en": "The unit almost every social plan is counted in.",
+        "ar": "الوحدة التي تُحسب بها معظم خطط التواصل."
+      },
+      "category": "application",
+      "selectable": true,
+      "addonGroup": "addon.design",
+      "addonOrder": 1,
+      "_addonName": "THE PUBLISHED ADD-ON WORDING, kept exactly as it shipped. An add-on names the UNIT YOU BUY, which is not always the capability's own name — you buy 'a single social media post design', the capability is 'social media post design'. Preserving these verbatim is also what makes this change provably display-neutral: the generated add-ons section is byte-for-byte the hand-typed one it replaces, except for the single defect it fixes.",
+      "addonName": {
+        "en": "Single social media post design",
+        "ar": "تصميم منشور منفرد"
+      },
+      "inputs": [
+        "Approved brand assets, ours or the client's",
+        "The copy for each post",
+        "Any supplied photography"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.logo",
+          "feat.branding.social_design_system"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_asset",
+      "executionSteps": [
+        "Set each post from the brand's type scale and palette.",
+        "Check the crop at the platform's feed ratio before exporting.",
+        "Export at the platform's stated size, not scaled up."
+      ],
+      "tools": [
+        "Vector editor",
+        "Image editor"
+      ],
+      "outputs": [
+        "Post artwork"
+      ],
+      "deliverables": [
+        "PNG or JPG at platform size",
+        "Editable source on request"
+      ],
+      "qualityChecks": [
+        "Text legible at feed size on a phone",
+        "Nothing important inside the platform's overlay areas",
+        "Arabic set right-to-left with correct shaping where present"
+      ],
+      "completionCriteria": "Every ordered post approved and exported.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per design."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 0.5,
+        "max": 1.5
+      },
+      "pricing": {
+        "type": "unit",
+        "from": 15,
+        "unit": {
+          "en": "design",
+          "ar": "تصميم"
+        },
+        "unitPlural": {
+          "en": "designs",
+          "ar": "تصاميم"
+        },
+        "defaultQty": 3,
+        "minQty": 1,
+        "maxQty": 60
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.social_design_system",
+      "name": {
+        "en": "Social media design system",
+        "ar": "نظام تصميم لوسائل التواصل"
+      },
+      "description": {
+        "en": "A reusable set of post layouts — not finished posts, but the frames the posts are made in.",
+        "ar": "مجموعة تخطيطات قابلة لإعادة الاستخدام — ليست منشورات جاهزة، بل الإطارات التي تُصنع فيها."
+      },
+      "purpose": {
+        "en": "So a month of posts takes hours rather than days, and still looks like one brand.",
+        "ar": "حتى يستغرق شهر من المنشورات ساعات لا أيامًا، ويبقى بمظهر علامة واحدة."
+      },
+      "category": "system",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved core identity",
+        "Approved visual language where in scope",
+        "The post types the client actually publishes"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo",
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "recommends": [
+          "feat.branding.visual_language"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_system",
+      "executionSteps": [
+        "Identify the recurring post types rather than inventing categories.",
+        "Build one layout per type, with the variable parts marked.",
+        "Prove each layout with three different lengths of real copy."
+      ],
+      "tools": [
+        "Vector editor"
+      ],
+      "outputs": [
+        "Layout set with variable regions marked"
+      ],
+      "deliverables": [
+        "Editable source",
+        "Usage sheet"
+      ],
+      "qualityChecks": [
+        "Every layout survives copy at three lengths",
+        "Every layout works in both languages where the brand is bilingual",
+        "No layout that only works with the example image"
+      ],
+      "completionCriteria": "Layout set approved and demonstrated with real copy.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Adjustment within the approved direction."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 8,
+        "max": 18
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 220
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.ad_templates_basic",
+      "name": {
+        "en": "Basic advertising templates",
+        "ar": "قوالب إعلانية أساسية"
+      },
+      "description": {
+        "en": "A small set of ad frames in the sizes the main platforms require.",
+        "ar": "مجموعة صغيرة من الإطارات الإعلانية بالمقاسات التي تطلبها المنصات الرئيسية."
+      },
+      "purpose": {
+        "en": "So an ad can be produced without redesigning it each time.",
+        "ar": "حتى يُنتَج الإعلان دون إعادة تصميمه في كل مرة."
+      },
+      "category": "system",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved core identity",
+        "The platforms and placements in use"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo"
+        ],
+        "recommends": [
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_system",
+      "executionSteps": [
+        "Build one frame per required ratio.",
+        "Mark the variable regions.",
+        "Check each against the platform's text and safe-area rules."
+      ],
+      "tools": [
+        "Vector editor"
+      ],
+      "outputs": [
+        "Ad frame set"
+      ],
+      "deliverables": [
+        "Editable source"
+      ],
+      "qualityChecks": [
+        "Every ratio the client's platforms require is present",
+        "Nothing important inside a platform's overlay area"
+      ],
+      "completionCriteria": "Frame set approved and one ad produced from it successfully.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Corrections only."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 3,
+        "max": 6
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 90
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.ad_templates",
+      "name": {
+        "en": "Advertising templates",
+        "ar": "قوالب إعلانية"
+      },
+      "description": {
+        "en": "The full frame set — every placement, both languages, with the variable regions defined.",
+        "ar": "مجموعة الإطارات الكاملة — كل المواضع، بلغتين، مع تحديد المناطق المتغيرة."
+      },
+      "purpose": {
+        "en": "So a campaign can be built out across placements in an afternoon.",
+        "ar": "حتى تُبنى الحملة عبر كل المواضع في فترة واحدة."
+      },
+      "category": "system",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved core identity",
+        "Approved visual language where in scope",
+        "The full placement list"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo",
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "recommends": [
+          "feat.branding.visual_language"
+        ],
+        "conflicts": [],
+        "supersedes": [
+          "feat.branding.ad_templates_basic"
+        ]
+      },
+      "workflow": "wf.design_system",
+      "executionSteps": [
+        "Build the frame set across every placement in scope.",
+        "Produce each in both languages where the brand is bilingual.",
+        "Mark variable regions and state the character limits that keep them working."
+      ],
+      "tools": [
+        "Vector editor"
+      ],
+      "outputs": [
+        "Full ad frame set"
+      ],
+      "deliverables": [
+        "Editable source",
+        "Usage sheet with character limits"
+      ],
+      "qualityChecks": [
+        "Every placement present",
+        "Arabic version is laid out right-to-left, not mirrored mechanically",
+        "Character limits tested at the limit"
+      ],
+      "completionCriteria": "Frame set approved and proven on one real campaign's copy.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Adjustment within the approved direction."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 8,
+        "max": 16
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 200
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.presentation_template",
+      "name": {
+        "en": "Presentation template",
+        "ar": "قالب عرض تقديمي"
+      },
+      "description": {
+        "en": "A deck template with the layouts a real presentation needs, editable by the client.",
+        "ar": "قالب عرض يضم التخطيطات التي يحتاجها عرض حقيقي، قابل للتحرير من العميل."
+      },
+      "purpose": {
+        "en": "So an internal deck stops undoing the identity.",
+        "ar": "حتى يتوقف العرض الداخلي عن نقض الهوية."
+      },
+      "category": "application",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved core identity",
+        "Which software the client actually presents in"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo",
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.design_asset",
+      "executionSteps": [
+        "Build the layouts a deck actually uses — title, section, text, two-column, image, data, closing.",
+        "Set them as real master slides, not as pasted artwork.",
+        "Embed or substitute the fonts so it survives the client's machine."
+      ],
+      "tools": [
+        "Presentation software",
+        "Vector editor"
+      ],
+      "outputs": [
+        "Master slide set"
+      ],
+      "deliverables": [
+        "PPTX or Keynote template"
+      ],
+      "qualityChecks": [
+        "Masters are editable, not flattened images",
+        "Opens correctly on a machine without the brand fonts",
+        "Works at 16:9 and 4:3 if the client uses both"
+      ],
+      "completionCriteria": "Template delivered and the client has built one slide from it.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Layout corrections."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 5,
+        "max": 12
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 140
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.presentation_design",
+      "name": {
+        "en": "Presentation design",
+        "ar": "تصميم عرض تقديمي"
+      },
+      "description": {
+        "en": "A finished deck, designed slide by slide from your content.",
+        "ar": "عرض تقديمي مكتمل، مصمَّم شريحة بشريحة من محتواك."
+      },
+      "purpose": {
+        "en": "For the deck that has to win something.",
+        "ar": "للعرض الذي يجب أن يكسب شيئًا."
+      },
+      "category": "application",
+      "selectable": true,
+      "addonGroup": "addon.design",
+      "addonOrder": 3,
+      "_addonName": "THE PUBLISHED ADD-ON WORDING, kept exactly as it shipped. An add-on names the UNIT YOU BUY, which is not always the capability's own name — you buy 'a single social media post design', the capability is 'social media post design'. Preserving these verbatim is also what makes this change provably display-neutral: the generated add-ons section is byte-for-byte the hand-typed one it replaces, except for the single defect it fixes.",
+      "addonName": {
+        "en": "Presentation design",
+        "ar": "تصميم Presentation"
+      },
+      "inputs": [
+        "The content, written and final",
+        "Slide count",
+        "Approved brand assets, ours or the client's"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.presentation_template"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_asset",
+      "executionSteps": [
+        "Read the content and restructure it before designing it.",
+        "Design each slide to one idea.",
+        "Rebuild data as designed charts rather than pasted screenshots."
+      ],
+      "tools": [
+        "Presentation software",
+        "Vector editor"
+      ],
+      "outputs": [
+        "Finished deck"
+      ],
+      "deliverables": [
+        "PDF",
+        "Editable source"
+      ],
+      "qualityChecks": [
+        "Every slide readable from the back of a room",
+        "No pasted screenshot standing in for a chart",
+        "Numbers on charts checked against the client's own source"
+      ],
+      "completionCriteria": "Deck approved and delivered in both formats.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Design revisions. Content changes after approval are quoted."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 6,
+        "max": 20
+      },
+      "pricing": {
+        "type": "project",
+        "from": 90
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.profile_template",
+      "name": {
+        "en": "Business profile template",
+        "ar": "قالب ملف تعريفي"
+      },
+      "description": {
+        "en": "A company profile layout the client can refill as the business changes.",
+        "ar": "تخطيط ملف تعريفي يمكن للعميل إعادة تعبئته كلما تغيّر العمل."
+      },
+      "purpose": {
+        "en": "So next year's profile does not need us.",
+        "ar": "حتى لا يحتاج ملف العام القادم إلينا."
+      },
+      "category": "application",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved core identity",
+        "The sections the client's profile actually contains"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo",
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.design_asset",
+      "executionSteps": [
+        "Build one layout per recurring section.",
+        "Mark the variable regions and state their limits.",
+        "Deliver in software the client owns."
+      ],
+      "tools": [
+        "Layout editor"
+      ],
+      "outputs": [
+        "Profile layout set"
+      ],
+      "deliverables": [
+        "Editable template",
+        "PDF example"
+      ],
+      "qualityChecks": [
+        "Every section type present",
+        "Survives sections of different lengths",
+        "Editable on the client's own software"
+      ],
+      "completionCriteria": "Template delivered and the client has refilled one section successfully.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Layout corrections."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 5,
+        "max": 12
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 140
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.company_profile",
+      "name": {
+        "en": "Company profile",
+        "ar": "ملف تعريفي للشركة"
+      },
+      "description": {
+        "en": "A finished company profile — written where you need it written, designed and print-ready.",
+        "ar": "ملف تعريفي مكتمل — يُكتب عند الحاجة، ويُصمَّم ويُجهَّز للطباعة."
+      },
+      "purpose": {
+        "en": "The document a tender or a bank asks for.",
+        "ar": "المستند الذي تطلبه المناقصة أو البنك."
+      },
+      "category": "application",
+      "selectable": true,
+      "addonGroup": "addon.branding",
+      "addonOrder": 11,
+      "_addonName": "THE PUBLISHED ADD-ON WORDING, kept exactly as it shipped. An add-on names the UNIT YOU BUY, which is not always the capability's own name — you buy 'a single social media post design', the capability is 'social media post design'. Preserving these verbatim is also what makes this change provably display-neutral: the generated add-ons section is byte-for-byte the hand-typed one it replaces, except for the single defect it fixes.",
+      "addonName": {
+        "en": "Company Profile",
+        "ar": "ملف تعريفي للشركة"
+      },
+      "inputs": [
+        "Company information",
+        "Whether we write the content or the client supplies it",
+        "Page count",
+        "Photography, ours or the client's"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.logo",
+          "feat.branding.profile_template"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_asset",
+      "executionSteps": [
+        "Agree the section list before writing or designing anything.",
+        "Write or edit the content.",
+        "Design the pages.",
+        "Prepare a print-ready file and a screen file separately."
+      ],
+      "tools": [
+        "Layout editor",
+        "Vector editor"
+      ],
+      "outputs": [
+        "Finished profile"
+      ],
+      "deliverables": [
+        "Print PDF with bleed",
+        "Screen PDF",
+        "Editable source"
+      ],
+      "qualityChecks": [
+        "Every claim in the text traceable to something the client supplied",
+        "Print file carries bleed and CMYK",
+        "Screen file under 10MB and readable on a phone"
+      ],
+      "completionCriteria": "Both files delivered and the client has confirmed every factual detail.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Design and copy revisions within the agreed section list."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 10,
+        "max": 30
+      },
+      "pricing": {
+        "type": "project",
+        "from": 150
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.content_templates",
+      "name": {
+        "en": "Reusable content templates",
+        "ar": "قوالب محتوى قابلة لإعادة الاستخدام"
+      },
+      "description": {
+        "en": "Editable layouts the client fills in themselves, in software they already have.",
+        "ar": "تخطيطات قابلة للتحرير يملؤها العميل بنفسه، ببرامج يملكها فعلًا."
+      },
+      "purpose": {
+        "en": "So routine content stops being a request.",
+        "ar": "حتى يتوقف المحتوى الروتيني عن كونه طلبًا."
+      },
+      "category": "system",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved core identity",
+        "Which software the client's team can actually use"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo",
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "recommends": [
+          "feat.branding.social_design_system"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_system",
+      "executionSteps": [
+        "Agree which content types recur often enough to be worth a template.",
+        "Build each with the editable regions locked apart from the fixed ones.",
+        "Write a one-page instruction that assumes no design knowledge."
+      ],
+      "tools": [
+        "Vector editor",
+        "Client's chosen editor"
+      ],
+      "outputs": [
+        "Template set",
+        "Instruction sheet"
+      ],
+      "deliverables": [
+        "Editable templates",
+        "One-page instructions"
+      ],
+      "qualityChecks": [
+        "A non-designer can produce a correct item from each template unaided",
+        "Fixed regions cannot be edited by accident"
+      ],
+      "completionCriteria": "Templates delivered and the client has produced one item from one of them without help.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Corrections only."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 0.6,
+        "max": 1.5
+      },
+      "pricing": {
+        "type": "unit",
+        "from": 22,
+        "unit": {
+          "en": "template",
+          "ar": "قالب"
+        },
+        "unitPlural": {
+          "en": "templates",
+          "ar": "قوالب"
+        },
+        "defaultQty": 10,
+        "minQty": 3,
+        "maxQty": 40
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.photography",
+      "name": {
+        "en": "Photography",
+        "ar": "تصوير فوتوغرافي"
+      },
+      "description": {
+        "en": "A shoot, on location, with selection and retouching.",
+        "ar": "جلسة تصوير في الموقع، مع الاختيار والمعالجة."
+      },
+      "purpose": {
+        "en": "So the brand shows its own work instead of stock.",
+        "ar": "حتى تعرض العلامة عملها الحقيقي بدل الصور الجاهزة."
+      },
+      "category": "production",
+      "selectable": true,
+      "addonGroup": "addon.media",
+      "addonOrder": 9,
+      "inputs": [
+        "Location and date",
+        "A shot list agreed in advance",
+        "Access, permits and any people appearing"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.visual_language"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.production",
+      "executionSteps": [
+        "Agree the shot list and the number of final images before the day.",
+        "Shoot to the list, then shoot beyond it.",
+        "Select, then retouch only the selected.",
+        "Deliver at print and screen resolutions."
+      ],
+      "tools": [
+        "Camera",
+        "Lighting",
+        "Raw processor"
+      ],
+      "outputs": [
+        "Selected, retouched images"
+      ],
+      "deliverables": [
+        "High-resolution files",
+        "Web-sized files"
+      ],
+      "qualityChecks": [
+        "Every item on the agreed shot list covered",
+        "Colour consistent across the set",
+        "Written permission held for every identifiable person"
+      ],
+      "completionCriteria": "The agreed number of final images delivered and receipt confirmed.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Retouching of selected images. A reshoot is a new booking."
+      },
+      "automationPotential": "none",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "days",
+        "min": 1,
+        "max": 3
+      },
+      "pricing": {
+        "type": "quote",
+        "quoteReason": {
+          "en": "Priced by location, day count and the number of final images.",
+          "ar": "يُسعَّر حسب الموقع وعدد الأيام وعدد الصور النهائية."
+        }
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.videography",
+      "name": {
+        "en": "Videography",
+        "ar": "تصوير فيديو"
+      },
+      "description": {
+        "en": "A shoot for video, with the footage delivered ready to edit.",
+        "ar": "تصوير فيديو، مع تسليم اللقطات جاهزة للمونتاج."
+      },
+      "purpose": {
+        "en": "The footage everything else is cut from.",
+        "ar": "اللقطات التي يُبنى منها كل ما بعدها."
+      },
+      "category": "production",
+      "selectable": true,
+      "addonGroup": "addon.media",
+      "addonOrder": 10,
+      "inputs": [
+        "Location and date",
+        "A treatment or shot list",
+        "Access, permits and any people appearing",
+        "Sound requirements"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.visual_language"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.production",
+      "executionSteps": [
+        "Agree the treatment and the deliverable lengths before the day.",
+        "Shoot with sound captured separately where dialogue is involved.",
+        "Back up on site, twice, before leaving.",
+        "Deliver organised, labelled footage."
+      ],
+      "tools": [
+        "Camera",
+        "Lighting",
+        "Audio recorder",
+        "Storage"
+      ],
+      "outputs": [
+        "Organised footage"
+      ],
+      "deliverables": [
+        "Source footage",
+        "Audio files",
+        "A shot log"
+      ],
+      "qualityChecks": [
+        "Two backups made before leaving the location",
+        "Audio checked on headphones during the shoot, not after",
+        "Every item on the treatment covered"
+      ],
+      "completionCriteria": "Footage delivered, logged, and confirmed openable by whoever edits it.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "A reshoot is a new booking."
+      },
+      "automationPotential": "none",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "days",
+        "min": 1,
+        "max": 4
+      },
+      "pricing": {
+        "type": "quote",
+        "quoteReason": {
+          "en": "Priced by location, day count, crew and the deliverables cut from it.",
+          "ar": "يُسعَّر حسب الموقع وعدد الأيام وفريق العمل والمخرجات المطلوبة."
+        }
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.files_basic",
+      "name": {
+        "en": "Basic final files",
+        "ar": "ملفات نهائية أساسية"
+      },
+      "description": {
+        "en": "The exported files you need to use the identity, without the editable sources.",
+        "ar": "الملفات المصدَّرة اللازمة لاستخدام الهوية، دون الملفات القابلة للتحرير."
+      },
+      "purpose": {
+        "en": "Enough to hand to a printer or upload anywhere.",
+        "ar": "تكفي لتسليمها لمطبعة أو رفعها في أي مكان."
+      },
+      "category": "handover",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Every approved item in scope"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.handover",
+      "executionSteps": [
+        "Export every approved item in the agreed formats.",
+        "Name files so a stranger can find one.",
+        "Deliver as a single archive."
+      ],
+      "tools": [
+        "Vector editor",
+        "Archive"
+      ],
+      "outputs": [
+        "Export set"
+      ],
+      "deliverables": [
+        "SVG, PDF, PNG per item"
+      ],
+      "qualityChecks": [
+        "Every file opens",
+        "No file named 'final-2'",
+        "Archive downloaded and opened once by us before it is sent"
+      ],
+      "completionCriteria": "Archive delivered and the client has confirmed it opened.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Missing files are supplied, not revised."
+      },
+      "automationPotential": "full",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 2
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.files_source",
+      "name": {
+        "en": "Source and final files",
+        "ar": "الملفات المصدرية والنهائية"
+      },
+      "description": {
+        "en": "The exports plus the editable sources everything was made in.",
+        "ar": "الملفات المصدَّرة مع الملفات المصدرية القابلة للتحرير."
+      },
+      "purpose": {
+        "en": "So another designer can continue the work without redrawing it.",
+        "ar": "حتى يتمكن مصمم آخر من إكمال العمل دون إعادة رسمه."
+      },
+      "category": "handover",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Every approved item in scope"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo"
+        ],
+        "recommends": [],
+        "conflicts": [],
+        "supersedes": [
+          "feat.branding.files_basic"
+        ]
+      },
+      "workflow": "wf.handover",
+      "executionSteps": [
+        "Everything in the basic export set.",
+        "Add the editable sources, with layers named.",
+        "Add font licences or links.",
+        "Deliver as a single structured archive."
+      ],
+      "tools": [
+        "Vector editor",
+        "Archive"
+      ],
+      "outputs": [
+        "Export set",
+        "Editable sources"
+      ],
+      "deliverables": [
+        "SVG, PDF, PNG per item",
+        "Editable source per item",
+        "Font licence sheet"
+      ],
+      "qualityChecks": [
+        "Every source opens on a machine that is not ours",
+        "Layers named",
+        "Fonts either embedded, licensed to the client, or replaced with ones that are"
+      ],
+      "completionCriteria": "Archive delivered and one source file opened successfully by the client.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Missing files are supplied, not revised."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 4
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.branding.brand_assets",
+      "name": {
+        "en": "Complete brand assets",
+        "ar": "أصول العلامة كاملة"
+      },
+      "description": {
+        "en": "The whole archive — every item, every format, every source, indexed.",
+        "ar": "الأرشيف بالكامل — كل عنصر وكل صيغة وكل ملف مصدري، مفهرسة."
+      },
+      "purpose": {
+        "en": "So the brand is genuinely yours the day the project ends.",
+        "ar": "حتى تصبح العلامة ملكك فعلًا يوم انتهاء المشروع."
+      },
+      "category": "handover",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Every approved item in scope",
+        "The guidelines document where in scope"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.branding.logo"
+        ],
+        "recommends": [
+          "feat.branding.guidelines_full"
+        ],
+        "conflicts": [],
+        "supersedes": [
+          "feat.branding.files_basic",
+          "feat.branding.files_source"
+        ]
+      },
+      "workflow": "wf.handover",
+      "executionSteps": [
+        "Everything in the source set.",
+        "Add photography, templates and any produced content.",
+        "Write an index naming what each folder holds.",
+        "Verify the index against the archive, file by file."
+      ],
+      "tools": [
+        "Vector editor",
+        "Archive"
+      ],
+      "outputs": [
+        "Indexed brand archive"
+      ],
+      "deliverables": [
+        "Structured archive",
+        "Index sheet",
+        "Guidelines where in scope"
+      ],
+      "qualityChecks": [
+        "Index resolves to files that exist",
+        "Archive downloaded and opened once by us before it is sent",
+        "Nothing in it references a file we did not deliver"
+      ],
+      "completionCriteria": "Archive delivered, index verified, and the client has confirmed receipt.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Missing files are supplied, not revised."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 3,
+        "max": 6
+      },
+      "pricing": {
+        "type": "included"
+      },
+      "status": "active"
+    }
+  ]
+}
