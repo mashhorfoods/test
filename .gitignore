@@ -8,3 +8,10 @@ pixora-site.zip
 # The review pages are assembled from bN-body.html + _base.css by
 # docs/review-packs/assemble.js. The source is committed; the output is not.
 docs/review-packs/b?.html
+
+# The operational database is data, not source. It is created by migrations
+# on first boot and belongs to whatever machine is running the server.
+server/data/
+*.db
+*.db-wal
+*.db-shm

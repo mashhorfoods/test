@@ -210,11 +210,16 @@ export function transitionGuard(task, to, { by, actorType, output = null, qa = n
     if (failed.length) return deny(`QA has not passed: ${failed.map((q) => q.id).join(', ')}`);
 
     /* AN AI AGENT MAY NOT APPROVE ITS OWN WORK — nor anyone's, where a person
-       is required. Executor and approver are different roles by construction. */
+       is required. Executor and approver are different roles by construction.
+       EVERY attempt counts, not only the most recent: a task that changed hands
+       and came back would otherwise let its first executor sign off the work
+       they did. Phase 4's security pass found that gap through the API, where a
+       reject-and-reassign made it reachable. */
     if (task.approvalRequired) {
       if (actorType !== 'human') return deny('this task requires human approval and the approver is not a person');
-      const executor = (task.attempts[task.attempts.length - 1] || {}).executor;
-      if (executor && executor === by) return deny('the person who did the work cannot be the person who approves it');
+      const executors = new Set((task.attempts || []).map((a) => a.executor).filter(Boolean));
+      if (task.assignedTo) executors.add(task.assignedTo);
+      if (executors.has(by)) return deny('the person who did the work cannot be the person who approves it');
     }
   }
 

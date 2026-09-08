@@ -1,0 +1,4 @@
+{
+  "_comment": "Scoped to this directory. The server is ES modules; the repository root stays CommonJS so every tool in tools/ keeps working.",
+  "type": "module"
+}
