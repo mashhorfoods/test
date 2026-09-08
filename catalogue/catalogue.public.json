@@ -1905,7 +1905,7 @@
       },
       "description": {
         "en": "Short vertical video, cut and captioned for the feed.",
-        "ar": "فيديو رأسي قصير، يُقصّ ويُترجم للعرض في التغذية."
+        "ar": "فيديو رأسي قصير، يُقصّ وتُضاف إليه النصوص المصاحبة للعرض في التغذية."
       },
       "purpose": {
         "en": "The format the platforms currently reward most.",
@@ -1991,7 +1991,7 @@
       },
       "description": {
         "en": "Editing supplied or shot footage into a finished piece, with captions and grading.",
-        "ar": "تحرير اللقطات المصوَّرة أو المسلَّمة إلى مادة نهائية، مع الترجمة والتدرّج اللوني."
+        "ar": "تحرير اللقطات المصوَّرة أو المسلَّمة إلى مادة نهائية، مع النصوص المصاحبة والتدرّج اللوني."
       },
       "purpose": {
         "en": "For video longer or more considered than a reel.",
