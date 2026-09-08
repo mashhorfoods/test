@@ -17,6 +17,10 @@
         "en": "Branding & Design",
         "ar": "الهوية والتصميم"
       },
+      "shortName": {
+        "en": "Branding & Design",
+        "ar": "الهوية والتصميم"
+      },
       "summary": {
         "en": "One consistent look across every channel.",
         "ar": "مظهر واحد متسق في كل قناة."
@@ -138,6 +142,10 @@
         "en": "Websites",
         "ar": "المواقع الإلكترونية"
       },
+      "shortName": {
+        "en": "Websites",
+        "ar": "المواقع الإلكترونية"
+      },
       "summary": {
         "en": "Designed, built, and handed over working.",
         "ar": "يُصمَّم ويُبنى ويُسلَّم وهو يعمل."
@@ -244,6 +252,10 @@
       "legacyCategory": "social",
       "name": {
         "en": "Social Media Management",
+        "ar": "إدارة وسائل التواصل"
+      },
+      "shortName": {
+        "en": "Social Media",
         "ar": "إدارة وسائل التواصل"
       },
       "summary": {
@@ -359,6 +371,10 @@
       "legacyCategory": "marketing",
       "name": {
         "en": "Digital Marketing & Advertising",
+        "ar": "التسويق الرقمي والإعلانات"
+      },
+      "shortName": {
+        "en": "Marketing & Ads",
         "ar": "التسويق الرقمي والإعلانات"
       },
       "summary": {

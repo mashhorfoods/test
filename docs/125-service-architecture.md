@@ -304,17 +304,36 @@ that wrote it and renders only where `priceFrom` is actually set.
 
 ---
 
-## 6 — Naming, settled
+## 6 — Naming, declared rather than settled
 
-One canonical name per service, rendered from one place. `aliases` records what
+Service 04 was called four different things in four places on one page. Each
+service now has **one canonical name**, and — where the price surfaces use a
+shorter form — **one declared short form beside it**. `aliases` records what
 each has also been called, so the drift is documented rather than deleted.
 
-| | Canonical | Also seen as |
-| --- | --- | --- |
-| 01 | Branding & Design | Identity & Design · Branding |
-| 02 | Websites | Website |
-| 03 | Social Media Management | Social Media |
-| 04 | Digital Marketing & Advertising | Marketing & Ads · Digital Marketing & Ads · Digital Marketing · Advertising |
+| | Canonical `name` | `shortName` (price surfaces) | Also seen as |
+| --- | --- | --- | --- |
+| 01 | Branding & Design | Branding & Design | Identity & Design · Branding |
+| 02 | Websites | Websites | Website |
+| 03 | Social Media Management | **Social Media** | — |
+| 04 | Digital Marketing & Advertising | **Marketing & Ads** | Digital Marketing & Ads · Digital Marketing · Advertising |
+
+**The published copy is unchanged, and that is deliberate.** The short forms
+are the names these packages have been sold under, and an index card or a
+WhatsApp button cannot carry "Digital Marketing & Advertising" without
+wrapping — the same constraint that produced twelve buttons at two different
+heights on 8 September. Rewriting what the studio calls its own services is
+the owner's decision, not a refactor's.
+
+What has changed is that **a variant is now a decision somebody made rather
+than a drift nobody saw.** `build-catalogue.js` compares every pricing
+category's label, in both languages, against the service's declared
+`shortName` and fails the build if they disagree. Changing what a surface says
+is one field in `services.json` and a rebuild.
+
+> Negative-tested by renaming the social category to "Social" in
+> `pricing.json`: *"svc.social: pricing.json calls this category "Social" but
+> the service declares its short form as "Social Media""* — build refused.
 
 Two collisions were deliberately **not** merged. `Copywriting` named both
 organic social copy and paid ad copy — different work, different approval
@@ -353,7 +372,9 @@ never failed is not a guard.**
 | --- | --- | --- |
 | `qa.js` §37 | Do the builder's dependency rules survive onto the page? Is every price kind one the builder can total? Does a quote-only row print no figure? | Pointing a `data-requires` at a feature not on the page, and giving a quote row a price |
 | `qa.js` §38 | Does any internal catalogue vocabulary reach a shipped page? | Adding a workflow id to the public projection's allowlist |
-| `qa.js` §39 | Does every generated name carry exactly one English and one Arabic label? | Removing the Arabic from Company Profile — the original defect |
+| `qa.js` §39 | Does every generated name say itself in both languages, and in neither by accident? | Removing the Arabic from Company Profile — the original defect |
+| `build-catalogue.js` | Does a pricing category's label agree with the service's declared short form? | Renaming the social category to "Social" |
+| `builder-test.cjs` | Do the dependency rules do anything when a person clicks? | It failed on its first run, on a rule that was doing nothing |
 
 §37 is deliberately not a copy of the build-time check. `build-catalogue.js`
 asks whether the references resolve **in the source**; §37 asks whether they

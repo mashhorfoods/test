@@ -292,8 +292,30 @@ for (const s of SERVICES.services) {
     }
   }
   for (const c of s.composes || []) if (!serviceById.has(c)) fail(`${s.id}: composes unknown service ${c}`);
-  if (s.legacyCategory && !PRICING.categories.some((c) => c.id === s.legacyCategory)) {
-    fail(`${s.id}: legacyCategory "${s.legacyCategory}" is not a category in pricing.json`);
+  if (s.legacyCategory) {
+    const cat = PRICING.categories.find((c) => c.id === s.legacyCategory);
+    if (!cat) {
+      fail(`${s.id}: legacyCategory "${s.legacyCategory}" is not a category in pricing.json`);
+    } else {
+      /* THE PRICE SURFACES MAY USE A SHORTER NAME, AND MUST DECLARE IT.
+         docs/124 §3 found service 04 called four different things in four
+         places on one page — Digital Marketing & Advertising, Marketing & Ads,
+         Digital Marketing & Ads, Digital Marketing — with nothing able to
+         notice. The short form is legitimate: an index card and a WhatsApp
+         button cannot carry the full name without wrapping. What was not
+         legitimate was that nobody had written down which was which. */
+      if (s.shortName) {
+        bilingual(s.shortName, `${s.id}.shortName`);
+        if (cat.label !== s.shortName.en) {
+          fail(`${s.id}: pricing.json calls this category "${cat.label}" but the service declares its short form as "${s.shortName.en}"`);
+        }
+        if (cat.labelAr !== s.shortName.ar) {
+          fail(`${s.id}: pricing.json's Arabic label for this category disagrees with the service's declared short form`);
+        }
+      } else if (cat.label !== s.name.en) {
+        fail(`${s.id}: pricing.json calls this category "${cat.label}", the service is "${s.name.en}", and no shortName declares the difference`);
+      }
+    }
   }
 }
 
@@ -471,6 +493,7 @@ const publicCatalogue = {
     order: s.order,
     legacyCategory: s.legacyCategory,
     name: s.name,
+    shortName: s.shortName,
     summary: s.summary,
     description: s.description,
     composes: s.composes,
