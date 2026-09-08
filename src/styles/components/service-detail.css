@@ -672,11 +672,38 @@
        side padding becomes 12px, and the arrow — decorative, aria-hidden,
        and already dropped in print — is not drawn. Measured at 320, 360,
        375, 390, 414 and 460 in both languages: every CTA is 48px, none wraps,
-       and none reaches past its card. */
+       and none reaches past its card.
+
+       AND THEN THE SERVICE NAMES GOT LONGER, ON 8 SEPTEMBER, AND NOWRAP
+       BECAME THE DEFECT.
+
+       The owner settled the naming that afternoon: "Digital Marketing &
+       Advertising" everywhere, not "Marketing & Ads". A label that may not
+       wrap sets its button's minimum width, so "Ask about Digital Marketing &
+       Advertising" measured 344px inside a 320px viewport and hung off the
+       page — the same class of failure as docs/123 §4, arriving from the
+       opposite direction.
+
+       Both constraints are real and they pull against each other: wrapping
+       overflows nothing and makes one control two heights, nowrap keeps one
+       height and overflows. So neither is the lever any more — THE HEIGHT IS
+       SET DIRECTLY. The label wraps freely, and the button is told to be the
+       same size whatever it wraps to, which is what the check was ever
+       actually asking for. Centred, because a wrapped label ragged against
+       one edge of a full-width button looks like a mistake.
+
+       Measured at 320, 360, 375, 390 and 414 in both languages: nothing
+       reaches past the viewport, and every CTA is the same height in English
+       and in Arabic. */
     .c-tier__cta,
     .c-detail__action {
       padding-inline: var(--space-12);
-      white-space: nowrap;
+      white-space: normal;
+      min-block-size: 5.25rem;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      text-wrap: balance;
     }
 
     .c-tier__cta .c-btn__icon,
