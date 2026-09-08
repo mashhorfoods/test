@@ -1,0 +1,102 @@
+{
+  "_comment": [
+    "THE STATE MACHINES, AS DATA.",
+    "",
+    "Order status, project status, pipeline-instance status and workflow-instance",
+    "status are four different questions about four different things, and the",
+    "brief is explicit that they must not be merged. An order can be `approved`",
+    "while its project is `in_progress` and one of its pipelines is `blocked`.",
+    "Collapsing those into one field is how a system starts answering \"how is it",
+    "going?\" with \"paid\".",
+    "",
+    "Transitions are listed rather than inferred. A move that is not listed is",
+    "refused by src/operations/status.js — which means adding a state is an edit",
+    "to this file, not a hunt through the domain layer for every switch",
+    "statement that would have needed a new branch.",
+    "",
+    "`terminal: true` marks a state nothing leaves. `active: false` marks a state",
+    "that is not live work — used to answer \"which projects are running?\"",
+    "without a second list somewhere that can disagree with this one."
+  ],
+  "version": 1,
+  "machines": {
+    "order": {
+      "initial": "draft",
+      "states": {
+        "draft": {
+          "label": { "en": "Draft", "ar": "مسودة" },
+          "description": { "en": "Built but not yet sent to us.", "ar": "تم تكوينه ولم يُرسل إلينا بعد." },
+          "to": ["submitted", "cancelled"]
+        },
+        "submitted": {
+          "label": { "en": "Submitted", "ar": "مُرسل" },
+          "description": { "en": "The client has sent it. The commercial scope is frozen from here.", "ar": "أرسله العميل. النطاق التجاري مُثبَّت من هنا." },
+          "to": ["under_review", "cancelled"],
+          "freezesScope": true
+        },
+        "under_review": {
+          "label": { "en": "Under review", "ar": "قيد المراجعة" },
+          "description": { "en": "We are reading it and checking we can do it.", "ar": "نقرأه ونتأكد أن بإمكاننا تنفيذه." },
+          "to": ["approved", "rejected", "cancelled"]
+        },
+        "approved": {
+          "label": { "en": "Approved", "ar": "معتمد" },
+          "description": { "en": "Accepted. Ready to become a project.", "ar": "مقبول. جاهز ليصبح مشروعًا." },
+          "to": ["converted_to_project", "cancelled"]
+        },
+        "rejected": {
+          "label": { "en": "Rejected", "ar": "مرفوض" },
+          "description": { "en": "We are not taking it, and the record says why.", "ar": "لن ننفذه، والسجل يوضح السبب." },
+          "to": [],
+          "terminal": true
+        },
+        "converted_to_project": {
+          "label": { "en": "Converted to project", "ar": "حُوِّل إلى مشروع" },
+          "description": { "en": "A project exists for it. The order is now history.", "ar": "يوجد مشروع مقابل له. الطلب الآن سجل تاريخي." },
+          "to": [],
+          "terminal": true
+        },
+        "cancelled": {
+          "label": { "en": "Cancelled", "ar": "ملغى" },
+          "description": { "en": "Withdrawn before it became work.", "ar": "سُحب قبل أن يتحول إلى عمل." },
+          "to": [],
+          "terminal": true
+        }
+      }
+    },
+    "project": {
+      "initial": "not_started",
+      "states": {
+        "not_started": { "label": { "en": "Not started", "ar": "لم يبدأ" }, "to": ["planning", "in_progress", "on_hold", "cancelled"], "active": false },
+        "planning": { "label": { "en": "Planning", "ar": "التخطيط" }, "to": ["in_progress", "waiting_for_client", "on_hold", "cancelled"], "active": true },
+        "in_progress": { "label": { "en": "In progress", "ar": "قيد التنفيذ" }, "to": ["waiting_for_client", "review", "on_hold", "completed", "cancelled"], "active": true },
+        "waiting_for_client": { "label": { "en": "Waiting for the client", "ar": "بانتظار العميل" }, "to": ["in_progress", "review", "on_hold", "cancelled"], "active": true },
+        "review": { "label": { "en": "In review", "ar": "قيد المراجعة" }, "to": ["in_progress", "waiting_for_client", "completed", "on_hold", "cancelled"], "active": true },
+        "completed": { "label": { "en": "Completed", "ar": "مكتمل" }, "to": [], "terminal": true, "active": false },
+        "on_hold": { "label": { "en": "On hold", "ar": "متوقف مؤقتًا" }, "to": ["planning", "in_progress", "waiting_for_client", "review", "cancelled"], "active": false },
+        "cancelled": { "label": { "en": "Cancelled", "ar": "ملغى" }, "to": [], "terminal": true, "active": false }
+      }
+    },
+    "pipelineInstance": {
+      "initial": "not_started",
+      "states": {
+        "not_started": { "label": { "en": "Not started", "ar": "لم تبدأ" }, "to": ["in_progress", "blocked", "cancelled"], "active": false },
+        "in_progress": { "label": { "en": "In progress", "ar": "قيد التنفيذ" }, "to": ["blocked", "completed", "cancelled"], "active": true },
+        "blocked": { "label": { "en": "Blocked", "ar": "متعثرة" }, "to": ["in_progress", "cancelled"], "active": true },
+        "completed": { "label": { "en": "Completed", "ar": "مكتملة" }, "to": [], "terminal": true, "active": false },
+        "cancelled": { "label": { "en": "Cancelled", "ar": "ملغاة" }, "to": [], "terminal": true, "active": false }
+      }
+    },
+    "workflowInstance": {
+      "initial": "not_started",
+      "states": {
+        "not_started": { "label": { "en": "Not started", "ar": "لم يبدأ" }, "to": ["in_progress", "blocked", "cancelled"], "active": false },
+        "in_progress": { "label": { "en": "In progress", "ar": "قيد التنفيذ" }, "to": ["awaiting_approval", "blocked", "completed", "cancelled"], "active": true },
+        "awaiting_approval": { "label": { "en": "Awaiting approval", "ar": "بانتظار الموافقة" }, "to": ["in_progress", "completed", "blocked", "cancelled"], "active": true },
+        "blocked": { "label": { "en": "Blocked", "ar": "متعثر" }, "to": ["in_progress", "cancelled"], "active": true },
+        "completed": { "label": { "en": "Completed", "ar": "مكتمل" }, "to": [], "terminal": true, "active": false },
+        "cancelled": { "label": { "en": "Cancelled", "ar": "ملغى" }, "to": [], "terminal": true, "active": false }
+      }
+    }
+  }
+}

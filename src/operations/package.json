@@ -1,0 +1,4 @@
+{
+  "_comment": "Scoped to this directory only. These modules are ES modules — the browser loads them as such, and this tells Node the same thing without making the whole repository ESM, which would break every CommonJS tool in tools/.",
+  "type": "module"
+}

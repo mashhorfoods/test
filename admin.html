@@ -129,6 +129,23 @@
   }
   .a-list { display: grid; gap: .75rem; margin-block-start: 1rem; }
 
+  /* The operational views: a key/value line and a scope list. Same tokens as
+     everything else here — this is a new screen, not a new design. */
+  .a-kv { display: flex; gap: .75rem; margin: .35rem 0; font-size: .9375rem; line-height: 1.5; }
+  .a-kv__k { flex: 0 0 8.5rem; color: var(--color-text-muted, #8a8a8a); }
+  .a-kv__v { flex: 1 1 auto; min-inline-size: 0; overflow-wrap: anywhere; }
+  .a-list__item {
+    padding: .5rem .75rem; border: 1px solid var(--color-border, #2e2e2e);
+    border-radius: var(--radius-md, 8px); font-size: .875rem; line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+  .a-list__item--sub { margin-inline-start: 1rem; border-style: dashed; color: var(--color-text-secondary, #b9b9b9); }
+  @media (max-width: 34em) {
+    .a-kv { display: block; }
+    .a-kv__k { display: block; flex: none; font-size: .8125rem; }
+    .a-list__item--sub { margin-inline-start: .5rem; }
+  }
+
   .a-btn {
     min-block-size: 44px; padding-inline: 1.25rem;
     border-radius: var(--radius-md, 8px); border: 1px solid transparent;

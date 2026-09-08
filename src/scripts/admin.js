@@ -17,6 +17,7 @@
  */
 
 import { FILES, SERIALISE, validate } from './admin-validate.js';
+import { OPERATIONS_VIEW, renderOperations } from './admin-operations.js';
 
 const REPO = 'mashhorfoods/test';
 /* THE BRANCH IS ASKED FOR, NOT ASSUMED.
@@ -453,10 +454,42 @@ function rerender() {
     });
     tabs.append(b);
   });
+
+  /* THE OPERATIONAL VIEW. Five files rather than one, and no commit box: it
+     shows what the domain layer wrote, and writing goes through
+     `node tools/ops.mjs` so nothing can skip the order validator. */
+  {
+    const b = el('button', `a-tab${state.active === OPERATIONS_VIEW.id ? ' is-active' : ''}`, OPERATIONS_VIEW.label.en);
+    b.type = 'button';
+    b.addEventListener('click', async () => {
+      state.active = OPERATIONS_VIEW.id;
+      const missing = OPERATIONS_VIEW.files.filter((f) => !state.files[f]);
+      if (missing.length) {
+        await withStatus('Loading orders and projects…', async () => {
+          for (const f of missing) {
+            /* A store that has not been created yet is empty, not broken. */
+            try { await loadFile(f); } catch { state.files[f] = { sha: null, data: { records: [] }, original: '' }; }
+          }
+        });
+      }
+      rerender();
+    });
+    tabs.append(b);
+  }
   app.append(tabs);
 
   if (!state.active) {
     app.append(el('p', 'a-note', 'Choose what to edit. Nothing is loaded until you do.'));
+    return;
+  }
+
+  if (state.active === OPERATIONS_VIEW.id) {
+    const body = el('div', 'a-body');
+    const loaded = {};
+    for (const path of OPERATIONS_VIEW.files) loaded[path] = (state.files[path] || {}).data;
+    renderOperations(body, loaded);
+    app.append(body);
+    syncBarSpace();
     return;
   }
 
