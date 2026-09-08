@@ -13,7 +13,17 @@
     "with different approval paths, so they stay two features —",
     "feat.social.copywriting and feat.marketing.ad_copy. `Post design` /",
     "`Design` / `Graphic Design` were three names for one thing and are now",
-    "one: feat.social.post_design."
+    "one: feat.social.post_design.",
+    "",
+    "PRICES TUNED 8 SEPTEMBER against the packages they add up to. Costing each",
+    "social package out of its own parts is how the builder decides what to quote,",
+    "and a build-time check now refuses a package that costs MORE than its parts",
+    "and warns when the gap is so wide the individual prices look punitive.",
+    "",
+    "The three published add-on prices are untouched — 45 a reel, 20 a piece of",
+    "copy, 60 a video. Those are what the studio sells; a monthly retainer buying",
+    "eight reels and sixteen pieces of copy at those rates already exceeds the",
+    "package price on its own, which is exactly what a retainer is for."
   ],
   "service": "svc.social",
   "features": [
@@ -32,7 +42,7 @@
         "ar": "نصف ضعف الحضور سببه ملف غير مكتمل."
       },
       "category": "operations",
-      "selectable": true,
+      "selectable": false,
       "addonGroup": null,
       "recurrence": "once",
       "inputs": [
@@ -85,7 +95,8 @@
       "pricing": {
         "type": "included"
       },
-      "status": "active"
+      "status": "active",
+      "_selectable": "NOT A CHOICE. It costs nothing, it cannot be skipped, and three packages carry it without itemising it — which is why build-catalogue.js used to report them as promising publishing with no account behind it."
     },
     {
       "id": "feat.social.platform_management",
@@ -104,6 +115,17 @@
       "category": "operations",
       "selectable": true,
       "addonGroup": null,
+      "_options": "PLATFORMS ARE SCOPE, NOT A NUMBER. The quantity is derived from the platforms chosen rather than typed, so a scope records Google Ads and Meta Ads rather than \"2\" — which is the difference between something a quotation or an agent can act on and something it has to guess at. The list lives in platforms.json and is extensible: adding one is an entry there, and it appears in the chooser in both languages with no code change.",
+      "options": {
+        "id": "platforms",
+        "set": "social",
+        "multiple": true,
+        "drivesQuantity": true,
+        "label": {
+          "en": "Which channels",
+          "ar": "أي القنوات"
+        }
+      },
       "recurrence": "monthly",
       "inputs": [
         "Publishing access",
@@ -150,7 +172,7 @@
       },
       "pricing": {
         "type": "unit",
-        "from": 60,
+        "from": 40,
         "period": "monthly",
         "unit": {
           "en": "platform",
@@ -181,7 +203,7 @@
         "ar": "حتى لا يُكتب المنشور صباح يوم نشره."
       },
       "category": "planning",
-      "selectable": true,
+      "selectable": false,
       "addonGroup": null,
       "recurrence": "monthly",
       "inputs": [
@@ -231,11 +253,10 @@
         "max": 5
       },
       "pricing": {
-        "type": "fixed",
-        "from": 60,
-        "period": "monthly"
+        "type": "included"
       },
-      "status": "active"
+      "status": "active",
+      "_selectable": "NOT A CHOICE EITHER. Every social package publishes on a schedule, so every social package has a calendar; Growth and Pro simply never itemised one. It is included in platform management rather than sold beside it."
     },
     {
       "id": "feat.social.content_strategy",
@@ -250,6 +271,60 @@
       "purpose": {
         "en": "So the calendar has a reason and not just a rhythm.",
         "ar": "حتى يكون للتقويم سبب لا إيقاع فقط."
+      },
+      "tiers": {
+        "_comment": [
+          "DEPTH, NOT A SECOND FEATURE. The owner's instruction on 8 September was",
+          "explicit: where the underlying capability is shared, keep ONE canonical",
+          "feature and differentiate it by scope. Content strategy at Growth and at",
+          "Pro is the same work done to a different depth, and publishing it twice",
+          "would give an automation two ids for one thing.",
+          "",
+          "`priceFactor` multiplies pricing.from; `effortFactor` multiplies",
+          "estimatedEffort. A package row selects a level with `tier`; the builder",
+          "offers the levels as a choice on the row rather than as two rows."
+        ],
+        "dimension": "depth",
+        "default": "core",
+        "levels": [
+          {
+            "id": "core",
+            "name": {
+              "en": "Content strategy",
+              "ar": "استراتيجية المحتوى"
+            },
+            "description": {
+              "en": "Pillars with a proportion each, a tone written in examples, and one target the platform actually reports.",
+              "ar": "محاور بنِسَب محددة، ونبرة مكتوبة بأمثلة، وهدف واحد تقيسه المنصة فعلًا."
+            },
+            "scope": [
+              "Content pillars with proportions",
+              "Tone examples in every language published",
+              "One measurable target"
+            ],
+            "priceFactor": 1,
+            "effortFactor": 1
+          },
+          {
+            "id": "complete",
+            "name": {
+              "en": "Complete content strategy",
+              "ar": "استراتيجية محتوى كاملة"
+            },
+            "description": {
+              "en": "Everything in the core strategy, plus a competitor read, a channel-by-channel plan and a quarterly revision built from the reports.",
+              "ar": "كل ما في الاستراتيجية الأساسية، مع قراءة للمنافسين وخطة لكل قناة على حدة ومراجعة ربعية مبنية على التقارير."
+            },
+            "scope": [
+              "Everything in the core strategy",
+              "Competitor read",
+              "A plan per channel rather than one for all of them",
+              "Quarterly revision driven by the reports"
+            ],
+            "priceFactor": 1.8,
+            "effortFactor": 1.8
+          }
+        ]
       },
       "category": "planning",
       "selectable": true,
@@ -302,7 +377,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 180
+        "from": 150
       },
       "status": "active"
     },
@@ -459,7 +534,7 @@
       },
       "pricing": {
         "type": "unit",
-        "from": 15,
+        "from": 11,
         "period": "monthly",
         "unit": {
           "en": "post",
@@ -754,7 +829,8 @@
       ],
       "dependencies": {
         "requires": [
-          "feat.social.account_setup"
+          "feat.social.account_setup",
+          "feat.social.content_calendar"
         ],
         "recommends": [
           "feat.social.content_calendar"
@@ -963,6 +1039,58 @@
         "en": "How people who do not follow you find you.",
         "ar": "الطريقة التي يجدك بها من لا يتابعك."
       },
+      "tiers": {
+        "_comment": [
+          "DEPTH, NOT A SECOND FEATURE. The owner's instruction on 8 September was",
+          "explicit: where the underlying capability is shared, keep ONE canonical",
+          "feature and differentiate it by scope. Content strategy at Growth and at",
+          "Pro is the same work done to a different depth, and publishing it twice",
+          "would give an automation two ids for one thing.",
+          "",
+          "`priceFactor` multiplies pricing.from; `effortFactor` multiplies",
+          "estimatedEffort. A package row selects a level with `tier`; the builder",
+          "offers the levels as a choice on the row rather than as two rows."
+        ],
+        "dimension": "depth",
+        "default": "basic",
+        "levels": [
+          {
+            "id": "basic",
+            "name": {
+              "en": "Hashtag research",
+              "ar": "بحث الوسوم"
+            },
+            "description": {
+              "en": "Tag sets by size band, refreshed each month.",
+              "ar": "مجموعات وسوم مصنّفة حسب الحجم، تُحدَّث شهريًا."
+            },
+            "scope": [
+              "Hashtag sets by size band",
+              "Monthly refresh"
+            ],
+            "priceFactor": 1,
+            "effortFactor": 1
+          },
+          {
+            "id": "core",
+            "name": {
+              "en": "Hashtag and keyword research",
+              "ar": "بحث الوسوم والكلمات المفتاحية"
+            },
+            "description": {
+              "en": "Tag sets plus the search terms your audience actually types, in every language they search in.",
+              "ar": "مجموعات الوسوم مع الكلمات التي يبحث بها جمهورك فعلًا، بكل لغة يستخدمها."
+            },
+            "scope": [
+              "Everything in hashtag research",
+              "Keyword sets per language",
+              "Retirement of terms that stopped working"
+            ],
+            "priceFactor": 1.6,
+            "effortFactor": 1.5
+          }
+        ]
+      },
       "category": "planning",
       "selectable": true,
       "addonGroup": null,
@@ -1017,6 +1145,83 @@
         "type": "fixed",
         "from": 40,
         "period": "monthly"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.audience_research",
+      "name": {
+        "en": "Audience and market research",
+        "ar": "بحث الجمهور والسوق"
+      },
+      "_sharesMethodWith": "The same method as feat.marketing.audience_research, applied to a different channel: one reads an organic audience, the other reads who responds to paid advertising. They stay two features because they sit in two services, two pipelines and two sets of deliverables — but an agent holding findings from either should reuse them, which is what this field is for.",
+      "sharesMethodWith": [
+        "feat.marketing.audience"
+      ],
+      "description": {
+        "en": "Who your audience actually is, what the accounts around you are doing, and where the room to grow is.",
+        "ar": "من هو جمهورك فعلًا، وما الذي تفعله الحسابات المحيطة بك، وأين مساحة النمو."
+      },
+      "purpose": {
+        "en": "The assumption about the audience is usually the expensive one.",
+        "ar": "الافتراض حول الجمهور هو الأكثر كلفة عادةً."
+      },
+      "category": "planning",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "quarterly",
+      "inputs": [
+        "Existing account analytics",
+        "Competitor and adjacent accounts",
+        "Whatever the client knows from selling to these people"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.social.content_strategy"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.plan",
+      "executionSteps": [
+        "Read the account’s own history before looking anywhere else.",
+        "Read the accounts around it — what they publish, what earns a reply, what they never touch.",
+        "Write the findings as differences from what the client believes, because that is the useful half.",
+        "Name the segments worth speaking to differently, in priority order."
+      ],
+      "tools": [
+        "Platform analytics",
+        "Public account research",
+        "Document editor"
+      ],
+      "outputs": [
+        "Research findings",
+        "A prioritised segment list"
+      ],
+      "deliverables": [
+        "Findings document",
+        "Segments with a stated reason each"
+      ],
+      "qualityChecks": [
+        "Every finding traceable to something we can point at, not to an impression",
+        "The client’s own assumption stated and either confirmed or contradicted explicitly",
+        "Arabic-language audiences researched in Arabic, not through translation"
+      ],
+      "completionCriteria": "Findings delivered and at least one segment from them carried into the next content plan.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per research cycle."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 4,
+        "max": 14
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 120
       },
       "status": "active"
     },
@@ -1090,6 +1295,154 @@
       },
       "pricing": {
         "type": "included"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.growth_analysis",
+      "name": {
+        "en": "Growth analysis",
+        "ar": "تحليل النمو"
+      },
+      "description": {
+        "en": "What is actually growing — reach, followers, saves, messages — and which posts caused it.",
+        "ar": "ما الذي ينمو فعلًا — الوصول والمتابعون والحفظ والرسائل — وأي المنشورات سببت ذلك."
+      },
+      "purpose": {
+        "en": "A report says what happened. This says what to do more of.",
+        "ar": "التقرير يقول ما حدث. وهذا يقول بماذا تستمر."
+      },
+      "category": "reporting",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "A published month",
+        "Platform analytics",
+        "The previous month’s analysis, from month two"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.social.report"
+        ],
+        "recommends": [
+          "feat.social.audience_research"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.report",
+      "executionSteps": [
+        "Track the movement over months, not the month in isolation — one month is weather.",
+        "Attribute the movement to specific posts, and say when it cannot be attributed.",
+        "Separate growth that was bought or borrowed (a collaboration, an ad) from growth the content earned.",
+        "End with the pattern worth repeating and the one worth stopping."
+      ],
+      "tools": [
+        "Platform analytics",
+        "Spreadsheet",
+        "Document editor"
+      ],
+      "outputs": [
+        "A growth reading with attribution"
+      ],
+      "deliverables": [
+        "Growth analysis appended to the monthly report"
+      ],
+      "qualityChecks": [
+        "Every figure traceable to a platform screen",
+        "Paid and organic growth reported apart",
+        "No trend claimed on a single month of data",
+        "At least one thing named to stop doing"
+      ],
+      "completionCriteria": "Analysis delivered with one repeat and one stop named.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Corrections only."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 6
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 70,
+        "period": "monthly"
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.social.performance_optimization",
+      "name": {
+        "en": "Performance optimisation",
+        "ar": "تحسين الأداء"
+      },
+      "description": {
+        "en": "Changing what we publish, and when, on the evidence the last month produced.",
+        "ar": "تغيير ما ننشره ومتى ننشره، بناءً على ما أثبته الشهر الماضي."
+      },
+      "purpose": {
+        "en": "A plan that never changes is a plan that stopped reading its own results.",
+        "ar": "الخطة التي لا تتغير هي خطة توقفت عن قراءة نتائجها."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "The month’s analysis",
+        "The approved calendar",
+        "Enough published items to compare"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.social.publishing",
+          "feat.social.growth_analysis"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.optimise",
+      "executionSteps": [
+        "Change one thing at a time — format, hook, posting time or length — never several at once.",
+        "Give the change a full cycle before reading it.",
+        "Record the figure that justified the change and the figure that would reverse it.",
+        "Feed what survives back into the next calendar rather than into a document nobody opens."
+      ],
+      "tools": [
+        "Platform analytics",
+        "Scheduler",
+        "Document editor"
+      ],
+      "outputs": [
+        "A changed plan with the evidence behind it"
+      ],
+      "deliverables": [
+        "A change log with a before and after figure per change"
+      ],
+      "qualityChecks": [
+        "One variable per change",
+        "No change read before a full cycle",
+        "Every change carried into the next calendar or explicitly reversed"
+      ],
+      "completionCriteria": "The month closes with each change recorded and either kept or reversed on evidence.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 7
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 80,
+        "period": "monthly"
       },
       "status": "active"
     },

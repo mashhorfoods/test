@@ -168,8 +168,62 @@ function priceCell(f) {
    stepper beside an unchosen thing is a control that does nothing. With no
    JavaScript it stays hidden and the price line still says "per post", which
    is the information the stepper would have carried. */
+/* DEPTH, offered as a choice on the row rather than as two rows.
+   `content strategy` and `complete content strategy` are one capability at two
+   depths, and publishing them as two tickable lines was how the packages ended
+   up describing the same work twice. Radios, because the levels are exclusive
+   and a native radio group already carries the keyboard behaviour, the grouping
+   and the announcement a custom control would have to rebuild. */
+function tierCell(f) {
+  if (!f.tiers) return '';
+  const name = `tier-${domId(f.id)}`;
+  return `
+                      <span class="c-pick__tiers" hidden role="group" aria-label="${esc(f.name.en)}">
+${f.tiers.levels.map((l) => `                        <span class="c-pick__tier">
+                          <input class="c-pick__tier-input" type="radio" name="${name}" id="${name}-${l.id}"
+                            value="${l.id}" data-tier="${f.id}"${l.id === f.tiers.default ? ' checked' : ''}>
+                          <label class="c-pick__tier-label" for="${name}-${l.id}">${pair(l.name)}</label>
+                          <span class="c-pick__tier-scope">${pair(l.description)}</span>
+                        </span>`).join('\n')}
+                      </span>`;
+}
+
+/* WHICH PLATFORMS, not how many. The quantity follows the selection, so a scope
+   records Google Ads and Meta Ads rather than "2" — the difference between
+   something a quotation can act on and something it has to guess at. */
+function optionCell(f) {
+  if (!f.options) return '';
+  return `
+                      <span class="c-pick__options" hidden role="group" aria-label="${esc(f.options.label.en)}">
+                        <span class="c-pick__options-label">${pair(f.options.label)}</span>
+${f.options.choices.map((c) => `                        <span class="c-pick__option">
+                          <input class="c-pick__option-input" type="checkbox" id="opt-${domId(f.id)}-${domId(c.id)}"
+                            value="${c.id}" data-option="${f.id}">
+                          <label class="c-pick__option-label" for="opt-${domId(f.id)}-${domId(c.id)}">${pair(c.name)}${
+  c.covers ? `<span class="c-pick__option-covers">${pair(c.covers)}</span>` : ''}</label>
+                        </span>`).join('\n')}
+                      </span>`;
+}
+
+/* A composite says what it is made of, in the visitor's words. The parts are
+   separately selectable rows in the same list; this is the sentence that stops
+   "Additional landing page" looking like it competes with them. */
+function composedCell(f) {
+  if (!f.composedOf) return '';
+  const parts = f.composedOf.map((id) => byId.get(id)).filter(Boolean);
+  if (!parts.length) return '';
+  return `
+                      <span class="c-pick__composed">${pair({
+    en: `Covers ${parts.map((p) => p.name.en.toLowerCase()).join(', ')}.`,
+    ar: `يشمل ${parts.map((p) => p.name.ar).join('، ')}.`,
+  })}</span>`;
+}
+
 function qtyCell(f) {
   if (f.pricing.type !== 'unit') return '';
+  /* No stepper where the options ARE the quantity: two controls for one number
+     are two ways to disagree. */
+  if (f.options && f.options.drivesQuantity) return '';
   const p = f.pricing;
   return `
                 <span class="c-pick__qty" hidden>
@@ -195,6 +249,10 @@ function pickRow(f) {
     d.recommends.length ? `data-recommends="${d.recommends.join(' ')}"` : '',
     d.conflicts.length ? `data-conflicts="${d.conflicts.join(' ')}"` : '',
     d.supersedes.length ? `data-supersedes="${d.supersedes.join(' ')}"` : '',
+    f.composedOf ? `data-composed-of="${f.composedOf.join(' ')}"` : '',
+    f.tiers ? `data-tiers="${f.tiers.levels.map((l) => `${l.id}:${l.priceFactor}`).join(' ')}"` : '',
+    f.tiers ? `data-tier-default="${f.tiers.default}"` : '',
+    f.options && f.options.drivesQuantity ? 'data-options-drive-qty' : '',
   ].filter(Boolean).join(' ');
 
   return `                  <li class="c-pick" ${data}>
@@ -213,8 +271,8 @@ function pickRow(f) {
                     </label>
                     <span class="c-pick__body">
                       <span class="c-pick__desc">${pair(f.description)}</span>
-                      ${priceCell(f)}${qtyCell(f)}
-                      <span class="c-pick__note" data-pick-note hidden></span>
+                      ${priceCell(f)}${qtyCell(f)}${composedCell(f)}
+                      <span class="c-pick__note" data-pick-note hidden></span>${tierCell(f)}${optionCell(f)}
                     </span>
               </li>`;
 }
@@ -313,7 +371,20 @@ const NEW_TAB = WHATSAPP
   : '';
 
 function renderBuilder() {
+  /* WHAT THE PACKAGES CONTAIN, for the comparison above. A JSON island rather
+     than attributes on twelve invisible elements: it is data, it is not
+     executed, it is crawlable, and it is the one thing on this page the script
+     cannot read off the rows it is standing on. */
+  const packageData = JSON.stringify(C.packages.map((cat) => ({
+    service: cat.service,
+    name: cat.name,
+    tiers: cat.tiers.map((t) => ({
+      id: t.id, name: t.name, price: t.price, from: t.priceFrom, billing: t.billing, contents: t.contents,
+    })),
+  }))).replace(/</g, '\\u003c');
+
   return `<!-- BUILDER:START -->
+          <script type="application/json" id="build-packages">${packageData}</script>
           <form class="c-build" id="build-form" novalidate data-build>
             <div class="c-build__grid">
               <div class="c-build__services">
@@ -348,6 +419,14 @@ ${indent(SERVICES.map(serviceBlock).join('\n\n'), 4)}
                   </p>
                   <p class="c-build__quoted" data-build-quoted hidden></p>
                 </div>
+
+                <!-- WHEN A PUBLISHED PACKAGE COVERS THE SCOPE FOR LESS, SAY SO.
+                     Every package here is cheaper than buying its own contents
+                     one at a time — by between 1.13x and 2.52x, measured on
+                     every build. A builder that knows that and stays quiet is
+                     quoting somebody 1,636 a month for something the card above
+                     sells at 650. -->
+                <p class="c-build__cheaper" data-build-cheaper hidden></p>
 
                 <p class="c-build__caveat">${pair({
     en: 'An estimate, not a quotation. Every figure is a starting price; the final one depends on the scope we agree together.',

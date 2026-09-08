@@ -9,7 +9,20 @@
     "domain and hosting were not included. The truth is in between and is now",
     "written down: WE ARRANGE BOTH; THE CLIENT PAYS THE REGISTRAR AND THE",
     "HOST. That is what `thirdPartyCost` records, and it is why the exclusion",
-    "is being scoped per category rather than deleted."
+    "is being scoped per category rather than deleted.",
+    "",
+    "PRICES RAISED 8 SEPTEMBER, and the reason is arithmetic rather than taste.",
+    "Costing each package out of its own parts produced 0.80, 0.82 and 0.54 —",
+    "every website package cost MORE than building the same list piece by piece,",
+    "so the builder quoted a Professional Website at 650 beside a card asking",
+    "1200 for the same contents. A package has to be a discount or it has no",
+    "reason to exist. The four priced website features now put the three ratios",
+    "at 1.68, 1.71 and 1.13, and build-catalogue.js refuses a package that costs",
+    "more than its parts.",
+    "",
+    "The two published add-on prices — 70 a page, 120 a landing page — are",
+    "untouched. They are what the studio sells; the rest are our own estimates",
+    "for the builder."
   ],
   "service": "svc.websites",
   "features": [
@@ -236,7 +249,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 200
+        "from": 420
       },
       "status": "active"
     },
@@ -309,7 +322,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 250
+        "from": 520
       },
       "status": "active"
     },
@@ -449,7 +462,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 80
+        "from": 170
       },
       "status": "active"
     },
@@ -521,7 +534,7 @@
       },
       "pricing": {
         "type": "project",
-        "from": 120
+        "from": 250
       },
       "status": "active"
     },
@@ -819,14 +832,249 @@
       "status": "active"
     },
     {
+      "id": "feat.websites.landing_design",
+      "name": {
+        "en": "Landing page design",
+        "ar": "تصميم صفحة الهبوط"
+      },
+      "description": {
+        "en": "The page designed to one action — layout, visual design, every width, and a design review before anything is built.",
+        "ar": "تصميم الصفحة حول إجراء واحد — التخطيط والتصميم البصري وكل العروض، مع مراجعة تصميمية قبل بدء التنفيذ."
+      },
+      "purpose": {
+        "en": "A campaign page argues for one thing. That argument is made in the design.",
+        "ar": "صفحة الحملة تدافع عن شيء واحد. وهذا الدفاع يُصنع في التصميم."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "The campaign’s offer and audience",
+        "The single action the page exists to produce",
+        "Copy and imagery",
+        "Brand assets, ours or the client’s"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.logo",
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_concept",
+      "executionSteps": [
+        "Agree the single action in one sentence before drawing anything.",
+        "Design the phone width first, because it is the one that has to give something up.",
+        "Design the states nobody remembers: submitted, failed, sold out, long copy, no image.",
+        "Review the design against the one action and cut whatever does not serve it."
+      ],
+      "tools": [
+        "Design tool",
+        "Contrast checker"
+      ],
+      "outputs": [
+        "Approved design at every supported width"
+      ],
+      "deliverables": [
+        "Design file with desktop and phone widths",
+        "Token sheet"
+      ],
+      "qualityChecks": [
+        "Exactly one primary action in the design",
+        "Text contrast measured, not eyeballed",
+        "Arabic laid out right-to-left where the page is bilingual",
+        "Every interactive element has a visible focus state in the design"
+      ],
+      "completionCriteria": "Client has approved the design at both widths in writing.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Revision of the approved direction. A new direction restarts the concept stage and is quoted."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 5,
+        "max": 16
+      },
+      "pricing": {
+        "type": "quote",
+        "quoteReason": {
+          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
+          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
+        }
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.landing_build",
+      "name": {
+        "en": "Landing page development",
+        "ar": "تطوير صفحة الهبوط"
+      },
+      "description": {
+        "en": "The approved design built as a working page — responsive, integrated with whatever it has to talk to, and tested.",
+        "ar": "تنفيذ التصميم المعتمد كصفحة تعمل — متجاوبة ومتكاملة مع ما تحتاج الاتصال به ومُختبَرة."
+      },
+      "purpose": {
+        "en": "The part that turns a picture into something a visitor can act in.",
+        "ar": "الجزء الذي يحوّل الصورة إلى شيء يتفاعل معه الزائر."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved design",
+        "Final copy and images",
+        "Keys for anything it integrates with",
+        "A destination for whatever the form produces"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.landing_design"
+        ],
+        "recommends": [
+          "feat.marketing.conversion_tracking"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.build",
+      "executionSteps": [
+        "Build semantic markup first, then style it.",
+        "Build every state the design defined, including the failure path.",
+        "Wire the form to somewhere a person actually reads, and prove a message arrives.",
+        "Check it at 320, 375, 414, 768, 1024 and 1280, in every language in scope."
+      ],
+      "tools": [
+        "Editor",
+        "Build tooling",
+        "Browser dev tools"
+      ],
+      "outputs": [
+        "A working page on a staging address"
+      ],
+      "deliverables": [
+        "Source code",
+        "Staging URL"
+      ],
+      "qualityChecks": [
+        "Matches the approved design at every supported width",
+        "No console error",
+        "The form’s message received and read by a person, not merely submitted",
+        "The failure path produces something the visitor can act on",
+        "Loads in under two seconds on a throttled connection"
+      ],
+      "completionCriteria": "Page built, reviewable on staging, with its form proven end to end.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Build corrections are not revisions. Design changes after approval are quoted."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 4,
+        "max": 14
+      },
+      "pricing": {
+        "type": "quote",
+        "quoteReason": {
+          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
+          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
+        }
+      },
+      "status": "active"
+    },
+    {
+      "id": "feat.websites.landing_deploy",
+      "name": {
+        "en": "Landing page deployment",
+        "ar": "نشر صفحة الهبوط"
+      },
+      "description": {
+        "en": "Hosting, the address it lives at, going live, and checking the live page rather than the one we deployed.",
+        "ar": "الاستضافة والعنوان الذي تعيش عليه، والنشر، وفحص الصفحة الحية لا التي نشرناها."
+      },
+      "purpose": {
+        "en": "A campaign cannot start until the page it points at exists.",
+        "ar": "لا تبدأ الحملة قبل أن توجد الصفحة التي تشير إليها."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "A tested build",
+        "A domain or subdomain, and who holds the account",
+        "Client sign-off on staging"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.landing_build"
+        ],
+        "recommends": [
+          "feat.websites.hosting"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.release",
+      "executionSteps": [
+        "Provision or reuse hosting, in the client’s name.",
+        "Point the domain or subdomain and force HTTPS.",
+        "Deploy, then walk the live page rather than trusting the deploy.",
+        "Confirm the conversion fires on the live address, not on staging."
+      ],
+      "tools": [
+        "Hosting console",
+        "DNS console",
+        "Browsers",
+        "Analytics console"
+      ],
+      "outputs": [
+        "A live landing page"
+      ],
+      "deliverables": [
+        "The live URL",
+        "A recorded test conversion",
+        "Access to wherever it is hosted"
+      ],
+      "qualityChecks": [
+        "HTTPS forced on the live address",
+        "Live page re-checked page-state by page-state, not assumed identical to staging",
+        "A test conversion seen end to end on the live address",
+        "A rollback identified before deploying"
+      ],
+      "completionCriteria": "Live, verified by us, and confirmed by the client.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Fixes, not revisions."
+      },
+      "automationPotential": "full",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 5
+      },
+      "pricing": {
+        "type": "quote",
+        "quoteReason": {
+          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
+          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
+        }
+      },
+      "status": "active"
+    },
+    {
       "id": "feat.websites.extra_landing",
       "name": {
         "en": "Additional landing page",
         "ar": "صفحة هبوط إضافية"
       },
       "description": {
-        "en": "A standalone page built for one campaign, with its own message and one action.",
-        "ar": "صفحة مستقلة لحملة واحدة، برسالة واحدة وإجراء واحد."
+        "en": "A standalone page built for one campaign — designed, developed and put live, with one message and one action.",
+        "ar": "صفحة مستقلة لحملة واحدة — تُصمَّم وتُطوَّر وتُنشر، برسالة واحدة وإجراء واحد."
       },
       "purpose": {
         "en": "So a campaign sends people somewhere built for it.",
@@ -854,11 +1102,10 @@
         ],
         "conflicts": []
       },
-      "workflow": "wf.build",
+      "workflow": "wf.composite",
       "executionSteps": [
-        "Write or agree the single action before designing anything.",
-        "Design and build the page to that one action.",
-        "Instrument the conversion so the campaign can be judged."
+        "Run each part in order: design, then development, then deployment.",
+        "Do not start a part before the one before it is approved."
       ],
       "tools": [
         "Design tool",
@@ -869,15 +1116,13 @@
         "One live landing page"
       ],
       "deliverables": [
-        "The live page",
-        "A recorded conversion event"
+        "Everything the three parts deliver"
       ],
       "qualityChecks": [
-        "Exactly one primary action on the page",
-        "Loads in under two seconds on a throttled connection",
-        "Conversion event fires and is visible in analytics"
+        "Every part’s own checks passed",
+        "Nothing started before the part before it was approved"
       ],
-      "completionCriteria": "Page live and a test conversion recorded end to end.",
+      "completionCriteria": "All three parts complete for the ordered number of pages.",
       "revisionRules": {
         "rounds": 1,
         "scope": "Per page."
@@ -886,8 +1131,8 @@
       "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
-        "min": 5,
-        "max": 14
+        "min": 10,
+        "max": 35
       },
       "pricing": {
         "type": "unit",
@@ -904,7 +1149,13 @@
         "minQty": 1,
         "maxQty": 20
       },
-      "status": "active"
+      "status": "active",
+      "_composedOf": "THE PUBLISHED PRICE BUYS THE WHOLE PAGE, and this is what the whole page is made of. The three parts have different workflows, different dependencies, different deliverables and different automation potential — deployment is `full`, design is `assist` — so they are three features. A client may take design alone; that is a scope the studio has never published a price for, so each part alone is quoted. Selecting design does NOT bring development or deployment with it: the dependency runs the other way.",
+      "composedOf": [
+        "feat.websites.landing_design",
+        "feat.websites.landing_build",
+        "feat.websites.landing_deploy"
+      ]
     }
   ]
 }

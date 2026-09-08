@@ -54,6 +54,17 @@ function serve() {
   return new Promise((r) => server.listen(0, '127.0.0.1', () => r(server)));
 }
 
+/* THE SITE REMEMBERS THE LANGUAGE, so a reload after the Arabic block leaves
+   the page in Arabic and every English assertion after it fails for a reason
+   that has nothing to do with what is being tested. */
+const useEnglish = async (p) => {
+  await p.evaluate(() => {
+    const en = document.querySelector('[data-lang="en"]');
+    if (en && document.documentElement.lang !== 'en') en.click();
+  });
+  await p.waitForTimeout(300);
+};
+
 const tick = async (p, id) => p.evaluate((f) => {
   const row = document.querySelector(`.c-pick[data-feature="${f}"]`);
   row.closest('details').open = true;
@@ -162,6 +173,7 @@ const totals = (p) => p.evaluate(() => {
   /* --- 4. reset ----------------------------------------------------------- */
   await p.reload({ waitUntil: 'load' });
   await p.waitForTimeout(400);
+  await useEnglish(p);
 
   /* --- 5. superseding blocks what it replaces, and says so ---------------- */
   {
@@ -184,6 +196,7 @@ const totals = (p) => p.evaluate(() => {
   /* --- 6. quantity multiplies -------------------------------------------- */
   await p.reload({ waitUntil: 'load' });
   await p.waitForTimeout(400);
+  await useEnglish(p);
   {
     await tick(p, 'feat.branding.social_posts'); // unit, from 15, default 3
     await p.waitForTimeout(150);
@@ -204,6 +217,7 @@ const totals = (p) => p.evaluate(() => {
   /* --- 7. one-time and monthly are totalled apart ------------------------- */
   await p.reload({ waitUntil: 'load' });
   await p.waitForTimeout(400);
+  await useEnglish(p);
   {
     await tick(p, 'feat.branding.logo');               // one-time, 250
     await p.waitForTimeout(100);
@@ -218,6 +232,7 @@ const totals = (p) => p.evaluate(() => {
   /* --- 8. a quote-only item is counted, never priced ---------------------- */
   await p.reload({ waitUntil: 'load' });
   await p.waitForTimeout(400);
+  await useEnglish(p);
   {
     await tick(p, 'feat.branding.photography');
     await p.waitForTimeout(200);
@@ -242,6 +257,108 @@ const totals = (p) => p.evaluate(() => {
     const href = await p.evaluate(() => (document.querySelector('[data-build-send]') || {}).href || '');
     check('the send link swapped to the Arabic message',
       href.endsWith('#contact') || /%D8%|%D9%/.test(href), href.slice(0, 80));
+  }
+
+  /* --- 10. depth is a choice on the row, and it moves the price ----------- */
+  await p.reload({ waitUntil: 'load' });
+  await p.waitForTimeout(400);
+  await useEnglish(p);
+  {
+    await tick(p, 'feat.marketing.audience');
+    await p.waitForTimeout(200);
+    const shown = await p.evaluate(() => {
+      const w = document.querySelector('.c-pick[data-feature="feat.marketing.audience"] .c-pick__tiers');
+      return w ? !w.hidden : null;
+    });
+    check('choosing a tiered row reveals its depths', shown === true, String(shown));
+    const base = (await totals(p)).once;
+    await p.evaluate(() => {
+      const r = document.querySelector('#tier-feat-marketing-audience-segmentation');
+      r.click();
+    });
+    await p.waitForTimeout(200);
+    const deep = (await totals(p)).once;
+    check('a deeper level costs more than the default', deep > base, `${base} -> ${deep}`);
+    const named = await p.evaluate(() => (document.querySelector('[data-build-list]') || {}).textContent || '');
+    check('and the scope names the depth, not the capability',
+      /Audience segmentation/i.test(named), named.replace(/\s+/g, ' ').slice(0, 90));
+  }
+
+  /* --- 11. platforms are the quantity, and they are recorded by name ------ */
+  await p.reload({ waitUntil: 'load' });
+  await p.waitForTimeout(400);
+  await useEnglish(p);
+  {
+    await tick(p, 'feat.marketing.platform_management');
+    await p.waitForTimeout(200);
+    const one = (await totals(p)).monthly;
+    const hasStepper = await p.evaluate(() =>
+      Boolean(document.querySelector('.c-pick[data-feature="feat.marketing.platform_management"] [data-qty]')));
+    check('a platform-driven row has no separate quantity stepper', hasStepper === false);
+    await p.evaluate(() => {
+      document.querySelector('#opt-feat-marketing-platform_management-plat-meta').click();
+      document.querySelector('#opt-feat-marketing-platform_management-plat-google').click();
+    });
+    await p.waitForTimeout(200);
+    const two = (await totals(p)).monthly;
+    check('choosing two platforms doubles that line', two === one * 2, `${one} -> ${two}`);
+    const txt = await p.evaluate(() => (document.querySelector('[data-build-list]') || {}).textContent || '');
+    check('and the scope records which platforms, by name',
+      /Meta Ads/.test(txt) && /Google Ads/.test(txt), txt.replace(/\s+/g, ' ').slice(0, 120));
+  }
+
+  /* --- 12. a composite brings its parts; a part does not bring the others - */
+  await p.reload({ waitUntil: 'load' });
+  await p.waitForTimeout(400);
+  await useEnglish(p);
+  {
+    await tick(p, 'feat.websites.landing_design');
+    await p.waitForTimeout(200);
+    for (const id of ['feat.websites.landing_build', 'feat.websites.landing_deploy']) {
+      const st = await state(p, id);
+      check(`choosing landing design alone does not bring ${id}`,
+        st && !st.checked && st.stateAttr !== 'on', JSON.stringify(st));
+    }
+    await p.reload({ waitUntil: 'load' });
+    await p.waitForTimeout(400);
+    await tick(p, 'feat.websites.extra_landing');
+    await p.waitForTimeout(250);
+    for (const id of ['feat.websites.landing_design', 'feat.websites.landing_build', 'feat.websites.landing_deploy']) {
+      const st = await state(p, id);
+      check(`the composite brings in ${id}`, st && st.stateAttr === 'on', JSON.stringify(st));
+    }
+    const txt = await p.evaluate(() => (document.querySelector('[data-build-list]') || {}).textContent || '');
+    check('and its parts are shown as included rather than charged again',
+      /Included in/.test(txt), txt.replace(/\s+/g, ' ').slice(0, 120));
+    const t = await totals(p);
+    check('the composite is charged once, at its published price',
+      t.once === 120, JSON.stringify(t));
+  }
+
+  /* --- 13. a published package that covers the scope is named ------------- */
+  await p.reload({ waitUntil: 'load' });
+  await p.waitForTimeout(400);
+  await useEnglish(p);
+  {
+    await tick(p, 'feat.branding.logo');
+    await p.waitForTimeout(150);
+    await tick(p, 'feat.branding.color_system');
+    await p.waitForTimeout(250);
+    const said = await p.evaluate(() => {
+      const el = document.querySelector('[data-build-cheaper]');
+      return el && !el.hidden ? el.textContent.trim() : '';
+    });
+    check('a package that covers the whole scope is named, with its price',
+      /Starter/.test(said) && /490/.test(said), `"${said}"`);
+    /* And it must not claim a package that does NOT cover everything. */
+    await tick(p, 'feat.branding.photography');
+    await p.waitForTimeout(250);
+    const after = await p.evaluate(() => {
+      const el = document.querySelector('[data-build-cheaper]');
+      return el && !el.hidden ? el.textContent.trim() : '';
+    });
+    check('and stops naming it once the scope leaves what it covers',
+      after === '', `"${after}"`);
   }
 
   check('no console errors while all of that happened', errors.length === 0, errors.slice(0, 3).join(' | '));

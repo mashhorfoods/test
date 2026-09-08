@@ -46,6 +46,7 @@ const read = (f) => JSON.parse(fs.readFileSync(path.join(SRC, f), 'utf8'));
 const SERVICES = read('services.json');
 const WORKFLOWS = read('workflows.json');
 const ADDON_GROUPS = read('addon-groups.json');
+const PLATFORMS = read('platforms.json');
 const PRICING = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/pricing.json'), 'utf8'));
 
 const featureFiles = fs.readdirSync(SRC).filter((f) => /^features\..+\.json$/.test(f)).sort();
@@ -148,6 +149,86 @@ for (const f of features) {
     if (p.defaultQty < p.minQty || p.defaultQty > p.maxQty) fail(`${at}.pricing.defaultQty outside min/max`);
   }
 
+  /* TIERS — one feature at more than one depth.
+     The owner's instruction on 8 September: where the underlying capability is
+     shared, keep ONE canonical feature and differentiate it by scope, rather
+     than publishing the same thing twice under two ids. `content strategy` and
+     `complete content strategy` were two display strings for one capability;
+     they are one feature with two levels now. */
+  if (f.tiers) {
+    const t = f.tiers;
+    if (!Array.isArray(t.levels) || t.levels.length < 2) {
+      fail(`${at}.tiers: a tiered feature needs at least two levels — one level is not a tier, it is the feature`);
+    } else {
+      const seen = new Set();
+      let lastFactor = 0;
+      for (const lv of t.levels) {
+        if (!lv.id || seen.has(lv.id)) fail(`${at}.tiers: duplicate or missing level id "${lv.id}"`);
+        seen.add(lv.id);
+        bilingual(lv.name, `${at}.tiers.${lv.id}.name`);
+        bilingual(lv.description, `${at}.tiers.${lv.id}.description`);
+        if (!Array.isArray(lv.scope) || !lv.scope.length) fail(`${at}.tiers.${lv.id}.scope: empty`);
+        for (const k of ['priceFactor', 'effortFactor']) {
+          if (typeof lv[k] !== 'number' || lv[k] <= 0) fail(`${at}.tiers.${lv.id}.${k}: not a positive number`);
+        }
+        /* Levels must READ as a ladder. A deeper level that costs less is not a
+           depth, it is a mistake nobody would catch by eye. */
+        if (lv.priceFactor < lastFactor) {
+          fail(`${at}.tiers: level "${lv.id}" costs less than the level before it — levels must ascend`);
+        }
+        lastFactor = lv.priceFactor;
+      }
+      if (!seen.has(t.default)) fail(`${at}.tiers.default: "${t.default}" is not one of the levels`);
+      /* THE DEFAULT MUST BE THE CHEAPEST LEVEL, because the row prints
+         "From <pricing.from>" and a fresh selection has to cost that. Two
+         features defaulted to a level costing 1.6×, so the builder printed
+         "From 90 USD" on a row that added 144 to the estimate the moment it
+         was ticked. "From" is a floor or it is a lie. */
+      const cheapest = t.levels.reduce((a, b) => (a.priceFactor <= b.priceFactor ? a : b));
+      if (t.default !== cheapest.id) {
+        fail(`${at}.tiers.default is "${t.default}" (×${(t.levels.find((l) => l.id === t.default) || {}).priceFactor}) but the row prints "From ${f.pricing.from}" — the default must be the cheapest level, "${cheapest.id}"`);
+      }
+      if (f.pricing.type === 'quote') fail(`${at}: a quote-priced feature cannot carry price factors`);
+    }
+  }
+
+  /* COMPOSITES — a feature that IS its parts.
+     "Additional landing page" is one published price for design, development
+     and deployment. Those three have different workflows, dependencies,
+     deliverables and automation potential, so they are three features; the
+     thing the studio sells is still one line. */
+  if (f.composedOf) {
+    if (!Array.isArray(f.composedOf) || f.composedOf.length < 2) {
+      fail(`${at}.composedOf: a composite needs at least two parts`);
+    }
+    if (f.workflow !== 'wf.composite') fail(`${at}: composed of parts but does not use wf.composite`);
+    if (((f.dependencies || {}).requires || []).length) {
+      fail(`${at}: a composite must not declare its own requires — the ordering lives on its parts`);
+    }
+    for (const part of f.composedOf || []) {
+      const pf = byId.get(part);
+      if (!pf) { fail(`${at}.composedOf: unknown feature ${part}`); continue; }
+      if (pf.service !== f.service) fail(`${at}.composedOf: ${part} belongs to ${pf.service}`);
+      if (pf.composedOf) fail(`${at}.composedOf: ${part} is itself a composite — nesting is not supported`);
+    }
+  }
+  if (f.workflow === 'wf.composite' && !f.composedOf) {
+    fail(`${at}: uses wf.composite with nothing to compose`);
+  }
+
+  /* OPTIONS — scope the visitor picks, captured as ids rather than a count. */
+  if (f.options) {
+    const set = (PLATFORMS.sets || {})[f.options.set];
+    if (!set) fail(`${at}.options.set: "${f.options.set}" is not a set in platforms.json`);
+    bilingual(f.options.label, `${at}.options.label`);
+    if (f.options.drivesQuantity && f.pricing.type !== 'unit') {
+      fail(`${at}.options: drivesQuantity on a feature that is not priced per unit`);
+    }
+    if (set && f.options.drivesQuantity && f.pricing.maxQty > set.platforms.length) {
+      fail(`${at}.pricing.maxQty is ${f.pricing.maxQty} but its option set holds ${set.platforms.length}`);
+    }
+  }
+
   if (f.addonGroup && !groupIds.has(f.addonGroup)) fail(`${at}.addonGroup: unknown group ${f.addonGroup}`);
   if (f.addonGroup && typeof f.addonOrder !== 'number') fail(`${at}: published as an add-on with no addonOrder`);
   if (f.addonOrder !== undefined && !f.addonGroup) fail(`${at}: has an addonOrder but no addonGroup`);
@@ -199,6 +280,21 @@ for (const f of features) {
     const g = groupOrder.get(byId.get(seen.get(n)).addonGroup);
     if (g < last) fail(`add-on ${seen.get(n)} (#${n}) sits in a group that publishes before the previous add-on's group`);
     last = g;
+  }
+}
+
+/* A SHARED METHOD IS A TWO-WAY FACT. Social audience research and advertising
+   audience research are the same method on different channels: two features,
+   because they sit in two services with two pipelines and two sets of
+   deliverables, but an agent holding findings from either should reuse them.
+   Recorded on one side only, that is a note; recorded on both, it is data. */
+for (const f of features) {
+  for (const other of f.sharesMethodWith || []) {
+    const o = byId.get(other);
+    if (!o) { fail(`${f.id}.sharesMethodWith: unknown feature ${other}`); continue; }
+    if (!(o.sharesMethodWith || []).includes(f.id)) {
+      fail(`${f.id} shares a method with ${other}, and ${other} does not say so back`);
+    }
   }
 }
 
@@ -270,12 +366,22 @@ for (const f of features) {
       for (const ref of st.features || []) {
         if (!byId.has(ref)) { fail(`${st.id}: unknown feature ${ref}`); continue; }
         if (byId.get(ref).service !== s.id) fail(`${st.id}: ${ref} belongs to ${byId.get(ref).service}`);
+        if (byId.get(ref).composedOf) fail(`${st.id}: ${ref} is a composite — stage its parts, not the whole`);
         if (seen.has(ref)) fail(`${ref} appears in two pipeline stages: ${seen.get(ref)} and ${st.id}`);
         seen.set(ref, st.id);
       }
     }
   }
-  for (const f of features) if (!seen.has(f.id)) fail(`${f.id} is in no pipeline stage`);
+  for (const f of features) {
+    /* A COMPOSITE HAS NO STAGE OF ITS OWN. It runs wherever its parts run, and
+       staging it as well would put the same work on a board twice. What it must
+       have is every part staged. */
+    if (f.composedOf) {
+      for (const part of f.composedOf) if (!seen.has(part)) fail(`${f.id}: its part ${part} is in no pipeline stage`);
+      continue;
+    }
+    if (!seen.has(f.id)) fail(`${f.id} is in no pipeline stage`);
+  }
 }
 
 /* A COMPOSED SERVICE DELEGATES; IT DOES NOT HIDE A SIXTH PIPELINE. */
@@ -297,23 +403,24 @@ for (const s of SERVICES.services) {
     if (!cat) {
       fail(`${s.id}: legacyCategory "${s.legacyCategory}" is not a category in pricing.json`);
     } else {
-      /* THE PRICE SURFACES MAY USE A SHORTER NAME, AND MUST DECLARE IT.
-         docs/124 §3 found service 04 called four different things in four
-         places on one page — Digital Marketing & Advertising, Marketing & Ads,
-         Digital Marketing & Ads, Digital Marketing — with nothing able to
-         notice. The short form is legitimate: an index card and a WhatsApp
-         button cannot carry the full name without wrapping. What was not
-         legitimate was that nobody had written down which was which. */
-      if (s.shortName) {
-        bilingual(s.shortName, `${s.id}.shortName`);
-        if (cat.label !== s.shortName.en) {
-          fail(`${s.id}: pricing.json calls this category "${cat.label}" but the service declares its short form as "${s.shortName.en}"`);
-        }
-        if (cat.labelAr !== s.shortName.ar) {
-          fail(`${s.id}: pricing.json's Arabic label for this category disagrees with the service's declared short form`);
-        }
-      } else if (cat.label !== s.name.en) {
-        fail(`${s.id}: pricing.json calls this category "${cat.label}", the service is "${s.name.en}", and no shortName declares the difference`);
+      /* ONE NAME, ON EVERY CLIENT-FACING SURFACE. Settled by the owner on
+         8 September: the price surfaces say "Social Media Management" and
+         "Digital Marketing & Advertising" in full. A shortName field lived here
+         for one commit; a declared abbreviation is still an abbreviation, and
+         docs/124 §3 found this service called four different things in four
+         places precisely because nothing forced agreement.
+
+         THE ID IS NOT THE LABEL. The category stays `social`, the packages stay
+         `soc-starter`/`soc-growth`/`soc-pro`, and renaming either to follow a
+         word on a page would break every join in this catalogue. */
+      if (cat.label !== s.name.en) {
+        fail(`${s.id}: pricing.json calls this category "${cat.label}" — it must be the service's own name, "${s.name.en}"`);
+      }
+      if (cat.labelAr !== s.name.ar) {
+        fail(`${s.id}: pricing.json's Arabic label for this category is not the service's own Arabic name`);
+      }
+      for (const alias of s.aliases || []) {
+        if (cat.label === alias) fail(`${s.id}: pricing.json still uses the retired name "${alias}"`);
       }
     }
   }
@@ -322,13 +429,14 @@ for (const s of SERVICES.services) {
 /* EVERY PUBLISHED PACKAGE ROW RESOLVES. This is the join that makes the
    catalogue true rather than parallel: if a package sells something the
    catalogue does not describe, the catalogue is a decoration. */
+const packageScope = new Map();
+const inheritedContents = new Map();
 {
-  const rowsByPackage = new Map();
   for (const c of PRICING.categories) {
     const svc = SERVICES.services.find((s) => s.legacyCategory === c.id);
     if (!svc) { fail(`pricing category "${c.id}" maps to no service`); continue; }
     for (const p of c.packages) {
-      const refs = [];
+      const rows = new Map(); // ref -> { qty, tier, platforms }
       for (const row of p.features) {
         /* A MISSING ref IS AN ADVISORY; a BROKEN one is a failure.
            The admin dashboard edits pricing.json from a browser — possibly a
@@ -345,40 +453,184 @@ for (const s of SERVICES.services) {
         if (row.qty !== undefined && f.pricing.type !== 'unit') {
           fail(`${c.id}/${p.id}: ${row.ref} carries a qty but is not unit-priced`);
         }
-        if (refs.includes(row.ref)) {
+
+        /* A TIERED FEATURE MUST SAY WHICH DEPTH IT IS SOLD AT. Falling back to
+           the default would let a new package quietly promise the shallow
+           version of something under the deep version's name — which is the
+           shape of the defect this whole tier mechanism exists to fix. */
+        if (f.tiers) {
+          if (!row.tier) {
+            fail(`${c.id}/${p.id}: ${row.ref} is tiered and the row does not say which level it sells`);
+          } else if (!f.tiers.levels.some((l) => l.id === row.tier)) {
+            fail(`${c.id}/${p.id}: ${row.ref} sold at tier "${row.tier}", which is not one of its levels`);
+          }
+        } else if (row.tier) {
+          fail(`${c.id}/${p.id}: ${row.ref} carries a tier and is not a tiered feature`);
+        }
+
+        /* PLATFORMS ARE SCOPE. Where a package's own wording names them —
+           "Meta + Google Ads" — the row records which, so a quotation or an
+           agent reads platforms rather than a count. */
+        if (row.platforms) {
+          if (!f.options) {
+            fail(`${c.id}/${p.id}: ${row.ref} records platforms and the feature has no option set`);
+          } else {
+            const set = (PLATFORMS.sets || {})[f.options.set];
+            for (const pid of row.platforms) {
+              if (set && !set.platforms.some((x) => x.id === pid)) {
+                fail(`${c.id}/${p.id}: ${row.ref} names platform ${pid}, which is not in the "${f.options.set}" set`);
+              }
+            }
+            if (row.qty !== undefined && row.qty !== row.platforms.length) {
+              fail(`${c.id}/${p.id}: ${row.ref} says ${row.qty} platform(s) and names ${row.platforms.length}`);
+            }
+          }
+        }
+
+        if (rows.has(row.ref)) {
           note(`${c.id}/${p.id}: "${row.en}" is a second published line for ${row.ref}`);
         }
-        refs.push(row.ref);
+        const prev = rows.get(row.ref) || {};
+        rows.set(row.ref, {
+          qty: row.qty ?? prev.qty,
+          tier: row.tier ?? prev.tier,
+          platforms: row.platforms ?? prev.platforms,
+        });
       }
-      rowsByPackage.set(`${c.id}/${p.id}`, refs);
+      packageScope.set(`${c.id}/${p.id}`, {
+        category: c.id, pkg: p, rows,
+        carries: p.features.some((f) => f.carry),
+      });
+    }
+  }
+
+  /* WHAT A PACKAGE ACTUALLY CONTAINS, carry rows resolved.
+     "Everything in Professional" is a promise, and a check that cannot read it
+     reports a top tier as missing what it inherits. */
+  const inherited = new Map();
+  for (const c of PRICING.categories) {
+    let running = new Map();
+    for (const p of c.packages) {
+      const key = `${c.id}/${p.id}`;
+      const rec = packageScope.get(key);
+      if (!rec) continue;
+      const full = rec.carries ? new Map(running) : new Map();
+      for (const [ref, meta] of rec.rows) full.set(ref, meta);
+      inherited.set(key, full);
+      inheritedContents.set(key, full);
+      running = full;
     }
   }
 
   /* A PUBLISHED PACKAGE MAY NOT BE AN IMPOSSIBLE SCOPE EITHER. The builder is
-     not the only thing that can assemble one — a package can, and one did:
-     until this check existed nothing compared a package's contents against the
-     dependency graph the builder enforces. */
-  for (const [where, refs] of rowsByPackage) {
-    const has = new Set(refs);
-    const carries = /branding\/tier-advanced/.test(where)
-      ? new Set([...has, ...(rowsByPackage.get('branding/tier-professional') || [])])
-      : has;
-    for (const ref of refs) {
+     not the only thing that can assemble one — a package can, and one did. */
+  for (const [where, meta] of packageScope) {
+    const full = inherited.get(where);
+    const own = new Set(meta.rows.keys());
+    for (const ref of own) {
       const f = byId.get(ref);
+      if (!f) continue;
       for (const r of (f.dependencies || {}).requires || []) {
-        if (!carries.has(r)) note(`${where}: ${ref} requires ${r}, which the package does not list`);
+        if (full.has(r)) continue;
+        const rf = byId.get(r);
+        /* AN INCLUDED PREREQUISITE NOBODY CAN DECLINE IS IMPLIED, NOT MISSING.
+           Testing, deployment, handover, account setup and the content calendar
+           cost nothing, cannot be opted out of, and are not itemised on a card.
+           Reporting them as gaps produced nine advisories that were all the
+           same observation about the same design decision. */
+        if (rf && rf.selectable === false && rf.pricing.type === 'included') continue;
+        note(`${where}: ${ref} requires ${r}, which the package does not list`);
       }
-      /* CONFLICTS are checked against this package's OWN rows, not the carried
-         set: a higher tier that carries a lower one legitimately contains the
-         superseded version of a thing, and that is an upgrade, not a clash. */
       for (const c of (f.dependencies || {}).conflicts || []) {
-        if (has.has(c)) fail(`${where}: lists ${ref} and ${c}, which conflict`);
+        if (own.has(c)) fail(`${where}: lists ${ref} and ${c}, which conflict`);
       }
       for (const sup of (f.dependencies || {}).supersedes || []) {
-        if (has.has(sup)) note(`${where}: lists ${ref} and ${sup}, which it supersedes`);
+        if (own.has(sup)) note(`${where}: lists ${ref} and ${sup}, which it supersedes`);
       }
     }
   }
+
+  /* THE LADDER. A dearer package may not contain LESS than a cheaper one in the
+     same category — unless what it dropped was replaced by something that
+     supersedes it, or was an included prerequisite nobody itemises.
+
+     This is the check docs/124 §5.3 was written by hand: Social Pro cost 250
+     more than Social Growth and listed no research row at all. The owner
+     settled it on 8 September; this stops it recurring anywhere. */
+  const num = (v) => Number(String(v).replace(/,/g, ''));
+  for (const c of PRICING.categories) {
+    const ordered = [...c.packages].sort((a, b) => num(a.price) - num(b.price));
+    for (let i = 1; i < ordered.length; i += 1) {
+      const lower = inherited.get(`${c.id}/${ordered[i - 1].id}`);
+      const upper = inherited.get(`${c.id}/${ordered[i].id}`);
+      if (!lower || !upper) continue;
+      const superseded = new Set();
+      for (const ref of upper.keys()) {
+        for (const sup of (byId.get(ref) || {}).dependencies?.supersedes || []) superseded.add(sup);
+      }
+      for (const [ref, meta] of lower) {
+        const f = byId.get(ref);
+        if (!f) continue;
+        if (upper.has(ref)) {
+          /* And a dearer package may not sell a SHALLOWER tier of the same
+             capability than the one below it. */
+          if (f.tiers) {
+            const idx = (t) => f.tiers.levels.findIndex((l) => l.id === t);
+            const lo = idx(meta.tier); const hi = idx(upper.get(ref).tier);
+            if (lo >= 0 && hi >= 0 && hi < lo) {
+              fail(`${c.id}: ${ordered[i].id} (${ordered[i].price}) sells ${ref} at "${upper.get(ref).tier}" while ${ordered[i - 1].id} (${ordered[i - 1].price}) sells it at "${meta.tier}"`);
+            }
+          }
+          /* Nor fewer of something counted. */
+          if (meta.qty !== undefined && upper.get(ref).qty !== undefined && upper.get(ref).qty < meta.qty) {
+            fail(`${c.id}: ${ordered[i].id} includes ${upper.get(ref).qty}× ${ref} while the cheaper ${ordered[i - 1].id} includes ${meta.qty}×`);
+          }
+          continue;
+        }
+        if (superseded.has(ref)) continue;
+        if (f.selectable === false && f.pricing.type === 'included') continue;
+        fail(`${c.id}: ${ordered[i].id} (${ordered[i].price}) does not include ${ref}, which the cheaper ${ordered[i - 1].id} (${ordered[i - 1].price}) does`);
+      }
+    }
+  }
+
+  /* A PACKAGE MUST BE A DISCOUNT. Costing each one out of its own parts caught
+     something no eye would have: every website package and two of the three
+     branding packages cost MORE than buying their contents one at a time, so
+     the builder quoted a Professional Website at 650 next to a card asking
+     1200 for the same list. A bundle that costs more than its parts has no
+     reason to exist. */
+  const RATIO_MIN = 1.10;
+  const RATIO_LOUD = 2.75;
+  const ratios = [];
+  for (const c of PRICING.categories) {
+    for (const p of c.packages) {
+      const full = inherited.get(`${c.id}/${p.id}`);
+      if (!full) continue;
+      let parts = 0; let quoted = 0;
+      for (const [ref, meta] of full) {
+        const f = byId.get(ref);
+        if (!f) continue;
+        const pr = f.pricing;
+        if (pr.type === 'included') continue;
+        if (pr.type === 'quote') { quoted += 1; continue; }
+        const factor = f.tiers && meta.tier
+          ? (f.tiers.levels.find((l) => l.id === meta.tier) || {}).priceFactor || 1
+          : 1;
+        const n = pr.type === 'unit' ? (meta.qty ?? pr.defaultQty) : 1;
+        parts += pr.from * factor * n;
+      }
+      const price = num(p.price);
+      const ratio = price ? parts / price : 0;
+      ratios.push({ where: `${c.id}/${p.id}`, price, parts: Math.round(parts), ratio, quoted });
+      if (price && ratio < RATIO_MIN) {
+        fail(`${c.id}/${p.id}: the package costs ${price} and its own contents cost ${Math.round(parts)} à la carte — a package that is not a discount has no reason to exist (ratio ${ratio.toFixed(2)}, floor ${RATIO_MIN})`);
+      } else if (price && ratio > RATIO_LOUD) {
+        note(`${c.id}/${p.id}: à-la-carte ${Math.round(parts)} against a package price of ${price} — a ${ratio.toFixed(2)}× discount is steep enough to make the individual prices look punitive`);
+      }
+    }
+  }
+  global.__catalogueRatios = ratios;
 }
 
 /* --- Materialise --------------------------------------------------------- */
@@ -426,6 +678,46 @@ function materialise(feature) {
   const overrides = feature.workflowOverrides || {};
   const base = resolve({ ...tpl, ...overrides }, feature);
   delete base.label;
+  delete base._comment;
+
+  /* A COMPOSITE'S STAGES ARE ITS PARTS. Generated here rather than written out,
+     because writing them out would be a second copy of work already described
+     where it happens — and a copy that drifts the first time a part changes. */
+  if (base.stagesFromParts) {
+    delete base.stagesFromParts;
+    const parts = feature.composedOf || [];
+    base.stages = parts.map((part, i) => {
+      const pf = byId.get(part) || {};
+      return {
+        stage_id: part.split('.').pop(),
+        objective: (pf.purpose || {}).en || `Complete ${part}.`,
+        inputs: pf.inputs || [],
+        actions: [`Run the workflow of ${part} in full.`],
+        tools: pf.tools || [],
+        output: (pf.outputs || [])[0] || null,
+        validation: pf.completionCriteria || null,
+        delegatesTo: `${pf.workflow}::${part}`,
+        next_stage: parts[i + 1] ? parts[i + 1].split('.').pop() : null,
+      };
+    });
+    base.approval_points = parts.map((part) => part.split('.').pop());
+  }
+
+  /* THE PLATFORM HOOK. A campaign's workflow does not change because the
+     platform changed — the stages, the approvals and the failure conditions are
+     the same — so today every platform contributes nothing and the materialised
+     workflow is identical. When a genuine platform-specific step exists, it is
+     added in platforms.json and appears here without a schema change. That is
+     the difference between a hook and a promise. */
+  if (feature.options) {
+    const set = (PLATFORMS.sets || {})[feature.options.set] || { platforms: [] };
+    const extra = set.platforms
+      .filter((x) => (x.executionSteps || []).length)
+      .map((x) => ({ platform: x.id, steps: x.executionSteps }));
+    if (extra.length) base.platform_steps = extra;
+    base.platform_set = feature.options.set;
+  }
+
   return {
     workflow_id: `${feature.workflow}::${feature.id}`,
     template: feature.workflow,
@@ -460,8 +752,19 @@ if (problems.length) {
 const PUBLIC_FEATURE_FIELDS = [
   'id', 'service', 'name', 'description', 'purpose',
   'category', 'selectable', 'addonGroup', 'pricing', 'recurrence',
-  'thirdPartyCost', 'latinName', 'addonName', 'addonOrder',
+  'thirdPartyCost', 'latinName', 'addonName', 'addonOrder', 'composedOf',
 ];
+
+/* A LEVEL IS PUBLIC; WHAT IT COSTS US IS NOT. The builder needs a level's name,
+   what it covers and what it multiplies the price by. `effortFactor` is how long
+   it takes us, which is nobody's business but ours. */
+const publicTiers = (t) => (t ? {
+  dimension: t.dimension,
+  default: t.default,
+  levels: t.levels.map((l) => ({
+    id: l.id, name: l.name, description: l.description, scope: l.scope, priceFactor: l.priceFactor,
+  })),
+} : undefined);
 
 /* Dependencies are public because the builder has to enforce them in front of
    the visitor — but only the edges, never the reasoning. */
@@ -475,6 +778,20 @@ const publicFeature = (f) => {
     supersedes: (f.dependencies || {}).supersedes || [],
   };
   out.revisions = (f.revisionRules || {}).rounds;
+  if (f.tiers) out.tiers = publicTiers(f.tiers);
+  if (f.options) {
+    const set = (PLATFORMS.sets || {})[f.options.set] || { platforms: [] };
+    out.options = {
+      id: f.options.id,
+      multiple: Boolean(f.options.multiple),
+      drivesQuantity: Boolean(f.options.drivesQuantity),
+      label: f.options.label,
+      /* The list itself, trimmed: a platform's own execution steps are internal
+         and would put operational instructions on a public page. */
+      choices: [...set.platforms].sort((a, b) => a.order - b.order)
+        .map((x) => ({ id: x.id, name: x.name, covers: x.covers, latinName: x.latinName })),
+    };
+  }
   return out;
 };
 
@@ -504,6 +821,26 @@ const publicCatalogue = {
   addonGroups: ADDON_GROUPS.groups,
   addonCounts: ADDON_GROUPS.counts,
   features: features.filter((f) => f.status === 'active').map(publicFeature),
+
+  /* THE PUBLISHED PACKAGES, so the builder can be honest about them.
+     Every ratio above says the same thing: a package is cheaper than buying its
+     contents one at a time, by between 1.13× and 2.52×. A builder that knows
+     this and does not say it is quoting a visitor 1,636 a month for something
+     the card beside it sells at 650. */
+  packages: PRICING.categories.map((c) => ({
+    id: c.id,
+    service: (SERVICES.services.find((s) => s.legacyCategory === c.id) || {}).id,
+    name: { en: c.label, ar: c.labelAr },
+    tiers: c.packages.map((p) => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      priceFrom: Boolean(p.priceFrom),
+      billing: p.billing,
+      contents: [...(inheritedContents.get(`${c.id}/${p.id}`) || new Map())]
+        .map(([ref, meta]) => ({ ref, tier: meta.tier, qty: meta.qty })),
+    })),
+  })),
 };
 
 /* --- The full export ----------------------------------------------------- */

@@ -55,6 +55,14 @@ function readRows(root) {
       priceType: li.dataset.priceType,
       price: li.dataset.price ? Number(li.dataset.price) : 0,
       monthly: li.dataset.period === 'monthly',
+      composedOf: ids(li, 'data-composed-of'),
+      optionsDriveQty: li.hasAttribute('data-options-drive-qty'),
+      tierInputs: Array.from(li.querySelectorAll('[data-tier]')),
+      tierWrap: li.querySelector('.c-pick__tiers'),
+      tierFactors: new Map((li.getAttribute('data-tiers') || '').split(/\s+/).filter(Boolean)
+        .map((pair) => { const [id, f] = pair.split(':'); return [id, Number(f)]; })),
+      optionInputs: Array.from(li.querySelectorAll('[data-option]')),
+      optionWrap: li.querySelector('.c-pick__options'),
       requires: ids(li, 'data-requires'),
       recommends: ids(li, 'data-recommends'),
       conflicts: ids(li, 'data-conflicts'),
@@ -92,6 +100,13 @@ const COPY = {
      totals were right, because they use the site's `data-i18n="currency"`;
      only the lines this file writes were wrong. */
   currency: { en: 'USD', ar: 'دولار' },
+  partOf: { en: (name) => `Included in ${name}`, ar: (name) => `مشمول ضمن ${name}` },
+  covers: {
+    en: (pkg, price, period) => `${pkg} covers everything you chose here — ${price} USD ${period}.`,
+    ar: (pkg, price, period) => `باقة ${pkg} تغطي كل ما اخترته هنا — ${price} دولار ${period}.`,
+  },
+  once: { en: 'one-time', ar: 'لمرة واحدة' },
+  monthlyWord: { en: 'monthly', ar: 'شهريًا' },
   quoted: { en: 'Quoted', ar: 'يُسعَّر لاحقًا' },
   quotedCount: {
     en: (n) => `${n === 1 ? 'One item' : `${n} items`} priced after we talk — nothing here is guessed at.`,
@@ -113,9 +128,9 @@ const COPY = {
   },
 };
 
-const say = (key, ar, arg) => {
+const say = (key, ar, ...args) => {
   const v = COPY[key][ar ? 'ar' : 'en'];
-  return typeof v === 'function' ? v(arg) : v;
+  return typeof v === 'function' ? v(...args) : v;
 };
 
 /* ---------- the machine --------------------------------------------------- */
@@ -183,6 +198,19 @@ export function initBuilder(scope = document) {
       for (const [m, set] of reach) if (set.has(id)) { pulled.set(id, m); break; }
     }
 
+    /* A COMPOSITE IS ITS PARTS. Choosing "Additional landing page" brings the
+       design, the development and the deployment with it, at no extra charge —
+       the composite already carries the published price. Choosing a part on its
+       own does NOT bring the others: the dependency runs upward, so design
+       alone is design alone, which is the whole reason the three exist. */
+    const partOf = new Map();
+    for (const id of selected) {
+      for (const part of rows.get(id)?.composedOf || []) {
+        if (rows.has(part)) partOf.set(part, id);
+      }
+    }
+    for (const part of partOf.keys()) selected.add(part);
+
     /* Rows that are not choices — testing, deployment, handover — become
        active once everything they need is present. They cost nothing, and
        showing them active is how a visitor sees that the website they
@@ -199,10 +227,23 @@ export function initBuilder(scope = document) {
       }
     }
 
-    return { blocked, needed: pulled, active };
+    return { blocked, needed: pulled, active, partOf };
+  }
+
+  function chosenOptions(r) {
+    return r.optionInputs.filter((i) => i.checked).map((i) => i.value);
+  }
+
+  function tierOf(r) {
+    if (!r.tierInputs.length) return null;
+    const on = r.tierInputs.find((i) => i.checked);
+    return on ? on.value : r.el.dataset.tierDefault || null;
   }
 
   function qtyOf(r) {
+    /* WHERE THE PLATFORMS ARE THE QUANTITY, they are the quantity. A stepper
+       beside them would be a second number saying something different. */
+    if (r.optionsDriveQty) return Math.max(1, chosenOptions(r).length);
     if (!r.qtyInput) return 1;
     const n = Math.round(Number(r.qtyInput.value));
     const min = Number(r.qtyInput.min) || 1;
@@ -221,6 +262,17 @@ export function initBuilder(scope = document) {
   const monthAmt = root.querySelector('[data-build-monthly-amount]');
   const quoted = root.querySelector('[data-build-quoted]');
   const send = root.querySelector('[data-build-send]');
+  const cheaper = root.querySelector('[data-build-cheaper]');
+
+  /* THE PUBLISHED PACKAGES. Read once, from the JSON island beside the form.
+     Every package in this catalogue is cheaper than buying its own contents one
+     at a time — the build measures it on every run — so a builder that never
+     mentions them is quoting a visitor a number the card above already beats. */
+  let PACKAGES = [];
+  try {
+    const el = document.getElementById('build-packages');
+    if (el) PACKAGES = JSON.parse(el.textContent || '[]');
+  } catch { PACKAGES = []; }
 
   /* Latin numerals in both languages, because that is what the rest of the
      site prints: the package cards say 490 in Arabic too. A figure that
@@ -229,7 +281,7 @@ export function initBuilder(scope = document) {
 
   function render() {
     const ar = isAr();
-    const { blocked, needed, active } = derive();
+    const { blocked, needed, active, partOf } = derive();
 
     /* --- rows --- */
     for (const r of rows.values()) {
@@ -250,7 +302,10 @@ export function initBuilder(scope = document) {
         r.note.hidden = !note;
       }
 
-      if (r.qtyWrap) r.qtyWrap.hidden = !(r.input && r.input.checked && !b);
+      const on = Boolean(r.input && r.input.checked && !b);
+      if (r.qtyWrap) r.qtyWrap.hidden = !on;
+      if (r.tierWrap) r.tierWrap.hidden = !on;
+      if (r.optionWrap) r.optionWrap.hidden = !on;
     }
 
     /* --- per-service count --- */
@@ -268,6 +323,7 @@ export function initBuilder(scope = document) {
     const picked = [...active].map((id) => rows.get(id)).filter(Boolean);
 
     let once = 0; let month = 0; let quotes = 0;
+    const perService = new Map();
     const lines = [];
     const services = [...new Set(picked.map((r) => r.service))];
 
@@ -279,18 +335,40 @@ export function initBuilder(scope = document) {
       lines.push({ heading: svcName });
       for (const r of mine) {
         const q = qtyOf(r);
+        const tier = tierOf(r);
         let price;
-        if (r.priceType === 'included') price = say('included', ar);
+        /* A PART OF A COMPOSITE IS ALREADY PAID FOR, whatever its own pricing
+           says. This branch used to sit below the quote branch, so all three
+           parts of a landing page reported "Custom quote" underneath the
+           composite that had just charged 120 for them. */
+        if (partOf.has(r.id)) {
+          price = say('partOf', ar, textIn(rows.get(partOf.get(r.id))?.label, ar));
+        } else if (r.priceType === 'included') price = say('included', ar);
         else if (r.priceType === 'quote') { price = say('quoted', ar); quotes += 1; }
         else {
-          const sum = r.price * (r.qtyInput ? q : 1);
+          const factor = tier ? (r.tierFactors.get(tier) || 1) : 1;
+          const counted = (r.qtyInput || r.optionsDriveQty) ? q : 1;
+          const sum = Math.round(r.price * factor * counted);
           if (r.monthly) month += sum; else once += sum;
+          perService.set(r.service, (perService.get(r.service) || 0) + sum);
           price = `${money(sum)} ${say('currency', ar)}${r.monthly ? ` ${say('perMonth', ar)}` : ''}`;
         }
-        lines.push({
-          name: textIn(r.label, ar) + (r.qtyInput && q > 1 ? ` × ${q}` : ''),
-          price,
-        });
+        /* The row's name says which depth and which platforms, because a scope
+           that says "Audience definition" without saying "segmentation" is a
+           scope somebody has to come back and ask about. */
+        const level = tier && r.tierInputs.length
+          ? textIn(r.tierInputs.find((i) => i.value === tier)?.closest('.c-pick__tier')
+            ?.querySelector('.c-pick__tier-label'), ar)
+          : '';
+        const opts = r.optionInputs.length
+          ? chosenOptions(r).map((id) => textIn(
+            r.optionInputs.find((i) => i.value === id)?.closest('.c-pick__option')
+              ?.querySelector('.c-pick__option-label'), ar)).filter(Boolean)
+          : [];
+        let name = level || textIn(r.label, ar);
+        if (opts.length) name += ` — ${opts.join(ar ? '، ' : ', ')}`;
+        else if ((r.qtyInput || r.optionsDriveQty) && q > 1) name += ` × ${q}`;
+        lines.push({ name, price });
       }
     }
 
@@ -341,6 +419,30 @@ export function initBuilder(scope = document) {
     if (quoted) {
       quoted.textContent = quotes ? say('quotedCount', ar, quotes) : '';
       quoted.hidden = !quotes;
+    }
+
+    /* --- does a published package already cover this? ---
+       Only when the package's own contents are a SUPERSET of what was chosen
+       for that service. A package that covers four of five things is not an
+       answer, and saying so would be the kind of near-enough claim this site
+       does not make. */
+    if (cheaper) {
+      const suggestions = [];
+      for (const cat of PACKAGES) {
+        const wanted = [...active].filter((id) => rows.get(id)?.service === cat.service
+          && rows.get(id)?.selectable && !partOf.has(id));
+        if (!wanted.length) continue;
+        const fits = cat.tiers.filter((t) => {
+          const has = new Map(t.contents.map((c) => [c.ref, c]));
+          return wanted.every((id) => has.has(id));
+        });
+        if (!fits.length) continue;
+        const best = fits.reduce((a, b) => (Number(a.price) <= Number(b.price) ? a : b));
+        const period = say(best.billing === 'billingMonthly' ? 'monthlyWord' : 'once', ar);
+        suggestions.push(say('covers', ar, best.name, money(Number(best.price)), period));
+      }
+      cheaper.textContent = suggestions.join(' ');
+      cheaper.hidden = !suggestions.length;
     }
 
     /* --- the message ---
@@ -403,6 +505,10 @@ export function initBuilder(scope = document) {
       render();
       return;
     }
+    /* Depth and platform choices change the estimate without changing what is
+       selected, so they only need a redraw. */
+    if (e.target.closest('[data-tier]') || e.target.closest('[data-option]')) { render(); return; }
+
     const qty = e.target.closest('[data-qty]');
     if (qty) {
       /* CLAMP THE FIELD, not just the sum. `qtyOf` already keeps the estimate

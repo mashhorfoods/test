@@ -24,7 +24,17 @@
     "  unit     — priced per item, with a quantity",
     "  project  — scoped per project, with a floor",
     "  quote    — cannot be priced without talking; shows Custom quote, never",
-    "             an invented number"
+    "             an invented number",
+    "",
+    "PRICES RAISED 8 SEPTEMBER for the same arithmetic reason as the website",
+    "features: costing each package out of its own parts gave 1.17, 0.95 and",
+    "0.81, so two of the three branding packages cost more than buying their",
+    "contents one by one. They now sit at 1.62, 1.30 and 1.59.",
+    "",
+    "THE THREE PUBLISHED ADD-ON PRICES ARE UNTOUCHED — 15 a social design, 90 a",
+    "presentation, 150 a company profile. Those are what the studio sells. Every",
+    "other figure here is our own estimate, and a build-time check now keeps them",
+    "coherent with the packages they add up to."
   ],
   "service": "svc.branding",
   "features": [
@@ -101,7 +111,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 250
+        "from": 350
       },
       "status": "active"
     },
@@ -170,7 +180,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 90
+        "from": 130
       },
       "status": "active"
     },
@@ -240,7 +250,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 90
+        "from": 130
       },
       "status": "active"
     },
@@ -307,7 +317,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 60
+        "from": 85
       },
       "status": "active"
     },
@@ -340,7 +350,10 @@
           "feat.branding.type_system"
         ],
         "recommends": [],
-        "conflicts": []
+        "conflicts": [],
+        "supersedes": [
+          "feat.branding.identity_card"
+        ]
       },
       "workflow": "wf.document",
       "executionSteps": [
@@ -377,9 +390,10 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 180
+        "from": 250
       },
-      "status": "active"
+      "status": "active",
+      "_supersedes": "A short guidelines document contains everything the one-sheet identity card does and then keeps going. Without this, Professional read as having dropped something Starter had — which is how the ladder check found it."
     },
     {
       "id": "feat.branding.guidelines_full",
@@ -458,7 +472,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 450
+        "from": 630
       },
       "status": "active"
     },
@@ -531,7 +545,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 240
+        "from": 340
       },
       "status": "active"
     },
@@ -602,7 +616,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 60
+        "from": 85
       },
       "status": "active"
     },
@@ -672,7 +686,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 50
+        "from": 70
       },
       "status": "active"
     },
@@ -738,7 +752,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 40
+        "from": 55
       },
       "status": "active"
     },
@@ -897,7 +911,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 220
+        "from": 310
       },
       "status": "active"
     },
@@ -965,7 +979,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 90
+        "from": 125
       },
       "status": "active"
     },
@@ -1040,7 +1054,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 200
+        "from": 280
       },
       "status": "active"
     },
@@ -1109,7 +1123,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 140
+        "from": 195
       },
       "status": "active"
     },
@@ -1253,7 +1267,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 140
+        "from": 195
       },
       "status": "active"
     },
@@ -1404,7 +1418,7 @@
       },
       "pricing": {
         "type": "unit",
-        "from": 22,
+        "from": 31,
         "unit": {
           "en": "template",
           "ar": "قالب"

@@ -368,6 +368,111 @@
     opacity: 0.7;
   }
 
+  /* ---- depth, and which platforms ---------------------------------------
+     Both appear only once the row is chosen, because a control attached to
+     something nobody selected is a control that does nothing. */
+  .c-pick__tiers,
+  .c-pick__options {
+    flex: 1 1 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8) var(--space-16);
+    margin-block-start: var(--space-8);
+    padding: var(--space-12);
+    background: var(--color-surface);
+    border-inline-start: 2px solid var(--color-border-accent);
+  }
+
+  .c-pick__options-label {
+    flex: 1 1 100%;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .c-pick__tier,
+  .c-pick__option {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-8);
+    min-block-size: 44px;
+    padding-block: var(--space-4);
+  }
+
+  .c-pick__tier { flex: 1 1 14rem; }
+  .c-pick__option { flex: 0 1 auto; }
+
+  /* Same device as the row's own checkbox: the native control stretched over
+     the label it belongs to, so the target is the whole thing and the control
+     is still a real radio or checkbox. */
+  .c-pick__tier-input,
+  .c-pick__option-input {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .c-pick__tier-label,
+  .c-pick__option-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: var(--space-4) var(--space-12);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+  }
+
+  .c-pick__tier-input:checked + .c-pick__tier-label,
+  .c-pick__option-input:checked + .c-pick__option-label {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+  }
+
+  .c-pick__tier-input:focus-visible + .c-pick__tier-label,
+  .c-pick__option-input:focus-visible + .c-pick__option-label {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .c-pick__tier-scope {
+    flex: 1 1 100%;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+  }
+
+  .c-pick__option-covers {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 400;
+    opacity: 0.75;
+  }
+
+  .c-pick__composed {
+    flex: 1 1 100%;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  /* What a published package would cover. Not a warning and not a nag: a fact
+     the visitor is entitled to before they send a scope. */
+  .c-build__cheaper {
+    margin: var(--space-16) 0 0;
+    padding: var(--space-12);
+    background: var(--color-surface-accent);
+    border-inline-start: 3px solid var(--color-accent);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+  }
+
   /* A row the visitor cannot choose right now, because something it replaces
      or requires decided that for it. Never display:none — a row that vanishes
      as you tick is a row you cannot find again. */
@@ -555,6 +660,10 @@
        vanish and a checked box would look like an unchecked one. The border
        carries the state instead. */
     .c-pick__box { border-color: CanvasText; }
+    .c-pick__tier-input:checked + .c-pick__tier-label,
+    .c-pick__option-input:checked + .c-pick__option-label {
+      background: Highlight; color: HighlightText; border-color: Highlight;
+    }
     .c-pick__input:checked + .c-pick__box {
       background-color: Highlight;
       border-color: Highlight;

@@ -11,18 +11,24 @@
     "management board, a quotation or an agent keys on, and it must never be",
     "translated, renamed or reused.",
     "",
-    "`name` IS THE SERVICE'S NAME. `shortName` is the form the PRICE SURFACES",
-    "use, and it exists because those surfaces are constrained: an index card and",
-    "a WhatsApp button cannot carry \"Digital Marketing & Advertising\" without",
-    "wrapping, and the packages have been sold under the short form since they",
-    "were published.",
+    "ONE NAME PER SERVICE, ON EVERY CLIENT-FACING SURFACE. The owner settled",
+    "this on 8 September: the pricing index, the package buttons, the hero",
+    "diagram and the ecosystem flow all say \"Social Media Management\" and",
+    "\"Digital Marketing & Advertising\" in full. A shortName field existed here",
+    "for one commit and is gone: a declared abbreviation is still an",
+    "abbreviation, and docs/124 §3 found this service called four different",
+    "things in four places because nothing forced agreement.",
     "",
-    "THE POINT IS THAT BOTH ARE DECLARED. docs/124 §3 found service 04 called",
-    "four different things in four places on one page, with nothing able to",
-    "notice. build-catalogue.js now checks every pricing category's label against",
-    "the shortName here and fails if they disagree — so a variant is a decision",
-    "somebody made rather than a drift nobody saw. Changing what a surface says",
-    "is one field in this file and a rebuild.",
+    "build-catalogue.js now requires every pricing category's label — in both",
+    "languages — to be EXACTLY this name, and qa.js §40 requires every surface",
+    "that renders a service name to carry it verbatim. `aliases` records what",
+    "each was called before, and those strings are now FORBIDDEN as display",
+    "names rather than merely documented.",
+    "",
+    "THE ID IS NOT THE LABEL AND NEVER FOLLOWS IT. `svc.social` stays",
+    "`svc.social`, the pricing category stays `social`, the packages stay",
+    "`soc-starter` / `soc-growth` / `soc-pro`. Renaming an id to match a label",
+    "would break every join in this catalogue to change some words on a page.",
     "",
     "`legacyCategory` is the id this service's packages carry in",
     "src/data/pricing.json. It is a JOIN, not a duplicate: the packages and",
@@ -45,10 +51,6 @@
       "order": 1,
       "legacyCategory": "branding",
       "name": {
-        "en": "Branding & Design",
-        "ar": "الهوية والتصميم"
-      },
-      "shortName": {
         "en": "Branding & Design",
         "ar": "الهوية والتصميم"
       },
@@ -173,10 +175,6 @@
         "en": "Websites",
         "ar": "المواقع الإلكترونية"
       },
-      "shortName": {
-        "en": "Websites",
-        "ar": "المواقع الإلكترونية"
-      },
       "summary": {
         "en": "Designed, built, and handed over working.",
         "ar": "يُصمَّم ويُبنى ويُسلَّم وهو يعمل."
@@ -226,7 +224,8 @@
             "entry": "Agreed sitemap. Brand assets, ours or the client's.",
             "exit": "Design approved at desktop and phone widths.",
             "features": [
-              "feat.websites.uiux"
+              "feat.websites.uiux",
+              "feat.websites.landing_design"
             ]
           },
           {
@@ -244,7 +243,7 @@
               "feat.websites.setup",
               "feat.websites.integrations",
               "feat.websites.extra_page",
-              "feat.websites.extra_landing"
+              "feat.websites.landing_build"
             ]
           },
           {
@@ -271,6 +270,7 @@
             "exit": "Live on the client's domain, credentials transferred, receipt confirmed.",
             "features": [
               "feat.websites.deployment",
+              "feat.websites.landing_deploy",
               "feat.websites.handover"
             ]
           }
@@ -283,10 +283,6 @@
       "legacyCategory": "social",
       "name": {
         "en": "Social Media Management",
-        "ar": "إدارة وسائل التواصل"
-      },
-      "shortName": {
-        "en": "Social Media",
         "ar": "إدارة وسائل التواصل"
       },
       "summary": {
@@ -332,7 +328,8 @@
             "features": [
               "feat.social.content_strategy",
               "feat.social.content_calendar",
-              "feat.social.hashtag_research"
+              "feat.social.hashtag_research",
+              "feat.social.audience_research"
             ]
           },
           {
@@ -385,11 +382,13 @@
               "en": "Report",
               "ar": "التقرير"
             },
-            "objective": "Say what happened and what changes next month.",
+            "objective": "Say what happened, what caused it, and what changes next month.",
             "entry": "A complete calendar month of published activity.",
             "exit": "Report sent. Next month's plan carries at least one decision taken from it.",
             "features": [
               "feat.social.report",
+              "feat.social.growth_analysis",
+              "feat.social.performance_optimization",
               "feat.social.strategy_review"
             ]
           }
@@ -402,10 +401,6 @@
       "legacyCategory": "marketing",
       "name": {
         "en": "Digital Marketing & Advertising",
-        "ar": "التسويق الرقمي والإعلانات"
-      },
-      "shortName": {
-        "en": "Marketing & Ads",
         "ar": "التسويق الرقمي والإعلانات"
       },
       "summary": {
@@ -456,9 +451,7 @@
             "exit": "A written target, a defined audience, and a conversion the client agrees to be measured on.",
             "features": [
               "feat.marketing.campaign_strategy",
-              "feat.marketing.audience_targeting",
-              "feat.marketing.audience_research",
-              "feat.marketing.audience_segmentation"
+              "feat.marketing.audience"
             ]
           },
           {
@@ -514,8 +507,6 @@
             "features": [
               "feat.marketing.monitoring",
               "feat.marketing.optimization",
-              "feat.marketing.creative_optimization",
-              "feat.marketing.budget_optimization",
               "feat.marketing.ab_testing"
             ]
           },

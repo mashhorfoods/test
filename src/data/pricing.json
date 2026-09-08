@@ -569,7 +569,7 @@
     {
       "id": "social",
       "section": "social",
-      "label": "Social Media",
+      "label": "Social Media Management",
       "labelAr": "إدارة وسائل التواصل",
       "packages": [
         {
@@ -623,6 +623,7 @@
             {
               "carry": false,
               "ref": "feat.social.hashtag_research",
+              "tier": "basic",
               "en": "Hashtag Research",
               "ar": "بحث الوسوم"
             },
@@ -667,6 +668,7 @@
             {
               "carry": false,
               "ref": "feat.social.content_strategy",
+              "tier": "core",
               "en": "Content Strategy",
               "ar": "استراتيجية المحتوى"
             },
@@ -717,6 +719,7 @@
             {
               "carry": false,
               "ref": "feat.social.hashtag_research",
+              "tier": "core",
               "en": "Hashtag & Keyword Research",
               "ar": "بحث الوسوم والكلمات المفتاحية"
             },
@@ -758,8 +761,16 @@
             {
               "carry": false,
               "ref": "feat.social.content_strategy",
+              "tier": "complete",
               "en": "Complete content strategy",
               "ar": "استراتيجية محتوى كاملة"
+            },
+            {
+              "carry": false,
+              "ref": "feat.social.hashtag_research",
+              "tier": "core",
+              "en": "Hashtag & keyword research",
+              "ar": "بحث الوسوم والكلمات المفتاحية"
             },
             {
               "carry": false,
@@ -822,6 +833,24 @@
               "ref": "feat.social.strategy_review",
               "en": "Monthly Strategy Review",
               "ar": "مراجعة استراتيجية شهرية"
+            },
+            {
+              "carry": false,
+              "ref": "feat.social.audience_research",
+              "en": "Audience & market research",
+              "ar": "بحث الجمهور والسوق"
+            },
+            {
+              "carry": false,
+              "ref": "feat.social.growth_analysis",
+              "en": "Growth analysis",
+              "ar": "تحليل النمو"
+            },
+            {
+              "carry": false,
+              "ref": "feat.social.performance_optimization",
+              "en": "Performance optimisation",
+              "ar": "تحسين الأداء"
             }
           ],
           "facts": {
@@ -840,7 +869,7 @@
     {
       "id": "marketing",
       "section": "marketing",
-      "label": "Marketing & Ads",
+      "label": "Digital Marketing & Advertising",
       "labelAr": "التسويق الرقمي والإعلانات",
       "packages": [
         {
@@ -868,7 +897,8 @@
             },
             {
               "carry": false,
-              "ref": "feat.marketing.audience_targeting",
+              "ref": "feat.marketing.audience",
+              "tier": "targeting",
               "en": "Audience Targeting",
               "ar": "استهداف الجمهور"
             },
@@ -894,6 +924,7 @@
             {
               "carry": false,
               "ref": "feat.marketing.optimization",
+              "tier": "basic",
               "en": "Basic Optimization",
               "ar": "تحسين أساسي"
             },
@@ -933,6 +964,9 @@
             {
               "carry": false,
               "ref": "feat.marketing.platform_management",
+              "platforms": [
+                "plat.meta"
+              ],
               "qty": 1,
               "en": "Meta Ads management",
               "ar": "إدارة Meta Ads"
@@ -952,7 +986,8 @@
             },
             {
               "carry": false,
-              "ref": "feat.marketing.audience_research",
+              "ref": "feat.marketing.audience",
+              "tier": "research",
               "en": "Audience Research",
               "ar": "بحث الجمهور"
             },
@@ -971,6 +1006,7 @@
             {
               "carry": false,
               "ref": "feat.marketing.optimization",
+              "tier": "campaign",
               "en": "Campaign Optimization",
               "ar": "تحسين الحملات"
             },
@@ -1019,6 +1055,10 @@
             {
               "carry": false,
               "ref": "feat.marketing.platform_management",
+              "platforms": [
+                "plat.meta",
+                "plat.google"
+              ],
               "qty": 2,
               "en": "Meta + Google Ads",
               "ar": "إعلانات Meta و Google"
@@ -1031,7 +1071,8 @@
             },
             {
               "carry": false,
-              "ref": "feat.marketing.audience_segmentation",
+              "ref": "feat.marketing.audience",
+              "tier": "segmentation",
               "en": "Audience Segmentation",
               "ar": "تقسيم الجمهور"
             },
@@ -1040,6 +1081,18 @@
               "ref": "feat.marketing.campaign_setup",
               "en": "Multiple Campaigns",
               "ar": "حملات متعددة"
+            },
+            {
+              "carry": false,
+              "ref": "feat.marketing.ad_copy",
+              "en": "Ad Copy",
+              "ar": "نصوص الإعلانات"
+            },
+            {
+              "carry": false,
+              "ref": "feat.marketing.ad_creative",
+              "en": "Ad Creative",
+              "ar": "تصاميم إعلانية"
             },
             {
               "carry": false,
@@ -1061,13 +1114,15 @@
             },
             {
               "carry": false,
-              "ref": "feat.marketing.creative_optimization",
+              "ref": "feat.marketing.optimization",
+              "tier": "full",
               "en": "Creative Optimization",
               "ar": "تحسين التصاميم"
             },
             {
               "carry": false,
-              "ref": "feat.marketing.budget_optimization",
+              "ref": "feat.marketing.optimization",
+              "tier": "full",
               "en": "Budget Optimization",
               "ar": "تحسين الميزانية"
             },

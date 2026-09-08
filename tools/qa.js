@@ -2616,6 +2616,13 @@ function serve() {
           const q = li.querySelector('[data-qty]');
           return q ? { value: Number(q.value), min: Number(q.min), max: Number(q.max) } : null;
         })(),
+        /* A quantity can come from a stepper OR from a set of choices — the
+           platform rows are priced per platform and count the platforms
+           chosen. Two controls for one number would be two ways to disagree. */
+        optionsDriveQty: li.hasAttribute('data-options-drive-qty'),
+        options: li.querySelectorAll('[data-option]').length,
+        tiers: (li.getAttribute('data-tiers') || '').split(/\s+/).filter(Boolean).length,
+        tierInputs: li.querySelectorAll('[data-tier]').length,
         digits: /\d/.test((li.querySelector('.c-pick__price') || {}).textContent || ''),
       })));
       if (!rows.length) continue;
@@ -2639,10 +2646,20 @@ function serve() {
           fail('HIGH', 'builder', `${page}: ${r.id} is quote-only and still prints a figure`);
         }
         if (r.kind === 'unit') {
-          if (!r.qty) fail('HIGH', 'builder', `${page}: ${r.id} is priced per unit with no quantity control`);
-          else if (!(r.qty.min <= r.qty.value && r.qty.value <= r.qty.max)) {
+          if (r.optionsDriveQty) {
+            if (r.qty) fail('HIGH', 'builder', `${page}: ${r.id} counts its options AND carries a stepper — two controls for one number`);
+            if (!r.options) fail('HIGH', 'builder', `${page}: ${r.id} says its options are the quantity and offers none`);
+          } else if (!r.qty) {
+            fail('HIGH', 'builder', `${page}: ${r.id} is priced per unit with no quantity control`);
+          } else if (!(r.qty.min <= r.qty.value && r.qty.value <= r.qty.max)) {
             fail('HIGH', 'builder', `${page}: ${r.id} opens at ${r.qty.value}, outside its own ${r.qty.min}–${r.qty.max}`);
           }
+        }
+        /* A row that declares depths must offer them, and offer all of them —
+           a level present in the data and absent from the page is a level
+           nobody can buy. */
+        if (r.tiers && r.tiers !== r.tierInputs) {
+          fail('HIGH', 'builder', `${page}: ${r.id} declares ${r.tiers} depth(s) and renders ${r.tierInputs}`);
         }
         if (!r.service) fail('HIGH', 'builder', `${page}: ${r.id} belongs to no service`);
       }
@@ -2743,6 +2760,69 @@ function serve() {
       }
     }
     await ctx.close();
+  }
+
+
+  /* ---- 40 One name per service, on every surface that names one ----------
+
+     docs/124 §3 found service 04 called four different things on one page:
+     "Digital Marketing & Advertising" in the accordion, "Marketing & Ads" on
+     the price cards, "Digital Marketing & Ads" in the hero diagram and
+     "Digital Marketing" in the ecosystem flow. Nothing could notice, because
+     nothing had ever been told which one was right.
+
+     The owner settled it on 8 September: the full name, everywhere a service
+     is named. build-catalogue.js holds pricing.json to it. This holds the
+     BUILT PAGES to it — including the two diagrams, which no data file feeds
+     and which drifted precisely because of that.
+
+     The retired forms come from `aliases` in services.json, so retiring
+     another name is one entry there rather than an edit here. A name is only a
+     finding where it is the WHOLE of what an element says: "Branding" inside a
+     sentence is prose, and "Branding" as the entire label of a service node is
+     the old name coming back. */
+  {
+    const cat = path.join(ROOT, 'catalogue/catalogue.public.json');
+    if (fs.existsSync(cat)) {
+      const C = JSON.parse(fs.readFileSync(cat, 'utf8'));
+      const services = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/catalogue/services.json'), 'utf8')).services;
+      const retired = new Map();
+      for (const s of services) for (const a of s.aliases || []) retired.set(a, s);
+      const canonical = new Set(C.services.flatMap((s) => [s.name.en, s.name.ar]));
+
+      /* The elements whose ENTIRE text is a service's name. */
+      const SEL = ['.c-orbit__label', '.c-eco__name', '.c-service__name',
+        '.c-index__name', '.c-build__name'];
+
+      const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+      const p = await ctx.newPage();
+      for (const page of PAGES) {
+        await p.goto(`${BASE}/${page}`, { waitUntil: 'load' });
+        const found = await p.evaluate((sel) => [...document.querySelectorAll(sel.join(','))]
+          .map((el) => {
+            const en = el.querySelector('[data-lang-copy="en"]');
+            const ar = el.querySelector('[data-lang-copy="ar"]');
+            const t = (x) => (x ? x.textContent : '').replace(/\s+/g, ' ').trim();
+            return { en: t(en) || (el.textContent || '').replace(/\s+/g, ' ').trim(), ar: t(ar), sel: el.className };
+          }), SEL);
+
+        for (const f of found) {
+          for (const form of [f.en, f.ar]) {
+            if (!form) continue;
+            if (retired.has(form)) {
+              const svc = retired.get(form);
+              fail('HIGH', 'naming', `${page}: a service is labelled "${form}" (${f.sel}) — that name was retired; ${svc.id} is "${svc.name.en}"`);
+            }
+          }
+          /* And a surface that names a service must name one we have. This is
+             the half that catches a NEW wrong name rather than an old one. */
+          if (f.en && !canonical.has(f.en) && /^(Branding|Websites?|Social|Digital|Marketing|Integrated)/.test(f.en)) {
+            fail('HIGH', 'naming', `${page}: "${f.en}" (${f.sel}) reads as a service name and matches none of the five`);
+          }
+        }
+      }
+      await ctx.close();
+    }
   }
 
   await browser.close();

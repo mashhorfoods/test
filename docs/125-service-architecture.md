@@ -33,7 +33,7 @@ src/data/catalogue/              AUTHORED. The whole truth. Never shipped whole.
         │  tools/build-catalogue.js — validates, then emits two things
         │
         ├──→ catalogue/catalogue.json          GENERATED. Services, pipelines,
-        │                                      68 features, and 68 MATERIALISED
+        │                                      70 features, and 70 MATERIALISED
         │                                      workflows. The machine-readable
         │                                      export. No build reads
         │                                      catalogue/, so nothing here can
@@ -93,8 +93,8 @@ a page still printing a digit.
 
 ### It cannot assemble a scope nobody could execute
 
-Four relationships, all data, all on the row in the markup — **63 `requires`
-edges, 48 `recommends`, 8 `supersedes` and, today, 0 `conflicts`**:
+Four relationships, all data, all on the row in the markup — **67 `requires`
+edges, 51 `recommends`, 8 `supersedes` and, today, 0 `conflicts`**:
 
 - **requires** — pulled in automatically, transitively, and the row says why:
   *"Added — Website development needs it."* Dropping the requirement drops
@@ -180,7 +180,7 @@ service wearing a bundle's clothes.
 
 ### Features
 
-Sixty-eight, each carrying the schema the brief specified: `id`, `service`,
+Seventy, each carrying the schema the brief specified: `id`, `service`,
 `name`, `description`, `purpose`, `category`, `inputs`, `dependencies`,
 `workflow`, `executionSteps`, `tools`, `outputs`, `deliverables`,
 `qualityChecks`, `completionCriteria`, `revisionRules`, `automationPotential`,
@@ -192,10 +192,10 @@ Sixty-eight, each carrying the schema the brief specified: `id`, `service`,
 | --- | --- | --- |
 | `none` | Judgement or craft. An agent would produce something worse. | 5 |
 | `assist` | An agent prepares, a person decides. | 21 |
-| `partial` | An agent does most of it, a person approves before it ships. | 38 |
-| `full` | An agent can complete it unattended once the inputs are present. | 4 |
+| `partial` | An agent does most of it, a person approves before it ships. | 39 |
+| `full` | An agent can complete it unattended once the inputs are present. | 5 |
 
-### Workflows — sixteen templates, sixty-eight workflows
+### Workflows — seventeen templates, seventy workflows
 
 The brief asks that every feature have a workflow. It also asks, twice, that
 this not become a huge amount of duplicated code. Both are satisfied the same
@@ -211,12 +211,12 @@ feature, with a real `workflow_id`, resolving `$feature.*` tokens — and fails
 the build if any token is left unresolved, because a workflow handing an agent
 the literal string `$feature.tools` is worse than no workflow.
 
-The sixteen: `design_concept`, `design_system`, `design_asset`, `document`,
+The seventeen: `design_concept`, `design_system`, `design_asset`, `document`,
 `production`, `provision`, `build`, `verify`, `release`, `handover`, `plan`,
-`content`, `recurring_service`, `campaign`, `optimise`, `report`.
+`content`, `recurring_service`, `campaign`, `optimise`, `report`, `composite`.
 
-They materialise into **68 workflows, 277 stages and 96 decision points**, from
-16 authored templates and 68 authored features. Written out by hand that would
+They materialise into **70 workflows, 285 stages and 98 decision points**, from
+17 authored templates and 70 authored features. Written out by hand that would
 have been the same content sixty-eight times over, and the day someone improved
 a stage it would have been improved in one of them.
 
@@ -304,45 +304,32 @@ that wrote it and renders only where `priceFrom` is actually set.
 
 ---
 
-## 6 — Naming, declared rather than settled
+## 6 — Naming, settled
 
-Service 04 was called four different things in four places on one page. Each
-service now has **one canonical name**, and — where the price surfaces use a
-shorter form — **one declared short form beside it**. `aliases` records what
-each has also been called, so the drift is documented rather than deleted.
+**Superseded by `docs/126` §4.** This section described a `shortName` field
+that let the price surfaces keep an abbreviation. The owner settled it on
+8 September: the full name, on every client-facing surface, and the field is
+gone.
 
-| | Canonical `name` | `shortName` (price surfaces) | Also seen as |
-| --- | --- | --- | --- |
-| 01 | Branding & Design | Branding & Design | Identity & Design · Branding |
-| 02 | Websites | Websites | Website |
-| 03 | Social Media Management | **Social Media** | — |
-| 04 | Digital Marketing & Advertising | **Marketing & Ads** | Digital Marketing & Ads · Digital Marketing · Advertising |
+| | Name, everywhere | Retired |
+| --- | --- | --- |
+| 01 | Branding & Design | Identity & Design · Branding |
+| 02 | Websites | Website |
+| 03 | Social Media Management | Social Media |
+| 04 | Digital Marketing & Advertising | Marketing & Ads · Digital Marketing & Ads · Digital Marketing · Advertising |
 
-**The published copy is unchanged, and that is deliberate.** The short forms
-are the names these packages have been sold under, and an index card or a
-WhatsApp button cannot carry "Digital Marketing & Advertising" without
-wrapping — the same constraint that produced twelve buttons at two different
-heights on 8 September. Rewriting what the studio calls its own services is
-the owner's decision, not a refactor's.
+Two guards hold it: `build-catalogue.js` on the data, and `qa.js` §40 on the
+built pages — which is the half that mattered, because the hero orbit and the
+ecosystem flow are fed by no data file and had drifted for exactly that reason.
 
-What has changed is that **a variant is now a decision somebody made rather
-than a drift nobody saw.** `build-catalogue.js` compares every pricing
-category's label, in both languages, against the service's declared
-`shortName` and fails the build if they disagree. Changing what a surface says
-is one field in `services.json` and a rebuild.
+**Ids did not move.** `svc.social`, the `social` category and
+`soc-starter`/`soc-growth`/`soc-pro` are untouched: renaming an id to follow a
+word on a page would break every join in the catalogue.
 
-> Negative-tested by renaming the social category to "Social" in
-> `pricing.json`: *"svc.social: pricing.json calls this category "Social" but
-> the service declares its short form as "Social Media""* — build refused.
-
-Two collisions were deliberately **not** merged. `Copywriting` named both
-organic social copy and paid ad copy — different work, different approval
-paths, so `feat.social.copywriting` and `feat.marketing.ad_copy` stay separate.
-`Audience Targeting` / `Research` / `Segmentation` looked like three names for
-one thing and are a ladder: apply what is known, find out what is not, then
-split it.
-
-Five strings for the monthly report *did* merge.
+Two collisions were deliberately **not** merged in the first pass —
+`Copywriting` across social and paid, and the three audience rows. The first
+still stands. **The second did not survive the ladder rule**: those three ids
+were one capability at three depths, and merging them is `docs/126` §5.
 
 ---
 
@@ -415,3 +402,11 @@ and how much of it is its own to do.
 What it cannot get from this file is the client's material, the studio's
 accounts, and judgement — which is what `automationPotential: none` is for, and
 why four features carry it.
+
+---
+
+## 11 — Superseded in part
+
+`docs/126` records the owner's decisions of 8 September and what encoding them
+found. Where the two disagree, `docs/126` is later and wins — §6 above, and
+three of the advisories §4 lists, which are answered rather than outstanding.

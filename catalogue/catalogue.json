@@ -17,10 +17,6 @@
         "en": "Branding & Design",
         "ar": "الهوية والتصميم"
       },
-      "shortName": {
-        "en": "Branding & Design",
-        "ar": "الهوية والتصميم"
-      },
       "summary": {
         "en": "One consistent look across every channel.",
         "ar": "مظهر واحد متسق في كل قناة."
@@ -142,10 +138,6 @@
         "en": "Websites",
         "ar": "المواقع الإلكترونية"
       },
-      "shortName": {
-        "en": "Websites",
-        "ar": "المواقع الإلكترونية"
-      },
       "summary": {
         "en": "Designed, built, and handed over working.",
         "ar": "يُصمَّم ويُبنى ويُسلَّم وهو يعمل."
@@ -195,7 +187,8 @@
             "entry": "Agreed sitemap. Brand assets, ours or the client's.",
             "exit": "Design approved at desktop and phone widths.",
             "features": [
-              "feat.websites.uiux"
+              "feat.websites.uiux",
+              "feat.websites.landing_design"
             ]
           },
           {
@@ -213,7 +206,7 @@
               "feat.websites.setup",
               "feat.websites.integrations",
               "feat.websites.extra_page",
-              "feat.websites.extra_landing"
+              "feat.websites.landing_build"
             ]
           },
           {
@@ -240,6 +233,7 @@
             "exit": "Live on the client's domain, credentials transferred, receipt confirmed.",
             "features": [
               "feat.websites.deployment",
+              "feat.websites.landing_deploy",
               "feat.websites.handover"
             ]
           }
@@ -252,10 +246,6 @@
       "legacyCategory": "social",
       "name": {
         "en": "Social Media Management",
-        "ar": "إدارة وسائل التواصل"
-      },
-      "shortName": {
-        "en": "Social Media",
         "ar": "إدارة وسائل التواصل"
       },
       "summary": {
@@ -301,7 +291,8 @@
             "features": [
               "feat.social.content_strategy",
               "feat.social.content_calendar",
-              "feat.social.hashtag_research"
+              "feat.social.hashtag_research",
+              "feat.social.audience_research"
             ]
           },
           {
@@ -354,11 +345,13 @@
               "en": "Report",
               "ar": "التقرير"
             },
-            "objective": "Say what happened and what changes next month.",
+            "objective": "Say what happened, what caused it, and what changes next month.",
             "entry": "A complete calendar month of published activity.",
             "exit": "Report sent. Next month's plan carries at least one decision taken from it.",
             "features": [
               "feat.social.report",
+              "feat.social.growth_analysis",
+              "feat.social.performance_optimization",
               "feat.social.strategy_review"
             ]
           }
@@ -371,10 +364,6 @@
       "legacyCategory": "marketing",
       "name": {
         "en": "Digital Marketing & Advertising",
-        "ar": "التسويق الرقمي والإعلانات"
-      },
-      "shortName": {
-        "en": "Marketing & Ads",
         "ar": "التسويق الرقمي والإعلانات"
       },
       "summary": {
@@ -425,9 +414,7 @@
             "exit": "A written target, a defined audience, and a conversion the client agrees to be measured on.",
             "features": [
               "feat.marketing.campaign_strategy",
-              "feat.marketing.audience_targeting",
-              "feat.marketing.audience_research",
-              "feat.marketing.audience_segmentation"
+              "feat.marketing.audience"
             ]
           },
           {
@@ -483,8 +470,6 @@
             "features": [
               "feat.marketing.monitoring",
               "feat.marketing.optimization",
-              "feat.marketing.creative_optimization",
-              "feat.marketing.budget_optimization",
               "feat.marketing.ab_testing"
             ]
           },
@@ -708,7 +693,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 250
+        "from": 350
       },
       "status": "active",
       "service": "svc.branding"
@@ -778,7 +763,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 90
+        "from": 130
       },
       "status": "active",
       "service": "svc.branding"
@@ -849,7 +834,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 90
+        "from": 130
       },
       "status": "active",
       "service": "svc.branding"
@@ -917,7 +902,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 60
+        "from": 85
       },
       "status": "active",
       "service": "svc.branding"
@@ -951,7 +936,10 @@
           "feat.branding.type_system"
         ],
         "recommends": [],
-        "conflicts": []
+        "conflicts": [],
+        "supersedes": [
+          "feat.branding.identity_card"
+        ]
       },
       "workflow": "wf.document",
       "executionSteps": [
@@ -988,9 +976,10 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 180
+        "from": 250
       },
       "status": "active",
+      "_supersedes": "A short guidelines document contains everything the one-sheet identity card does and then keeps going. Without this, Professional read as having dropped something Starter had — which is how the ladder check found it.",
       "service": "svc.branding"
     },
     {
@@ -1070,7 +1059,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 450
+        "from": 630
       },
       "status": "active",
       "service": "svc.branding"
@@ -1144,7 +1133,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 240
+        "from": 340
       },
       "status": "active",
       "service": "svc.branding"
@@ -1216,7 +1205,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 60
+        "from": 85
       },
       "status": "active",
       "service": "svc.branding"
@@ -1287,7 +1276,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 50
+        "from": 70
       },
       "status": "active",
       "service": "svc.branding"
@@ -1354,7 +1343,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 40
+        "from": 55
       },
       "status": "active",
       "service": "svc.branding"
@@ -1515,7 +1504,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 220
+        "from": 310
       },
       "status": "active",
       "service": "svc.branding"
@@ -1584,7 +1573,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 90
+        "from": 125
       },
       "status": "active",
       "service": "svc.branding"
@@ -1660,7 +1649,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 200
+        "from": 280
       },
       "status": "active",
       "service": "svc.branding"
@@ -1730,7 +1719,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 140
+        "from": 195
       },
       "status": "active",
       "service": "svc.branding"
@@ -1876,7 +1865,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 140
+        "from": 195
       },
       "status": "active",
       "service": "svc.branding"
@@ -2029,7 +2018,7 @@
       },
       "pricing": {
         "type": "unit",
-        "from": 22,
+        "from": 31,
         "unit": {
           "en": "template",
           "ar": "قالب"
@@ -2432,6 +2421,17 @@
       "category": "operations",
       "selectable": true,
       "addonGroup": null,
+      "_options": "PLATFORMS ARE SCOPE, NOT A NUMBER. The quantity is derived from the platforms chosen rather than typed, so a scope records Google Ads and Meta Ads rather than \"2\" — which is the difference between something a quotation or an agent can act on and something it has to guess at. The list lives in platforms.json and is extensible: adding one is an entry there, and it appears in the chooser in both languages with no code change.",
+      "options": {
+        "id": "platforms",
+        "set": "advertising",
+        "multiple": true,
+        "drivesQuantity": true,
+        "label": {
+          "en": "Which platforms",
+          "ar": "أي المنصات"
+        }
+      },
       "recurrence": "monthly",
       "inputs": [
         "Partner access to the client's ad account",
@@ -2655,14 +2655,14 @@
       "service": "svc.marketing"
     },
     {
-      "id": "feat.marketing.audience_targeting",
+      "id": "feat.marketing.audience",
       "name": {
-        "en": "Audience targeting",
-        "ar": "استهداف الجمهور"
+        "en": "Audience definition",
+        "ar": "تحديد الجمهور"
       },
       "description": {
-        "en": "Setting the campaign's audience from what the business already knows about its customers.",
-        "ar": "ضبط جمهور الحملة بناءً على ما يعرفه العمل عن عملائه أصلًا."
+        "en": "Deciding who the advertising goes to, and how far we go to find out.",
+        "ar": "تحديد من تصل إليه الإعلانات، وإلى أي مدى نبحث لمعرفة ذلك."
       },
       "purpose": {
         "en": "The first and cheapest lever on what an ad costs.",
@@ -2675,7 +2675,9 @@
       "inputs": [
         "Who the client believes their customer is",
         "Geography and language",
-        "Any customer list the client may lawfully use"
+        "Any customer list the client may lawfully use",
+        "Past campaign or site analytics, from the research level up",
+        "Enough budget per segment to reach significance, at the segmentation level"
       ],
       "dependencies": {
         "requires": [],
@@ -2685,24 +2687,32 @@
       "workflow": "wf.plan",
       "executionSteps": [
         "Write the audience in words before building it in a tool.",
-        "Build it on the platform, and check its size is neither absurd nor empty.",
-        "Exclude existing customers where paying to reach them again is waste."
+        "Build it on the platform and check its size is neither absurd nor empty.",
+        "Exclude existing customers where paying to reach them again is waste.",
+        "At the research level: read what past campaigns and site analytics already show, and what competitors are running, before proposing anything new.",
+        "At the segmentation level: split only where the message genuinely differs, and build exclusions so segments do not bid against each other."
       ],
       "tools": [
-        "Platform audience tools"
+        "Platform audience tools",
+        "Platform analytics",
+        "Public ad libraries"
       ],
       "outputs": [
-        "A defined audience"
+        "A defined audience, at the depth bought"
       ],
       "deliverables": [
-        "Saved audiences with a written definition each"
+        "Saved audiences with a written definition each",
+        "Findings document, from the research level up",
+        "A per-segment budget split, at the segmentation level"
       ],
       "qualityChecks": [
         "Audience size plausible for the budget",
         "Exclusions applied",
-        "Any uploaded list carries consent the client can evidence"
+        "Any uploaded list carries consent the client can evidence",
+        "Every finding traceable to a source, not to an impression",
+        "Segments mutually exclusive and each large enough to produce a readable result"
       ],
-      "completionCriteria": "Audience built, sized and approved before the campaign goes live.",
+      "completionCriteria": "Audience built, sized and approved before the campaign goes live, at the depth the scope bought.",
       "revisionRules": {
         "rounds": 1,
         "scope": "Per campaign."
@@ -2712,158 +2722,85 @@
       "estimatedEffort": {
         "unit": "hours",
         "min": 1,
-        "max": 4
+        "max": 8
       },
       "pricing": {
         "type": "fixed",
         "from": 50
       },
       "status": "active",
-      "service": "svc.marketing"
-    },
-    {
-      "id": "feat.marketing.audience_research",
-      "name": {
-        "en": "Audience research",
-        "ar": "بحث الجمهور"
-      },
-      "description": {
-        "en": "Finding out who actually responds, rather than assuming who should.",
-        "ar": "معرفة من يستجيب فعلًا بدل افتراض من ينبغي أن يستجيب."
-      },
-      "purpose": {
-        "en": "The assumption about the customer is usually the expensive mistake.",
-        "ar": "الافتراض حول العميل هو الخطأ الأكثر كلفة عادةً."
-      },
-      "category": "planning",
-      "selectable": true,
-      "addonGroup": null,
-      "recurrence": "quarterly",
-      "inputs": [
-        "Existing campaign or site analytics",
-        "Competitor advertising, publicly visible",
-        "The client's own sales knowledge"
-      ],
-      "dependencies": {
-        "requires": [],
-        "recommends": [
-          "feat.marketing.audience_targeting"
+      "tiers": {
+        "_comment": [
+          "DEPTH, NOT THREE FEATURES. The owner's rule of 8 September applied here by",
+          "the ladder check rather than by hand: these were three ids for one decision —",
+          "who the advertising goes to — and a package that bought the deep one read as",
+          "having dropped the shallow one."
         ],
-        "conflicts": []
-      },
-      "workflow": "wf.plan",
-      "executionSteps": [
-        "Read what past campaigns and site analytics already show before researching anything new.",
-        "Look at what competitors are actually running, in the platforms' public ad libraries.",
-        "Write findings as differences from the client's assumption — that is the useful part.",
-        "Propose the audiences worth testing, in priority order."
-      ],
-      "tools": [
-        "Platform analytics",
-        "Public ad libraries",
-        "Site analytics"
-      ],
-      "outputs": [
-        "Research findings and a tested-audience proposal"
-      ],
-      "deliverables": [
-        "Findings document",
-        "A prioritised audience list"
-      ],
-      "qualityChecks": [
-        "Every finding traceable to a source, not to an impression",
-        "The client's assumption stated and either confirmed or contradicted explicitly"
-      ],
-      "completionCriteria": "Findings delivered and at least one audience from them entered testing.",
-      "revisionRules": {
-        "rounds": 1,
-        "scope": "Per research cycle."
-      },
-      "automationPotential": "assist",
-      "humanApprovalRequired": false,
-      "estimatedEffort": {
-        "unit": "hours",
-        "min": 3,
-        "max": 12
-      },
-      "pricing": {
-        "type": "fixed",
-        "from": 110
-      },
-      "status": "active",
-      "service": "svc.marketing"
-    },
-    {
-      "id": "feat.marketing.audience_segmentation",
-      "name": {
-        "en": "Audience segmentation",
-        "ar": "تقسيم الجمهور"
-      },
-      "description": {
-        "en": "Splitting the audience into groups that get different messages, and budgeting each separately.",
-        "ar": "تقسيم الجمهور إلى مجموعات تتلقى رسائل مختلفة، وتخصيص ميزانية لكل منها."
-      },
-      "purpose": {
-        "en": "One message to everyone is the cheapest way to waste a budget.",
-        "ar": "رسالة واحدة للجميع هي أسرع طريقة لإهدار الميزانية."
-      },
-      "category": "planning",
-      "selectable": true,
-      "addonGroup": null,
-      "recurrence": "per-campaign",
-      "inputs": [
-        "Research findings",
-        "Enough budget for each segment to reach significance",
-        "Creative that differs by segment"
-      ],
-      "dependencies": {
-        "requires": [
-          "feat.marketing.audience_research"
-        ],
-        "recommends": [],
-        "conflicts": [],
-        "supersedes": [
-          "feat.marketing.audience_targeting"
+        "dimension": "depth",
+        "default": "targeting",
+        "levels": [
+          {
+            "id": "targeting",
+            "name": {
+              "en": "Audience targeting",
+              "ar": "استهداف الجمهور"
+            },
+            "description": {
+              "en": "Building the audience from what the business already knows about its customers.",
+              "ar": "بناء الجمهور مما يعرفه العمل عن عملائه أصلًا."
+            },
+            "scope": [
+              "Audience written in words, then built in the tool",
+              "Size checked against the budget",
+              "Existing customers excluded"
+            ],
+            "priceFactor": 1,
+            "effortFactor": 1
+          },
+          {
+            "id": "research",
+            "name": {
+              "en": "Audience research",
+              "ar": "بحث الجمهور"
+            },
+            "description": {
+              "en": "Finding out who actually responds rather than assuming who should, then targeting that.",
+              "ar": "معرفة من يستجيب فعلًا بدل افتراض من ينبغي أن يستجيب، ثم استهدافه."
+            },
+            "scope": [
+              "Everything in targeting",
+              "Past campaign and site analytics read",
+              "Competitor advertising read in the platforms’ public libraries",
+              "A prioritised list of audiences worth testing"
+            ],
+            "priceFactor": 2.2,
+            "effortFactor": 3
+          },
+          {
+            "id": "segmentation",
+            "name": {
+              "en": "Audience segmentation",
+              "ar": "تقسيم الجمهور"
+            },
+            "description": {
+              "en": "Splitting the researched audience into groups that get different messages and separate budgets.",
+              "ar": "تقسيم الجمهور المدروس إلى مجموعات تتلقى رسائل مختلفة وميزانيات منفصلة."
+            },
+            "scope": [
+              "Everything in research",
+              "Mutually exclusive segments, each large enough to read",
+              "Creative that differs per segment",
+              "A budget split per segment"
+            ],
+            "priceFactor": 3.6,
+            "effortFactor": 4
+          }
         ]
       },
-      "workflow": "wf.plan",
-      "executionSteps": [
-        "Split only where the message genuinely differs — a split with the same ad in both is a smaller budget, not a strategy.",
-        "Check each segment can reach significance at the available budget.",
-        "Build exclusions between segments so they do not bid against each other."
+      "_sharesMethodWith": "The same method as feat.social.audience_research at the research level, applied to paid rather than organic. Two features, two services, two pipelines — but findings from either should be reused rather than re-bought.",
+      "sharesMethodWith": [
+        "feat.social.audience_research"
       ],
-      "tools": [
-        "Platform audience tools"
-      ],
-      "outputs": [
-        "Mutually exclusive segments with their own creative and budget"
-      ],
-      "deliverables": [
-        "Segment definitions",
-        "Per-segment budget split"
-      ],
-      "qualityChecks": [
-        "Segments mutually exclusive",
-        "Each large enough to produce a readable result",
-        "Each has creative that differs, not just a different name"
-      ],
-      "completionCriteria": "Segments live, non-overlapping, and each producing readable data.",
-      "revisionRules": {
-        "rounds": 1,
-        "scope": "Per campaign."
-      },
-      "automationPotential": "partial",
-      "humanApprovalRequired": true,
-      "estimatedEffort": {
-        "unit": "hours",
-        "min": 2,
-        "max": 8
-      },
-      "pricing": {
-        "type": "fixed",
-        "from": 90
-      },
-      "status": "active",
       "service": "svc.marketing"
     },
     {
@@ -2892,7 +2829,7 @@
       "dependencies": {
         "requires": [],
         "recommends": [
-          "feat.marketing.audience_targeting"
+          "feat.marketing.audience"
         ],
         "conflicts": []
       },
@@ -3190,7 +3127,7 @@
         "ar": "الحملة التي تتوقف عن العمل تكلّفك الأسبوع كله بصمت."
       },
       "category": "operations",
-      "selectable": true,
+      "selectable": false,
       "addonGroup": null,
       "recurrence": "monthly",
       "inputs": [
@@ -3241,17 +3178,18 @@
         "type": "included"
       },
       "status": "active",
+      "_selectable": "NOT A CHOICE. It costs nothing and nobody running paid advertising declines to watch it. Sold as a tickable row it let a scope buy optimisation with nothing watching the campaign, and it made ads-growth read as having dropped something ads-starter had.",
       "service": "svc.marketing"
     },
     {
       "id": "feat.marketing.optimization",
       "name": {
-        "en": "Campaign optimization",
+        "en": "Campaign optimisation",
         "ar": "تحسين الحملات"
       },
       "description": {
-        "en": "Adjusting audiences, placements, bids and structure to bring the cost per result down.",
-        "ar": "تعديل الجماهير والمواضع والمزايدات والهيكل لخفض تكلفة النتيجة."
+        "en": "Improving the result while it runs — audiences, placements, bids, creative and budget — on the evidence, one change at a time.",
+        "ar": "تحسين النتيجة أثناء التشغيل — الجماهير والمواضع والمزايدات والتصاميم والميزانية — بناءً على الأدلة، بتغيير واحد في كل مرة."
       },
       "purpose": {
         "en": "The part of the fee that pays for itself, or does not.",
@@ -3267,10 +3205,10 @@
       ],
       "dependencies": {
         "requires": [
-          "feat.marketing.campaign_setup"
+          "feat.marketing.campaign_setup",
+          "feat.marketing.monitoring"
         ],
         "recommends": [
-          "feat.marketing.monitoring",
           "feat.marketing.conversion_tracking"
         ],
         "conflicts": []
@@ -3280,7 +3218,8 @@
         "Wait for enough data before changing anything — most optimisation is reading noise.",
         "Change one variable at a time, and write down the number that justified it.",
         "Turn off what is losing before adding what might win.",
-        "Leave the winning ad set alone."
+        "Leave the winning ad set alone.",
+        "At the full level: track cost per result per creative and rotate on the trend, and reallocate budget inside the agreed total without ever exceeding it."
       ],
       "tools": [
         "Platform ads managers"
@@ -3289,13 +3228,16 @@
         "A lower cost per result, or a documented reason it did not fall"
       ],
       "deliverables": [
-        "A change log with the figure behind each change"
+        "A change log with the figure behind each change",
+        "A before-and-after figure per budget move, at the full level"
       ],
       "qualityChecks": [
         "No change made on fewer results than the platform's own learning threshold",
         "One variable at a time",
         "Every change recorded with its justification",
-        "The winner left running"
+        "The winner left running",
+        "No creative left running past its measured fatigue point",
+        "The monthly total never exceeded"
       ],
       "completionCriteria": "The month closes with a change log and a stated direction for the next.",
       "revisionRules": {
@@ -3307,7 +3249,7 @@
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
-        "max": 12
+        "max": 16
       },
       "pricing": {
         "type": "fixed",
@@ -3315,149 +3257,73 @@
         "period": "monthly"
       },
       "status": "active",
-      "service": "svc.marketing"
-    },
-    {
-      "id": "feat.marketing.creative_optimization",
-      "name": {
-        "en": "Creative optimization",
-        "ar": "تحسين التصاميم"
-      },
-      "description": {
-        "en": "Replacing tired creative before performance falls, rather than after.",
-        "ar": "استبدال التصاميم المستهلكة قبل تراجع الأداء لا بعده."
-      },
-      "purpose": {
-        "en": "Every ad wears out. The question is whether you notice first.",
-        "ar": "كل إعلان يستهلك. السؤال هو من يلاحظ أولًا."
-      },
-      "category": "core",
-      "selectable": true,
-      "addonGroup": null,
-      "recurrence": "monthly",
-      "inputs": [
-        "Frequency and cost-per-result trend by creative",
-        "New creative ready to rotate in"
-      ],
-      "dependencies": {
-        "requires": [
-          "feat.marketing.campaign_setup"
+      "tiers": {
+        "_comment": [
+          "DEPTH, NOT THREE FEATURES. The owner's rule of 8 September applied here by",
+          "the ladder check rather than by hand: these were three ids for one decision —",
+          "who the advertising goes to — and a package that bought the deep one read as",
+          "having dropped the shallow one."
         ],
-        "recommends": [
-          "feat.marketing.ad_creative"
-        ],
-        "conflicts": []
+        "dimension": "depth",
+        "default": "basic",
+        "levels": [
+          {
+            "id": "basic",
+            "name": {
+              "en": "Basic optimisation",
+              "ar": "تحسين أساسي"
+            },
+            "description": {
+              "en": "Pausing what loses and leaving what wins alone.",
+              "ar": "إيقاف ما يخسر وترك ما ينجح يعمل."
+            },
+            "scope": [
+              "Losing ad sets paused",
+              "Winners left running",
+              "Each change recorded with its figure"
+            ],
+            "priceFactor": 1,
+            "effortFactor": 1
+          },
+          {
+            "id": "campaign",
+            "name": {
+              "en": "Campaign optimisation",
+              "ar": "تحسين الحملات"
+            },
+            "description": {
+              "en": "Adjusting audiences, placements, bids and structure to bring the cost per result down.",
+              "ar": "تعديل الجماهير والمواضع والمزايدات والهيكل لخفض تكلفة النتيجة."
+            },
+            "scope": [
+              "Everything in basic",
+              "Audience, placement and bid adjustment",
+              "Structural changes where the data supports them"
+            ],
+            "priceFactor": 1.6,
+            "effortFactor": 2
+          },
+          {
+            "id": "full",
+            "name": {
+              "en": "Creative and budget optimisation",
+              "ar": "تحسين التصاميم والميزانية"
+            },
+            "description": {
+              "en": "Everything above, plus rotating creative before it tires and moving budget towards what is working, inside the total you set.",
+              "ar": "كل ما سبق، مع تدوير التصاميم قبل استهلاكها ونقل الميزانية نحو ما ينجح ضمن الإجمالي الذي حددته."
+            },
+            "scope": [
+              "Everything in campaign optimisation",
+              "Cost per result tracked per creative, and creative rotated on the trend rather than on a schedule",
+              "Budget reallocated inside the agreed total, in steps small enough not to reset learning",
+              "A before-and-after figure recorded for every move"
+            ],
+            "priceFactor": 2.4,
+            "effortFactor": 3
+          }
+        ]
       },
-      "workflow": "wf.optimise",
-      "executionSteps": [
-        "Track cost per result per creative, not per campaign.",
-        "Rotate on the trend, before the drop, not after it.",
-        "Keep the format that works and change the message, or the reverse — never both at once."
-      ],
-      "tools": [
-        "Platform ads managers",
-        "Vector editor"
-      ],
-      "outputs": [
-        "A refreshed creative set"
-      ],
-      "deliverables": [
-        "Rotated creative",
-        "A performance note per creative"
-      ],
-      "qualityChecks": [
-        "No creative left running past its measured fatigue point",
-        "Replacement differs in one dimension, so the result is readable"
-      ],
-      "completionCriteria": "The month closes with creative rotated on evidence rather than on schedule.",
-      "revisionRules": {
-        "rounds": 0,
-        "scope": "Not applicable."
-      },
-      "automationPotential": "assist",
-      "humanApprovalRequired": false,
-      "estimatedEffort": {
-        "unit": "hours",
-        "min": 1.5,
-        "max": 8
-      },
-      "pricing": {
-        "type": "fixed",
-        "from": 70,
-        "period": "monthly"
-      },
-      "status": "active",
-      "service": "svc.marketing"
-    },
-    {
-      "id": "feat.marketing.budget_optimization",
-      "name": {
-        "en": "Budget optimization",
-        "ar": "تحسين الميزانية"
-      },
-      "description": {
-        "en": "Moving budget towards what is working, within the total you set.",
-        "ar": "نقل الميزانية نحو ما ينجح، ضمن الإجمالي الذي حددته."
-      },
-      "purpose": {
-        "en": "The same money, spent where it returns most.",
-        "ar": "المال نفسه، منفقًا حيث يعود بأكثر."
-      },
-      "category": "core",
-      "selectable": true,
-      "addonGroup": null,
-      "recurrence": "monthly",
-      "inputs": [
-        "The agreed total budget",
-        "Cost per result by campaign and segment"
-      ],
-      "dependencies": {
-        "requires": [
-          "feat.marketing.campaign_setup"
-        ],
-        "recommends": [
-          "feat.marketing.optimization"
-        ],
-        "conflicts": []
-      },
-      "workflow": "wf.optimise",
-      "executionSteps": [
-        "Never exceed the client's written total — reallocate inside it.",
-        "Move in steps small enough not to reset the platform's learning.",
-        "Record the before and after cost per result for each move."
-      ],
-      "tools": [
-        "Platform ads managers"
-      ],
-      "outputs": [
-        "Budget allocated to what performs"
-      ],
-      "deliverables": [
-        "Allocation log with before and after figures"
-      ],
-      "qualityChecks": [
-        "Monthly total never exceeded",
-        "No move large enough to reset learning unnecessarily",
-        "Every move recorded"
-      ],
-      "completionCriteria": "The month closes within the agreed total, with each reallocation recorded.",
-      "revisionRules": {
-        "rounds": 0,
-        "scope": "Not applicable."
-      },
-      "automationPotential": "partial",
-      "humanApprovalRequired": true,
-      "estimatedEffort": {
-        "unit": "hours",
-        "min": 1,
-        "max": 5
-      },
-      "pricing": {
-        "type": "fixed",
-        "from": 60,
-        "period": "monthly"
-      },
-      "status": "active",
       "service": "svc.marketing"
     },
     {
@@ -3694,7 +3560,7 @@
         "ar": "نصف ضعف الحضور سببه ملف غير مكتمل."
       },
       "category": "operations",
-      "selectable": true,
+      "selectable": false,
       "addonGroup": null,
       "recurrence": "once",
       "inputs": [
@@ -3748,6 +3614,7 @@
         "type": "included"
       },
       "status": "active",
+      "_selectable": "NOT A CHOICE. It costs nothing, it cannot be skipped, and three packages carry it without itemising it — which is why build-catalogue.js used to report them as promising publishing with no account behind it.",
       "service": "svc.social"
     },
     {
@@ -3767,6 +3634,17 @@
       "category": "operations",
       "selectable": true,
       "addonGroup": null,
+      "_options": "PLATFORMS ARE SCOPE, NOT A NUMBER. The quantity is derived from the platforms chosen rather than typed, so a scope records Google Ads and Meta Ads rather than \"2\" — which is the difference between something a quotation or an agent can act on and something it has to guess at. The list lives in platforms.json and is extensible: adding one is an entry there, and it appears in the chooser in both languages with no code change.",
+      "options": {
+        "id": "platforms",
+        "set": "social",
+        "multiple": true,
+        "drivesQuantity": true,
+        "label": {
+          "en": "Which channels",
+          "ar": "أي القنوات"
+        }
+      },
       "recurrence": "monthly",
       "inputs": [
         "Publishing access",
@@ -3813,7 +3691,7 @@
       },
       "pricing": {
         "type": "unit",
-        "from": 60,
+        "from": 40,
         "period": "monthly",
         "unit": {
           "en": "platform",
@@ -3845,7 +3723,7 @@
         "ar": "حتى لا يُكتب المنشور صباح يوم نشره."
       },
       "category": "planning",
-      "selectable": true,
+      "selectable": false,
       "addonGroup": null,
       "recurrence": "monthly",
       "inputs": [
@@ -3895,11 +3773,10 @@
         "max": 5
       },
       "pricing": {
-        "type": "fixed",
-        "from": 60,
-        "period": "monthly"
+        "type": "included"
       },
       "status": "active",
+      "_selectable": "NOT A CHOICE EITHER. Every social package publishes on a schedule, so every social package has a calendar; Growth and Pro simply never itemised one. It is included in platform management rather than sold beside it.",
       "service": "svc.social"
     },
     {
@@ -3915,6 +3792,60 @@
       "purpose": {
         "en": "So the calendar has a reason and not just a rhythm.",
         "ar": "حتى يكون للتقويم سبب لا إيقاع فقط."
+      },
+      "tiers": {
+        "_comment": [
+          "DEPTH, NOT A SECOND FEATURE. The owner's instruction on 8 September was",
+          "explicit: where the underlying capability is shared, keep ONE canonical",
+          "feature and differentiate it by scope. Content strategy at Growth and at",
+          "Pro is the same work done to a different depth, and publishing it twice",
+          "would give an automation two ids for one thing.",
+          "",
+          "`priceFactor` multiplies pricing.from; `effortFactor` multiplies",
+          "estimatedEffort. A package row selects a level with `tier`; the builder",
+          "offers the levels as a choice on the row rather than as two rows."
+        ],
+        "dimension": "depth",
+        "default": "core",
+        "levels": [
+          {
+            "id": "core",
+            "name": {
+              "en": "Content strategy",
+              "ar": "استراتيجية المحتوى"
+            },
+            "description": {
+              "en": "Pillars with a proportion each, a tone written in examples, and one target the platform actually reports.",
+              "ar": "محاور بنِسَب محددة، ونبرة مكتوبة بأمثلة، وهدف واحد تقيسه المنصة فعلًا."
+            },
+            "scope": [
+              "Content pillars with proportions",
+              "Tone examples in every language published",
+              "One measurable target"
+            ],
+            "priceFactor": 1,
+            "effortFactor": 1
+          },
+          {
+            "id": "complete",
+            "name": {
+              "en": "Complete content strategy",
+              "ar": "استراتيجية محتوى كاملة"
+            },
+            "description": {
+              "en": "Everything in the core strategy, plus a competitor read, a channel-by-channel plan and a quarterly revision built from the reports.",
+              "ar": "كل ما في الاستراتيجية الأساسية، مع قراءة للمنافسين وخطة لكل قناة على حدة ومراجعة ربعية مبنية على التقارير."
+            },
+            "scope": [
+              "Everything in the core strategy",
+              "Competitor read",
+              "A plan per channel rather than one for all of them",
+              "Quarterly revision driven by the reports"
+            ],
+            "priceFactor": 1.8,
+            "effortFactor": 1.8
+          }
+        ]
       },
       "category": "planning",
       "selectable": true,
@@ -3967,7 +3898,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 180
+        "from": 150
       },
       "status": "active",
       "service": "svc.social"
@@ -4126,7 +4057,7 @@
       },
       "pricing": {
         "type": "unit",
-        "from": 15,
+        "from": 11,
         "period": "monthly",
         "unit": {
           "en": "post",
@@ -4425,7 +4356,8 @@
       ],
       "dependencies": {
         "requires": [
-          "feat.social.account_setup"
+          "feat.social.account_setup",
+          "feat.social.content_calendar"
         ],
         "recommends": [
           "feat.social.content_calendar"
@@ -4637,6 +4569,58 @@
         "en": "How people who do not follow you find you.",
         "ar": "الطريقة التي يجدك بها من لا يتابعك."
       },
+      "tiers": {
+        "_comment": [
+          "DEPTH, NOT A SECOND FEATURE. The owner's instruction on 8 September was",
+          "explicit: where the underlying capability is shared, keep ONE canonical",
+          "feature and differentiate it by scope. Content strategy at Growth and at",
+          "Pro is the same work done to a different depth, and publishing it twice",
+          "would give an automation two ids for one thing.",
+          "",
+          "`priceFactor` multiplies pricing.from; `effortFactor` multiplies",
+          "estimatedEffort. A package row selects a level with `tier`; the builder",
+          "offers the levels as a choice on the row rather than as two rows."
+        ],
+        "dimension": "depth",
+        "default": "basic",
+        "levels": [
+          {
+            "id": "basic",
+            "name": {
+              "en": "Hashtag research",
+              "ar": "بحث الوسوم"
+            },
+            "description": {
+              "en": "Tag sets by size band, refreshed each month.",
+              "ar": "مجموعات وسوم مصنّفة حسب الحجم، تُحدَّث شهريًا."
+            },
+            "scope": [
+              "Hashtag sets by size band",
+              "Monthly refresh"
+            ],
+            "priceFactor": 1,
+            "effortFactor": 1
+          },
+          {
+            "id": "core",
+            "name": {
+              "en": "Hashtag and keyword research",
+              "ar": "بحث الوسوم والكلمات المفتاحية"
+            },
+            "description": {
+              "en": "Tag sets plus the search terms your audience actually types, in every language they search in.",
+              "ar": "مجموعات الوسوم مع الكلمات التي يبحث بها جمهورك فعلًا، بكل لغة يستخدمها."
+            },
+            "scope": [
+              "Everything in hashtag research",
+              "Keyword sets per language",
+              "Retirement of terms that stopped working"
+            ],
+            "priceFactor": 1.6,
+            "effortFactor": 1.5
+          }
+        ]
+      },
       "category": "planning",
       "selectable": true,
       "addonGroup": null,
@@ -4691,6 +4675,84 @@
         "type": "fixed",
         "from": 40,
         "period": "monthly"
+      },
+      "status": "active",
+      "service": "svc.social"
+    },
+    {
+      "id": "feat.social.audience_research",
+      "name": {
+        "en": "Audience and market research",
+        "ar": "بحث الجمهور والسوق"
+      },
+      "_sharesMethodWith": "The same method as feat.marketing.audience_research, applied to a different channel: one reads an organic audience, the other reads who responds to paid advertising. They stay two features because they sit in two services, two pipelines and two sets of deliverables — but an agent holding findings from either should reuse them, which is what this field is for.",
+      "sharesMethodWith": [
+        "feat.marketing.audience"
+      ],
+      "description": {
+        "en": "Who your audience actually is, what the accounts around you are doing, and where the room to grow is.",
+        "ar": "من هو جمهورك فعلًا، وما الذي تفعله الحسابات المحيطة بك، وأين مساحة النمو."
+      },
+      "purpose": {
+        "en": "The assumption about the audience is usually the expensive one.",
+        "ar": "الافتراض حول الجمهور هو الأكثر كلفة عادةً."
+      },
+      "category": "planning",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "quarterly",
+      "inputs": [
+        "Existing account analytics",
+        "Competitor and adjacent accounts",
+        "Whatever the client knows from selling to these people"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.social.content_strategy"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.plan",
+      "executionSteps": [
+        "Read the account’s own history before looking anywhere else.",
+        "Read the accounts around it — what they publish, what earns a reply, what they never touch.",
+        "Write the findings as differences from what the client believes, because that is the useful half.",
+        "Name the segments worth speaking to differently, in priority order."
+      ],
+      "tools": [
+        "Platform analytics",
+        "Public account research",
+        "Document editor"
+      ],
+      "outputs": [
+        "Research findings",
+        "A prioritised segment list"
+      ],
+      "deliverables": [
+        "Findings document",
+        "Segments with a stated reason each"
+      ],
+      "qualityChecks": [
+        "Every finding traceable to something we can point at, not to an impression",
+        "The client’s own assumption stated and either confirmed or contradicted explicitly",
+        "Arabic-language audiences researched in Arabic, not through translation"
+      ],
+      "completionCriteria": "Findings delivered and at least one segment from them carried into the next content plan.",
+      "revisionRules": {
+        "rounds": 1,
+        "scope": "Per research cycle."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 4,
+        "max": 14
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 120
       },
       "status": "active",
       "service": "svc.social"
@@ -4765,6 +4827,156 @@
       },
       "pricing": {
         "type": "included"
+      },
+      "status": "active",
+      "service": "svc.social"
+    },
+    {
+      "id": "feat.social.growth_analysis",
+      "name": {
+        "en": "Growth analysis",
+        "ar": "تحليل النمو"
+      },
+      "description": {
+        "en": "What is actually growing — reach, followers, saves, messages — and which posts caused it.",
+        "ar": "ما الذي ينمو فعلًا — الوصول والمتابعون والحفظ والرسائل — وأي المنشورات سببت ذلك."
+      },
+      "purpose": {
+        "en": "A report says what happened. This says what to do more of.",
+        "ar": "التقرير يقول ما حدث. وهذا يقول بماذا تستمر."
+      },
+      "category": "reporting",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "A published month",
+        "Platform analytics",
+        "The previous month’s analysis, from month two"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.social.report"
+        ],
+        "recommends": [
+          "feat.social.audience_research"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.report",
+      "executionSteps": [
+        "Track the movement over months, not the month in isolation — one month is weather.",
+        "Attribute the movement to specific posts, and say when it cannot be attributed.",
+        "Separate growth that was bought or borrowed (a collaboration, an ad) from growth the content earned.",
+        "End with the pattern worth repeating and the one worth stopping."
+      ],
+      "tools": [
+        "Platform analytics",
+        "Spreadsheet",
+        "Document editor"
+      ],
+      "outputs": [
+        "A growth reading with attribution"
+      ],
+      "deliverables": [
+        "Growth analysis appended to the monthly report"
+      ],
+      "qualityChecks": [
+        "Every figure traceable to a platform screen",
+        "Paid and organic growth reported apart",
+        "No trend claimed on a single month of data",
+        "At least one thing named to stop doing"
+      ],
+      "completionCriteria": "Analysis delivered with one repeat and one stop named.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Corrections only."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 6
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 70,
+        "period": "monthly"
+      },
+      "status": "active",
+      "service": "svc.social"
+    },
+    {
+      "id": "feat.social.performance_optimization",
+      "name": {
+        "en": "Performance optimisation",
+        "ar": "تحسين الأداء"
+      },
+      "description": {
+        "en": "Changing what we publish, and when, on the evidence the last month produced.",
+        "ar": "تغيير ما ننشره ومتى ننشره، بناءً على ما أثبته الشهر الماضي."
+      },
+      "purpose": {
+        "en": "A plan that never changes is a plan that stopped reading its own results.",
+        "ar": "الخطة التي لا تتغير هي خطة توقفت عن قراءة نتائجها."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "recurrence": "monthly",
+      "inputs": [
+        "The month’s analysis",
+        "The approved calendar",
+        "Enough published items to compare"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.social.publishing",
+          "feat.social.growth_analysis"
+        ],
+        "recommends": [],
+        "conflicts": []
+      },
+      "workflow": "wf.optimise",
+      "executionSteps": [
+        "Change one thing at a time — format, hook, posting time or length — never several at once.",
+        "Give the change a full cycle before reading it.",
+        "Record the figure that justified the change and the figure that would reverse it.",
+        "Feed what survives back into the next calendar rather than into a document nobody opens."
+      ],
+      "tools": [
+        "Platform analytics",
+        "Scheduler",
+        "Document editor"
+      ],
+      "outputs": [
+        "A changed plan with the evidence behind it"
+      ],
+      "deliverables": [
+        "A change log with a before and after figure per change"
+      ],
+      "qualityChecks": [
+        "One variable per change",
+        "No change read before a full cycle",
+        "Every change carried into the next calendar or explicitly reversed"
+      ],
+      "completionCriteria": "The month closes with each change recorded and either kept or reversed on evidence.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Not applicable."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 2,
+        "max": 7
+      },
+      "pricing": {
+        "type": "fixed",
+        "from": 80,
+        "period": "monthly"
       },
       "status": "active",
       "service": "svc.social"
@@ -5064,7 +5276,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 200
+        "from": 420
       },
       "status": "active",
       "service": "svc.websites"
@@ -5138,7 +5350,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 250
+        "from": 520
       },
       "status": "active",
       "service": "svc.websites"
@@ -5280,7 +5492,7 @@
       },
       "pricing": {
         "type": "fixed",
-        "from": 80
+        "from": 170
       },
       "status": "active",
       "service": "svc.websites"
@@ -5353,7 +5565,7 @@
       },
       "pricing": {
         "type": "project",
-        "from": 120
+        "from": 250
       },
       "status": "active",
       "service": "svc.websites"
@@ -5656,14 +5868,252 @@
       "service": "svc.websites"
     },
     {
+      "id": "feat.websites.landing_design",
+      "name": {
+        "en": "Landing page design",
+        "ar": "تصميم صفحة الهبوط"
+      },
+      "description": {
+        "en": "The page designed to one action — layout, visual design, every width, and a design review before anything is built.",
+        "ar": "تصميم الصفحة حول إجراء واحد — التخطيط والتصميم البصري وكل العروض، مع مراجعة تصميمية قبل بدء التنفيذ."
+      },
+      "purpose": {
+        "en": "A campaign page argues for one thing. That argument is made in the design.",
+        "ar": "صفحة الحملة تدافع عن شيء واحد. وهذا الدفاع يُصنع في التصميم."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "The campaign’s offer and audience",
+        "The single action the page exists to produce",
+        "Copy and imagery",
+        "Brand assets, ours or the client’s"
+      ],
+      "dependencies": {
+        "requires": [],
+        "recommends": [
+          "feat.branding.logo",
+          "feat.branding.color_system",
+          "feat.branding.type_system"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.design_concept",
+      "executionSteps": [
+        "Agree the single action in one sentence before drawing anything.",
+        "Design the phone width first, because it is the one that has to give something up.",
+        "Design the states nobody remembers: submitted, failed, sold out, long copy, no image.",
+        "Review the design against the one action and cut whatever does not serve it."
+      ],
+      "tools": [
+        "Design tool",
+        "Contrast checker"
+      ],
+      "outputs": [
+        "Approved design at every supported width"
+      ],
+      "deliverables": [
+        "Design file with desktop and phone widths",
+        "Token sheet"
+      ],
+      "qualityChecks": [
+        "Exactly one primary action in the design",
+        "Text contrast measured, not eyeballed",
+        "Arabic laid out right-to-left where the page is bilingual",
+        "Every interactive element has a visible focus state in the design"
+      ],
+      "completionCriteria": "Client has approved the design at both widths in writing.",
+      "revisionRules": {
+        "rounds": 2,
+        "scope": "Revision of the approved direction. A new direction restarts the concept stage and is quoted."
+      },
+      "automationPotential": "assist",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 5,
+        "max": 16
+      },
+      "pricing": {
+        "type": "quote",
+        "quoteReason": {
+          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
+          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
+        }
+      },
+      "status": "active",
+      "service": "svc.websites"
+    },
+    {
+      "id": "feat.websites.landing_build",
+      "name": {
+        "en": "Landing page development",
+        "ar": "تطوير صفحة الهبوط"
+      },
+      "description": {
+        "en": "The approved design built as a working page — responsive, integrated with whatever it has to talk to, and tested.",
+        "ar": "تنفيذ التصميم المعتمد كصفحة تعمل — متجاوبة ومتكاملة مع ما تحتاج الاتصال به ومُختبَرة."
+      },
+      "purpose": {
+        "en": "The part that turns a picture into something a visitor can act in.",
+        "ar": "الجزء الذي يحوّل الصورة إلى شيء يتفاعل معه الزائر."
+      },
+      "category": "core",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "Approved design",
+        "Final copy and images",
+        "Keys for anything it integrates with",
+        "A destination for whatever the form produces"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.landing_design"
+        ],
+        "recommends": [
+          "feat.marketing.conversion_tracking"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.build",
+      "executionSteps": [
+        "Build semantic markup first, then style it.",
+        "Build every state the design defined, including the failure path.",
+        "Wire the form to somewhere a person actually reads, and prove a message arrives.",
+        "Check it at 320, 375, 414, 768, 1024 and 1280, in every language in scope."
+      ],
+      "tools": [
+        "Editor",
+        "Build tooling",
+        "Browser dev tools"
+      ],
+      "outputs": [
+        "A working page on a staging address"
+      ],
+      "deliverables": [
+        "Source code",
+        "Staging URL"
+      ],
+      "qualityChecks": [
+        "Matches the approved design at every supported width",
+        "No console error",
+        "The form’s message received and read by a person, not merely submitted",
+        "The failure path produces something the visitor can act on",
+        "Loads in under two seconds on a throttled connection"
+      ],
+      "completionCriteria": "Page built, reviewable on staging, with its form proven end to end.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Build corrections are not revisions. Design changes after approval are quoted."
+      },
+      "automationPotential": "partial",
+      "humanApprovalRequired": false,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 4,
+        "max": 14
+      },
+      "pricing": {
+        "type": "quote",
+        "quoteReason": {
+          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
+          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
+        }
+      },
+      "status": "active",
+      "service": "svc.websites"
+    },
+    {
+      "id": "feat.websites.landing_deploy",
+      "name": {
+        "en": "Landing page deployment",
+        "ar": "نشر صفحة الهبوط"
+      },
+      "description": {
+        "en": "Hosting, the address it lives at, going live, and checking the live page rather than the one we deployed.",
+        "ar": "الاستضافة والعنوان الذي تعيش عليه، والنشر، وفحص الصفحة الحية لا التي نشرناها."
+      },
+      "purpose": {
+        "en": "A campaign cannot start until the page it points at exists.",
+        "ar": "لا تبدأ الحملة قبل أن توجد الصفحة التي تشير إليها."
+      },
+      "category": "operations",
+      "selectable": true,
+      "addonGroup": null,
+      "inputs": [
+        "A tested build",
+        "A domain or subdomain, and who holds the account",
+        "Client sign-off on staging"
+      ],
+      "dependencies": {
+        "requires": [
+          "feat.websites.landing_build"
+        ],
+        "recommends": [
+          "feat.websites.hosting"
+        ],
+        "conflicts": []
+      },
+      "workflow": "wf.release",
+      "executionSteps": [
+        "Provision or reuse hosting, in the client’s name.",
+        "Point the domain or subdomain and force HTTPS.",
+        "Deploy, then walk the live page rather than trusting the deploy.",
+        "Confirm the conversion fires on the live address, not on staging."
+      ],
+      "tools": [
+        "Hosting console",
+        "DNS console",
+        "Browsers",
+        "Analytics console"
+      ],
+      "outputs": [
+        "A live landing page"
+      ],
+      "deliverables": [
+        "The live URL",
+        "A recorded test conversion",
+        "Access to wherever it is hosted"
+      ],
+      "qualityChecks": [
+        "HTTPS forced on the live address",
+        "Live page re-checked page-state by page-state, not assumed identical to staging",
+        "A test conversion seen end to end on the live address",
+        "A rollback identified before deploying"
+      ],
+      "completionCriteria": "Live, verified by us, and confirmed by the client.",
+      "revisionRules": {
+        "rounds": 0,
+        "scope": "Fixes, not revisions."
+      },
+      "automationPotential": "full",
+      "humanApprovalRequired": true,
+      "estimatedEffort": {
+        "unit": "hours",
+        "min": 1,
+        "max": 5
+      },
+      "pricing": {
+        "type": "quote",
+        "quoteReason": {
+          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
+          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
+        }
+      },
+      "status": "active",
+      "service": "svc.websites"
+    },
+    {
       "id": "feat.websites.extra_landing",
       "name": {
         "en": "Additional landing page",
         "ar": "صفحة هبوط إضافية"
       },
       "description": {
-        "en": "A standalone page built for one campaign, with its own message and one action.",
-        "ar": "صفحة مستقلة لحملة واحدة، برسالة واحدة وإجراء واحد."
+        "en": "A standalone page built for one campaign — designed, developed and put live, with one message and one action.",
+        "ar": "صفحة مستقلة لحملة واحدة — تُصمَّم وتُطوَّر وتُنشر، برسالة واحدة وإجراء واحد."
       },
       "purpose": {
         "en": "So a campaign sends people somewhere built for it.",
@@ -5691,11 +6141,10 @@
         ],
         "conflicts": []
       },
-      "workflow": "wf.build",
+      "workflow": "wf.composite",
       "executionSteps": [
-        "Write or agree the single action before designing anything.",
-        "Design and build the page to that one action.",
-        "Instrument the conversion so the campaign can be judged."
+        "Run each part in order: design, then development, then deployment.",
+        "Do not start a part before the one before it is approved."
       ],
       "tools": [
         "Design tool",
@@ -5706,15 +6155,13 @@
         "One live landing page"
       ],
       "deliverables": [
-        "The live page",
-        "A recorded conversion event"
+        "Everything the three parts deliver"
       ],
       "qualityChecks": [
-        "Exactly one primary action on the page",
-        "Loads in under two seconds on a throttled connection",
-        "Conversion event fires and is visible in analytics"
+        "Every part’s own checks passed",
+        "Nothing started before the part before it was approved"
       ],
-      "completionCriteria": "Page live and a test conversion recorded end to end.",
+      "completionCriteria": "All three parts complete for the ordered number of pages.",
       "revisionRules": {
         "rounds": 1,
         "scope": "Per page."
@@ -5723,8 +6170,8 @@
       "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
-        "min": 5,
-        "max": 14
+        "min": 10,
+        "max": 35
       },
       "pricing": {
         "type": "unit",
@@ -5742,6 +6189,12 @@
         "maxQty": 20
       },
       "status": "active",
+      "_composedOf": "THE PUBLISHED PRICE BUYS THE WHOLE PAGE, and this is what the whole page is made of. The three parts have different workflows, different dependencies, different deliverables and different automation potential — deployment is `full`, design is `assist` — so they are three features. A client may take design alone; that is a scope the studio has never published a price for, so each part alone is quoted. Selecting design does NOT bring development or deployment with it: the dependency runs the other way.",
+      "composedOf": [
+        "feat.websites.landing_design",
+        "feat.websites.landing_build",
+        "feat.websites.landing_deploy"
+      ],
       "service": "svc.websites"
     }
   ],
@@ -9086,7 +9539,8 @@
         "A status trusted instead of verified at the platform",
         "An escalation with no owner"
       ],
-      "completion_condition": "The month's campaigns delivered on every platform in scope."
+      "completion_condition": "The month's campaigns delivered on every platform in scope.",
+      "platform_set": "advertising"
     },
     {
       "workflow_id": "wf.campaign::feat.marketing.campaign_setup",
@@ -9329,19 +9783,21 @@
       "completion_condition": "Client has agreed the target and the stop condition in writing."
     },
     {
-      "workflow_id": "wf.plan::feat.marketing.audience_targeting",
+      "workflow_id": "wf.plan::feat.marketing.audience",
       "template": "wf.plan",
-      "feature_id": "feat.marketing.audience_targeting",
+      "feature_id": "feat.marketing.audience",
       "service_id": "svc.marketing",
       "trigger": "The period begins, or the previous period's report is in.",
       "prerequisites": [],
       "inputs": [
         "Who the client believes their customer is",
         "Geography and language",
-        "Any customer list the client may lawfully use"
+        "Any customer list the client may lawfully use",
+        "Past campaign or site analytics, from the research level up",
+        "Enough budget per segment to reach significance, at the segmentation level"
       ],
       "outputs": [
-        "A defined audience"
+        "A defined audience, at the depth bought"
       ],
       "stages": [
         {
@@ -9350,14 +9806,18 @@
           "inputs": [
             "Who the client believes their customer is",
             "Geography and language",
-            "Any customer list the client may lawfully use"
+            "Any customer list the client may lawfully use",
+            "Past campaign or site analytics, from the research level up",
+            "Enough budget per segment to reach significance, at the segmentation level"
           ],
           "actions": [
             "Read the previous period's results where they exist.",
             "Collect the client's own dates, launches and constraints."
           ],
           "tools": [
-            "Platform audience tools"
+            "Platform audience tools",
+            "Platform analytics",
+            "Public ad libraries"
           ],
           "output": "The material to plan from",
           "validation": "The previous period's report has been read, where one exists.",
@@ -9371,11 +9831,15 @@
           ],
           "actions": [
             "Write the audience in words before building it in a tool.",
-            "Build it on the platform, and check its size is neither absurd nor empty.",
-            "Exclude existing customers where paying to reach them again is waste."
+            "Build it on the platform and check its size is neither absurd nor empty.",
+            "Exclude existing customers where paying to reach them again is waste.",
+            "At the research level: read what past campaigns and site analytics already show, and what competitors are running, before proposing anything new.",
+            "At the segmentation level: split only where the message genuinely differs, and build exclusions so segments do not bid against each other."
           ],
           "tools": [
-            "Platform audience tools"
+            "Platform audience tools",
+            "Platform analytics",
+            "Public ad libraries"
           ],
           "output": "A draft plan",
           "validation": "Every element has a stated purpose, not just a slot.",
@@ -9396,12 +9860,16 @@
             "Document editor"
           ],
           "output": [
-            "Saved audiences with a written definition each"
+            "Saved audiences with a written definition each",
+            "Findings document, from the research level up",
+            "A per-segment budget split, at the segmentation level"
           ],
           "validation": [
             "Audience size plausible for the budget",
             "Exclusions applied",
-            "Any uploaded list carries consent the client can evidence"
+            "Any uploaded list carries consent the client can evidence",
+            "Every finding traceable to a source, not to an impression",
+            "Segments mutually exclusive and each large enough to produce a readable result"
           ],
           "next_stage": null
         }
@@ -9416,110 +9884,9 @@
       "validation": [
         "Audience size plausible for the budget",
         "Exclusions applied",
-        "Any uploaded list carries consent the client can evidence"
-      ],
-      "approval_points": [
-        "agree"
-      ],
-      "failure_conditions": [
-        "Production started against an unapproved plan",
-        "A plan with no measurable intent"
-      ],
-      "completion_condition": "Audience built, sized and approved before the campaign goes live."
-    },
-    {
-      "workflow_id": "wf.plan::feat.marketing.audience_research",
-      "template": "wf.plan",
-      "feature_id": "feat.marketing.audience_research",
-      "service_id": "svc.marketing",
-      "trigger": "The period begins, or the previous period's report is in.",
-      "prerequisites": [],
-      "inputs": [
-        "Existing campaign or site analytics",
-        "Competitor advertising, publicly visible",
-        "The client's own sales knowledge"
-      ],
-      "outputs": [
-        "Research findings and a tested-audience proposal"
-      ],
-      "stages": [
-        {
-          "stage_id": "gather",
-          "objective": "Read what already happened before deciding what happens next.",
-          "inputs": [
-            "Existing campaign or site analytics",
-            "Competitor advertising, publicly visible",
-            "The client's own sales knowledge"
-          ],
-          "actions": [
-            "Read the previous period's results where they exist.",
-            "Collect the client's own dates, launches and constraints."
-          ],
-          "tools": [
-            "Platform analytics",
-            "Public ad libraries",
-            "Site analytics"
-          ],
-          "output": "The material to plan from",
-          "validation": "The previous period's report has been read, where one exists.",
-          "next_stage": "decide"
-        },
-        {
-          "stage_id": "decide",
-          "objective": "Make the decisions the plan is made of.",
-          "inputs": [
-            "Gathered material"
-          ],
-          "actions": [
-            "Read what past campaigns and site analytics already show before researching anything new.",
-            "Look at what competitors are actually running, in the platforms' public ad libraries.",
-            "Write findings as differences from the client's assumption — that is the useful part.",
-            "Propose the audiences worth testing, in priority order."
-          ],
-          "tools": [
-            "Platform analytics",
-            "Public ad libraries",
-            "Site analytics"
-          ],
-          "output": "A draft plan",
-          "validation": "Every element has a stated purpose, not just a slot.",
-          "next_stage": "agree"
-        },
-        {
-          "stage_id": "agree",
-          "objective": "Get it approved before anything is produced against it.",
-          "inputs": [
-            "Draft plan"
-          ],
-          "actions": [
-            "Send for approval with enough time to answer.",
-            "Take one round of changes.",
-            "Fix the plan before production, not during it."
-          ],
-          "tools": [
-            "Document editor"
-          ],
-          "output": [
-            "Findings document",
-            "A prioritised audience list"
-          ],
-          "validation": [
-            "Every finding traceable to a source, not to an impression",
-            "The client's assumption stated and either confirmed or contradicted explicitly"
-          ],
-          "next_stage": null
-        }
-      ],
-      "decision_points": [
-        {
-          "at": "agree",
-          "question": "Has approval arrived in time to produce against it?",
-          "ifNo": "Say what will be late, before it is late."
-        }
-      ],
-      "validation": [
+        "Any uploaded list carries consent the client can evidence",
         "Every finding traceable to a source, not to an impression",
-        "The client's assumption stated and either confirmed or contradicted explicitly"
+        "Segments mutually exclusive and each large enough to produce a readable result"
       ],
       "approval_points": [
         "agree"
@@ -9528,109 +9895,7 @@
         "Production started against an unapproved plan",
         "A plan with no measurable intent"
       ],
-      "completion_condition": "Findings delivered and at least one audience from them entered testing."
-    },
-    {
-      "workflow_id": "wf.plan::feat.marketing.audience_segmentation",
-      "template": "wf.plan",
-      "feature_id": "feat.marketing.audience_segmentation",
-      "service_id": "svc.marketing",
-      "trigger": "The period begins, or the previous period's report is in.",
-      "prerequisites": [
-        "feat.marketing.audience_research"
-      ],
-      "inputs": [
-        "Research findings",
-        "Enough budget for each segment to reach significance",
-        "Creative that differs by segment"
-      ],
-      "outputs": [
-        "Mutually exclusive segments with their own creative and budget"
-      ],
-      "stages": [
-        {
-          "stage_id": "gather",
-          "objective": "Read what already happened before deciding what happens next.",
-          "inputs": [
-            "Research findings",
-            "Enough budget for each segment to reach significance",
-            "Creative that differs by segment"
-          ],
-          "actions": [
-            "Read the previous period's results where they exist.",
-            "Collect the client's own dates, launches and constraints."
-          ],
-          "tools": [
-            "Platform audience tools"
-          ],
-          "output": "The material to plan from",
-          "validation": "The previous period's report has been read, where one exists.",
-          "next_stage": "decide"
-        },
-        {
-          "stage_id": "decide",
-          "objective": "Make the decisions the plan is made of.",
-          "inputs": [
-            "Gathered material"
-          ],
-          "actions": [
-            "Split only where the message genuinely differs — a split with the same ad in both is a smaller budget, not a strategy.",
-            "Check each segment can reach significance at the available budget.",
-            "Build exclusions between segments so they do not bid against each other."
-          ],
-          "tools": [
-            "Platform audience tools"
-          ],
-          "output": "A draft plan",
-          "validation": "Every element has a stated purpose, not just a slot.",
-          "next_stage": "agree"
-        },
-        {
-          "stage_id": "agree",
-          "objective": "Get it approved before anything is produced against it.",
-          "inputs": [
-            "Draft plan"
-          ],
-          "actions": [
-            "Send for approval with enough time to answer.",
-            "Take one round of changes.",
-            "Fix the plan before production, not during it."
-          ],
-          "tools": [
-            "Document editor"
-          ],
-          "output": [
-            "Segment definitions",
-            "Per-segment budget split"
-          ],
-          "validation": [
-            "Segments mutually exclusive",
-            "Each large enough to produce a readable result",
-            "Each has creative that differs, not just a different name"
-          ],
-          "next_stage": null
-        }
-      ],
-      "decision_points": [
-        {
-          "at": "agree",
-          "question": "Has approval arrived in time to produce against it?",
-          "ifNo": "Say what will be late, before it is late."
-        }
-      ],
-      "validation": [
-        "Segments mutually exclusive",
-        "Each large enough to produce a readable result",
-        "Each has creative that differs, not just a different name"
-      ],
-      "approval_points": [
-        "agree"
-      ],
-      "failure_conditions": [
-        "Production started against an unapproved plan",
-        "A plan with no measurable intent"
-      ],
-      "completion_condition": "Segments live, non-overlapping, and each producing readable data."
+      "completion_condition": "Audience built, sized and approved before the campaign goes live, at the depth the scope bought."
     },
     {
       "workflow_id": "wf.content::feat.marketing.ad_copy",
@@ -10299,6 +10564,7 @@
       "trigger": "Enough data has accumulated to read.",
       "prerequisites": [
         "feat.marketing.campaign_setup",
+        "feat.marketing.monitoring",
         "A live campaign past its learning phase"
       ],
       "inputs": [
@@ -10337,7 +10603,8 @@
             "Wait for enough data before changing anything — most optimisation is reading noise.",
             "Change one variable at a time, and write down the number that justified it.",
             "Turn off what is losing before adding what might win.",
-            "Leave the winning ad set alone."
+            "Leave the winning ad set alone.",
+            "At the full level: track cost per result per creative and rotate on the trend, and reallocate budget inside the agreed total without ever exceeding it."
           ],
           "tools": [
             "Platform ads managers"
@@ -10378,13 +10645,16 @@
             "Platform ads managers"
           ],
           "output": [
-            "A change log with the figure behind each change"
+            "A change log with the figure behind each change",
+            "A before-and-after figure per budget move, at the full level"
           ],
           "validation": [
             "No change made on fewer results than the platform's own learning threshold",
             "One variable at a time",
             "Every change recorded with its justification",
-            "The winner left running"
+            "The winner left running",
+            "No creative left running past its measured fatigue point",
+            "The monthly total never exceeded"
           ],
           "next_stage": null
         }
@@ -10405,7 +10675,9 @@
         "No change made on fewer results than the platform's own learning threshold",
         "One variable at a time",
         "Every change recorded with its justification",
-        "The winner left running"
+        "The winner left running",
+        "No creative left running past its measured fatigue point",
+        "The monthly total never exceeded"
       ],
       "approval_points": [],
       "failure_conditions": [
@@ -10414,250 +10686,6 @@
         "A change made below the learning threshold"
       ],
       "completion_condition": "The month closes with a change log and a stated direction for the next."
-    },
-    {
-      "workflow_id": "wf.optimise::feat.marketing.creative_optimization",
-      "template": "wf.optimise",
-      "feature_id": "feat.marketing.creative_optimization",
-      "service_id": "svc.marketing",
-      "trigger": "Enough data has accumulated to read.",
-      "prerequisites": [
-        "feat.marketing.campaign_setup",
-        "A live campaign past its learning phase"
-      ],
-      "inputs": [
-        "Frequency and cost-per-result trend by creative",
-        "New creative ready to rotate in"
-      ],
-      "outputs": [
-        "A refreshed creative set"
-      ],
-      "stages": [
-        {
-          "stage_id": "read",
-          "objective": "Establish there is a signal before acting on it.",
-          "inputs": [
-            "Frequency and cost-per-result trend by creative",
-            "New creative ready to rotate in"
-          ],
-          "actions": [
-            "Check the result count against the platform's own threshold.",
-            "Compare against the agreed target, not against yesterday."
-          ],
-          "tools": [
-            "Platform ads managers",
-            "Vector editor"
-          ],
-          "output": "A read of the current state",
-          "validation": "The sample is large enough that the difference is not noise.",
-          "next_stage": "change"
-        },
-        {
-          "stage_id": "change",
-          "objective": "Make one change.",
-          "inputs": [
-            "The read"
-          ],
-          "actions": [
-            "Track cost per result per creative, not per campaign.",
-            "Rotate on the trend, before the drop, not after it.",
-            "Keep the format that works and change the message, or the reverse — never both at once."
-          ],
-          "tools": [
-            "Platform ads managers",
-            "Vector editor"
-          ],
-          "output": "One change, made",
-          "validation": "Exactly one variable moved.",
-          "next_stage": "record"
-        },
-        {
-          "stage_id": "record",
-          "objective": "Write down the number that justified it.",
-          "inputs": [
-            "The change"
-          ],
-          "actions": [
-            "Log what changed, when, and the figure behind it.",
-            "Note what would make us reverse it."
-          ],
-          "tools": [
-            "Document editor"
-          ],
-          "output": "A change log entry",
-          "validation": "The entry names a figure, not a feeling.",
-          "next_stage": "observe"
-        },
-        {
-          "stage_id": "observe",
-          "objective": "Let it settle before changing anything else.",
-          "inputs": [
-            "Change log entry"
-          ],
-          "actions": [
-            "Wait out the learning period.",
-            "Compare against the recorded before-figure.",
-            "Reverse it if the reversal condition is met."
-          ],
-          "tools": [
-            "Platform ads managers",
-            "Vector editor"
-          ],
-          "output": [
-            "Rotated creative",
-            "A performance note per creative"
-          ],
-          "validation": [
-            "No creative left running past its measured fatigue point",
-            "Replacement differs in one dimension, so the result is readable"
-          ],
-          "next_stage": null
-        }
-      ],
-      "decision_points": [
-        {
-          "at": "read",
-          "question": "Is the sample below the platform's learning threshold?",
-          "ifYes": "Change nothing. Most optimisation is reading noise confidently."
-        },
-        {
-          "at": "observe",
-          "question": "Did the change make it worse?",
-          "ifYes": "Reverse it and log that too. An unlogged reversal is how the same change gets made again next quarter."
-        }
-      ],
-      "validation": [
-        "No creative left running past its measured fatigue point",
-        "Replacement differs in one dimension, so the result is readable"
-      ],
-      "approval_points": [],
-      "failure_conditions": [
-        "More than one variable changed at once",
-        "A change with no recorded justification",
-        "A change made below the learning threshold"
-      ],
-      "completion_condition": "The month closes with creative rotated on evidence rather than on schedule."
-    },
-    {
-      "workflow_id": "wf.optimise::feat.marketing.budget_optimization",
-      "template": "wf.optimise",
-      "feature_id": "feat.marketing.budget_optimization",
-      "service_id": "svc.marketing",
-      "trigger": "Enough data has accumulated to read.",
-      "prerequisites": [
-        "feat.marketing.campaign_setup",
-        "A live campaign past its learning phase"
-      ],
-      "inputs": [
-        "The agreed total budget",
-        "Cost per result by campaign and segment"
-      ],
-      "outputs": [
-        "Budget allocated to what performs"
-      ],
-      "stages": [
-        {
-          "stage_id": "read",
-          "objective": "Establish there is a signal before acting on it.",
-          "inputs": [
-            "The agreed total budget",
-            "Cost per result by campaign and segment"
-          ],
-          "actions": [
-            "Check the result count against the platform's own threshold.",
-            "Compare against the agreed target, not against yesterday."
-          ],
-          "tools": [
-            "Platform ads managers"
-          ],
-          "output": "A read of the current state",
-          "validation": "The sample is large enough that the difference is not noise.",
-          "next_stage": "change"
-        },
-        {
-          "stage_id": "change",
-          "objective": "Make one change.",
-          "inputs": [
-            "The read"
-          ],
-          "actions": [
-            "Never exceed the client's written total — reallocate inside it.",
-            "Move in steps small enough not to reset the platform's learning.",
-            "Record the before and after cost per result for each move."
-          ],
-          "tools": [
-            "Platform ads managers"
-          ],
-          "output": "One change, made",
-          "validation": "Exactly one variable moved.",
-          "next_stage": "record"
-        },
-        {
-          "stage_id": "record",
-          "objective": "Write down the number that justified it.",
-          "inputs": [
-            "The change"
-          ],
-          "actions": [
-            "Log what changed, when, and the figure behind it.",
-            "Note what would make us reverse it."
-          ],
-          "tools": [
-            "Document editor"
-          ],
-          "output": "A change log entry",
-          "validation": "The entry names a figure, not a feeling.",
-          "next_stage": "observe"
-        },
-        {
-          "stage_id": "observe",
-          "objective": "Let it settle before changing anything else.",
-          "inputs": [
-            "Change log entry"
-          ],
-          "actions": [
-            "Wait out the learning period.",
-            "Compare against the recorded before-figure.",
-            "Reverse it if the reversal condition is met."
-          ],
-          "tools": [
-            "Platform ads managers"
-          ],
-          "output": [
-            "Allocation log with before and after figures"
-          ],
-          "validation": [
-            "Monthly total never exceeded",
-            "No move large enough to reset learning unnecessarily",
-            "Every move recorded"
-          ],
-          "next_stage": null
-        }
-      ],
-      "decision_points": [
-        {
-          "at": "read",
-          "question": "Is the sample below the platform's learning threshold?",
-          "ifYes": "Change nothing. Most optimisation is reading noise confidently."
-        },
-        {
-          "at": "observe",
-          "question": "Did the change make it worse?",
-          "ifYes": "Reverse it and log that too. An unlogged reversal is how the same change gets made again next quarter."
-        }
-      ],
-      "validation": [
-        "Monthly total never exceeded",
-        "No move large enough to reset learning unnecessarily",
-        "Every move recorded"
-      ],
-      "approval_points": [],
-      "failure_conditions": [
-        "More than one variable changed at once",
-        "A change with no recorded justification",
-        "A change made below the learning threshold"
-      ],
-      "completion_condition": "The month closes within the agreed total, with each reallocation recorded."
     },
     {
       "workflow_id": "wf.optimise::feat.marketing.ab_testing",
@@ -11269,7 +11297,8 @@
         "A status trusted instead of verified at the platform",
         "An escalation with no owner"
       ],
-      "completion_condition": "The month's plan delivered on every platform in scope."
+      "completion_condition": "The month's plan delivered on every platform in scope.",
+      "platform_set": "social"
     },
     {
       "workflow_id": "wf.plan::feat.social.content_calendar",
@@ -12130,6 +12159,7 @@
       "trigger": "The period starts.",
       "prerequisites": [
         "feat.social.account_setup",
+        "feat.social.content_calendar",
         "Access to the systems involved"
       ],
       "inputs": [
@@ -12585,6 +12615,112 @@
       "completion_condition": "Sets delivered and applied to the month's calendar."
     },
     {
+      "workflow_id": "wf.plan::feat.social.audience_research",
+      "template": "wf.plan",
+      "feature_id": "feat.social.audience_research",
+      "service_id": "svc.social",
+      "trigger": "The period begins, or the previous period's report is in.",
+      "prerequisites": [],
+      "inputs": [
+        "Existing account analytics",
+        "Competitor and adjacent accounts",
+        "Whatever the client knows from selling to these people"
+      ],
+      "outputs": [
+        "Research findings",
+        "A prioritised segment list"
+      ],
+      "stages": [
+        {
+          "stage_id": "gather",
+          "objective": "Read what already happened before deciding what happens next.",
+          "inputs": [
+            "Existing account analytics",
+            "Competitor and adjacent accounts",
+            "Whatever the client knows from selling to these people"
+          ],
+          "actions": [
+            "Read the previous period's results where they exist.",
+            "Collect the client's own dates, launches and constraints."
+          ],
+          "tools": [
+            "Platform analytics",
+            "Public account research",
+            "Document editor"
+          ],
+          "output": "The material to plan from",
+          "validation": "The previous period's report has been read, where one exists.",
+          "next_stage": "decide"
+        },
+        {
+          "stage_id": "decide",
+          "objective": "Make the decisions the plan is made of.",
+          "inputs": [
+            "Gathered material"
+          ],
+          "actions": [
+            "Read the account’s own history before looking anywhere else.",
+            "Read the accounts around it — what they publish, what earns a reply, what they never touch.",
+            "Write the findings as differences from what the client believes, because that is the useful half.",
+            "Name the segments worth speaking to differently, in priority order."
+          ],
+          "tools": [
+            "Platform analytics",
+            "Public account research",
+            "Document editor"
+          ],
+          "output": "A draft plan",
+          "validation": "Every element has a stated purpose, not just a slot.",
+          "next_stage": "agree"
+        },
+        {
+          "stage_id": "agree",
+          "objective": "Get it approved before anything is produced against it.",
+          "inputs": [
+            "Draft plan"
+          ],
+          "actions": [
+            "Send for approval with enough time to answer.",
+            "Take one round of changes.",
+            "Fix the plan before production, not during it."
+          ],
+          "tools": [
+            "Document editor"
+          ],
+          "output": [
+            "Findings document",
+            "Segments with a stated reason each"
+          ],
+          "validation": [
+            "Every finding traceable to something we can point at, not to an impression",
+            "The client’s own assumption stated and either confirmed or contradicted explicitly",
+            "Arabic-language audiences researched in Arabic, not through translation"
+          ],
+          "next_stage": null
+        }
+      ],
+      "decision_points": [
+        {
+          "at": "agree",
+          "question": "Has approval arrived in time to produce against it?",
+          "ifNo": "Say what will be late, before it is late."
+        }
+      ],
+      "validation": [
+        "Every finding traceable to something we can point at, not to an impression",
+        "The client’s own assumption stated and either confirmed or contradicted explicitly",
+        "Arabic-language audiences researched in Arabic, not through translation"
+      ],
+      "approval_points": [
+        "agree"
+      ],
+      "failure_conditions": [
+        "Production started against an unapproved plan",
+        "A plan with no measurable intent"
+      ],
+      "completion_condition": "Findings delivered and at least one segment from them carried into the next content plan."
+    },
+    {
       "workflow_id": "wf.report::feat.social.report",
       "template": "wf.report",
       "feature_id": "feat.social.report",
@@ -12706,6 +12842,260 @@
         "Sent after the window without warning"
       ],
       "completion_condition": "Report sent and next month's plan carries at least one decision from it."
+    },
+    {
+      "workflow_id": "wf.report::feat.social.growth_analysis",
+      "template": "wf.report",
+      "feature_id": "feat.social.growth_analysis",
+      "service_id": "svc.social",
+      "trigger": "The reporting period closes.",
+      "prerequisites": [
+        "feat.social.report",
+        "A complete period of activity"
+      ],
+      "inputs": [
+        "A published month",
+        "Platform analytics",
+        "The previous month’s analysis, from month two"
+      ],
+      "outputs": [
+        "A growth reading with attribution"
+      ],
+      "stages": [
+        {
+          "stage_id": "collect",
+          "objective": "Take the numbers from the source, not from a dashboard we built.",
+          "inputs": [
+            "A published month",
+            "Platform analytics",
+            "The previous month’s analysis, from month two"
+          ],
+          "actions": [
+            "Export from each platform's own reporting.",
+            "Reconcile spend against the client's own invoice where money is involved."
+          ],
+          "tools": [
+            "Platform analytics",
+            "Spreadsheet",
+            "Document editor"
+          ],
+          "output": "Verified figures",
+          "validation": "Every figure traceable to a platform screen.",
+          "next_stage": "interpret"
+        },
+        {
+          "stage_id": "interpret",
+          "objective": "Say what the numbers mean, including when it is unflattering.",
+          "inputs": [
+            "Verified figures"
+          ],
+          "actions": [
+            "Track the movement over months, not the month in isolation — one month is weather.",
+            "Attribute the movement to specific posts, and say when it cannot be attributed.",
+            "Separate growth that was bought or borrowed (a collaboration, an ad) from growth the content earned.",
+            "End with the pattern worth repeating and the one worth stopping."
+          ],
+          "tools": [
+            "Document editor"
+          ],
+          "output": "A draft report",
+          "validation": "The agreed target is stated and compared to, whichever way it went.",
+          "next_stage": "decide"
+        },
+        {
+          "stage_id": "decide",
+          "objective": "Turn the reading into a decision.",
+          "inputs": [
+            "Draft report"
+          ],
+          "actions": [
+            "State what changes next period, and why.",
+            "Where nothing changes, say that explicitly and why."
+          ],
+          "tools": [
+            "Document editor"
+          ],
+          "output": "A report with a decision in it",
+          "validation": [
+            "Every figure traceable to a platform screen",
+            "Paid and organic growth reported apart",
+            "No trend claimed on a single month of data",
+            "At least one thing named to stop doing"
+          ],
+          "next_stage": "send"
+        },
+        {
+          "stage_id": "send",
+          "objective": "Deliver it in time for it to be acted on.",
+          "inputs": [
+            "Final report"
+          ],
+          "actions": [
+            "Send within the agreed window.",
+            "Where a call follows, send the report before the call, not during it."
+          ],
+          "tools": [
+            "Document editor"
+          ],
+          "output": [
+            "Growth analysis appended to the monthly report"
+          ],
+          "validation": "Sent within the agreed number of days after period end.",
+          "next_stage": null
+        }
+      ],
+      "decision_points": [
+        {
+          "at": "interpret",
+          "question": "Did the period miss its target?",
+          "ifYes": "Say so in the first paragraph. A report that buries the miss is worth less than no report."
+        }
+      ],
+      "validation": [
+        "Every figure traceable to a platform screen",
+        "Paid and organic growth reported apart",
+        "No trend claimed on a single month of data",
+        "At least one thing named to stop doing"
+      ],
+      "approval_points": [],
+      "failure_conditions": [
+        "A figure that no platform screen supports",
+        "A missed target not stated plainly",
+        "A report with no decision in it",
+        "Sent after the window without warning"
+      ],
+      "completion_condition": "Analysis delivered with one repeat and one stop named."
+    },
+    {
+      "workflow_id": "wf.optimise::feat.social.performance_optimization",
+      "template": "wf.optimise",
+      "feature_id": "feat.social.performance_optimization",
+      "service_id": "svc.social",
+      "trigger": "Enough data has accumulated to read.",
+      "prerequisites": [
+        "feat.social.publishing",
+        "feat.social.growth_analysis",
+        "A live campaign past its learning phase"
+      ],
+      "inputs": [
+        "The month’s analysis",
+        "The approved calendar",
+        "Enough published items to compare"
+      ],
+      "outputs": [
+        "A changed plan with the evidence behind it"
+      ],
+      "stages": [
+        {
+          "stage_id": "read",
+          "objective": "Establish there is a signal before acting on it.",
+          "inputs": [
+            "The month’s analysis",
+            "The approved calendar",
+            "Enough published items to compare"
+          ],
+          "actions": [
+            "Check the result count against the platform's own threshold.",
+            "Compare against the agreed target, not against yesterday."
+          ],
+          "tools": [
+            "Platform analytics",
+            "Scheduler",
+            "Document editor"
+          ],
+          "output": "A read of the current state",
+          "validation": "The sample is large enough that the difference is not noise.",
+          "next_stage": "change"
+        },
+        {
+          "stage_id": "change",
+          "objective": "Make one change.",
+          "inputs": [
+            "The read"
+          ],
+          "actions": [
+            "Change one thing at a time — format, hook, posting time or length — never several at once.",
+            "Give the change a full cycle before reading it.",
+            "Record the figure that justified the change and the figure that would reverse it.",
+            "Feed what survives back into the next calendar rather than into a document nobody opens."
+          ],
+          "tools": [
+            "Platform analytics",
+            "Scheduler",
+            "Document editor"
+          ],
+          "output": "One change, made",
+          "validation": "Exactly one variable moved.",
+          "next_stage": "record"
+        },
+        {
+          "stage_id": "record",
+          "objective": "Write down the number that justified it.",
+          "inputs": [
+            "The change"
+          ],
+          "actions": [
+            "Log what changed, when, and the figure behind it.",
+            "Note what would make us reverse it."
+          ],
+          "tools": [
+            "Document editor"
+          ],
+          "output": "A change log entry",
+          "validation": "The entry names a figure, not a feeling.",
+          "next_stage": "observe"
+        },
+        {
+          "stage_id": "observe",
+          "objective": "Let it settle before changing anything else.",
+          "inputs": [
+            "Change log entry"
+          ],
+          "actions": [
+            "Wait out the learning period.",
+            "Compare against the recorded before-figure.",
+            "Reverse it if the reversal condition is met."
+          ],
+          "tools": [
+            "Platform analytics",
+            "Scheduler",
+            "Document editor"
+          ],
+          "output": [
+            "A change log with a before and after figure per change"
+          ],
+          "validation": [
+            "One variable per change",
+            "No change read before a full cycle",
+            "Every change carried into the next calendar or explicitly reversed"
+          ],
+          "next_stage": null
+        }
+      ],
+      "decision_points": [
+        {
+          "at": "read",
+          "question": "Is the sample below the platform's learning threshold?",
+          "ifYes": "Change nothing. Most optimisation is reading noise confidently."
+        },
+        {
+          "at": "observe",
+          "question": "Did the change make it worse?",
+          "ifYes": "Reverse it and log that too. An unlogged reversal is how the same change gets made again next quarter."
+        }
+      ],
+      "validation": [
+        "One variable per change",
+        "No change read before a full cycle",
+        "Every change carried into the next calendar or explicitly reversed"
+      ],
+      "approval_points": [],
+      "failure_conditions": [
+        "More than one variable changed at once",
+        "A change with no recorded justification",
+        "A change made below the learning threshold"
+      ],
+      "completion_condition": "The month closes with each change recorded and either kept or reversed on evidence."
     },
     {
       "workflow_id": "wf.report::feat.social.strategy_review",
@@ -14240,28 +14630,188 @@
       "completion_condition": "Page live and reachable from the navigation."
     },
     {
-      "workflow_id": "wf.build::feat.websites.extra_landing",
-      "template": "wf.build",
-      "feature_id": "feat.websites.extra_landing",
+      "workflow_id": "wf.design_concept::feat.websites.landing_design",
+      "template": "wf.design_concept",
+      "feature_id": "feat.websites.landing_design",
       "service_id": "svc.websites",
-      "trigger": "The design or specification is approved and its inputs are final.",
-      "prerequisites": [],
+      "trigger": "Scope signed and the stage's prerequisites are satisfied.",
+      "prerequisites": [
+        "A completed brief from the client"
+      ],
       "inputs": [
-        "The campaign's offer and audience",
+        "The campaign’s offer and audience",
         "The single action the page exists to produce",
-        "Copy and imagery"
+        "Copy and imagery",
+        "Brand assets, ours or the client’s"
       ],
       "outputs": [
-        "One live landing page"
+        "Approved design at every supported width"
+      ],
+      "stages": [
+        {
+          "stage_id": "brief",
+          "objective": "Turn the client's material into a written direction before anything is drawn.",
+          "inputs": [
+            "The campaign’s offer and audience",
+            "The single action the page exists to produce",
+            "Copy and imagery",
+            "Brand assets, ours or the client’s"
+          ],
+          "actions": [
+            "Read every supplied input.",
+            "Write the direction in one paragraph.",
+            "Send it and get it agreed in words."
+          ],
+          "tools": [
+            "Document editor"
+          ],
+          "output": "An agreed written direction",
+          "validation": "The client has responded to the direction, not merely received it.",
+          "next_stage": "explore"
+        },
+        {
+          "stage_id": "explore",
+          "objective": "Produce genuinely distinct options.",
+          "inputs": [
+            "Agreed direction"
+          ],
+          "actions": [
+            "Agree the single action in one sentence before drawing anything.",
+            "Design the phone width first, because it is the one that has to give something up.",
+            "Design the states nobody remembers: submitted, failed, sold out, long copy, no image.",
+            "Review the design against the one action and cut whatever does not serve it."
+          ],
+          "tools": [
+            "Design tool",
+            "Contrast checker"
+          ],
+          "output": "Concepts, distinct in idea",
+          "validation": "No two concepts are the same idea in different colours.",
+          "next_stage": "present"
+        },
+        {
+          "stage_id": "present",
+          "objective": "Show the work in the context it will live in.",
+          "inputs": [
+            "Concepts"
+          ],
+          "actions": [
+            "Present in context, never floating on white.",
+            "State what each concept is arguing, in one line.",
+            "Ask for a decision, not for an opinion."
+          ],
+          "tools": [
+            "Presentation software"
+          ],
+          "output": "A chosen concept",
+          "validation": "The client has chosen one, in writing.",
+          "next_stage": "refine"
+        },
+        {
+          "stage_id": "refine",
+          "objective": "Take the chosen concept to final within the agreed rounds.",
+          "inputs": [
+            "Chosen concept",
+            "Client comments"
+          ],
+          "actions": [
+            "Apply comments.",
+            "Count the round.",
+            "Stop at the limit and quote further work rather than absorbing it."
+          ],
+          "tools": [
+            "Design tool",
+            "Contrast checker"
+          ],
+          "output": "An approved final",
+          "validation": "Rounds used are within 2.",
+          "next_stage": "release"
+        },
+        {
+          "stage_id": "release",
+          "objective": "Produce and deliver the file set.",
+          "inputs": [
+            "Approved final"
+          ],
+          "actions": [
+            "Build every format in the deliverable list.",
+            "Run every quality check.",
+            "Deliver and confirm receipt."
+          ],
+          "tools": [
+            "Design tool",
+            "Contrast checker"
+          ],
+          "output": [
+            "Design file with desktop and phone widths",
+            "Token sheet"
+          ],
+          "validation": [
+            "Exactly one primary action in the design",
+            "Text contrast measured, not eyeballed",
+            "Arabic laid out right-to-left where the page is bilingual",
+            "Every interactive element has a visible focus state in the design"
+          ],
+          "next_stage": null
+        }
+      ],
+      "decision_points": [
+        {
+          "at": "present",
+          "question": "Has the client chosen a direction, or asked for a new one?",
+          "ifNew": "Return to explore. A new direction is a new concept stage and is quoted."
+        },
+        {
+          "at": "refine",
+          "question": "Are the agreed rounds used up?",
+          "ifYes": "Stop and quote. Do not absorb."
+        }
+      ],
+      "validation": [
+        "Exactly one primary action in the design",
+        "Text contrast measured, not eyeballed",
+        "Arabic laid out right-to-left where the page is bilingual",
+        "Every interactive element has a visible focus state in the design"
+      ],
+      "approval_points": [
+        "brief",
+        "present",
+        "refine"
+      ],
+      "failure_conditions": [
+        "Concepts presented before a direction was agreed",
+        "A revision round taken without being counted",
+        "Delivery of a file that fails one of the feature's own quality checks"
+      ],
+      "completion_condition": "Client has approved the design at both widths in writing."
+    },
+    {
+      "workflow_id": "wf.build::feat.websites.landing_build",
+      "template": "wf.build",
+      "feature_id": "feat.websites.landing_build",
+      "service_id": "svc.websites",
+      "trigger": "The design or specification is approved and its inputs are final.",
+      "prerequisites": [
+        "feat.websites.landing_design"
+      ],
+      "inputs": [
+        "Approved design",
+        "Final copy and images",
+        "Keys for anything it integrates with",
+        "A destination for whatever the form produces"
+      ],
+      "outputs": [
+        "A working page on a staging address"
       ],
       "stages": [
         {
           "stage_id": "prepare",
           "objective": "Confirm the inputs are final before building on them.",
           "inputs": [
-            "The campaign's offer and audience",
-            "The single action the page exists to produce",
-            "Copy and imagery"
+            "Approved design",
+            "Final copy and images",
+            "Keys for anything it integrates with",
+            "A destination for whatever the form produces"
           ],
           "actions": [
             "Check the design is approved, not merely shown.",
@@ -14281,14 +14831,15 @@
             "Confirmed inputs"
           ],
           "actions": [
-            "Write or agree the single action before designing anything.",
-            "Design and build the page to that one action.",
-            "Instrument the conversion so the campaign can be judged."
+            "Build semantic markup first, then style it.",
+            "Build every state the design defined, including the failure path.",
+            "Wire the form to somewhere a person actually reads, and prove a message arrives.",
+            "Check it at 320, 375, 414, 768, 1024 and 1280, in every language in scope."
           ],
           "tools": [
-            "Design tool",
             "Editor",
-            "Analytics console"
+            "Build tooling",
+            "Browser dev tools"
           ],
           "output": "A working implementation on staging",
           "validation": "Matches the approved design at every supported width.",
@@ -14306,16 +14857,18 @@
             "Check the console on every page."
           ],
           "tools": [
-            "Design tool",
             "Editor",
-            "Analytics console",
+            "Build tooling",
+            "Browser dev tools",
             "Browser dev tools"
           ],
           "output": "A checked implementation",
           "validation": [
-            "Exactly one primary action on the page",
-            "Loads in under two seconds on a throttled connection",
-            "Conversion event fires and is visible in analytics"
+            "Matches the approved design at every supported width",
+            "No console error",
+            "The form’s message received and read by a person, not merely submitted",
+            "The failure path produces something the visitor can act on",
+            "Loads in under two seconds on a throttled connection"
           ],
           "next_stage": "review"
         },
@@ -14333,8 +14886,8 @@
             "Document editor"
           ],
           "output": [
-            "The live page",
-            "A recorded conversion event"
+            "Source code",
+            "Staging URL"
           ],
           "validation": "Client has seen it on their own device.",
           "next_stage": null
@@ -14353,9 +14906,11 @@
         }
       ],
       "validation": [
-        "Exactly one primary action on the page",
-        "Loads in under two seconds on a throttled connection",
-        "Conversion event fires and is visible in analytics"
+        "Matches the approved design at every supported width",
+        "No console error",
+        "The form’s message received and read by a person, not merely submitted",
+        "The failure path produces something the visitor can act on",
+        "Loads in under two seconds on a throttled connection"
       ],
       "approval_points": [
         "review"
@@ -14365,7 +14920,227 @@
         "A console error left on a page shown to the client",
         "A failure path never tried"
       ],
-      "completion_condition": "Page live and a test conversion recorded end to end."
+      "completion_condition": "Page built, reviewable on staging, with its form proven end to end."
+    },
+    {
+      "workflow_id": "wf.release::feat.websites.landing_deploy",
+      "template": "wf.release",
+      "feature_id": "feat.websites.landing_deploy",
+      "service_id": "svc.websites",
+      "trigger": "Verification passed and the client has signed off on staging.",
+      "prerequisites": [
+        "feat.websites.landing_build",
+        "A written sign-off"
+      ],
+      "inputs": [
+        "A tested build",
+        "A domain or subdomain, and who holds the account",
+        "Client sign-off on staging"
+      ],
+      "outputs": [
+        "A live landing page"
+      ],
+      "stages": [
+        {
+          "stage_id": "rehearse",
+          "objective": "Know how to undo it before doing it.",
+          "inputs": [
+            "A tested build",
+            "A domain or subdomain, and who holds the account",
+            "Client sign-off on staging"
+          ],
+          "actions": [
+            "Identify the rollback and confirm it is available.",
+            "Take a backup of the current live state.",
+            "Pick a time when someone is available afterwards."
+          ],
+          "tools": [
+            "Hosting console",
+            "DNS console",
+            "Browsers",
+            "Analytics console"
+          ],
+          "output": "A rollback that exists",
+          "validation": "The rollback has been identified, not assumed.",
+          "next_stage": "release"
+        },
+        {
+          "stage_id": "release",
+          "objective": "Deploy.",
+          "inputs": [
+            "Approved build"
+          ],
+          "actions": [
+            "Provision or reuse hosting, in the client’s name.",
+            "Point the domain or subdomain and force HTTPS.",
+            "Deploy, then walk the live page rather than trusting the deploy.",
+            "Confirm the conversion fires on the live address, not on staging."
+          ],
+          "tools": [
+            "Hosting console",
+            "DNS console",
+            "Browsers",
+            "Analytics console"
+          ],
+          "output": "A live deployment",
+          "validation": "The deploy reported success.",
+          "next_stage": "confirm"
+        },
+        {
+          "stage_id": "confirm",
+          "objective": "Check the live thing, not the thing you deployed.",
+          "inputs": [
+            "Live deployment"
+          ],
+          "actions": [
+            "Walk the live site page by page.",
+            "Confirm HTTPS, analytics and every form on the live address.",
+            "Watch for an hour before calling it done."
+          ],
+          "tools": [
+            "Browsers",
+            "Analytics console"
+          ],
+          "output": [
+            "The live URL",
+            "A recorded test conversion",
+            "Access to wherever it is hosted"
+          ],
+          "validation": [
+            "HTTPS forced on the live address",
+            "Live page re-checked page-state by page-state, not assumed identical to staging",
+            "A test conversion seen end to end on the live address",
+            "A rollback identified before deploying"
+          ],
+          "next_stage": null
+        }
+      ],
+      "decision_points": [
+        {
+          "at": "confirm",
+          "question": "Does anything differ from staging?",
+          "ifYes": "Roll back first, diagnose second. Diagnosing in production is how a short outage becomes a long one."
+        }
+      ],
+      "validation": [
+        "HTTPS forced on the live address",
+        "Live page re-checked page-state by page-state, not assumed identical to staging",
+        "A test conversion seen end to end on the live address",
+        "A rollback identified before deploying"
+      ],
+      "approval_points": [
+        "release"
+      ],
+      "failure_conditions": [
+        "Deployed with no identified rollback",
+        "Live never checked independently of staging",
+        "Deployed at a time nobody could respond to a problem"
+      ],
+      "completion_condition": "Live, verified by us, and confirmed by the client."
+    },
+    {
+      "workflow_id": "wf.composite::feat.websites.extra_landing",
+      "template": "wf.composite",
+      "feature_id": "feat.websites.extra_landing",
+      "service_id": "svc.websites",
+      "trigger": "The composite is in the agreed scope.",
+      "prerequisites": [],
+      "inputs": [
+        "The campaign's offer and audience",
+        "The single action the page exists to produce",
+        "Copy and imagery"
+      ],
+      "outputs": [
+        "One live landing page"
+      ],
+      "stages": [
+        {
+          "stage_id": "landing_design",
+          "objective": "A campaign page argues for one thing. That argument is made in the design.",
+          "inputs": [
+            "The campaign’s offer and audience",
+            "The single action the page exists to produce",
+            "Copy and imagery",
+            "Brand assets, ours or the client’s"
+          ],
+          "actions": [
+            "Run the workflow of feat.websites.landing_design in full."
+          ],
+          "tools": [
+            "Design tool",
+            "Contrast checker"
+          ],
+          "output": "Approved design at every supported width",
+          "validation": "Client has approved the design at both widths in writing.",
+          "delegatesTo": "wf.design_concept::feat.websites.landing_design",
+          "next_stage": "landing_build"
+        },
+        {
+          "stage_id": "landing_build",
+          "objective": "The part that turns a picture into something a visitor can act in.",
+          "inputs": [
+            "Approved design",
+            "Final copy and images",
+            "Keys for anything it integrates with",
+            "A destination for whatever the form produces"
+          ],
+          "actions": [
+            "Run the workflow of feat.websites.landing_build in full."
+          ],
+          "tools": [
+            "Editor",
+            "Build tooling",
+            "Browser dev tools"
+          ],
+          "output": "A working page on a staging address",
+          "validation": "Page built, reviewable on staging, with its form proven end to end.",
+          "delegatesTo": "wf.build::feat.websites.landing_build",
+          "next_stage": "landing_deploy"
+        },
+        {
+          "stage_id": "landing_deploy",
+          "objective": "A campaign cannot start until the page it points at exists.",
+          "inputs": [
+            "A tested build",
+            "A domain or subdomain, and who holds the account",
+            "Client sign-off on staging"
+          ],
+          "actions": [
+            "Run the workflow of feat.websites.landing_deploy in full."
+          ],
+          "tools": [
+            "Hosting console",
+            "DNS console",
+            "Browsers",
+            "Analytics console"
+          ],
+          "output": "A live landing page",
+          "validation": "Live, verified by us, and confirmed by the client.",
+          "delegatesTo": "wf.release::feat.websites.landing_deploy",
+          "next_stage": null
+        }
+      ],
+      "decision_points": [
+        {
+          "at": "*",
+          "question": "Has the previous part been approved?",
+          "ifNo": "Do not start the next one. A composite run out of order is three parts and no page."
+        }
+      ],
+      "validation": [
+        "Every part’s own checks passed",
+        "Nothing started before the part before it was approved"
+      ],
+      "approval_points": [
+        "landing_design",
+        "landing_build",
+        "landing_deploy"
+      ],
+      "failure_conditions": [
+        "A part started before the part before it was approved",
+        "A part delivered that fails its own quality checks"
+      ],
+      "completion_condition": "All three parts complete for the ordered number of pages."
     }
   ]
 }

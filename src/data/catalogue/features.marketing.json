@@ -11,7 +11,15 @@
     "and `Audience Segmentation` looked like three names for one thing",
     "(docs/124 §2) and are not: they are a ladder — apply what is known,",
     "find out what is not, then split it. They stay three, and `conflicts`",
-    "stops a scope from buying the same rung twice."
+    "stops a scope from buying the same rung twice.",
+    "",
+    "THREE AUDIENCE ROWS BECAME ONE, AND SO DID FOUR OPTIMISATION ROWS.",
+    "The first version of this file kept them apart, arguing they were a ladder",
+    "rather than duplicates. They were a ladder — of ONE capability — and the",
+    "ladder check the owner's decisions produced said so out loud: ads-growth",
+    "read as having dropped the targeting ads-starter had, and ads-performance as",
+    "having dropped growth's optimisation. Both were artefacts of publishing one",
+    "capability under three ids. They are tiers now."
   ],
   "service": "svc.marketing",
   "features": [
@@ -32,6 +40,17 @@
       "category": "operations",
       "selectable": true,
       "addonGroup": null,
+      "_options": "PLATFORMS ARE SCOPE, NOT A NUMBER. The quantity is derived from the platforms chosen rather than typed, so a scope records Google Ads and Meta Ads rather than \"2\" — which is the difference between something a quotation or an agent can act on and something it has to guess at. The list lives in platforms.json and is extensible: adding one is an entry there, and it appears in the chooser in both languages with no code change.",
+      "options": {
+        "id": "platforms",
+        "set": "advertising",
+        "multiple": true,
+        "drivesQuantity": true,
+        "label": {
+          "en": "Which platforms",
+          "ar": "أي المنصات"
+        }
+      },
       "recurrence": "monthly",
       "inputs": [
         "Partner access to the client's ad account",
@@ -252,14 +271,14 @@
       "status": "active"
     },
     {
-      "id": "feat.marketing.audience_targeting",
+      "id": "feat.marketing.audience",
       "name": {
-        "en": "Audience targeting",
-        "ar": "استهداف الجمهور"
+        "en": "Audience definition",
+        "ar": "تحديد الجمهور"
       },
       "description": {
-        "en": "Setting the campaign's audience from what the business already knows about its customers.",
-        "ar": "ضبط جمهور الحملة بناءً على ما يعرفه العمل عن عملائه أصلًا."
+        "en": "Deciding who the advertising goes to, and how far we go to find out.",
+        "ar": "تحديد من تصل إليه الإعلانات، وإلى أي مدى نبحث لمعرفة ذلك."
       },
       "purpose": {
         "en": "The first and cheapest lever on what an ad costs.",
@@ -272,7 +291,9 @@
       "inputs": [
         "Who the client believes their customer is",
         "Geography and language",
-        "Any customer list the client may lawfully use"
+        "Any customer list the client may lawfully use",
+        "Past campaign or site analytics, from the research level up",
+        "Enough budget per segment to reach significance, at the segmentation level"
       ],
       "dependencies": {
         "requires": [],
@@ -282,24 +303,32 @@
       "workflow": "wf.plan",
       "executionSteps": [
         "Write the audience in words before building it in a tool.",
-        "Build it on the platform, and check its size is neither absurd nor empty.",
-        "Exclude existing customers where paying to reach them again is waste."
+        "Build it on the platform and check its size is neither absurd nor empty.",
+        "Exclude existing customers where paying to reach them again is waste.",
+        "At the research level: read what past campaigns and site analytics already show, and what competitors are running, before proposing anything new.",
+        "At the segmentation level: split only where the message genuinely differs, and build exclusions so segments do not bid against each other."
       ],
       "tools": [
-        "Platform audience tools"
+        "Platform audience tools",
+        "Platform analytics",
+        "Public ad libraries"
       ],
       "outputs": [
-        "A defined audience"
+        "A defined audience, at the depth bought"
       ],
       "deliverables": [
-        "Saved audiences with a written definition each"
+        "Saved audiences with a written definition each",
+        "Findings document, from the research level up",
+        "A per-segment budget split, at the segmentation level"
       ],
       "qualityChecks": [
         "Audience size plausible for the budget",
         "Exclusions applied",
-        "Any uploaded list carries consent the client can evidence"
+        "Any uploaded list carries consent the client can evidence",
+        "Every finding traceable to a source, not to an impression",
+        "Segments mutually exclusive and each large enough to produce a readable result"
       ],
-      "completionCriteria": "Audience built, sized and approved before the campaign goes live.",
+      "completionCriteria": "Audience built, sized and approved before the campaign goes live, at the depth the scope bought.",
       "revisionRules": {
         "rounds": 1,
         "scope": "Per campaign."
@@ -309,156 +338,85 @@
       "estimatedEffort": {
         "unit": "hours",
         "min": 1,
-        "max": 4
+        "max": 8
       },
       "pricing": {
         "type": "fixed",
         "from": 50
       },
-      "status": "active"
-    },
-    {
-      "id": "feat.marketing.audience_research",
-      "name": {
-        "en": "Audience research",
-        "ar": "بحث الجمهور"
-      },
-      "description": {
-        "en": "Finding out who actually responds, rather than assuming who should.",
-        "ar": "معرفة من يستجيب فعلًا بدل افتراض من ينبغي أن يستجيب."
-      },
-      "purpose": {
-        "en": "The assumption about the customer is usually the expensive mistake.",
-        "ar": "الافتراض حول العميل هو الخطأ الأكثر كلفة عادةً."
-      },
-      "category": "planning",
-      "selectable": true,
-      "addonGroup": null,
-      "recurrence": "quarterly",
-      "inputs": [
-        "Existing campaign or site analytics",
-        "Competitor advertising, publicly visible",
-        "The client's own sales knowledge"
-      ],
-      "dependencies": {
-        "requires": [],
-        "recommends": [
-          "feat.marketing.audience_targeting"
+      "status": "active",
+      "tiers": {
+        "_comment": [
+          "DEPTH, NOT THREE FEATURES. The owner's rule of 8 September applied here by",
+          "the ladder check rather than by hand: these were three ids for one decision —",
+          "who the advertising goes to — and a package that bought the deep one read as",
+          "having dropped the shallow one."
         ],
-        "conflicts": []
-      },
-      "workflow": "wf.plan",
-      "executionSteps": [
-        "Read what past campaigns and site analytics already show before researching anything new.",
-        "Look at what competitors are actually running, in the platforms' public ad libraries.",
-        "Write findings as differences from the client's assumption — that is the useful part.",
-        "Propose the audiences worth testing, in priority order."
-      ],
-      "tools": [
-        "Platform analytics",
-        "Public ad libraries",
-        "Site analytics"
-      ],
-      "outputs": [
-        "Research findings and a tested-audience proposal"
-      ],
-      "deliverables": [
-        "Findings document",
-        "A prioritised audience list"
-      ],
-      "qualityChecks": [
-        "Every finding traceable to a source, not to an impression",
-        "The client's assumption stated and either confirmed or contradicted explicitly"
-      ],
-      "completionCriteria": "Findings delivered and at least one audience from them entered testing.",
-      "revisionRules": {
-        "rounds": 1,
-        "scope": "Per research cycle."
-      },
-      "automationPotential": "assist",
-      "humanApprovalRequired": false,
-      "estimatedEffort": {
-        "unit": "hours",
-        "min": 3,
-        "max": 12
-      },
-      "pricing": {
-        "type": "fixed",
-        "from": 110
-      },
-      "status": "active"
-    },
-    {
-      "id": "feat.marketing.audience_segmentation",
-      "name": {
-        "en": "Audience segmentation",
-        "ar": "تقسيم الجمهور"
-      },
-      "description": {
-        "en": "Splitting the audience into groups that get different messages, and budgeting each separately.",
-        "ar": "تقسيم الجمهور إلى مجموعات تتلقى رسائل مختلفة، وتخصيص ميزانية لكل منها."
-      },
-      "purpose": {
-        "en": "One message to everyone is the cheapest way to waste a budget.",
-        "ar": "رسالة واحدة للجميع هي أسرع طريقة لإهدار الميزانية."
-      },
-      "category": "planning",
-      "selectable": true,
-      "addonGroup": null,
-      "recurrence": "per-campaign",
-      "inputs": [
-        "Research findings",
-        "Enough budget for each segment to reach significance",
-        "Creative that differs by segment"
-      ],
-      "dependencies": {
-        "requires": [
-          "feat.marketing.audience_research"
-        ],
-        "recommends": [],
-        "conflicts": [],
-        "supersedes": [
-          "feat.marketing.audience_targeting"
+        "dimension": "depth",
+        "default": "targeting",
+        "levels": [
+          {
+            "id": "targeting",
+            "name": {
+              "en": "Audience targeting",
+              "ar": "استهداف الجمهور"
+            },
+            "description": {
+              "en": "Building the audience from what the business already knows about its customers.",
+              "ar": "بناء الجمهور مما يعرفه العمل عن عملائه أصلًا."
+            },
+            "scope": [
+              "Audience written in words, then built in the tool",
+              "Size checked against the budget",
+              "Existing customers excluded"
+            ],
+            "priceFactor": 1,
+            "effortFactor": 1
+          },
+          {
+            "id": "research",
+            "name": {
+              "en": "Audience research",
+              "ar": "بحث الجمهور"
+            },
+            "description": {
+              "en": "Finding out who actually responds rather than assuming who should, then targeting that.",
+              "ar": "معرفة من يستجيب فعلًا بدل افتراض من ينبغي أن يستجيب، ثم استهدافه."
+            },
+            "scope": [
+              "Everything in targeting",
+              "Past campaign and site analytics read",
+              "Competitor advertising read in the platforms’ public libraries",
+              "A prioritised list of audiences worth testing"
+            ],
+            "priceFactor": 2.2,
+            "effortFactor": 3
+          },
+          {
+            "id": "segmentation",
+            "name": {
+              "en": "Audience segmentation",
+              "ar": "تقسيم الجمهور"
+            },
+            "description": {
+              "en": "Splitting the researched audience into groups that get different messages and separate budgets.",
+              "ar": "تقسيم الجمهور المدروس إلى مجموعات تتلقى رسائل مختلفة وميزانيات منفصلة."
+            },
+            "scope": [
+              "Everything in research",
+              "Mutually exclusive segments, each large enough to read",
+              "Creative that differs per segment",
+              "A budget split per segment"
+            ],
+            "priceFactor": 3.6,
+            "effortFactor": 4
+          }
         ]
       },
-      "workflow": "wf.plan",
-      "executionSteps": [
-        "Split only where the message genuinely differs — a split with the same ad in both is a smaller budget, not a strategy.",
-        "Check each segment can reach significance at the available budget.",
-        "Build exclusions between segments so they do not bid against each other."
-      ],
-      "tools": [
-        "Platform audience tools"
-      ],
-      "outputs": [
-        "Mutually exclusive segments with their own creative and budget"
-      ],
-      "deliverables": [
-        "Segment definitions",
-        "Per-segment budget split"
-      ],
-      "qualityChecks": [
-        "Segments mutually exclusive",
-        "Each large enough to produce a readable result",
-        "Each has creative that differs, not just a different name"
-      ],
-      "completionCriteria": "Segments live, non-overlapping, and each producing readable data.",
-      "revisionRules": {
-        "rounds": 1,
-        "scope": "Per campaign."
-      },
-      "automationPotential": "partial",
-      "humanApprovalRequired": true,
-      "estimatedEffort": {
-        "unit": "hours",
-        "min": 2,
-        "max": 8
-      },
-      "pricing": {
-        "type": "fixed",
-        "from": 90
-      },
-      "status": "active"
+      "_sharesMethodWith": "The same method as feat.social.audience_research at the research level, applied to paid rather than organic. Two features, two services, two pipelines — but findings from either should be reused rather than re-bought.",
+      "sharesMethodWith": [
+        "feat.social.audience_research"
+      ]
     },
     {
       "id": "feat.marketing.ad_copy",
@@ -486,7 +444,7 @@
       "dependencies": {
         "requires": [],
         "recommends": [
-          "feat.marketing.audience_targeting"
+          "feat.marketing.audience"
         ],
         "conflicts": []
       },
@@ -780,7 +738,7 @@
         "ar": "الحملة التي تتوقف عن العمل تكلّفك الأسبوع كله بصمت."
       },
       "category": "operations",
-      "selectable": true,
+      "selectable": false,
       "addonGroup": null,
       "recurrence": "monthly",
       "inputs": [
@@ -830,17 +788,18 @@
       "pricing": {
         "type": "included"
       },
-      "status": "active"
+      "status": "active",
+      "_selectable": "NOT A CHOICE. It costs nothing and nobody running paid advertising declines to watch it. Sold as a tickable row it let a scope buy optimisation with nothing watching the campaign, and it made ads-growth read as having dropped something ads-starter had."
     },
     {
       "id": "feat.marketing.optimization",
       "name": {
-        "en": "Campaign optimization",
+        "en": "Campaign optimisation",
         "ar": "تحسين الحملات"
       },
       "description": {
-        "en": "Adjusting audiences, placements, bids and structure to bring the cost per result down.",
-        "ar": "تعديل الجماهير والمواضع والمزايدات والهيكل لخفض تكلفة النتيجة."
+        "en": "Improving the result while it runs — audiences, placements, bids, creative and budget — on the evidence, one change at a time.",
+        "ar": "تحسين النتيجة أثناء التشغيل — الجماهير والمواضع والمزايدات والتصاميم والميزانية — بناءً على الأدلة، بتغيير واحد في كل مرة."
       },
       "purpose": {
         "en": "The part of the fee that pays for itself, or does not.",
@@ -856,10 +815,10 @@
       ],
       "dependencies": {
         "requires": [
-          "feat.marketing.campaign_setup"
+          "feat.marketing.campaign_setup",
+          "feat.marketing.monitoring"
         ],
         "recommends": [
-          "feat.marketing.monitoring",
           "feat.marketing.conversion_tracking"
         ],
         "conflicts": []
@@ -869,7 +828,8 @@
         "Wait for enough data before changing anything — most optimisation is reading noise.",
         "Change one variable at a time, and write down the number that justified it.",
         "Turn off what is losing before adding what might win.",
-        "Leave the winning ad set alone."
+        "Leave the winning ad set alone.",
+        "At the full level: track cost per result per creative and rotate on the trend, and reallocate budget inside the agreed total without ever exceeding it."
       ],
       "tools": [
         "Platform ads managers"
@@ -878,13 +838,16 @@
         "A lower cost per result, or a documented reason it did not fall"
       ],
       "deliverables": [
-        "A change log with the figure behind each change"
+        "A change log with the figure behind each change",
+        "A before-and-after figure per budget move, at the full level"
       ],
       "qualityChecks": [
         "No change made on fewer results than the platform's own learning threshold",
         "One variable at a time",
         "Every change recorded with its justification",
-        "The winner left running"
+        "The winner left running",
+        "No creative left running past its measured fatigue point",
+        "The monthly total never exceeded"
       ],
       "completionCriteria": "The month closes with a change log and a stated direction for the next.",
       "revisionRules": {
@@ -896,155 +859,81 @@
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
-        "max": 12
+        "max": 16
       },
       "pricing": {
         "type": "fixed",
         "from": 90,
         "period": "monthly"
       },
-      "status": "active"
-    },
-    {
-      "id": "feat.marketing.creative_optimization",
-      "name": {
-        "en": "Creative optimization",
-        "ar": "تحسين التصاميم"
-      },
-      "description": {
-        "en": "Replacing tired creative before performance falls, rather than after.",
-        "ar": "استبدال التصاميم المستهلكة قبل تراجع الأداء لا بعده."
-      },
-      "purpose": {
-        "en": "Every ad wears out. The question is whether you notice first.",
-        "ar": "كل إعلان يستهلك. السؤال هو من يلاحظ أولًا."
-      },
-      "category": "core",
-      "selectable": true,
-      "addonGroup": null,
-      "recurrence": "monthly",
-      "inputs": [
-        "Frequency and cost-per-result trend by creative",
-        "New creative ready to rotate in"
-      ],
-      "dependencies": {
-        "requires": [
-          "feat.marketing.campaign_setup"
+      "status": "active",
+      "tiers": {
+        "_comment": [
+          "DEPTH, NOT THREE FEATURES. The owner's rule of 8 September applied here by",
+          "the ladder check rather than by hand: these were three ids for one decision —",
+          "who the advertising goes to — and a package that bought the deep one read as",
+          "having dropped the shallow one."
         ],
-        "recommends": [
-          "feat.marketing.ad_creative"
-        ],
-        "conflicts": []
-      },
-      "workflow": "wf.optimise",
-      "executionSteps": [
-        "Track cost per result per creative, not per campaign.",
-        "Rotate on the trend, before the drop, not after it.",
-        "Keep the format that works and change the message, or the reverse — never both at once."
-      ],
-      "tools": [
-        "Platform ads managers",
-        "Vector editor"
-      ],
-      "outputs": [
-        "A refreshed creative set"
-      ],
-      "deliverables": [
-        "Rotated creative",
-        "A performance note per creative"
-      ],
-      "qualityChecks": [
-        "No creative left running past its measured fatigue point",
-        "Replacement differs in one dimension, so the result is readable"
-      ],
-      "completionCriteria": "The month closes with creative rotated on evidence rather than on schedule.",
-      "revisionRules": {
-        "rounds": 0,
-        "scope": "Not applicable."
-      },
-      "automationPotential": "assist",
-      "humanApprovalRequired": false,
-      "estimatedEffort": {
-        "unit": "hours",
-        "min": 1.5,
-        "max": 8
-      },
-      "pricing": {
-        "type": "fixed",
-        "from": 70,
-        "period": "monthly"
-      },
-      "status": "active"
-    },
-    {
-      "id": "feat.marketing.budget_optimization",
-      "name": {
-        "en": "Budget optimization",
-        "ar": "تحسين الميزانية"
-      },
-      "description": {
-        "en": "Moving budget towards what is working, within the total you set.",
-        "ar": "نقل الميزانية نحو ما ينجح، ضمن الإجمالي الذي حددته."
-      },
-      "purpose": {
-        "en": "The same money, spent where it returns most.",
-        "ar": "المال نفسه، منفقًا حيث يعود بأكثر."
-      },
-      "category": "core",
-      "selectable": true,
-      "addonGroup": null,
-      "recurrence": "monthly",
-      "inputs": [
-        "The agreed total budget",
-        "Cost per result by campaign and segment"
-      ],
-      "dependencies": {
-        "requires": [
-          "feat.marketing.campaign_setup"
-        ],
-        "recommends": [
-          "feat.marketing.optimization"
-        ],
-        "conflicts": []
-      },
-      "workflow": "wf.optimise",
-      "executionSteps": [
-        "Never exceed the client's written total — reallocate inside it.",
-        "Move in steps small enough not to reset the platform's learning.",
-        "Record the before and after cost per result for each move."
-      ],
-      "tools": [
-        "Platform ads managers"
-      ],
-      "outputs": [
-        "Budget allocated to what performs"
-      ],
-      "deliverables": [
-        "Allocation log with before and after figures"
-      ],
-      "qualityChecks": [
-        "Monthly total never exceeded",
-        "No move large enough to reset learning unnecessarily",
-        "Every move recorded"
-      ],
-      "completionCriteria": "The month closes within the agreed total, with each reallocation recorded.",
-      "revisionRules": {
-        "rounds": 0,
-        "scope": "Not applicable."
-      },
-      "automationPotential": "partial",
-      "humanApprovalRequired": true,
-      "estimatedEffort": {
-        "unit": "hours",
-        "min": 1,
-        "max": 5
-      },
-      "pricing": {
-        "type": "fixed",
-        "from": 60,
-        "period": "monthly"
-      },
-      "status": "active"
+        "dimension": "depth",
+        "default": "basic",
+        "levels": [
+          {
+            "id": "basic",
+            "name": {
+              "en": "Basic optimisation",
+              "ar": "تحسين أساسي"
+            },
+            "description": {
+              "en": "Pausing what loses and leaving what wins alone.",
+              "ar": "إيقاف ما يخسر وترك ما ينجح يعمل."
+            },
+            "scope": [
+              "Losing ad sets paused",
+              "Winners left running",
+              "Each change recorded with its figure"
+            ],
+            "priceFactor": 1,
+            "effortFactor": 1
+          },
+          {
+            "id": "campaign",
+            "name": {
+              "en": "Campaign optimisation",
+              "ar": "تحسين الحملات"
+            },
+            "description": {
+              "en": "Adjusting audiences, placements, bids and structure to bring the cost per result down.",
+              "ar": "تعديل الجماهير والمواضع والمزايدات والهيكل لخفض تكلفة النتيجة."
+            },
+            "scope": [
+              "Everything in basic",
+              "Audience, placement and bid adjustment",
+              "Structural changes where the data supports them"
+            ],
+            "priceFactor": 1.6,
+            "effortFactor": 2
+          },
+          {
+            "id": "full",
+            "name": {
+              "en": "Creative and budget optimisation",
+              "ar": "تحسين التصاميم والميزانية"
+            },
+            "description": {
+              "en": "Everything above, plus rotating creative before it tires and moving budget towards what is working, inside the total you set.",
+              "ar": "كل ما سبق، مع تدوير التصاميم قبل استهلاكها ونقل الميزانية نحو ما ينجح ضمن الإجمالي الذي حددته."
+            },
+            "scope": [
+              "Everything in campaign optimisation",
+              "Cost per result tracked per creative, and creative rotated on the trend rather than on a schedule",
+              "Budget reallocated inside the agreed total, in steps small enough not to reset learning",
+              "A before-and-after figure recorded for every move"
+            ],
+            "priceFactor": 2.4,
+            "effortFactor": 3
+          }
+        ]
+      }
     },
     {
       "id": "feat.marketing.ab_testing",

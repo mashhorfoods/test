@@ -30,23 +30,36 @@
     "  $feature.completionCriteria $feature.revisionRules.rounds",
     "  $feature.name.en $feature.dependencies.requires"
   ],
-
   "version": 1,
-
   "templates": {
     "wf.design_concept": {
       "label": "Original design work, where the first question is which direction to take",
       "trigger": "Scope signed and the stage's prerequisites are satisfied.",
-      "prerequisites": ["$feature.dependencies.requires", "A completed brief from the client"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires",
+        "A completed brief from the client"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "brief",
           "objective": "Turn the client's material into a written direction before anything is drawn.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Read every supplied input.", "Write the direction in one paragraph.", "Send it and get it agreed in words."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Read every supplied input.",
+            "Write the direction in one paragraph.",
+            "Send it and get it agreed in words."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "An agreed written direction",
           "validation": "The client has responded to the direction, not merely received it.",
           "next_stage": "explore"
@@ -54,9 +67,15 @@
         {
           "stage_id": "explore",
           "objective": "Produce genuinely distinct options.",
-          "inputs": ["Agreed direction"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Agreed direction"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "Concepts, distinct in idea",
           "validation": "No two concepts are the same idea in different colours.",
           "next_stage": "present"
@@ -64,9 +83,17 @@
         {
           "stage_id": "present",
           "objective": "Show the work in the context it will live in.",
-          "inputs": ["Concepts"],
-          "actions": ["Present in context, never floating on white.", "State what each concept is arguing, in one line.", "Ask for a decision, not for an opinion."],
-          "tools": ["Presentation software"],
+          "inputs": [
+            "Concepts"
+          ],
+          "actions": [
+            "Present in context, never floating on white.",
+            "State what each concept is arguing, in one line.",
+            "Ask for a decision, not for an opinion."
+          ],
+          "tools": [
+            "Presentation software"
+          ],
           "output": "A chosen concept",
           "validation": "The client has chosen one, in writing.",
           "next_stage": "refine"
@@ -74,9 +101,18 @@
         {
           "stage_id": "refine",
           "objective": "Take the chosen concept to final within the agreed rounds.",
-          "inputs": ["Chosen concept", "Client comments"],
-          "actions": ["Apply comments.", "Count the round.", "Stop at the limit and quote further work rather than absorbing it."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Chosen concept",
+            "Client comments"
+          ],
+          "actions": [
+            "Apply comments.",
+            "Count the round.",
+            "Stop at the limit and quote further work rather than absorbing it."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "An approved final",
           "validation": "Rounds used are within $feature.revisionRules.rounds.",
           "next_stage": "release"
@@ -84,20 +120,42 @@
         {
           "stage_id": "release",
           "objective": "Produce and deliver the file set.",
-          "inputs": ["Approved final"],
-          "actions": ["Build every format in the deliverable list.", "Run every quality check.", "Deliver and confirm receipt."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Approved final"
+          ],
+          "actions": [
+            "Build every format in the deliverable list.",
+            "Run every quality check.",
+            "Deliver and confirm receipt."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "present", "question": "Has the client chosen a direction, or asked for a new one?", "ifNew": "Return to explore. A new direction is a new concept stage and is quoted." },
-        { "at": "refine", "question": "Are the agreed rounds used up?", "ifYes": "Stop and quote. Do not absorb." }
+        {
+          "at": "present",
+          "question": "Has the client chosen a direction, or asked for a new one?",
+          "ifNew": "Return to explore. A new direction is a new concept stage and is quoted."
+        },
+        {
+          "at": "refine",
+          "question": "Are the agreed rounds used up?",
+          "ifYes": "Stop and quote. Do not absorb."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["brief", "present", "refine"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "brief",
+        "present",
+        "refine"
+      ],
       "failure_conditions": [
         "Concepts presented before a direction was agreed",
         "A revision round taken without being counted",
@@ -105,20 +163,31 @@
       ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.design_system": {
       "label": "Building rules and reusable parts rather than a finished artefact",
       "trigger": "The core identity this system derives from is approved.",
-      "prerequisites": ["$feature.dependencies.requires"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "derive",
           "objective": "Derive the system from what is already approved rather than inventing beside it.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A first system",
           "validation": "Every part traces back to the approved core.",
           "next_stage": "prove"
@@ -126,9 +195,17 @@
         {
           "stage_id": "prove",
           "objective": "Prove it on real cases before anyone relies on it.",
-          "inputs": ["The first system"],
-          "actions": ["Apply it to at least three unrelated real cases.", "Include the awkward case, not three easy ones.", "Fix what the awkward case breaks."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "The first system"
+          ],
+          "actions": [
+            "Apply it to at least three unrelated real cases.",
+            "Include the awkward case, not three easy ones.",
+            "Fix what the awkward case breaks."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A system that survived use",
           "validation": "Three real cases produced correct results without special handling.",
           "next_stage": "document"
@@ -136,9 +213,17 @@
         {
           "stage_id": "document",
           "objective": "Write it down so someone else can use it correctly.",
-          "inputs": ["The proven system"],
-          "actions": ["Write the rules as rules, with examples.", "State the limits explicitly.", "Name every file."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "The proven system"
+          ],
+          "actions": [
+            "Write the rules as rules, with examples.",
+            "State the limits explicitly.",
+            "Name every file."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
           "next_stage": "approve"
@@ -146,36 +231,68 @@
         {
           "stage_id": "approve",
           "objective": "Get the system agreed before things are built on it.",
-          "inputs": ["Documented system"],
-          "actions": ["Present with the three proofs.", "Take one round of comments.", "Deliver."],
-          "tools": ["Presentation software"],
+          "inputs": [
+            "Documented system"
+          ],
+          "actions": [
+            "Present with the three proofs.",
+            "Take one round of comments.",
+            "Deliver."
+          ],
+          "tools": [
+            "Presentation software"
+          ],
           "output": "An approved system",
           "validation": "Client approval in writing.",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "prove", "question": "Did a real case need special handling?", "ifYes": "Return to derive. A system with an exception on its first use is not finished." }
+        {
+          "at": "prove",
+          "question": "Did a real case need special handling?",
+          "ifYes": "Return to derive. A system with an exception on its first use is not finished."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["approve"],
-      "failure_conditions": ["Documented without being proven on real cases", "An example that only works with the example content"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "approve"
+      ],
+      "failure_conditions": [
+        "Documented without being proven on real cases",
+        "An example that only works with the example content"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.design_asset": {
       "label": "A finished item made from an established system",
       "trigger": "The system it is made from is approved, and the content for it exists.",
-      "prerequisites": ["$feature.dependencies.requires", "Final content"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires",
+        "Final content"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "prepare",
           "objective": "Have everything before starting, so the work is not interrupted by a missing detail.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Collect every input.", "Query anything ambiguous now rather than assuming it."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Collect every input.",
+            "Query anything ambiguous now rather than assuming it."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "A complete input set",
           "validation": "Nothing on the input list is missing or guessed.",
           "next_stage": "produce"
@@ -183,9 +300,15 @@
         {
           "stage_id": "produce",
           "objective": "Make it.",
-          "inputs": ["Complete input set"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Complete input set"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A first version",
           "validation": "Made from the brand's system, not designed beside it.",
           "next_stage": "check"
@@ -193,9 +316,17 @@
         {
           "stage_id": "check",
           "objective": "Find our own mistakes before the client does.",
-          "inputs": ["First version"],
-          "actions": ["Run every quality check on the feature.", "Proofread names, numbers and dates against the client's own written source.", "View at real size on a real device."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "First version"
+          ],
+          "actions": [
+            "Run every quality check on the feature.",
+            "Proofread names, numbers and dates against the client's own written source.",
+            "View at real size on a real device."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A checked version",
           "validation": "$feature.qualityChecks",
           "next_stage": "approve"
@@ -203,9 +334,17 @@
         {
           "stage_id": "approve",
           "objective": "Get it approved within the agreed rounds.",
-          "inputs": ["Checked version"],
-          "actions": ["Send for approval.", "Apply comments and count the round.", "Stop at $feature.revisionRules.rounds."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "Checked version"
+          ],
+          "actions": [
+            "Send for approval.",
+            "Apply comments and count the round.",
+            "Stop at $feature.revisionRules.rounds."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "An approved item",
           "validation": "Approval in writing, rounds within limit.",
           "next_stage": "deliver"
@@ -213,37 +352,72 @@
         {
           "stage_id": "deliver",
           "objective": "Export and hand over.",
-          "inputs": ["Approved item"],
-          "actions": ["Export every format in the deliverable list.", "Deliver and confirm receipt."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Approved item"
+          ],
+          "actions": [
+            "Export every format in the deliverable list.",
+            "Deliver and confirm receipt."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "$feature.deliverables",
           "validation": "Every deliverable opens.",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "prepare", "question": "Is any input missing?", "ifYes": "Stop and ask. Guessing a phone number is how a print run is wasted." },
-        { "at": "approve", "question": "Are the agreed rounds used up?", "ifYes": "Stop and quote." }
+        {
+          "at": "prepare",
+          "question": "Is any input missing?",
+          "ifYes": "Stop and ask. Guessing a phone number is how a print run is wasted."
+        },
+        {
+          "at": "approve",
+          "question": "Are the agreed rounds used up?",
+          "ifYes": "Stop and quote."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["approve"],
-      "failure_conditions": ["Produced from a guessed input", "Delivered without the checks having been run", "A revision taken without being counted"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "approve"
+      ],
+      "failure_conditions": [
+        "Produced from a guessed input",
+        "Delivered without the checks having been run",
+        "A revision taken without being counted"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.document": {
       "label": "Writing a document that other people will work from",
       "trigger": "Everything the document describes is approved.",
-      "prerequisites": ["$feature.dependencies.requires"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "outline",
           "objective": "Agree what the document covers before writing it.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["List the sections.", "Confirm the list with whoever will use the document."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "List the sections.",
+            "Confirm the list with whoever will use the document."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "An agreed outline",
           "validation": "No section added later that should have been foreseen.",
           "next_stage": "write"
@@ -251,9 +425,16 @@
         {
           "stage_id": "write",
           "objective": "Write and lay out the document.",
-          "inputs": ["Agreed outline", "Approved source material"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Agreed outline",
+            "Approved source material"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A complete draft",
           "validation": "Every rule is shown as well as stated.",
           "next_stage": "reconcile"
@@ -261,9 +442,16 @@
         {
           "stage_id": "reconcile",
           "objective": "Check every value in the document against the file it came from.",
-          "inputs": ["Complete draft"],
-          "actions": ["Cross-check every colour value, size, name and file reference against the source.", "Fix the source or the document, and say which was wrong."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Complete draft"
+          ],
+          "actions": [
+            "Cross-check every colour value, size, name and file reference against the source.",
+            "Fix the source or the document, and say which was wrong."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A reconciled document",
           "validation": "$feature.qualityChecks",
           "next_stage": "deliver"
@@ -271,36 +459,69 @@
         {
           "stage_id": "deliver",
           "objective": "Deliver in the formats agreed.",
-          "inputs": ["Reconciled document"],
-          "actions": ["Export.", "Deliver and confirm receipt."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Reconciled document"
+          ],
+          "actions": [
+            "Export.",
+            "Deliver and confirm receipt."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "$feature.deliverables",
           "validation": "Every deliverable opens and prints.",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "reconcile", "question": "Did a value in the document disagree with its source?", "ifYes": "Fix both and record which was authoritative. A guideline that disagrees with the files is worse than none." }
+        {
+          "at": "reconcile",
+          "question": "Did a value in the document disagree with its source?",
+          "ifYes": "Fix both and record which was authoritative. A guideline that disagrees with the files is worse than none."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["outline", "deliver"],
-      "failure_conditions": ["A value in the document that no source file supports", "A file reference that resolves to nothing"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "outline",
+        "deliver"
+      ],
+      "failure_conditions": [
+        "A value in the document that no source file supports",
+        "A file reference that resolves to nothing"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.production": {
       "label": "A shoot — work that happens once, on a day, and cannot be repeated cheaply",
       "trigger": "Date, location and shot list agreed, and access confirmed.",
-      "prerequisites": ["$feature.dependencies.requires", "Confirmed access and permits"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires",
+        "Confirmed access and permits"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "plan",
           "objective": "Agree exactly what has to come back from the day.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Write the shot list with the client.", "Confirm access, permits and every person appearing.", "Agree the number of final items."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Write the shot list with the client.",
+            "Confirm access, permits and every person appearing.",
+            "Agree the number of final items."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "An agreed shot list and call sheet",
           "validation": "Every item on the list is achievable at that location on that day.",
           "next_stage": "shoot"
@@ -308,9 +529,16 @@
         {
           "stage_id": "shoot",
           "objective": "Capture the list, then capture beyond it.",
-          "inputs": ["Shot list", "Access"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Shot list",
+            "Access"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "Raw capture",
           "validation": "Every item on the list has usable coverage before leaving.",
           "next_stage": "secure"
@@ -318,9 +546,16 @@
         {
           "stage_id": "secure",
           "objective": "Make the day unrepeatable-but-safe.",
-          "inputs": ["Raw capture"],
-          "actions": ["Back up twice, to two places, before leaving the location.", "Verify one backup by opening files from it."],
-          "tools": ["Storage"],
+          "inputs": [
+            "Raw capture"
+          ],
+          "actions": [
+            "Back up twice, to two places, before leaving the location.",
+            "Verify one backup by opening files from it."
+          ],
+          "tools": [
+            "Storage"
+          ],
           "output": "Two verified backups",
           "validation": "A file has been opened from a backup, not merely copied to it.",
           "next_stage": "select"
@@ -328,9 +563,17 @@
         {
           "stage_id": "select",
           "objective": "Choose, then finish only what was chosen.",
-          "inputs": ["Verified capture"],
-          "actions": ["Select against the shot list.", "Present the selection for approval where the scope includes it.", "Finish only the selected."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Verified capture"
+          ],
+          "actions": [
+            "Select against the shot list.",
+            "Present the selection for approval where the scope includes it.",
+            "Finish only the selected."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "Finished selects",
           "validation": "$feature.qualityChecks",
           "next_stage": "deliver"
@@ -338,36 +581,69 @@
         {
           "stage_id": "deliver",
           "objective": "Deliver at every resolution in scope.",
-          "inputs": ["Finished selects"],
-          "actions": ["Export at each resolution.", "Deliver and confirm receipt."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Finished selects"
+          ],
+          "actions": [
+            "Export at each resolution.",
+            "Deliver and confirm receipt."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "$feature.deliverables",
           "validation": "Count delivered matches the count agreed.",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "shoot", "question": "Is any shot-list item uncovered and the day ending?", "ifYes": "Say so before leaving. A missing shot discovered in the edit is a second booking." }
+        {
+          "at": "shoot",
+          "question": "Is any shot-list item uncovered and the day ending?",
+          "ifYes": "Say so before leaving. A missing shot discovered in the edit is a second booking."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["plan", "select"],
-      "failure_conditions": ["Left a location with one copy of the material", "Delivered fewer finals than agreed without saying so", "An identifiable person with no written permission"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "plan",
+        "select"
+      ],
+      "failure_conditions": [
+        "Left a location with one copy of the material",
+        "Delivered fewer finals than agreed without saying so",
+        "An identifiable person with no written permission"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.provision": {
       "label": "Setting up an account or service that the client must end up owning",
       "trigger": "Scope signed and the client has decided who holds the account.",
-      "prerequisites": ["$feature.dependencies.requires", "The client's billing details or their instruction to use ours"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires",
+        "The client's billing details or their instruction to use ours"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "audit",
           "objective": "Find out what already exists before creating anything.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Search for existing accounts, domains or profiles.", "Recover rather than duplicate wherever recovery is possible."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Search for existing accounts, domains or profiles.",
+            "Recover rather than duplicate wherever recovery is possible."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A picture of what exists",
           "validation": "No duplicate created where a recoverable original exists.",
           "next_stage": "provision"
@@ -375,9 +651,15 @@
         {
           "stage_id": "provision",
           "objective": "Create or claim, with the client as owner.",
-          "inputs": ["Audit result"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Audit result"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A provisioned service",
           "validation": "Ownership sits with the client; our role is delegated access.",
           "next_stage": "secure"
@@ -385,9 +667,17 @@
         {
           "stage_id": "secure",
           "objective": "Make it safe and make its renewal survive us.",
-          "inputs": ["Provisioned service"],
-          "actions": ["Enable two-factor with the client holding the second factor.", "Turn on auto-renew where it applies.", "Record expiry dates and account owners."],
-          "tools": ["Password manager"],
+          "inputs": [
+            "Provisioned service"
+          ],
+          "actions": [
+            "Enable two-factor with the client holding the second factor.",
+            "Turn on auto-renew where it applies.",
+            "Record expiry dates and account owners."
+          ],
+          "tools": [
+            "Password manager"
+          ],
           "output": "A secured, documented service",
           "validation": "$feature.qualityChecks",
           "next_stage": "verify"
@@ -395,37 +685,73 @@
         {
           "stage_id": "verify",
           "objective": "Prove it works from the client's side, not ours.",
-          "inputs": ["Secured service"],
-          "actions": ["Have the client log in themselves.", "Confirm the service does the thing it was provisioned to do."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Secured service"
+          ],
+          "actions": [
+            "Have the client log in themselves.",
+            "Confirm the service does the thing it was provisioned to do."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "$feature.deliverables",
           "validation": "The client has logged in successfully at least once.",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "audit", "question": "Does an account already exist that we cannot access?", "ifYes": "Recover it with the client before creating a second. A duplicate is a permanent problem." },
-        { "at": "provision", "question": "Is the client unwilling or unable to hold the account?", "ifYes": "Record the exception in writing, with the date it should be revisited." }
+        {
+          "at": "audit",
+          "question": "Does an account already exist that we cannot access?",
+          "ifYes": "Recover it with the client before creating a second. A duplicate is a permanent problem."
+        },
+        {
+          "at": "provision",
+          "question": "Is the client unwilling or unable to hold the account?",
+          "ifYes": "Record the exception in writing, with the date it should be revisited."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["provision", "verify"],
-      "failure_conditions": ["An account left in our name without a written exception", "Auto-renew off on anything with an expiry", "A duplicate created beside a recoverable original"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "provision",
+        "verify"
+      ],
+      "failure_conditions": [
+        "An account left in our name without a written exception",
+        "Auto-renew off on anything with an expiry",
+        "A duplicate created beside a recoverable original"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.build": {
       "label": "Implementation work against an approved design or specification",
       "trigger": "The design or specification is approved and its inputs are final.",
-      "prerequisites": ["$feature.dependencies.requires"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "prepare",
           "objective": "Confirm the inputs are final before building on them.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Check the design is approved, not merely shown.", "Check the copy and images are final, not placeholder."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Check the design is approved, not merely shown.",
+            "Check the copy and images are final, not placeholder."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "Confirmed inputs",
           "validation": "Nothing marked draft is being built against.",
           "next_stage": "implement"
@@ -433,9 +759,15 @@
         {
           "stage_id": "implement",
           "objective": "Build it.",
-          "inputs": ["Confirmed inputs"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Confirmed inputs"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A working implementation on staging",
           "validation": "Matches the approved design at every supported width.",
           "next_stage": "self_check"
@@ -443,9 +775,18 @@
         {
           "stage_id": "self_check",
           "objective": "Break it ourselves first.",
-          "inputs": ["The implementation"],
-          "actions": ["Run every quality check on the feature.", "Try the failure path deliberately.", "Check the console on every page."],
-          "tools": ["$feature.tools", "Browser dev tools"],
+          "inputs": [
+            "The implementation"
+          ],
+          "actions": [
+            "Run every quality check on the feature.",
+            "Try the failure path deliberately.",
+            "Check the console on every page."
+          ],
+          "tools": [
+            "$feature.tools",
+            "Browser dev tools"
+          ],
           "output": "A checked implementation",
           "validation": "$feature.qualityChecks",
           "next_stage": "review"
@@ -453,37 +794,72 @@
         {
           "stage_id": "review",
           "objective": "Show it and take corrections.",
-          "inputs": ["Checked implementation"],
-          "actions": ["Send the staging address.", "Take corrections as corrections; treat design changes as new scope."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "Checked implementation"
+          ],
+          "actions": [
+            "Send the staging address.",
+            "Take corrections as corrections; treat design changes as new scope."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "$feature.deliverables",
           "validation": "Client has seen it on their own device.",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "prepare", "question": "Is any input still a placeholder?", "ifYes": "Do not build on it. Placeholder content is how a live site ships with lorem ipsum." },
-        { "at": "review", "question": "Is a comment a correction or a design change?", "ifChange": "Quote it. Absorbing design changes as corrections is how a fixed price stops being one." }
+        {
+          "at": "prepare",
+          "question": "Is any input still a placeholder?",
+          "ifYes": "Do not build on it. Placeholder content is how a live site ships with lorem ipsum."
+        },
+        {
+          "at": "review",
+          "question": "Is a comment a correction or a design change?",
+          "ifChange": "Quote it. Absorbing design changes as corrections is how a fixed price stops being one."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["review"],
-      "failure_conditions": ["Built against unapproved design", "A console error left on a page shown to the client", "A failure path never tried"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "review"
+      ],
+      "failure_conditions": [
+        "Built against unapproved design",
+        "A console error left on a page shown to the client",
+        "A failure path never tried"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.verify": {
       "label": "Checking work against a written list, and recording the result",
       "trigger": "The build is complete on staging.",
-      "prerequisites": ["$feature.dependencies.requires"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "list",
           "objective": "Write down what will be checked before checking it.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Write the check list from the feature's quality checks and the supported matrix.", "Include the widths, languages and browsers by name."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Write the check list from the feature's quality checks and the supported matrix.",
+            "Include the widths, languages and browsers by name."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "A written check list",
           "validation": "The list names every width, language and browser in scope.",
           "next_stage": "execute"
@@ -491,9 +867,15 @@
         {
           "stage_id": "execute",
           "objective": "Run every check, including the boring ones.",
-          "inputs": ["Check list"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Check list"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A completed check list with results",
           "validation": "Every line has a result, including the ones that passed.",
           "next_stage": "resolve"
@@ -501,36 +883,70 @@
         {
           "stage_id": "resolve",
           "objective": "Fix what failed, or write down why it stands.",
-          "inputs": ["Results"],
-          "actions": ["Fix.", "Re-run the failed check, not the whole list.", "Where something will not be fixed, write why and get it accepted."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Results"
+          ],
+          "actions": [
+            "Fix.",
+            "Re-run the failed check, not the whole list.",
+            "Where something will not be fixed, write why and get it accepted."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "resolve", "question": "Is a failure being accepted rather than fixed?", "ifYes": "It goes in writing to the client. An unfixed failure nobody was told about is a defect we chose." }
+        {
+          "at": "resolve",
+          "question": "Is a failure being accepted rather than fixed?",
+          "ifYes": "It goes in writing to the client. An unfixed failure nobody was told about is a defect we chose."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["resolve"],
-      "failure_conditions": ["A check list line with no result", "A failure fixed without the check being re-run", "An accepted failure never told to the client"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "resolve"
+      ],
+      "failure_conditions": [
+        "A check list line with no result",
+        "A failure fixed without the check being re-run",
+        "An accepted failure never told to the client"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.release": {
       "label": "Putting something live, where a mistake is visible to everyone",
       "trigger": "Verification passed and the client has signed off on staging.",
-      "prerequisites": ["$feature.dependencies.requires", "A written sign-off"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires",
+        "A written sign-off"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "rehearse",
           "objective": "Know how to undo it before doing it.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Identify the rollback and confirm it is available.", "Take a backup of the current live state.", "Pick a time when someone is available afterwards."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Identify the rollback and confirm it is available.",
+            "Take a backup of the current live state.",
+            "Pick a time when someone is available afterwards."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A rollback that exists",
           "validation": "The rollback has been identified, not assumed.",
           "next_stage": "release"
@@ -538,9 +954,15 @@
         {
           "stage_id": "release",
           "objective": "Deploy.",
-          "inputs": ["Approved build"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Approved build"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A live deployment",
           "validation": "The deploy reported success.",
           "next_stage": "confirm"
@@ -548,36 +970,68 @@
         {
           "stage_id": "confirm",
           "objective": "Check the live thing, not the thing you deployed.",
-          "inputs": ["Live deployment"],
-          "actions": ["Walk the live site page by page.", "Confirm HTTPS, analytics and every form on the live address.", "Watch for an hour before calling it done."],
-          "tools": ["Browsers", "Analytics console"],
+          "inputs": [
+            "Live deployment"
+          ],
+          "actions": [
+            "Walk the live site page by page.",
+            "Confirm HTTPS, analytics and every form on the live address.",
+            "Watch for an hour before calling it done."
+          ],
+          "tools": [
+            "Browsers",
+            "Analytics console"
+          ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "confirm", "question": "Does anything differ from staging?", "ifYes": "Roll back first, diagnose second. Diagnosing in production is how a short outage becomes a long one." }
+        {
+          "at": "confirm",
+          "question": "Does anything differ from staging?",
+          "ifYes": "Roll back first, diagnose second. Diagnosing in production is how a short outage becomes a long one."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["release"],
-      "failure_conditions": ["Deployed with no identified rollback", "Live never checked independently of staging", "Deployed at a time nobody could respond to a problem"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "release"
+      ],
+      "failure_conditions": [
+        "Deployed with no identified rollback",
+        "Live never checked independently of staging",
+        "Deployed at a time nobody could respond to a problem"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.handover": {
       "label": "Giving the client everything, so they could continue without us",
       "trigger": "Every item in scope is approved and live.",
-      "prerequisites": ["$feature.dependencies.requires"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "assemble",
           "objective": "Collect everything, in a structure a stranger can navigate.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A structured archive",
           "validation": "Folder names describe contents, not our internal process.",
           "next_stage": "index"
@@ -585,9 +1039,17 @@
         {
           "stage_id": "index",
           "objective": "Write down what is in it and check the writing against the archive.",
-          "inputs": ["Structured archive"],
-          "actions": ["Write the index.", "Open every path in the index and confirm it resolves.", "Remove anything the index does not account for."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "Structured archive"
+          ],
+          "actions": [
+            "Write the index.",
+            "Open every path in the index and confirm it resolves.",
+            "Remove anything the index does not account for."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "A verified index",
           "validation": "Every index entry resolves to a file that exists.",
           "next_stage": "transfer"
@@ -595,9 +1057,18 @@
         {
           "stage_id": "transfer",
           "objective": "Move ownership, not just copies.",
-          "inputs": ["Verified archive", "Account list"],
-          "actions": ["Transfer account ownership.", "Hand over credentials through something that is not email.", "Remove our standing access unless asked to keep it."],
-          "tools": ["Password manager"],
+          "inputs": [
+            "Verified archive",
+            "Account list"
+          ],
+          "actions": [
+            "Transfer account ownership.",
+            "Hand over credentials through something that is not email.",
+            "Remove our standing access unless asked to keep it."
+          ],
+          "tools": [
+            "Password manager"
+          ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
           "next_stage": "confirm"
@@ -605,36 +1076,67 @@
         {
           "stage_id": "confirm",
           "objective": "Get it confirmed by the person receiving it.",
-          "inputs": ["Transferred assets"],
-          "actions": ["Ask the client to open one file and log in to one account.", "Get the confirmation in writing."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "Transferred assets"
+          ],
+          "actions": [
+            "Ask the client to open one file and log in to one account.",
+            "Get the confirmation in writing."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "A confirmed handover",
           "validation": "The client has confirmed, not merely been sent.",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "index", "question": "Does the index reference something not in the archive?", "ifYes": "Fix the archive, not the index. An index that quietly drops an entry hides the missing file." }
+        {
+          "at": "index",
+          "question": "Does the index reference something not in the archive?",
+          "ifYes": "Fix the archive, not the index. An index that quietly drops an entry hides the missing file."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["confirm"],
-      "failure_conditions": ["Archive sent without being opened by us first", "An account still in our name", "Credentials sent by email"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "confirm"
+      ],
+      "failure_conditions": [
+        "Archive sent without being opened by us first",
+        "An account still in our name",
+        "Credentials sent by email"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.plan": {
       "label": "Deciding what to do, and writing it down so it can be judged later",
       "trigger": "The period begins, or the previous period's report is in.",
-      "prerequisites": ["$feature.dependencies.requires"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "gather",
           "objective": "Read what already happened before deciding what happens next.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Read the previous period's results where they exist.", "Collect the client's own dates, launches and constraints."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Read the previous period's results where they exist.",
+            "Collect the client's own dates, launches and constraints."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "The material to plan from",
           "validation": "The previous period's report has been read, where one exists.",
           "next_stage": "decide"
@@ -642,9 +1144,15 @@
         {
           "stage_id": "decide",
           "objective": "Make the decisions the plan is made of.",
-          "inputs": ["Gathered material"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Gathered material"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A draft plan",
           "validation": "Every element has a stated purpose, not just a slot.",
           "next_stage": "agree"
@@ -652,36 +1160,68 @@
         {
           "stage_id": "agree",
           "objective": "Get it approved before anything is produced against it.",
-          "inputs": ["Draft plan"],
-          "actions": ["Send for approval with enough time to answer.", "Take one round of changes.", "Fix the plan before production, not during it."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "Draft plan"
+          ],
+          "actions": [
+            "Send for approval with enough time to answer.",
+            "Take one round of changes.",
+            "Fix the plan before production, not during it."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "agree", "question": "Has approval arrived in time to produce against it?", "ifNo": "Say what will be late, before it is late." }
+        {
+          "at": "agree",
+          "question": "Has approval arrived in time to produce against it?",
+          "ifNo": "Say what will be late, before it is late."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["agree"],
-      "failure_conditions": ["Production started against an unapproved plan", "A plan with no measurable intent"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "agree"
+      ],
+      "failure_conditions": [
+        "Production started against an unapproved plan",
+        "A plan with no measurable intent"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.content": {
       "label": "Making a piece of content — words, video, or both",
       "trigger": "The plan it belongs to is approved.",
-      "prerequisites": ["$feature.dependencies.requires", "An approved plan slot"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires",
+        "An approved plan slot"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "brief",
           "objective": "Know what this piece is for before making it.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Take the slot's stated purpose from the plan.", "Confirm any factual detail with the client's own written source."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Take the slot's stated purpose from the plan.",
+            "Confirm any factual detail with the client's own written source."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "A piece brief",
           "validation": "Every factual claim has a source.",
           "next_stage": "make"
@@ -689,9 +1229,15 @@
         {
           "stage_id": "make",
           "objective": "Produce it.",
-          "inputs": ["Piece brief"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Piece brief"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A first version",
           "validation": "Serves the stated purpose, and would be recognisable as this brand's.",
           "next_stage": "check"
@@ -699,9 +1245,17 @@
         {
           "stage_id": "check",
           "objective": "Check it against the platform's rules and our own.",
-          "inputs": ["First version"],
-          "actions": ["Run the feature's quality checks.", "Check length, ratio and policy for the destination.", "Read the Arabic aloud where there is Arabic."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "First version"
+          ],
+          "actions": [
+            "Run the feature's quality checks.",
+            "Check length, ratio and policy for the destination.",
+            "Read the Arabic aloud where there is Arabic."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A checked piece",
           "validation": "$feature.qualityChecks",
           "next_stage": "approve"
@@ -709,36 +1263,69 @@
         {
           "stage_id": "approve",
           "objective": "Get client approval within the agreed rounds.",
-          "inputs": ["Checked piece"],
-          "actions": ["Send for approval.", "Apply comments, counting the round.", "Stop at $feature.revisionRules.rounds."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "Checked piece"
+          ],
+          "actions": [
+            "Send for approval.",
+            "Apply comments, counting the round.",
+            "Stop at $feature.revisionRules.rounds."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "$feature.deliverables",
           "validation": "Approval recorded before scheduling.",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "brief", "question": "Is a factual claim unsourced?", "ifYes": "Ask. Publishing an unsourced claim on the client's account is their problem, not ours, which is exactly why it is ours." }
+        {
+          "at": "brief",
+          "question": "Is a factual claim unsourced?",
+          "ifYes": "Ask. Publishing an unsourced claim on the client's account is their problem, not ours, which is exactly why it is ours."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["approve"],
-      "failure_conditions": ["Published without approval where approval was required", "A claim published that no source supports", "Arabic produced by translating the English"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "approve"
+      ],
+      "failure_conditions": [
+        "Published without approval where approval was required",
+        "A claim published that no source supports",
+        "Arabic produced by translating the English"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.recurring_service": {
       "label": "Work that repeats on a cycle and is judged by whether the cycle held",
       "trigger": "The period starts.",
-      "prerequisites": ["$feature.dependencies.requires", "Access to the systems involved"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires",
+        "Access to the systems involved"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "schedule",
           "objective": "Set the rhythm rather than reacting.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Set the recurring times and the response window.", "Name who covers it when the usual person cannot."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Set the recurring times and the response window.",
+            "Name who covers it when the usual person cannot."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A scheduled cycle",
           "validation": "There is a named person for every slot in the cycle.",
           "next_stage": "operate"
@@ -746,9 +1333,15 @@
         {
           "stage_id": "operate",
           "objective": "Do the work, on the cycle.",
-          "inputs": ["Scheduled cycle"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Scheduled cycle"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "The cycle's work, done",
           "validation": "Nothing older than the agreed window is outstanding.",
           "next_stage": "verify"
@@ -756,9 +1349,16 @@
         {
           "stage_id": "verify",
           "objective": "Confirm it actually happened, at the far end.",
-          "inputs": ["Completed cycle work"],
-          "actions": ["Check the result on the platform itself, not in our own tool's status column.", "Repeat anything that silently failed, the same day."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Completed cycle work"
+          ],
+          "actions": [
+            "Check the result on the platform itself, not in our own tool's status column.",
+            "Repeat anything that silently failed, the same day."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A verified cycle",
           "validation": "$feature.qualityChecks",
           "next_stage": "log"
@@ -766,36 +1366,67 @@
         {
           "stage_id": "log",
           "objective": "Leave a record the monthly report can be written from.",
-          "inputs": ["Verified cycle"],
-          "actions": ["Record what was done, what failed and what was escalated, with dates."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "Verified cycle"
+          ],
+          "actions": [
+            "Record what was done, what failed and what was escalated, with dates."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "$feature.deliverables",
           "validation": "Every exception has a date and an owner.",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "verify", "question": "Did something fail silently?", "ifYes": "Repeat it the same day and log it. A silent failure found at month end is a month of nothing." }
+        {
+          "at": "verify",
+          "question": "Did something fail silently?",
+          "ifYes": "Repeat it the same day and log it. A silent failure found at month end is a month of nothing."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
       "approval_points": [],
-      "failure_conditions": ["A cycle slot with no named person", "A status trusted instead of verified at the platform", "An escalation with no owner"],
+      "failure_conditions": [
+        "A cycle slot with no named person",
+        "A status trusted instead of verified at the platform",
+        "An escalation with no owner"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.campaign": {
       "label": "Building and launching paid advertising, where mistakes cost money per hour",
       "trigger": "Strategy, audience, creative and tracking are all approved.",
-      "prerequisites": ["$feature.dependencies.requires", "Budget confirmed in writing"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires",
+        "Budget confirmed in writing"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "preflight",
           "objective": "Check the expensive things before spending starts.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Confirm tracking fires end to end.", "Confirm every destination link opens the right page.", "Confirm the budget figure against the client's written confirmation."],
-          "tools": ["$feature.tools", "Browser dev tools"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Confirm tracking fires end to end.",
+            "Confirm every destination link opens the right page.",
+            "Confirm the budget figure against the client's written confirmation."
+          ],
+          "tools": [
+            "$feature.tools",
+            "Browser dev tools"
+          ],
           "output": "A cleared preflight",
           "validation": "A test conversion has been seen, not assumed.",
           "next_stage": "build"
@@ -803,9 +1434,15 @@
         {
           "stage_id": "build",
           "objective": "Build the campaign so it can be read later.",
-          "inputs": ["Cleared preflight"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Cleared preflight"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A built, paused campaign",
           "validation": "Structure isolates each variable being tested.",
           "next_stage": "review"
@@ -813,9 +1450,16 @@
         {
           "stage_id": "review",
           "objective": "Have a second person look before it spends.",
-          "inputs": ["Built campaign"],
-          "actions": ["Check budget, schedule, audience size, exclusions and links again.", "Check every ad against the platform's policy."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Built campaign"
+          ],
+          "actions": [
+            "Check budget, schedule, audience size, exclusions and links again.",
+            "Check every ad against the platform's policy."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A reviewed campaign",
           "validation": "$feature.qualityChecks",
           "next_stage": "launch"
@@ -823,37 +1467,75 @@
         {
           "stage_id": "launch",
           "objective": "Turn it on and watch the first hours.",
-          "inputs": ["Reviewed campaign"],
-          "actions": ["Enable.", "Check delivery and spend rate within the first hours, not the next day.", "Confirm the first conversions arrive where they should."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Reviewed campaign"
+          ],
+          "actions": [
+            "Enable.",
+            "Check delivery and spend rate within the first hours, not the next day.",
+            "Confirm the first conversions arrive where they should."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "$feature.deliverables",
           "validation": "Delivering, spending at the agreed rate, conversions arriving.",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "preflight", "question": "Is tracking unverified?", "ifYes": "Do not launch. A campaign with no measurement is a donation." },
-        { "at": "launch", "question": "Is spend running above the agreed daily rate?", "ifYes": "Pause immediately, then diagnose." }
+        {
+          "at": "preflight",
+          "question": "Is tracking unverified?",
+          "ifYes": "Do not launch. A campaign with no measurement is a donation."
+        },
+        {
+          "at": "launch",
+          "question": "Is spend running above the agreed daily rate?",
+          "ifYes": "Pause immediately, then diagnose."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
-      "approval_points": ["review", "launch"],
-      "failure_conditions": ["Launched without a verified conversion", "Budget different from the client's written figure", "A destination link that 404s"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "review",
+        "launch"
+      ],
+      "failure_conditions": [
+        "Launched without a verified conversion",
+        "Budget different from the client's written figure",
+        "A destination link that 404s"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.optimise": {
       "label": "Changing a live thing on evidence, one variable at a time",
       "trigger": "Enough data has accumulated to read.",
-      "prerequisites": ["$feature.dependencies.requires", "A live campaign past its learning phase"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires",
+        "A live campaign past its learning phase"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "read",
           "objective": "Establish there is a signal before acting on it.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Check the result count against the platform's own threshold.", "Compare against the agreed target, not against yesterday."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Check the result count against the platform's own threshold.",
+            "Compare against the agreed target, not against yesterday."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "A read of the current state",
           "validation": "The sample is large enough that the difference is not noise.",
           "next_stage": "change"
@@ -861,9 +1543,15 @@
         {
           "stage_id": "change",
           "objective": "Make one change.",
-          "inputs": ["The read"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "The read"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "One change, made",
           "validation": "Exactly one variable moved.",
           "next_stage": "record"
@@ -871,9 +1559,16 @@
         {
           "stage_id": "record",
           "objective": "Write down the number that justified it.",
-          "inputs": ["The change"],
-          "actions": ["Log what changed, when, and the figure behind it.", "Note what would make us reverse it."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "The change"
+          ],
+          "actions": [
+            "Log what changed, when, and the figure behind it.",
+            "Note what would make us reverse it."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "A change log entry",
           "validation": "The entry names a figure, not a feeling.",
           "next_stage": "observe"
@@ -881,37 +1576,72 @@
         {
           "stage_id": "observe",
           "objective": "Let it settle before changing anything else.",
-          "inputs": ["Change log entry"],
-          "actions": ["Wait out the learning period.", "Compare against the recorded before-figure.", "Reverse it if the reversal condition is met."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "Change log entry"
+          ],
+          "actions": [
+            "Wait out the learning period.",
+            "Compare against the recorded before-figure.",
+            "Reverse it if the reversal condition is met."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "read", "question": "Is the sample below the platform's learning threshold?", "ifYes": "Change nothing. Most optimisation is reading noise confidently." },
-        { "at": "observe", "question": "Did the change make it worse?", "ifYes": "Reverse it and log that too. An unlogged reversal is how the same change gets made again next quarter." }
+        {
+          "at": "read",
+          "question": "Is the sample below the platform's learning threshold?",
+          "ifYes": "Change nothing. Most optimisation is reading noise confidently."
+        },
+        {
+          "at": "observe",
+          "question": "Did the change make it worse?",
+          "ifYes": "Reverse it and log that too. An unlogged reversal is how the same change gets made again next quarter."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
       "approval_points": [],
-      "failure_conditions": ["More than one variable changed at once", "A change with no recorded justification", "A change made below the learning threshold"],
+      "failure_conditions": [
+        "More than one variable changed at once",
+        "A change with no recorded justification",
+        "A change made below the learning threshold"
+      ],
       "completion_condition": "$feature.completionCriteria"
     },
-
     "wf.report": {
       "label": "Saying what happened, honestly, and deciding what changes",
       "trigger": "The reporting period closes.",
-      "prerequisites": ["$feature.dependencies.requires", "A complete period of activity"],
-      "inputs": ["$feature.inputs"],
-      "outputs": ["$feature.outputs"],
+      "prerequisites": [
+        "$feature.dependencies.requires",
+        "A complete period of activity"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
       "stages": [
         {
           "stage_id": "collect",
           "objective": "Take the numbers from the source, not from a dashboard we built.",
-          "inputs": ["$feature.inputs"],
-          "actions": ["Export from each platform's own reporting.", "Reconcile spend against the client's own invoice where money is involved."],
-          "tools": ["$feature.tools"],
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Export from each platform's own reporting.",
+            "Reconcile spend against the client's own invoice where money is involved."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
           "output": "Verified figures",
           "validation": "Every figure traceable to a platform screen.",
           "next_stage": "interpret"
@@ -919,9 +1649,15 @@
         {
           "stage_id": "interpret",
           "objective": "Say what the numbers mean, including when it is unflattering.",
-          "inputs": ["Verified figures"],
-          "actions": ["$feature.executionSteps"],
-          "tools": ["Document editor"],
+          "inputs": [
+            "Verified figures"
+          ],
+          "actions": [
+            "$feature.executionSteps"
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "A draft report",
           "validation": "The agreed target is stated and compared to, whichever way it went.",
           "next_stage": "decide"
@@ -929,9 +1665,16 @@
         {
           "stage_id": "decide",
           "objective": "Turn the reading into a decision.",
-          "inputs": ["Draft report"],
-          "actions": ["State what changes next period, and why.", "Where nothing changes, say that explicitly and why."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "Draft report"
+          ],
+          "actions": [
+            "State what changes next period, and why.",
+            "Where nothing changes, say that explicitly and why."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "A report with a decision in it",
           "validation": "$feature.qualityChecks",
           "next_stage": "send"
@@ -939,24 +1682,80 @@
         {
           "stage_id": "send",
           "objective": "Deliver it in time for it to be acted on.",
-          "inputs": ["Final report"],
-          "actions": ["Send within the agreed window.", "Where a call follows, send the report before the call, not during it."],
-          "tools": ["Document editor"],
+          "inputs": [
+            "Final report"
+          ],
+          "actions": [
+            "Send within the agreed window.",
+            "Where a call follows, send the report before the call, not during it."
+          ],
+          "tools": [
+            "Document editor"
+          ],
           "output": "$feature.deliverables",
           "validation": "Sent within the agreed number of days after period end.",
           "next_stage": null
         }
       ],
       "decision_points": [
-        { "at": "interpret", "question": "Did the period miss its target?", "ifYes": "Say so in the first paragraph. A report that buries the miss is worth less than no report." }
+        {
+          "at": "interpret",
+          "question": "Did the period miss its target?",
+          "ifYes": "Say so in the first paragraph. A report that buries the miss is worth less than no report."
+        }
       ],
-      "validation": ["$feature.qualityChecks"],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
       "approval_points": [],
       "failure_conditions": [
         "A figure that no platform screen supports",
         "A missed target not stated plainly",
         "A report with no decision in it",
         "Sent after the window without warning"
+      ],
+      "completion_condition": "$feature.completionCriteria"
+    },
+    "wf.composite": {
+      "label": "A feature that IS its parts, run in order",
+      "_comment": [
+        "THIS TEMPLATE HAS NO STAGES OF ITS OWN, and that is the point. A composite's",
+        "stages ARE its parts' workflows, so build-catalogue.js generates one stage per",
+        "entry in `composedOf`, in order, each delegating to that part's own materialised",
+        "workflow. Writing them out here would be a second, drifting copy of work that is",
+        "already described where it happens.",
+        "",
+        "It is the same device the integrated service's pipeline uses: a composition",
+        "delegates, it does not hide a private sequence."
+      ],
+      "stagesFromParts": true,
+      "trigger": "The composite is in the agreed scope.",
+      "prerequisites": [
+        "$feature.dependencies.requires"
+      ],
+      "inputs": [
+        "$feature.inputs"
+      ],
+      "outputs": [
+        "$feature.outputs"
+      ],
+      "stages": [],
+      "decision_points": [
+        {
+          "at": "*",
+          "question": "Has the previous part been approved?",
+          "ifNo": "Do not start the next one. A composite run out of order is three parts and no page."
+        }
+      ],
+      "validation": [
+        "$feature.qualityChecks"
+      ],
+      "approval_points": [
+        "each part’s own approval points"
+      ],
+      "failure_conditions": [
+        "A part started before the part before it was approved",
+        "A part delivered that fails its own quality checks"
       ],
       "completion_condition": "$feature.completionCriteria"
     }

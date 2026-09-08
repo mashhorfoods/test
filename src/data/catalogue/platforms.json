@@ -1,0 +1,93 @@
+{
+  "_comment": [
+    "PLATFORMS — the accounts a service is actually run on.",
+    "",
+    "WHY THIS IS A FILE AND NOT A NUMBER. Both platform-management features are",
+    "priced per platform, and until now the only record of WHICH platforms was",
+    "a display string on a package row: \"Meta Ads management\", \"Facebook +",
+    "Instagram\", \"Meta + Google Ads\". A quantity you can count and a scope you",
+    "cannot read are not the same thing — an automation, a quotation or an agent",
+    "needs to know Google Ads, not \"two\".",
+    "",
+    "EXTENSIBLE BY DESIGN. Adding a platform is one entry here. Nothing in the",
+    "builder, the styles or the scripts names a platform, so a new one appears",
+    "in the chooser, in both languages, with no code change.",
+    "",
+    "`executionSteps` IS THE HOOK FOR LATER. The workflow of running a campaign",
+    "does not change because the platform changed — the objective, the stages",
+    "and the approval points are the same — so today every entry leaves it",
+    "empty rather than inventing a difference. Where a genuine platform-specific",
+    "step exists (a verification a platform demands, a format only it accepts),",
+    "it goes here and build-catalogue.js appends it to the materialised workflow",
+    "of every feature scoped to that platform. The schema is ready; the content",
+    "is honest about not existing yet.",
+    "",
+    "Ids are permanent and language-neutral, like every other id in this",
+    "catalogue."
+  ],
+
+  "version": 1,
+
+  "sets": {
+    "advertising": {
+      "_comment": "Used by feat.marketing.platform_management.",
+      "label": { "en": "Advertising platforms", "ar": "المنصات الإعلانية" },
+      "platforms": [
+        {
+          "id": "plat.meta",
+          "order": 1,
+          "name": { "en": "Meta Ads", "ar": "Meta Ads" },
+          "latinName": true,
+          "covers": { "en": "Facebook and Instagram", "ar": "فيسبوك وإنستغرام" },
+          "executionSteps": []
+        },
+        {
+          "id": "plat.google",
+          "order": 2,
+          "name": { "en": "Google Ads", "ar": "Google Ads" },
+          "latinName": true,
+          "covers": { "en": "Search, Display and YouTube", "ar": "البحث والعرض ويوتيوب" },
+          "executionSteps": []
+        },
+        {
+          "id": "plat.tiktok",
+          "order": 3,
+          "name": { "en": "TikTok Ads", "ar": "TikTok Ads" },
+          "latinName": true,
+          "covers": { "en": "TikTok", "ar": "تيك توك" },
+          "executionSteps": []
+        },
+        {
+          "id": "plat.snapchat",
+          "order": 4,
+          "name": { "en": "Snapchat Ads", "ar": "Snapchat Ads" },
+          "latinName": true,
+          "covers": { "en": "Snapchat", "ar": "سناب شات" },
+          "executionSteps": []
+        },
+        {
+          "id": "plat.linkedin",
+          "order": 5,
+          "name": { "en": "LinkedIn Ads", "ar": "LinkedIn Ads" },
+          "latinName": true,
+          "covers": { "en": "LinkedIn", "ar": "لينكد إن" },
+          "executionSteps": []
+        }
+      ]
+    },
+
+    "social": {
+      "_comment": "Used by feat.social.platform_management.",
+      "label": { "en": "Channels", "ar": "القنوات" },
+      "platforms": [
+        { "id": "plat.instagram", "order": 1, "name": { "en": "Instagram", "ar": "إنستغرام" }, "executionSteps": [] },
+        { "id": "plat.facebook", "order": 2, "name": { "en": "Facebook", "ar": "فيسبوك" }, "executionSteps": [] },
+        { "id": "plat.tiktok_organic", "order": 3, "name": { "en": "TikTok", "ar": "تيك توك" }, "executionSteps": [] },
+        { "id": "plat.x", "order": 4, "name": { "en": "X", "ar": "إكس" }, "latinName": true, "executionSteps": [] },
+        { "id": "plat.linkedin_organic", "order": 5, "name": { "en": "LinkedIn", "ar": "لينكد إن" }, "executionSteps": [] },
+        { "id": "plat.snapchat_organic", "order": 6, "name": { "en": "Snapchat", "ar": "سناب شات" }, "executionSteps": [] },
+        { "id": "plat.youtube", "order": 7, "name": { "en": "YouTube", "ar": "يوتيوب" }, "executionSteps": [] }
+      ]
+    }
+  }
+}
