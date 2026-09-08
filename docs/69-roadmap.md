@@ -387,6 +387,17 @@ pre-composed WhatsApp messages. It cannot tell you whether the Arabic is
 > The nineteenth time this project has found a rule that was there and did
 > nothing. **A rule you can read is not a rule that runs.**
 
+> **One severity moved on 8 September, and it is the only one that ever has.**
+> §15 has two halves: one compares a control across the two LANGUAGES, the
+> other checks it is one of the three heights `docs/73` declares. The full
+> service names made the phone CTA wrap to 84px — in both languages, so the
+> first half stayed silent, because 84 equals 84 — and the second half said
+> MEDIUM six times. MEDIUM prints and passes (`docs/56` §3), so **CI went green
+> on `a360917` with all six findings in it.** That policy is right for
+> judgement calls and a fourth control height is not one, so that half is HIGH
+> now. Zero across every page, width and language, and negative-tested by
+> putting 84px back.
+
 **If a harness is added or its coverage changes, this table changes with it.**
 A gap nobody has written down is a gap nobody will look for.
 

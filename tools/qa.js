@@ -1291,7 +1291,24 @@ function serve() {
         if (!rec[lang]) continue;
         const off = [rec[lang].min, rec[lang].max].filter((h) => !SCALE.includes(h));
         if (off.length) {
-          fail('MED', 'controls', `.${cls} renders ${[...new Set(off)].join(' and ')}px at ${width}px in ${lang} — not one of the declared control heights ${SCALE.join('/')} (docs/73)`);
+          /* HIGH, NOT MEDIUM, SINCE 8 SEPTEMBER — and the reason is that this
+             check just watched a defect through.
+
+             The full service names made the phone CTA wrap, and it landed at
+             84px in both languages. §15's other half compares a control ACROSS
+             THE TWO LANGUAGES and stayed silent, because 84 equals 84. This
+             half saw it and said MEDIUM six times, and MEDIUM prints and
+             passes (docs/56 §3) — so CI went green on a360917 with all six in
+             it, and only a person reading the log would have known.
+
+             docs/56 §3 is right that most MEDIUMs are judgement calls worth
+             printing rather than enforcing. This one is not a judgement call.
+             docs/73 declares three control heights; a fourth height is not a
+             debatable preference, it is the system having four heights. It is
+             zero today across every page, width and language, so promoting it
+             costs nothing and buys the one thing MEDIUM could not: a build
+             that stops. */
+          fail('HIGH', 'controls', `.${cls} renders ${[...new Set(off)].join(' and ')}px at ${width}px in ${lang} — not one of the declared control heights ${SCALE.join('/')} (docs/73)`);
         }
       }
       if (rec.en && rec.ar && (rec.en.min !== rec.ar.min || rec.en.max !== rec.ar.max)) {
