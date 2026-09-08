@@ -1,0 +1,152 @@
+<a class="skip" href="#main">Skip to the brief</a>
+
+<header class="top">
+  <div class="top__in">
+    <span class="wordmark">PI<b>X</b>ORA</span>
+    <span class="top__label">Screen-reader pass · 40 minutes</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="lede">
+    <h1>Forty minutes with VoiceOver</h1>
+    <p class="standfirst">Put your screen reader on and use the site the way you would use any site. <strong>Tell us where you got stuck, where something was announced badly, and where you could not tell what was going on.</strong></p>
+    <dl class="facts">
+      <div><dt>Time</dt><dd>40 minutes</dd></div>
+      <div><dt>Best combination</dt><dd>VoiceOver, iPhone, Safari</dd></div>
+      <div><dt>The site</dt><dd><a href="https://zaokalyamamah.online">zaokalyamamah.online</a></dd></div>
+      <div><dt>Answers</dt><dd>One line each is enough</dd></div>
+    </dl>
+  </div>
+
+  <main id="main">
+
+    <section class="step">
+      <div class="rail"><span class="num">01</span><span class="chip">Why you</span></div>
+      <div class="body">
+        <h2>We are not asking for a WCAG audit</h2>
+        <p>A machine already does that on every change — axe-core, every page, two widths, both languages, zero violations.</p>
+        <p><strong>That is exactly why we need you.</strong> Everything in the table below was found by a person, or by reading the accessibility tree by hand. Every one of them passed the machine.</p>
+        <p>VoiceOver on iPhone in Safari is the most useful combination, because it is what most of this site's Arabic-reading audience uses. <strong>If you use something else, use that instead and tell us which.</strong></p>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="rail"><span class="num">02</span><span class="chip">Already fixed</span></div>
+      <div class="body">
+        <h2>Five things, so you do not spend time re-finding them</h2>
+        <p>Each of these passed every automated check. Each was useless to a listener.</p>
+        <div class="scroller">
+          <table class="stack">
+            <thead><tr><th scope="col">What it announced</th><th scope="col">Why that is useless</th><th scope="col">Now</th></tr></thead>
+            <tbody>
+              <tr><td data-label="What it announced"><span class="mono">button “Copy”</span></td><td data-label="Why that is useless">Copy what?</td><td data-label="Now">Names the code it copies</td></tr>
+              <tr><td data-label="What it announced">Five links, all <span class="mono">“See what it covers”</span></td><td data-label="Why that is useless">Five identical names in one list</td><td data-label="Now">Each names its own service</td></tr>
+              <tr><td data-label="What it announced"><span class="mono">link “Website”</span></td><td data-label="Why that is useless">A word, not a destination</td><td data-label="Now">Says where it goes</td></tr>
+              <tr><td data-label="What it announced">Three scroll regions with <strong>no name at all</strong></td><td data-label="Why that is useless">You land in a group and it says nothing</td><td data-label="Now">Each names itself</td></tr>
+              <tr><td data-label="What it announced">Two galleries announcing <strong>the same name</strong></td><td data-label="Why that is useless">The page had written two good names and the translation layer overwrote both with one generic string</td><td data-label="Now">A name each, in both languages</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The last two were found while preparing this brief, and both are now checked automatically on every change so they cannot come back.</p>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="rail"><span class="num">03</span><span class="chip chip--first">The brief</span></div>
+      <div class="body">
+        <h2>Six things only you can judge</h2>
+        <p>Roughly in the order you will meet them. <strong>A one-line answer to each is a complete answer.</strong></p>
+
+        <h3>3.1 &nbsp;The first thirty seconds</h3>
+        <p>Land on the homepage and do nothing but listen. <strong>Do you learn what this business does and who it is for, before you get bored?</strong></p>
+        <p>The first line is meant to be <em>“A remote studio for the Gulf and Egypt.”</em> Tell us where in the announcement order that actually arrives.</p>
+
+        <h3>3.2 &nbsp;Six horizontal scroll regions</h3>
+        <p>The page has six areas that scroll <strong>sideways</strong> rather than down. Each is keyboard-reachable and each announces a name — <em>“Selected work — scroll for more”</em>, <em>“Identity boards — scroll for more”</em>, and so on.</p>
+        <ul>
+          <li><strong>Does the name tell you enough to decide whether to enter?</strong></li>
+          <li>Once inside, <strong>can you get out again</strong> without trapping?</li>
+          <li>Is <em>“scroll for more”</em> the right instruction, or does it describe a gesture you do not make?</li>
+        </ul>
+        <p>This is the part we are least confident about. Sideways scrolling is a visual convention and we do not know how it lands as audio.</p>
+
+        <h3>3.3 &nbsp;The Brand Challenge</h3>
+        <p>A quiz on the homepage: a scenario, four options, two attempts, then a result. It changes what is on screen four times without the page navigating.</p>
+        <ul>
+          <li>When you press <strong>Start</strong>, are you told the question appeared?</li>
+          <li>The four options are radio buttons in a group. <strong>Is the group's question announced before the options</strong>, or do you meet the options first?</li>
+          <li>There is an attempts counter. Do you know how many you have left?</li>
+          <li>On a wrong answer the panel changes. <strong>Are you told?</strong> It is marked as a polite live region, which is our guess at the right strength — tell us if it is too quiet or too intrusive.</li>
+          <li>On a right answer you get a code. <strong>Can you read it character by character, and can you copy it?</strong></li>
+        </ul>
+
+        <h3>3.4 &nbsp;The FAQ — six collapsed questions</h3>
+        <p>Native disclosure elements, no JavaScript.</p>
+        <ul>
+          <li><strong>Is it clear they are expandable before you open one?</strong></li>
+          <li>When one opens, does the answer follow, or do you have to hunt for it?</li>
+        </ul>
+
+        <div class="note note--cost">
+          <span class="note__k">3.5 · The highest-cost item in this document</span>
+          <p>The contact form opens the visitor's email app. <strong>When that does not work, a recovery block appears</strong> offering WhatsApp and a copy-the-address button.</p>
+          <ul>
+            <li>Submit it. <strong>Are you told what happened?</strong> Something either sent or it did not, and we need to know the difference is audible.</li>
+            <li>If the recovery block appears, <strong>is its arrival announced</strong>, or does it appear silently below where you are?</li>
+          </ul>
+          <p><strong>A visitor who cannot tell whether their message sent is a lost enquiry.</strong></p>
+        </div>
+
+        <h3>3.6 &nbsp;The language switch</h3>
+        <p>The site is English and Arabic, and switching flips the whole page to right-to-left.</p>
+        <ul>
+          <li><strong>Does your screen reader switch voice</strong> when you move to Arabic, or does it read Arabic in an English voice?</li>
+          <li>After switching, <strong>where does focus land?</strong> Are you returned somewhere sensible, or dropped at the top?</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="rail"><span class="num">04</span><span class="chip">Skip</span></div>
+      <div class="body">
+        <h2>What not to spend time on</h2>
+        <ul>
+          <li><strong>Colour contrast, heading order, landmarks, alt text presence, focus visibility.</strong> All machine-checked, all passing, all re-checked on every change. If you notice one anyway, say so — but do not go looking.</li>
+          <li><strong>The styleguide page.</strong> Internal, not linked, not for visitors.</li>
+          <li><strong>Suggesting ARIA.</strong> Tell us what you heard and what you expected to hear; what to change is ours to work out.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="rail"><span class="num">05</span><span class="chip">Sending it back</span></div>
+      <div class="body">
+        <h2>Whatever is easiest</h2>
+        <p><strong>A voice note is genuinely fine and often better</strong> — hearing you get stuck is worth more than reading that you did.</p>
+        <div class="note">
+          <span class="note__k">A useful shape, if you want one</span>
+          <p><strong>Where:</strong> the FAQ<br>
+          <strong>Expected:</strong> to know the questions could be opened<br>
+          <strong>Heard:</strong> just the question text<br>
+          <strong>Cost:</strong> I would not have opened any of them</p>
+        </div>
+        <p>Please say <strong>which device, which screen reader and which browser.</strong></p>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="rail"><span class="num">06</span><span class="chip">Afterwards</span></div>
+      <div class="body">
+        <h2>What happens to the answers</h2>
+        <p>Everything you report gets an entry in our tracker with your wording attached. Anything that changes the site is written up with what it was, why it was wrong, and what it is now — and <strong>where a machine could have caught it, we add a check so it cannot come back.</strong> Two of the five items above got such a check on the day they were found.</p>
+        <p>If something is wrong and we do not fix it, we will say why rather than let it go quiet.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="foot">
+    <span>Pixora — screen-reader pass</span>
+    <span>Current as of 8 September 2026</span>
+  </div>
+</div>
