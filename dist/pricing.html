@@ -1551,6 +1551,10 @@ function initBuilder(scope = document) {
       if (manual.has(id)) continue;
       for (const [m, set] of reach) if (set.has(id)) { pulled.set(id, m); break; }
     }
+    for (const r of rows.values()) {
+      if (!r.composedOf.length || selected.has(r.id)) continue;
+      if (r.composedOf.every((part) => selected.has(part))) selected.add(r.id);
+    }
     const partOf = new Map();
     for (const id of selected) {
       for (const part of rows.get(id)?.composedOf || []) {
@@ -1730,7 +1734,20 @@ function initBuilder(scope = document) {
         if (!wanted.length) continue;
         const fits = cat.tiers.filter((t) => {
           const has = new Map(t.contents.map((c) => [c.ref, c]));
-          return wanted.every((id) => has.has(id));
+          return wanted.every((id) => {
+            const c = has.get(id);
+            if (!c) return false;
+            const r = rows.get(id);
+            const mine = qtyOf(r);
+            const theirs = c.qty ?? mine;
+            if (mine > theirs) return false;
+            const tier = tierOf(r);
+            if (tier && r.tierFactors.size) {
+              const order = [...r.tierFactors.keys()];
+              if (order.indexOf(c.tier) < order.indexOf(tier)) return false;
+            }
+            return true;
+          });
         });
         if (!fits.length) continue;
         const best = fits.reduce((a, b) => (Number(a.price) <= Number(b.price) ? a : b));
@@ -2419,11 +2436,12 @@ if (document.readyState === 'loading') {
                     <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Domain registration</span><span data-lang-copy="ar" lang="ar">تسجيل النطاق</span></span></li>
                     <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Hosting</span><span data-lang-copy="ar" lang="ar">الاستضافة</span></span></li>
                     <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website UI/UX design</span><span data-lang-copy="ar" lang="ar">تصميم واجهة وتجربة الموقع</span></span></li>
-                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website development</span><span data-lang-copy="ar" lang="ar">تطوير الموقع</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Up to 5 pages</span><span data-lang-copy="ar" lang="ar">حتى 5 صفحات</span></span></li>
               </ul>
               <div class="c-tier__more" data-expand-panel>
                 <div class="c-tier__more-inner">
                   <ul class="c-tier__more-list" role="list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website development</span><span data-lang-copy="ar" lang="ar">تطوير الموقع</span></span></li>
                     <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Responsive implementation</span><span data-lang-copy="ar" lang="ar">تنفيذ متجاوب</span></span></li>
                     <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website setup</span><span data-lang-copy="ar" lang="ar">إعداد الموقع</span></span></li>
                     <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Testing</span><span data-lang-copy="ar" lang="ar">الاختبار</span></span></li>
@@ -2432,7 +2450,7 @@ if (document.readyState === 'loading') {
                 </div>
               </div>
               <button class="c-tier__toggle" data-expand-trigger>
-                <span data-when="collapsed"><span data-lang-copy="en">Show all 8 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (8)</span></span>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 9 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (9)</span></span>
                 <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
                 <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
@@ -2493,11 +2511,12 @@ if (document.readyState === 'loading') {
                     <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Domain registration</span><span data-lang-copy="ar" lang="ar">تسجيل النطاق</span></span></li>
                     <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Hosting</span><span data-lang-copy="ar" lang="ar">الاستضافة</span></span></li>
                     <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website UI/UX design</span><span data-lang-copy="ar" lang="ar">تصميم واجهة وتجربة الموقع</span></span></li>
-                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website development</span><span data-lang-copy="ar" lang="ar">تطوير الموقع</span></span></li>
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Up to 10 pages</span><span data-lang-copy="ar" lang="ar">حتى 10 صفحات</span></span></li>
               </ul>
               <div class="c-tier__more" data-expand-panel>
                 <div class="c-tier__more-inner">
                   <ul class="c-tier__more-list" role="list">
+                    <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website development</span><span data-lang-copy="ar" lang="ar">تطوير الموقع</span></span></li>
                     <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Responsive implementation</span><span data-lang-copy="ar" lang="ar">تنفيذ متجاوب</span></span></li>
                     <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Website setup</span><span data-lang-copy="ar" lang="ar">إعداد الموقع</span></span></li>
                     <li class="c-tier__feature"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg><span><span data-lang-copy="en">Required integrations</span><span data-lang-copy="ar" lang="ar">التكاملات المطلوبة</span></span></li>
@@ -2508,7 +2527,7 @@ if (document.readyState === 'loading') {
                 </div>
               </div>
               <button class="c-tier__toggle" data-expand-trigger>
-                <span data-when="collapsed"><span data-lang-copy="en">Show all 10 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (10)</span></span>
+                <span data-when="collapsed"><span data-lang-copy="en">Show all 11 features</span><span data-lang-copy="ar" lang="ar">عرض كل الميزات (11)</span></span>
                 <span data-when="expanded"><span data-lang-copy="en">Show fewer features</span><span data-lang-copy="ar" lang="ar">عرض ميزات أقل</span></span>
                 <svg class="c-tier__toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
@@ -2643,10 +2662,10 @@ if (document.readyState === 'loading') {
             </a>
           </article>
           <article class="c-tier c-tier--featured" style="--i: 1"
-            aria-labelledby="price-social-soc-growth-name">
+            aria-labelledby="price-social-soc-pro-name">
             <span class="c-tier__ribbon"><span data-lang-copy="en">Most Popular</span><span data-lang-copy="ar" lang="ar">الأكثر طلبًا</span></span>
             <div>
-              <h3 class="c-tier__name" id="price-social-soc-growth-name" lang="en" dir="ltr">Social Growth</h3>
+              <h3 class="c-tier__name" id="price-social-soc-pro-name" lang="en" dir="ltr">Social Pro</h3>
             </div>
             <p class="c-tier__price-block">
               <span class="c-tier__price">
@@ -2692,7 +2711,7 @@ if (document.readyState === 'loading') {
               <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما نسلّمه لك، عند الانتهاء</span></dd>
             </dl>
             <details class="c-tier__terms">
-              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span><span class="u-visually-hidden"><span data-lang-copy="en"> — Social Growth</span><span data-lang-copy="ar" lang="ar"> — Social Growth</span></span></summary>
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span><span class="u-visually-hidden"><span data-lang-copy="en"> — Social Pro</span><span data-lang-copy="ar" lang="ar"> — Social Pro</span></span></summary>
               <div class="c-tier__terms-body">
                 <ul>
                   <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
@@ -2705,20 +2724,20 @@ if (document.readyState === 'loading') {
               </div>
             </details>
             <a class="c-btn c-btn--primary c-tier__cta"
-              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20Management%20%C2%B7%20Social%20Growth%20(400%20USD%2C%20monthly)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20Management%20%C2%B7%20Social%20Growth%20(400%20USD%2C%20monthly)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Social%20Growth%20%D8%B6%D9%85%D9%86%20%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9%20%D9%88%D8%B3%D8%A7%D8%A6%D9%84%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20(400%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D8%B4%D9%87%D8%B1%D9%8A%D9%8B%D8%A7)."
-              data-about="social:soc-growth"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20Management%20%C2%B7%20Social%20Pro%20(400%20USD%2C%20monthly)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20Management%20%C2%B7%20Social%20Pro%20(400%20USD%2C%20monthly)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Social%20Pro%20%D8%B6%D9%85%D9%86%20%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9%20%D9%88%D8%B3%D8%A7%D8%A6%D9%84%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20(400%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D8%B4%D9%87%D8%B1%D9%8A%D9%8B%D8%A7)."
+              data-about="social:soc-pro"
               target="_blank" rel="noopener noreferrer"
-              aria-describedby="price-social-soc-growth-name">
-              <span><span data-lang-copy="en">Ask about Social Growth</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Social Growth</span></span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span>
+              aria-describedby="price-social-soc-pro-name">
+              <span><span data-lang-copy="en">Ask about Social Pro</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Social Pro</span></span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span>
               <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
               </svg>
             </a>
           </article>
           <article class="c-tier" style="--i: 2"
-            aria-labelledby="price-social-soc-pro-name">
+            aria-labelledby="price-social-soc-growth-name">
             <div>
-              <h3 class="c-tier__name" id="price-social-soc-pro-name" lang="en" dir="ltr">Social Pro</h3>
+              <h3 class="c-tier__name" id="price-social-soc-growth-name" lang="en" dir="ltr">Social Growth</h3>
             </div>
             <p class="c-tier__price-block">
               <span class="c-tier__price">
@@ -2769,7 +2788,7 @@ if (document.readyState === 'loading') {
               <dd><span data-lang-copy="en">Everything delivered, on completion</span><span data-lang-copy="ar" lang="ar">كل ما نسلّمه لك، عند الانتهاء</span></dd>
             </dl>
             <details class="c-tier__terms">
-              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span><span class="u-visually-hidden"><span data-lang-copy="en"> — Social Pro</span><span data-lang-copy="ar" lang="ar"> — Social Pro</span></span></summary>
+              <summary><span data-lang-copy="en">What's not included</span><span data-lang-copy="ar" lang="ar">ما لا تشمله الباقة</span><span class="u-visually-hidden"><span data-lang-copy="en"> — Social Growth</span><span data-lang-copy="ar" lang="ar"> — Social Growth</span></span></summary>
               <div class="c-tier__terms-body">
                 <ul>
                   <li><span data-lang-copy="en">Advertising budget paid to the platforms</span><span data-lang-copy="ar" lang="ar">ميزانية الإعلانات المدفوعة للمنصات</span></li>
@@ -2782,11 +2801,11 @@ if (document.readyState === 'loading') {
               </div>
             </details>
             <a class="c-btn c-btn--secondary c-tier__cta"
-              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20Management%20%C2%B7%20Social%20Pro%20(650%20USD%2C%20monthly)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20Management%20%C2%B7%20Social%20Pro%20(650%20USD%2C%20monthly)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Social%20Pro%20%D8%B6%D9%85%D9%86%20%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9%20%D9%88%D8%B3%D8%A7%D8%A6%D9%84%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20(650%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D8%B4%D9%87%D8%B1%D9%8A%D9%8B%D8%A7)."
-              data-about="social:soc-pro"
+              href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20Management%20%C2%B7%20Social%20Growth%20(650%20USD%2C%20monthly)." data-wa data-wa-en="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I'm%20interested%20in%20Social%20Media%20Management%20%C2%B7%20Social%20Growth%20(650%20USD%2C%20monthly)." data-wa-ar="https://wa.me/249962672192?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%20%D8%A8%D9%8A%D9%83%D8%B3%D9%88%D8%B1%D8%A7%20%E2%80%94%20%D8%A3%D9%86%D8%A7%20%D9%85%D9%87%D8%AA%D9%85%20%D8%A8%D8%A8%D8%A7%D9%82%D8%A9%20Social%20Growth%20%D8%B6%D9%85%D9%86%20%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9%20%D9%88%D8%B3%D8%A7%D8%A6%D9%84%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20(650%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1%D8%8C%20%D8%B4%D9%87%D8%B1%D9%8A%D9%8B%D8%A7)."
+              data-about="social:soc-growth"
               target="_blank" rel="noopener noreferrer"
-              aria-describedby="price-social-soc-pro-name">
-              <span><span data-lang-copy="en">Ask about Social Pro</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Social Pro</span></span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span>
+              aria-describedby="price-social-soc-growth-name">
+              <span><span data-lang-copy="en">Ask about Social Growth</span><span data-lang-copy="ar" lang="ar">اسأل عن باقة Social Growth</span></span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span>
               <svg class="c-btn__icon u-flip-rtl" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
               </svg>
@@ -3092,7 +3111,7 @@ if (document.readyState === 'loading') {
                 <span class="c-detail__accent">Build your own.</span></span><span data-lang-copy="ar" lang="ar">لا تناسبك أي منها؟<br /> <span class="c-detail__accent">كوّن باقتك بنفسك.</span></span></h2>
               <p class="t-body-lg c-build-lead"><span data-lang-copy="en">Every service, broken into the things it is actually made of. Tick what you need — we will keep a running estimate beside you and tell you when one choice needs another.</span><span data-lang-copy="ar" lang="ar">كل خدمة، مقسَّمة إلى ما تتكوّن منه فعلًا. حدّد ما تحتاجه — وسنحتفظ بتقدير متغيّر إلى جوارك، ونخبرك حين يحتاج اختيارٌ اختيارًا آخر.</span></p>
             </div>
-          <script type="application/json" id="build-packages">[{"service":"svc.branding","name":{"en":"Branding & Design","ar":"الهوية والتصميم"},"tiers":[{"id":"tier-starter","name":"Starter","price":"490","from":true,"billing":"billingOnce","contents":[{"ref":"feat.branding.logo"},{"ref":"feat.branding.color_system"},{"ref":"feat.branding.type_system"},{"ref":"feat.branding.identity_card"},{"ref":"feat.branding.social_profile"},{"ref":"feat.branding.social_posts","qty":3},{"ref":"feat.branding.files_basic"}]},{"id":"tier-professional","name":"Professional","price":"990","from":true,"billing":"billingOnce","contents":[{"ref":"feat.branding.logo"},{"ref":"feat.branding.color_system"},{"ref":"feat.branding.type_system"},{"ref":"feat.branding.guidelines_short"},{"ref":"feat.branding.business_card"},{"ref":"feat.branding.letterhead"},{"ref":"feat.branding.social_profile"},{"ref":"feat.branding.social_posts","qty":6},{"ref":"feat.branding.ad_templates_basic"},{"ref":"feat.branding.files_source"}]},{"id":"tier-advanced","name":"Advanced","price":"1990","from":true,"billing":"billingOnce","contents":[{"ref":"feat.branding.logo"},{"ref":"feat.branding.color_system"},{"ref":"feat.branding.type_system"},{"ref":"feat.branding.guidelines_short"},{"ref":"feat.branding.business_card"},{"ref":"feat.branding.letterhead"},{"ref":"feat.branding.social_profile"},{"ref":"feat.branding.social_posts","qty":6},{"ref":"feat.branding.ad_templates_basic"},{"ref":"feat.branding.files_source"},{"ref":"feat.branding.guidelines_full"},{"ref":"feat.branding.visual_language"},{"ref":"feat.branding.social_design_system"},{"ref":"feat.branding.ad_templates"},{"ref":"feat.branding.presentation_template"},{"ref":"feat.branding.profile_template"},{"ref":"feat.branding.content_templates","qty":10},{"ref":"feat.branding.brand_assets"}]}]},{"service":"svc.websites","name":{"en":"Websites","ar":"المواقع الإلكترونية"},"tiers":[{"id":"web-landing","name":"Landing Page","price":"250","from":false,"billing":"billingOnce","contents":[{"ref":"feat.websites.domain"},{"ref":"feat.websites.hosting"},{"ref":"feat.websites.uiux"},{"ref":"feat.websites.responsive"},{"ref":"feat.websites.handover"}]},{"id":"web-business","name":"Business Website","price":"650","from":false,"billing":"billingOnce","contents":[{"ref":"feat.websites.domain"},{"ref":"feat.websites.hosting"},{"ref":"feat.websites.uiux"},{"ref":"feat.websites.development"},{"ref":"feat.websites.responsive"},{"ref":"feat.websites.setup"},{"ref":"feat.websites.testing"},{"ref":"feat.websites.handover"}]},{"id":"web-professional","name":"Professional Website","price":"1200","from":false,"billing":"billingOnce","contents":[{"ref":"feat.websites.domain"},{"ref":"feat.websites.hosting"},{"ref":"feat.websites.uiux"},{"ref":"feat.websites.development"},{"ref":"feat.websites.responsive"},{"ref":"feat.websites.setup"},{"ref":"feat.websites.integrations"},{"ref":"feat.websites.testing"},{"ref":"feat.websites.deployment"},{"ref":"feat.websites.handover"}]}]},{"service":"svc.social","name":{"en":"Social Media Management","ar":"إدارة وسائل التواصل"},"tiers":[{"id":"soc-starter","name":"Social Starter","price":"250","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.social.platform_management","qty":2},{"ref":"feat.social.content_calendar"},{"ref":"feat.social.post_design","qty":8},{"ref":"feat.social.copywriting"},{"ref":"feat.social.publishing"},{"ref":"feat.social.hashtag_research","tier":"basic"},{"ref":"feat.social.report"}]},{"id":"soc-growth","name":"Social Growth","price":"400","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.social.platform_management","qty":3},{"ref":"feat.social.content_strategy","tier":"core"},{"ref":"feat.social.post_design","qty":12},{"ref":"feat.social.reels","qty":4},{"ref":"feat.social.copywriting"},{"ref":"feat.social.publishing"},{"ref":"feat.social.stories"},{"ref":"feat.social.community_monitoring"},{"ref":"feat.social.hashtag_research","tier":"core"},{"ref":"feat.social.report"}]},{"id":"soc-pro","name":"Social Pro","price":"650","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.social.platform_management","qty":5},{"ref":"feat.social.content_strategy","tier":"complete"},{"ref":"feat.social.hashtag_research","tier":"core"},{"ref":"feat.social.post_design","qty":16},{"ref":"feat.social.reels","qty":8},{"ref":"feat.social.stories"},{"ref":"feat.social.copywriting"},{"ref":"feat.social.video_editing"},{"ref":"feat.social.publishing"},{"ref":"feat.social.community_management"},{"ref":"feat.social.report"},{"ref":"feat.social.strategy_review"},{"ref":"feat.social.audience_research"},{"ref":"feat.social.growth_analysis"},{"ref":"feat.social.performance_optimization"}]}]},{"service":"svc.marketing","name":{"en":"Digital Marketing & Advertising","ar":"التسويق الرقمي والإعلانات"},"tiers":[{"id":"ads-starter","name":"Ads Starter","price":"250","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.marketing.platform_management","qty":1},{"ref":"feat.marketing.campaign_setup"},{"ref":"feat.marketing.audience","tier":"targeting"},{"ref":"feat.marketing.ad_copy"},{"ref":"feat.marketing.ad_creative","qty":2},{"ref":"feat.marketing.monitoring"},{"ref":"feat.marketing.optimization","tier":"basic"},{"ref":"feat.marketing.report"}]},{"id":"ads-growth","name":"Ads Growth","price":"400","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.marketing.platform_management","qty":1},{"ref":"feat.marketing.campaign_setup","qty":4},{"ref":"feat.marketing.audience","tier":"research"},{"ref":"feat.marketing.ad_creative"},{"ref":"feat.marketing.ad_copy"},{"ref":"feat.marketing.optimization","tier":"campaign"},{"ref":"feat.marketing.retargeting"},{"ref":"feat.marketing.conversion_tracking"},{"ref":"feat.marketing.report"}]},{"id":"ads-performance","name":"Ads Performance","price":"600","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.marketing.platform_management","qty":2},{"ref":"feat.marketing.campaign_strategy"},{"ref":"feat.marketing.audience","tier":"segmentation"},{"ref":"feat.marketing.campaign_setup"},{"ref":"feat.marketing.ad_copy"},{"ref":"feat.marketing.ad_creative"},{"ref":"feat.marketing.retargeting"},{"ref":"feat.marketing.conversion_tracking"},{"ref":"feat.marketing.ab_testing"},{"ref":"feat.marketing.optimization","tier":"full"},{"ref":"feat.marketing.report"},{"ref":"feat.marketing.strategy_meeting"}]}]}]</script>
+          <script type="application/json" id="build-packages">[{"service":"svc.branding","name":{"en":"Branding & Design","ar":"الهوية والتصميم"},"tiers":[{"id":"tier-starter","name":"Starter","price":"490","from":true,"billing":"billingOnce","contents":[{"ref":"feat.branding.logo"},{"ref":"feat.branding.color_system"},{"ref":"feat.branding.type_system"},{"ref":"feat.branding.identity_card"},{"ref":"feat.branding.social_profile"},{"ref":"feat.branding.social_posts","qty":3},{"ref":"feat.branding.files_basic"}]},{"id":"tier-professional","name":"Professional","price":"990","from":true,"billing":"billingOnce","contents":[{"ref":"feat.branding.logo"},{"ref":"feat.branding.color_system"},{"ref":"feat.branding.type_system"},{"ref":"feat.branding.guidelines_short"},{"ref":"feat.branding.business_card"},{"ref":"feat.branding.letterhead"},{"ref":"feat.branding.social_profile"},{"ref":"feat.branding.social_posts","qty":6},{"ref":"feat.branding.ad_templates_basic"},{"ref":"feat.branding.files_source"}]},{"id":"tier-advanced","name":"Advanced","price":"1990","from":true,"billing":"billingOnce","contents":[{"ref":"feat.branding.logo"},{"ref":"feat.branding.color_system"},{"ref":"feat.branding.type_system"},{"ref":"feat.branding.guidelines_short"},{"ref":"feat.branding.business_card"},{"ref":"feat.branding.letterhead"},{"ref":"feat.branding.social_profile"},{"ref":"feat.branding.social_posts","qty":6},{"ref":"feat.branding.ad_templates_basic"},{"ref":"feat.branding.files_source"},{"ref":"feat.branding.guidelines_full"},{"ref":"feat.branding.visual_language"},{"ref":"feat.branding.social_design_system"},{"ref":"feat.branding.ad_templates"},{"ref":"feat.branding.presentation_template"},{"ref":"feat.branding.profile_template"},{"ref":"feat.branding.content_templates","qty":10},{"ref":"feat.branding.brand_assets"}]}]},{"service":"svc.websites","name":{"en":"Websites","ar":"المواقع الإلكترونية"},"tiers":[{"id":"web-landing","name":"Landing Page","price":"250","from":false,"billing":"billingOnce","contents":[{"ref":"feat.websites.domain"},{"ref":"feat.websites.hosting"},{"ref":"feat.websites.uiux"},{"ref":"feat.websites.responsive"},{"ref":"feat.websites.handover"}]},{"id":"web-business","name":"Business Website","price":"650","from":false,"billing":"billingOnce","contents":[{"ref":"feat.websites.domain"},{"ref":"feat.websites.hosting"},{"ref":"feat.websites.uiux"},{"ref":"feat.websites.extra_page","qty":4},{"ref":"feat.websites.development"},{"ref":"feat.websites.responsive"},{"ref":"feat.websites.setup"},{"ref":"feat.websites.testing"},{"ref":"feat.websites.handover"}]},{"id":"web-professional","name":"Professional Website","price":"1200","from":false,"billing":"billingOnce","contents":[{"ref":"feat.websites.domain"},{"ref":"feat.websites.hosting"},{"ref":"feat.websites.uiux"},{"ref":"feat.websites.extra_page","qty":9},{"ref":"feat.websites.development"},{"ref":"feat.websites.responsive"},{"ref":"feat.websites.setup"},{"ref":"feat.websites.integrations"},{"ref":"feat.websites.testing"},{"ref":"feat.websites.deployment"},{"ref":"feat.websites.handover"}]}]},{"service":"svc.social","name":{"en":"Social Media Management","ar":"إدارة وسائل التواصل"},"tiers":[{"id":"soc-starter","name":"Social Starter","price":"250","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.social.platform_management","qty":2},{"ref":"feat.social.content_calendar"},{"ref":"feat.social.post_design","qty":8},{"ref":"feat.social.copywriting"},{"ref":"feat.social.publishing"},{"ref":"feat.social.hashtag_research","tier":"basic"},{"ref":"feat.social.report"}]},{"id":"soc-pro","name":"Social Pro","price":"400","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.social.platform_management","qty":3},{"ref":"feat.social.content_strategy","tier":"core"},{"ref":"feat.social.post_design","qty":12},{"ref":"feat.social.reels","qty":4},{"ref":"feat.social.copywriting"},{"ref":"feat.social.publishing"},{"ref":"feat.social.stories"},{"ref":"feat.social.community_monitoring"},{"ref":"feat.social.hashtag_research","tier":"core"},{"ref":"feat.social.report"}]},{"id":"soc-growth","name":"Social Growth","price":"650","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.social.platform_management","qty":5},{"ref":"feat.social.content_strategy","tier":"complete"},{"ref":"feat.social.hashtag_research","tier":"core"},{"ref":"feat.social.post_design","qty":16},{"ref":"feat.social.reels","qty":8},{"ref":"feat.social.stories"},{"ref":"feat.social.copywriting"},{"ref":"feat.social.video_editing"},{"ref":"feat.social.publishing"},{"ref":"feat.social.community_management"},{"ref":"feat.social.report"},{"ref":"feat.social.strategy_review"},{"ref":"feat.social.audience_research"},{"ref":"feat.social.growth_analysis"},{"ref":"feat.social.performance_optimization"}]}]},{"service":"svc.marketing","name":{"en":"Digital Marketing & Advertising","ar":"التسويق الرقمي والإعلانات"},"tiers":[{"id":"ads-starter","name":"Ads Starter","price":"250","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.marketing.platform_management","qty":1},{"ref":"feat.marketing.campaign_setup"},{"ref":"feat.marketing.audience","tier":"targeting"},{"ref":"feat.marketing.ad_copy"},{"ref":"feat.marketing.ad_creative","qty":2},{"ref":"feat.marketing.monitoring"},{"ref":"feat.marketing.optimization","tier":"basic"},{"ref":"feat.marketing.report"}]},{"id":"ads-growth","name":"Ads Growth","price":"400","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.marketing.platform_management","qty":1},{"ref":"feat.marketing.campaign_setup","qty":4},{"ref":"feat.marketing.audience","tier":"research"},{"ref":"feat.marketing.ad_creative"},{"ref":"feat.marketing.ad_copy"},{"ref":"feat.marketing.optimization","tier":"campaign"},{"ref":"feat.marketing.retargeting"},{"ref":"feat.marketing.conversion_tracking"},{"ref":"feat.marketing.report"}]},{"id":"ads-performance","name":"Ads Performance","price":"600","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.marketing.platform_management","qty":2},{"ref":"feat.marketing.campaign_strategy"},{"ref":"feat.marketing.audience","tier":"segmentation"},{"ref":"feat.marketing.campaign_setup"},{"ref":"feat.marketing.ad_copy"},{"ref":"feat.marketing.ad_creative"},{"ref":"feat.marketing.retargeting"},{"ref":"feat.marketing.conversion_tracking"},{"ref":"feat.marketing.ab_testing"},{"ref":"feat.marketing.optimization","tier":"full"},{"ref":"feat.marketing.report"},{"ref":"feat.marketing.strategy_meeting"}]}]}]</script>
           <form class="c-build" id="build-form" novalidate data-build>
             <div class="c-build__grid">
               <div class="c-build__services">
@@ -3516,7 +3535,7 @@ if (document.readyState === 'loading') {
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.websites.landing_design" data-service="svc.websites" data-price-type="quote" data-recommends="feat.branding.logo feat.branding.color_system feat.branding.type_system">
+                      <li class="c-pick" data-feature="feat.websites.landing_design" data-service="svc.websites" data-price-type="fixed" data-price="50" data-recommends="feat.branding.logo feat.branding.color_system feat.branding.type_system">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-websites-landing_design" value="feat.websites.landing_design" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3524,11 +3543,11 @@ if (document.readyState === 'loading') {
                         </label>
                         <span class="c-pick__body">
                           <span class="c-pick__desc"><span data-lang-copy="en">The page designed to one action — layout, visual design, every width, and a design review before anything is built.</span><span data-lang-copy="ar" lang="ar">تصميم الصفحة حول إجراء واحد — التخطيط والتصميم البصري وكل العروض، مع مراجعة تصميمية قبل بدء التنفيذ.</span></span>
-                          <span class="c-pick__price c-pick__price--quote"><span data-lang-copy="en">Custom quote</span><span data-lang-copy="ar" lang="ar">عرض سعر خاص</span></span>
+                          <span class="c-pick__price"><span class="c-pick__from"><span data-lang-copy="en">From</span><span data-lang-copy="ar" lang="ar">من</span></span> <span class="c-pick__amount">50</span> <span class="c-pick__currency" data-i18n="currency">USD</span></span>
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.websites.landing_build" data-service="svc.websites" data-price-type="quote" data-requires="feat.websites.landing_design" data-recommends="feat.marketing.conversion_tracking">
+                      <li class="c-pick" data-feature="feat.websites.landing_build" data-service="svc.websites" data-price-type="fixed" data-price="50" data-requires="feat.websites.landing_design" data-recommends="feat.marketing.conversion_tracking">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-websites-landing_build" value="feat.websites.landing_build" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3536,11 +3555,11 @@ if (document.readyState === 'loading') {
                         </label>
                         <span class="c-pick__body">
                           <span class="c-pick__desc"><span data-lang-copy="en">The approved design built as a working page — responsive, integrated with whatever it has to talk to, and tested.</span><span data-lang-copy="ar" lang="ar">تنفيذ التصميم المعتمد كصفحة تعمل — متجاوبة ومتكاملة مع ما تحتاج الاتصال به ومُختبَرة.</span></span>
-                          <span class="c-pick__price c-pick__price--quote"><span data-lang-copy="en">Custom quote</span><span data-lang-copy="ar" lang="ar">عرض سعر خاص</span></span>
+                          <span class="c-pick__price"><span class="c-pick__from"><span data-lang-copy="en">From</span><span data-lang-copy="ar" lang="ar">من</span></span> <span class="c-pick__amount">50</span> <span class="c-pick__currency" data-i18n="currency">USD</span></span>
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.websites.landing_deploy" data-service="svc.websites" data-price-type="quote" data-requires="feat.websites.landing_build" data-recommends="feat.websites.hosting">
+                      <li class="c-pick" data-feature="feat.websites.landing_deploy" data-service="svc.websites" data-price-type="fixed" data-price="20" data-requires="feat.websites.landing_build" data-recommends="feat.websites.hosting">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-websites-landing_deploy" value="feat.websites.landing_deploy" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3548,7 +3567,7 @@ if (document.readyState === 'loading') {
                         </label>
                         <span class="c-pick__body">
                           <span class="c-pick__desc"><span data-lang-copy="en">Hosting, the address it lives at, going live, and checking the live page rather than the one we deployed.</span><span data-lang-copy="ar" lang="ar">الاستضافة والعنوان الذي تعيش عليه، والنشر، وفحص الصفحة الحية لا التي نشرناها.</span></span>
-                          <span class="c-pick__price c-pick__price--quote"><span data-lang-copy="en">Custom quote</span><span data-lang-copy="ar" lang="ar">عرض سعر خاص</span></span>
+                          <span class="c-pick__price"><span class="c-pick__from"><span data-lang-copy="en">From</span><span data-lang-copy="ar" lang="ar">من</span></span> <span class="c-pick__amount">20</span> <span class="c-pick__currency" data-i18n="currency">USD</span></span>
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>

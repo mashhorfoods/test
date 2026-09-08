@@ -198,6 +198,18 @@ export function initBuilder(scope = document) {
       for (const [m, set] of reach) if (set.has(id)) { pulled.set(id, m); break; }
     }
 
+    /* AND THE OTHER WAY ROUND: ALL THE PARTS ARE THE WHOLE.
+       Design, development and deployment together are a complete landing page,
+       so the builder says so rather than billing three lines that happen to add
+       up to the same number. The owner priced the parts at 50, 50 and 20
+       against a bundled 120 — identical totals, and a scope that reads
+       "Additional landing page" instead of three fragments is the one a
+       quotation, a project board and an agent can all act on. */
+    for (const r of rows.values()) {
+      if (!r.composedOf.length || selected.has(r.id)) continue;
+      if (r.composedOf.every((part) => selected.has(part))) selected.add(r.id);
+    }
+
     /* A COMPOSITE IS ITS PARTS. Choosing "Additional landing page" brings the
        design, the development and the deployment with it, at no extra charge —
        the composite already carries the published price. Choosing a part on its
@@ -434,7 +446,25 @@ export function initBuilder(scope = document) {
         if (!wanted.length) continue;
         const fits = cat.tiers.filter((t) => {
           const has = new Map(t.contents.map((c) => [c.ref, c]));
-          return wanted.every((id) => has.has(id));
+          return wanted.every((id) => {
+            const c = has.get(id);
+            if (!c) return false;
+            const r = rows.get(id);
+            /* COVERING A THING IS NOT COVERING ENOUGH OF IT. A Business Website
+               includes five pages; a scope with twelve is not covered by it,
+               and saying otherwise would be the "prices a 2-page and a 10-page
+               site identically" defect wearing a different hat. */
+            const mine = qtyOf(r);
+            const theirs = c.qty ?? mine;
+            if (mine > theirs) return false;
+            /* Nor is a shallower depth the same capability. */
+            const tier = tierOf(r);
+            if (tier && r.tierFactors.size) {
+              const order = [...r.tierFactors.keys()];
+              if (order.indexOf(c.tier) < order.indexOf(tier)) return false;
+            }
+            return true;
+          });
         });
         if (!fits.length) continue;
         const best = fits.reduce((a, b) => (Number(a.price) <= Number(b.price) ? a : b));

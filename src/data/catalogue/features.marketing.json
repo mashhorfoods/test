@@ -19,7 +19,9 @@
     "ladder check the owner's decisions produced said so out loud: ads-growth",
     "read as having dropped the targeting ads-starter had, and ads-performance as",
     "having dropped growth's optimisation. Both were artefacts of publishing one",
-    "capability under three ids. They are tiers now."
+    "capability under three ids. They are tiers now.",
+    "",
+    "THE WORKFLOW AND THE FLAG HAD TO AGREE. An agent asking \"does a person have to sign this off?\" was getting one answer from the feature and another from its workflow, in twenty-three places. Where the workflow has an approval point, the flag says so; where the feature genuinely needs an approval the template does not model, it declares one rather than the flag claiming it alone. build-catalogue.js now refuses a disagreement."
   ],
   "service": "svc.marketing",
   "features": [
@@ -91,7 +93,7 @@
         "scope": "Not applicable."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": true,
+      "humanApprovalRequired": false,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -1111,6 +1113,12 @@
         "conflicts": []
       },
       "workflow": "wf.report",
+      "_workflowOverrides": "A MONTHLY REVIEW IS AN APPROVAL, and wf.report's template has none because most reports are sent rather than agreed. This one is not sent: its completion is a decision the client agrees to, which is what `decide` is. Declared here rather than asserted by a flag.",
+      "workflowOverrides": {
+        "approval_points": [
+          "decide"
+        ]
+      },
       "executionSteps": [
         "Send the report first.",
         "Open with the decision, not the dashboard.",

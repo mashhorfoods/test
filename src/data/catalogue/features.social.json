@@ -23,7 +23,9 @@
     "The three published add-on prices are untouched — 45 a reel, 20 a piece of",
     "copy, 60 a video. Those are what the studio sells; a monthly retainer buying",
     "eight reels and sixteen pieces of copy at those rates already exceeds the",
-    "package price on its own, which is exactly what a retainer is for."
+    "package price on its own, which is exactly what a retainer is for.",
+    "",
+    "THE WORKFLOW AND THE FLAG HAD TO AGREE. An agent asking \"does a person have to sign this off?\" was getting one answer from the feature and another from its workflow, in twenty-three places. Where the workflow has an approval point, the flag says so; where the feature genuinely needs an approval the template does not model, it declares one rather than the flag claiming it alone. build-catalogue.js now refuses a disagreement."
   ],
   "service": "svc.social",
   "features": [
@@ -700,7 +702,7 @@
         "scope": "Stories expire; corrections are republished, not revised."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -1012,7 +1014,7 @@
         "scope": "Not applicable."
       },
       "automationPotential": "assist",
-      "humanApprovalRequired": true,
+      "humanApprovalRequired": false,
       "estimatedEffort": {
         "unit": "hours",
         "min": 5,
@@ -1135,7 +1137,7 @@
         "scope": "Refreshed on the agreed cycle."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 1,
@@ -1213,7 +1215,7 @@
         "scope": "Per research cycle."
       },
       "automationPotential": "assist",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 4,
@@ -1476,6 +1478,12 @@
         "conflicts": []
       },
       "workflow": "wf.report",
+      "_workflowOverrides": "A MONTHLY REVIEW IS AN APPROVAL, and wf.report's template has none because most reports are sent rather than agreed. This one is not sent: its completion is a decision the client agrees to, which is what `decide` is. Declared here rather than asserted by a flag.",
+      "workflowOverrides": {
+        "approval_points": [
+          "decide"
+        ]
+      },
       "executionSteps": [
         "Send the report before the call, not during it.",
         "Open with the decision to be made, not with the numbers.",

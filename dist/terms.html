@@ -1551,6 +1551,10 @@ function initBuilder(scope = document) {
       if (manual.has(id)) continue;
       for (const [m, set] of reach) if (set.has(id)) { pulled.set(id, m); break; }
     }
+    for (const r of rows.values()) {
+      if (!r.composedOf.length || selected.has(r.id)) continue;
+      if (r.composedOf.every((part) => selected.has(part))) selected.add(r.id);
+    }
     const partOf = new Map();
     for (const id of selected) {
       for (const part of rows.get(id)?.composedOf || []) {
@@ -1730,7 +1734,20 @@ function initBuilder(scope = document) {
         if (!wanted.length) continue;
         const fits = cat.tiers.filter((t) => {
           const has = new Map(t.contents.map((c) => [c.ref, c]));
-          return wanted.every((id) => has.has(id));
+          return wanted.every((id) => {
+            const c = has.get(id);
+            if (!c) return false;
+            const r = rows.get(id);
+            const mine = qtyOf(r);
+            const theirs = c.qty ?? mine;
+            if (mine > theirs) return false;
+            const tier = tierOf(r);
+            if (tier && r.tierFactors.size) {
+              const order = [...r.tierFactors.keys()];
+              if (order.indexOf(c.tier) < order.indexOf(tier)) return false;
+            }
+            return true;
+          });
         });
         if (!fits.length) continue;
         const best = fits.reduce((a, b) => (Number(a.price) <= Number(b.price) ? a : b));

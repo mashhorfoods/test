@@ -211,6 +211,18 @@ for (const f of features) {
       if (pf.service !== f.service) fail(`${at}.composedOf: ${part} belongs to ${pf.service}`);
       if (pf.composedOf) fail(`${at}.composedOf: ${part} is itself a composite — nesting is not supported`);
     }
+    /* A BUNDLE MAY NOT COST MORE THAN ITS PARTS. Equal is fine — the owner
+       priced the landing page's three parts at 50, 50 and 20 against a bundled
+       120, so the composite is a naming and workflow convenience rather than a
+       discount. More than its parts would be the one thing a bundle must never
+       be, and it is not a thing anyone would notice by reading. */
+    const parts = (f.composedOf || []).map((id) => byId.get(id)).filter(Boolean);
+    if (parts.length && parts.every((x) => typeof x.pricing.from === 'number') && typeof f.pricing.from === 'number') {
+      const sum = parts.reduce((n, x) => n + x.pricing.from, 0);
+      if (f.pricing.from > sum) {
+        fail(`${at}: the bundle costs ${f.pricing.from} and its parts cost ${sum} — a bundle that costs more than its parts is a penalty, not a bundle`);
+      }
+    }
   }
   if (f.workflow === 'wf.composite' && !f.composedOf) {
     fail(`${at}: uses wf.composite with nothing to compose`);
@@ -550,6 +562,42 @@ const inheritedContents = new Map();
     }
   }
 
+  /* THE PAGE ALLOWANCE. The owner locked it on 8 September: Business up to five
+     pages, Professional up to ten. A package that builds pages must say how
+     many, and the row that prices them must agree with the number — otherwise
+     the builder would quote a two-page site and a ten-page site identically,
+     which is exactly what it was doing.
+
+     Design and development cover the first page; the rest are priced through
+     `extra_page`, the add-on the studio already publishes at 70. No new pricing
+     model, because one already existed. */
+  {
+    const PAGE_BUILDERS = ['feat.websites.uiux', 'feat.websites.development'];
+    for (const c of PRICING.categories) {
+      for (const p of c.packages) {
+        const full = inherited.get(`${c.id}/${p.id}`);
+        if (!full) continue;
+        const buildsPages = PAGE_BUILDERS.some((f) => full.has(f));
+        if (!buildsPages) {
+          if (p.scope && p.scope.pages !== undefined) {
+            fail(`${c.id}/${p.id}: declares a page allowance and builds no pages`);
+          }
+          continue;
+        }
+        const pages = p.scope && p.scope.pages;
+        if (typeof pages !== 'number' || pages < 1) {
+          fail(`${c.id}/${p.id}: builds pages and does not say how many — add scope.pages`);
+          continue;
+        }
+        const extra = full.get('feat.websites.extra_page');
+        const priced = extra ? (extra.qty ?? 0) : 0;
+        if (priced !== pages - 1) {
+          fail(`${c.id}/${p.id}: includes ${pages} page(s), so ${pages - 1} beyond the first, and prices ${priced}`);
+        }
+      }
+    }
+  }
+
   /* THE LADDER. A dearer package may not contain LESS than a cheaper one in the
      same category — unless what it dropped was replaced by something that
      supersedes it, or was an included prerequisite nobody itemises.
@@ -718,13 +766,45 @@ function materialise(feature) {
     base.platform_set = feature.options.set;
   }
 
+  /* WHERE THIS SITS IN THE SERVICE. An agent holding a workflow had to search
+     five pipelines to find out when it runs; now the workflow says. A composite
+     spans the stages of its parts and reports all of them, in order, because it
+     has no single stage of its own and pretending otherwise would put the same
+     work on a board twice. */
+  const stageFor = (id) => {
+    for (const s of SERVICES.services) {
+      for (const st of s.pipeline.stages || []) {
+        if ((st.features || []).includes(id)) return st.id;
+      }
+    }
+    return null;
+  };
+  const stages = feature.composedOf
+    ? feature.composedOf.map(stageFor).filter(Boolean)
+    : [stageFor(feature.id)].filter(Boolean);
+
   return {
     workflow_id: `${feature.workflow}::${feature.id}`,
+    pipeline: (SERVICES.services.find((s) => s.id === feature.service) || {}).pipeline?.id || null,
+    pipeline_stages: stages,
     template: feature.workflow,
     feature_id: feature.id,
     service_id: feature.service,
     ...base,
   };
+}
+
+/* THE APPROVAL FLAG MUST AGREE WITH THE WORKFLOW IT POINTS AT.
+   The agent-readiness review of 8 September asked, of nine things the studio
+   sells, "what requires human approval?" — and found the feature and its own
+   workflow disagreeing in twenty-three places. A build-time answer that depends
+   on which field you read is not an answer. */
+for (const w of features.map(materialise)) {
+  const f = byId.get(w.feature_id);
+  const points = (w.approval_points || []).length > 0;
+  if (points !== Boolean(f.humanApprovalRequired)) {
+    fail(`${w.feature_id}: humanApprovalRequired is ${Boolean(f.humanApprovalRequired)} and its workflow has ${points ? '' : 'no '}approval points — an agent reading one and not the other gets a different answer`);
+  }
 }
 
 /* A materialised workflow with an unresolved token in it is a workflow that
@@ -837,6 +917,7 @@ const publicCatalogue = {
       price: p.price,
       priceFrom: Boolean(p.priceFrom),
       billing: p.billing,
+      scope: p.scope,
       contents: [...(inheritedContents.get(`${c.id}/${p.id}`) || new Map())]
         .map(([ref, meta]) => ({ ref, tier: meta.tier, qty: meta.qty })),
     })),

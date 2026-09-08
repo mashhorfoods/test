@@ -22,7 +22,19 @@
     "",
     "The two published add-on prices — 70 a page, 120 a landing page — are",
     "untouched. They are what the studio sells; the rest are our own estimates",
-    "for the builder."
+    "for the builder.",
+    "",
+    "PAGE ALLOWANCE, 8 SEPTEMBER. The owner locked what the two multi-page packages",
+    "include: Business up to 5 pages, Professional up to 10. Design and development",
+    "cover the first page; every page beyond it is feat.websites.extra_page, which",
+    "is the mechanism the studio already publishes at 70 a page. No new pricing",
+    "model was invented, because one already existed.",
+    "",
+    "So a package's `scope.pages` is the machine-readable fact, and its extra_page",
+    "row is the same fact priced — build-catalogue.js refuses a package where the",
+    "two disagree.",
+    "",
+    "THE WORKFLOW AND THE FLAG HAD TO AGREE. An agent asking \"does a person have to sign this off?\" was getting one answer from the feature and another from its workflow, in twenty-three places. Where the workflow has an approval point, the flag says so; where the feature genuinely needs an approval the template does not model, it declares one rather than the flag claiming it alone. build-catalogue.js now refuses a disagreement."
   ],
   "service": "svc.websites",
   "features": [
@@ -314,7 +326,7 @@
         "scope": "Build corrections are not revisions. Design changes after approval are quoted."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 10,
@@ -380,7 +392,7 @@
         "scope": "Corrections, not revisions."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 3,
@@ -454,7 +466,7 @@
         "scope": "Corrections, not revisions."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -597,7 +609,7 @@
         "scope": "Fixes, not revisions."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -808,7 +820,7 @@
         "scope": "Per page."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 3,
@@ -900,11 +912,8 @@
         "max": 16
       },
       "pricing": {
-        "type": "quote",
-        "quoteReason": {
-          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
-          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
-        }
+        "type": "fixed",
+        "from": 50
       },
       "status": "active"
     },
@@ -972,18 +981,15 @@
         "scope": "Build corrections are not revisions. Design changes after approval are quoted."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 4,
         "max": 14
       },
       "pricing": {
-        "type": "quote",
-        "quoteReason": {
-          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
-          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
-        }
+        "type": "fixed",
+        "from": 50
       },
       "status": "active"
     },
@@ -1058,11 +1064,8 @@
         "max": 5
       },
       "pricing": {
-        "type": "quote",
-        "quoteReason": {
-          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
-          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
-        }
+        "type": "fixed",
+        "from": 20
       },
       "status": "active"
     },
@@ -1150,7 +1153,7 @@
         "maxQty": 20
       },
       "status": "active",
-      "_composedOf": "THE PUBLISHED PRICE BUYS THE WHOLE PAGE, and this is what the whole page is made of. The three parts have different workflows, different dependencies, different deliverables and different automation potential — deployment is `full`, design is `assist` — so they are three features. A client may take design alone; that is a scope the studio has never published a price for, so each part alone is quoted. Selecting design does NOT bring development or deployment with it: the dependency runs the other way.",
+      "_composedOf": "THE PUBLISHED PRICE BUYS THE WHOLE PAGE, and the owner priced its three parts on 8 September: design 50, development 50, deployment 20. They sum to exactly the bundled 120, so the Complete Landing Page is a naming and workflow convenience rather than a discount — and a rule now refuses a composite that costs MORE than its parts, which is the direction that would be a defect.\n\nThe three parts have different workflows, different dependencies, different deliverables and different automation potential — deployment is `full`, design is `assist` — so they are three features. A client may take any of them alone. Selecting design does NOT bring development or deployment with it: the dependency runs upward. And selecting all three IS the complete page, which the builder recognises rather than billing three lines that happen to add up.",
       "composedOf": [
         "feat.websites.landing_design",
         "feat.websites.landing_build",

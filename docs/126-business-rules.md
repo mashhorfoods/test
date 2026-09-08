@@ -265,31 +265,25 @@ itself the defect. §37 learned the rule instead: a unit row needs a stepper
 
 ---
 
-## 8 — What still needs you
+## 8 — What still needed you, and what you said
 
-Three questions, and I have not guessed at any of them.
+All three were settled the same afternoon. **`docs/127` is the record**; this is
+the summary.
 
-**8.1 — Which tier is "Pro" and which is "Growth"?**
-The structure you described has Growth above Pro; the prices have Pro above
-Growth, and the packages are published as Starter 250 → Growth 400 → Pro 650. I
-applied the structure to the prices. If the names should swap, that is two
-`name` fields in `pricing.json` and a rebuild — but it changes what two live
-cards are called, so it is yours.
+**8.1 — Which tier is "Pro" and which is "Growth"?** Growth is the higher tier.
+Pro is 400 and the core layer; Growth is 650 and everything in Pro plus the
+deep one. The structure §0 above applied to the price ladder was right; the
+names needed to follow it, not the other way round.
 
-**8.2 — Do you want to sell the landing page in parts, and at what prices?**
-Design, development and deployment are separate features with separate
-workflows now, and a client can select any of them. Alone, each shows *Custom
-quote*, because the only published figure is 120 for the whole page. Give me
-three numbers and they become fixed prices.
+**8.2 — Sell the landing page in parts?** Yes: design 50, development 50,
+deployment 20, against the published 120 for the whole. The parts sum exactly
+to the bundle.
 
-**8.3 — How many pages does a Business Website include? A Professional one?**
-The catalogue prices website design and development as fixed features, so the
-builder's estimate for a ten-page site is the same as for a two-page one.
-Making page count a quantity would fix that, and I will not invent the counts
-the two packages include.
+**8.3 — How many pages?** Business up to 5, Professional up to 10, with every
+page beyond the first priced through the `Additional Website Page` add-on that
+already existed at 70.
 
-**And one that is answered but worth seeing:** `soc-pro` is a **2.52×** discount
-on its own parts, the widest on the site, because it bundles eight reels and
-sixteen pieces of copy at rates published as one-off add-on prices. That is
-what a retainer is for, and it is now visible on every build rather than
-implied.
+**And the one that was answered but worth seeing:** `soc-growth` is now a 2.52×
+discount on its own parts, the widest on the site, because it bundles eight
+reels and sixteen pieces of copy at rates published as one-off add-on prices.
+That is what a retainer is for, and it is visible on every build.

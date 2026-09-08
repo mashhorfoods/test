@@ -2929,11 +2929,8 @@
       "selectable": true,
       "addonGroup": null,
       "pricing": {
-        "type": "quote",
-        "quoteReason": {
-          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
-          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
-        }
+        "type": "fixed",
+        "from": 50
       },
       "dependencies": {
         "requires": [],
@@ -2966,11 +2963,8 @@
       "selectable": true,
       "addonGroup": null,
       "pricing": {
-        "type": "quote",
-        "quoteReason": {
-          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
-          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
-        }
+        "type": "fixed",
+        "from": 50
       },
       "dependencies": {
         "requires": [
@@ -3003,11 +2997,8 @@
       "selectable": true,
       "addonGroup": null,
       "pricing": {
-        "type": "quote",
-        "quoteReason": {
-          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
-          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
-        }
+        "type": "fixed",
+        "from": 20
       },
       "dependencies": {
         "requires": [
@@ -3237,6 +3228,9 @@
           "price": "250",
           "priceFrom": false,
           "billing": "billingOnce",
+          "scope": {
+            "pages": 1
+          },
           "contents": [
             {
               "ref": "feat.websites.domain"
@@ -3261,6 +3255,9 @@
           "price": "650",
           "priceFrom": false,
           "billing": "billingOnce",
+          "scope": {
+            "pages": 5
+          },
           "contents": [
             {
               "ref": "feat.websites.domain"
@@ -3270,6 +3267,10 @@
             },
             {
               "ref": "feat.websites.uiux"
+            },
+            {
+              "ref": "feat.websites.extra_page",
+              "qty": 4
             },
             {
               "ref": "feat.websites.development"
@@ -3294,6 +3295,9 @@
           "price": "1200",
           "priceFrom": false,
           "billing": "billingOnce",
+          "scope": {
+            "pages": 10
+          },
           "contents": [
             {
               "ref": "feat.websites.domain"
@@ -3303,6 +3307,10 @@
             },
             {
               "ref": "feat.websites.uiux"
+            },
+            {
+              "ref": "feat.websites.extra_page",
+              "qty": 9
             },
             {
               "ref": "feat.websites.development"
@@ -3371,8 +3379,8 @@
           ]
         },
         {
-          "id": "soc-growth",
-          "name": "Social Growth",
+          "id": "soc-pro",
+          "name": "Social Pro",
           "price": "400",
           "priceFrom": false,
           "billing": "billingMonthly",
@@ -3415,8 +3423,8 @@
           ]
         },
         {
-          "id": "soc-pro",
-          "name": "Social Pro",
+          "id": "soc-growth",
+          "name": "Social Growth",
           "price": "650",
           "priceFrom": false,
           "billing": "billingMonthly",

@@ -894,7 +894,7 @@
         "scope": "Corrections only."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -1268,7 +1268,7 @@
         "scope": "Layout and detail corrections."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -1335,7 +1335,7 @@
         "scope": "Crop and detail corrections."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 1,
@@ -1565,7 +1565,7 @@
         "scope": "Corrections only."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 3,
@@ -1711,7 +1711,7 @@
         "scope": "Layout corrections."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 5,
@@ -1857,7 +1857,7 @@
         "scope": "Layout corrections."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 5,
@@ -2010,7 +2010,7 @@
         "scope": "Corrections only."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 0.6,
@@ -2243,7 +2243,7 @@
         "scope": "Missing files are supplied, not revised."
       },
       "automationPotential": "full",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 1,
@@ -2316,7 +2316,7 @@
         "scope": "Missing files are supplied, not revised."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -2392,7 +2392,7 @@
         "scope": "Missing files are supplied, not revised."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 3,
@@ -2472,7 +2472,7 @@
         "scope": "Not applicable."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": true,
+      "humanApprovalRequired": false,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -3504,6 +3504,12 @@
         "conflicts": []
       },
       "workflow": "wf.report",
+      "_workflowOverrides": "A MONTHLY REVIEW IS AN APPROVAL, and wf.report's template has none because most reports are sent rather than agreed. This one is not sent: its completion is a decision the client agrees to, which is what `decide` is. Declared here rather than asserted by a flag.",
+      "workflowOverrides": {
+        "approval_points": [
+          "decide"
+        ]
+      },
       "executionSteps": [
         "Send the report first.",
         "Open with the decision, not the dashboard.",
@@ -4225,7 +4231,7 @@
         "scope": "Stories expire; corrections are republished, not revised."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -4541,7 +4547,7 @@
         "scope": "Not applicable."
       },
       "automationPotential": "assist",
-      "humanApprovalRequired": true,
+      "humanApprovalRequired": false,
       "estimatedEffort": {
         "unit": "hours",
         "min": 5,
@@ -4665,7 +4671,7 @@
         "scope": "Refreshed on the agreed cycle."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 1,
@@ -4744,7 +4750,7 @@
         "scope": "Per research cycle."
       },
       "automationPotential": "assist",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 4,
@@ -5011,6 +5017,12 @@
         "conflicts": []
       },
       "workflow": "wf.report",
+      "_workflowOverrides": "A MONTHLY REVIEW IS AN APPROVAL, and wf.report's template has none because most reports are sent rather than agreed. This one is not sent: its completion is a decision the client agrees to, which is what `decide` is. Declared here rather than asserted by a flag.",
+      "workflowOverrides": {
+        "approval_points": [
+          "decide"
+        ]
+      },
       "executionSteps": [
         "Send the report before the call, not during it.",
         "Open with the decision to be made, not with the numbers.",
@@ -5342,7 +5354,7 @@
         "scope": "Build corrections are not revisions. Design changes after approval are quoted."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 10,
@@ -5409,7 +5421,7 @@
         "scope": "Corrections, not revisions."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 3,
@@ -5484,7 +5496,7 @@
         "scope": "Corrections, not revisions."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -5629,7 +5641,7 @@
         "scope": "Fixes, not revisions."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -5843,7 +5855,7 @@
         "scope": "Per page."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 3,
@@ -5936,11 +5948,8 @@
         "max": 16
       },
       "pricing": {
-        "type": "quote",
-        "quoteReason": {
-          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
-          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
-        }
+        "type": "fixed",
+        "from": 50
       },
       "status": "active",
       "service": "svc.websites"
@@ -6009,18 +6018,15 @@
         "scope": "Build corrections are not revisions. Design changes after approval are quoted."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 4,
         "max": 14
       },
       "pricing": {
-        "type": "quote",
-        "quoteReason": {
-          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
-          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
-        }
+        "type": "fixed",
+        "from": 50
       },
       "status": "active",
       "service": "svc.websites"
@@ -6096,11 +6102,8 @@
         "max": 5
       },
       "pricing": {
-        "type": "quote",
-        "quoteReason": {
-          "en": "The published price is for a complete landing page. A single part on its own is scoped and quoted.",
-          "ar": "السعر المنشور يشمل صفحة الهبوط كاملة. أما جزء واحد بمفرده فيُحدَّد نطاقه ويُسعَّر على حدة."
-        }
+        "type": "fixed",
+        "from": 20
       },
       "status": "active",
       "service": "svc.websites"
@@ -6189,7 +6192,7 @@
         "maxQty": 20
       },
       "status": "active",
-      "_composedOf": "THE PUBLISHED PRICE BUYS THE WHOLE PAGE, and this is what the whole page is made of. The three parts have different workflows, different dependencies, different deliverables and different automation potential — deployment is `full`, design is `assist` — so they are three features. A client may take design alone; that is a scope the studio has never published a price for, so each part alone is quoted. Selecting design does NOT bring development or deployment with it: the dependency runs the other way.",
+      "_composedOf": "THE PUBLISHED PRICE BUYS THE WHOLE PAGE, and the owner priced its three parts on 8 September: design 50, development 50, deployment 20. They sum to exactly the bundled 120, so the Complete Landing Page is a naming and workflow convenience rather than a discount — and a rule now refuses a composite that costs MORE than its parts, which is the direction that would be a defect.\n\nThe three parts have different workflows, different dependencies, different deliverables and different automation potential — deployment is `full`, design is `assist` — so they are three features. A client may take any of them alone. Selecting design does NOT bring development or deployment with it: the dependency runs upward. And selecting all three IS the complete page, which the builder recognises rather than billing three lines that happen to add up.",
       "composedOf": [
         "feat.websites.landing_design",
         "feat.websites.landing_build",
@@ -6201,6 +6204,10 @@
   "workflows": [
     {
       "workflow_id": "wf.design_concept::feat.branding.logo",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.core"
+      ],
       "template": "wf.design_concept",
       "feature_id": "feat.branding.logo",
       "service_id": "svc.branding",
@@ -6367,6 +6374,10 @@
     },
     {
       "workflow_id": "wf.design_system::feat.branding.color_system",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.core"
+      ],
       "template": "wf.design_system",
       "feature_id": "feat.branding.color_system",
       "service_id": "svc.branding",
@@ -6489,6 +6500,10 @@
     },
     {
       "workflow_id": "wf.design_system::feat.branding.type_system",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.core"
+      ],
       "template": "wf.design_system",
       "feature_id": "feat.branding.type_system",
       "service_id": "svc.branding",
@@ -6613,6 +6628,10 @@
     },
     {
       "workflow_id": "wf.document::feat.branding.identity_card",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.system"
+      ],
       "template": "wf.document",
       "feature_id": "feat.branding.identity_card",
       "service_id": "svc.branding",
@@ -6731,6 +6750,10 @@
     },
     {
       "workflow_id": "wf.document::feat.branding.guidelines_short",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.system"
+      ],
       "template": "wf.document",
       "feature_id": "feat.branding.guidelines_short",
       "service_id": "svc.branding",
@@ -6853,6 +6876,10 @@
     },
     {
       "workflow_id": "wf.document::feat.branding.guidelines_full",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.system"
+      ],
       "template": "wf.document",
       "feature_id": "feat.branding.guidelines_full",
       "service_id": "svc.branding",
@@ -6984,6 +7011,10 @@
     },
     {
       "workflow_id": "wf.design_system::feat.branding.visual_language",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.system"
+      ],
       "template": "wf.design_system",
       "feature_id": "feat.branding.visual_language",
       "service_id": "svc.branding",
@@ -7110,6 +7141,10 @@
     },
     {
       "workflow_id": "wf.design_asset::feat.branding.business_card",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.apply"
+      ],
       "template": "wf.design_asset",
       "feature_id": "feat.branding.business_card",
       "service_id": "svc.branding",
@@ -7254,6 +7289,10 @@
     },
     {
       "workflow_id": "wf.design_asset::feat.branding.letterhead",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.apply"
+      ],
       "template": "wf.design_asset",
       "feature_id": "feat.branding.letterhead",
       "service_id": "svc.branding",
@@ -7397,6 +7436,10 @@
     },
     {
       "workflow_id": "wf.design_asset::feat.branding.social_profile",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.apply"
+      ],
       "template": "wf.design_asset",
       "feature_id": "feat.branding.social_profile",
       "service_id": "svc.branding",
@@ -7540,6 +7583,10 @@
     },
     {
       "workflow_id": "wf.design_asset::feat.branding.social_posts",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.apply"
+      ],
       "template": "wf.design_asset",
       "feature_id": "feat.branding.social_posts",
       "service_id": "svc.branding",
@@ -7686,6 +7733,10 @@
     },
     {
       "workflow_id": "wf.design_system::feat.branding.social_design_system",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.apply"
+      ],
       "template": "wf.design_system",
       "feature_id": "feat.branding.social_design_system",
       "service_id": "svc.branding",
@@ -7809,6 +7860,10 @@
     },
     {
       "workflow_id": "wf.design_system::feat.branding.ad_templates_basic",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.apply"
+      ],
       "template": "wf.design_system",
       "feature_id": "feat.branding.ad_templates_basic",
       "service_id": "svc.branding",
@@ -7925,6 +7980,10 @@
     },
     {
       "workflow_id": "wf.design_system::feat.branding.ad_templates",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.apply"
+      ],
       "template": "wf.design_system",
       "feature_id": "feat.branding.ad_templates",
       "service_id": "svc.branding",
@@ -8048,6 +8107,10 @@
     },
     {
       "workflow_id": "wf.design_asset::feat.branding.presentation_template",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.apply"
+      ],
       "template": "wf.design_asset",
       "feature_id": "feat.branding.presentation_template",
       "service_id": "svc.branding",
@@ -8194,6 +8257,10 @@
     },
     {
       "workflow_id": "wf.design_asset::feat.branding.presentation_design",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.apply"
+      ],
       "template": "wf.design_asset",
       "feature_id": "feat.branding.presentation_design",
       "service_id": "svc.branding",
@@ -8340,6 +8407,10 @@
     },
     {
       "workflow_id": "wf.design_asset::feat.branding.profile_template",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.apply"
+      ],
       "template": "wf.design_asset",
       "feature_id": "feat.branding.profile_template",
       "service_id": "svc.branding",
@@ -8484,6 +8555,10 @@
     },
     {
       "workflow_id": "wf.design_asset::feat.branding.company_profile",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.apply"
+      ],
       "template": "wf.design_asset",
       "feature_id": "feat.branding.company_profile",
       "service_id": "svc.branding",
@@ -8634,6 +8709,10 @@
     },
     {
       "workflow_id": "wf.design_system::feat.branding.content_templates",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.apply"
+      ],
       "template": "wf.design_system",
       "feature_id": "feat.branding.content_templates",
       "service_id": "svc.branding",
@@ -8756,6 +8835,10 @@
     },
     {
       "workflow_id": "wf.production::feat.branding.photography",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.capture"
+      ],
       "template": "wf.production",
       "feature_id": "feat.branding.photography",
       "service_id": "svc.branding",
@@ -8903,6 +8986,10 @@
     },
     {
       "workflow_id": "wf.production::feat.branding.videography",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.capture"
+      ],
       "template": "wf.production",
       "feature_id": "feat.branding.videography",
       "service_id": "svc.branding",
@@ -9056,6 +9143,10 @@
     },
     {
       "workflow_id": "wf.handover::feat.branding.files_basic",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.handover"
+      ],
       "template": "wf.handover",
       "feature_id": "feat.branding.files_basic",
       "service_id": "svc.branding",
@@ -9174,6 +9265,10 @@
     },
     {
       "workflow_id": "wf.handover::feat.branding.files_source",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.handover"
+      ],
       "template": "wf.handover",
       "feature_id": "feat.branding.files_source",
       "service_id": "svc.branding",
@@ -9296,6 +9391,10 @@
     },
     {
       "workflow_id": "wf.handover::feat.branding.brand_assets",
+      "pipeline": "pipe.branding",
+      "pipeline_stages": [
+        "pipe.branding.handover"
+      ],
       "template": "wf.handover",
       "feature_id": "feat.branding.brand_assets",
       "service_id": "svc.branding",
@@ -9419,6 +9518,10 @@
     },
     {
       "workflow_id": "wf.recurring_service::feat.marketing.platform_management",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.access"
+      ],
       "template": "wf.recurring_service",
       "feature_id": "feat.marketing.platform_management",
       "service_id": "svc.marketing",
@@ -9544,6 +9647,10 @@
     },
     {
       "workflow_id": "wf.campaign::feat.marketing.campaign_setup",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.launch"
+      ],
       "template": "wf.campaign",
       "feature_id": "feat.marketing.campaign_setup",
       "service_id": "svc.marketing",
@@ -9680,6 +9787,10 @@
     },
     {
       "workflow_id": "wf.plan::feat.marketing.campaign_strategy",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.strategy"
+      ],
       "template": "wf.plan",
       "feature_id": "feat.marketing.campaign_strategy",
       "service_id": "svc.marketing",
@@ -9784,6 +9895,10 @@
     },
     {
       "workflow_id": "wf.plan::feat.marketing.audience",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.strategy"
+      ],
       "template": "wf.plan",
       "feature_id": "feat.marketing.audience",
       "service_id": "svc.marketing",
@@ -9899,6 +10014,10 @@
     },
     {
       "workflow_id": "wf.content::feat.marketing.ad_copy",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.produce"
+      ],
       "template": "wf.content",
       "feature_id": "feat.marketing.ad_copy",
       "service_id": "svc.marketing",
@@ -10024,6 +10143,10 @@
     },
     {
       "workflow_id": "wf.design_asset::feat.marketing.ad_creative",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.produce"
+      ],
       "template": "wf.design_asset",
       "feature_id": "feat.marketing.ad_creative",
       "service_id": "svc.marketing",
@@ -10175,6 +10298,10 @@
     },
     {
       "workflow_id": "wf.build::feat.marketing.conversion_tracking",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.instrument"
+      ],
       "template": "wf.build",
       "feature_id": "feat.marketing.conversion_tracking",
       "service_id": "svc.marketing",
@@ -10305,6 +10432,10 @@
     },
     {
       "workflow_id": "wf.campaign::feat.marketing.retargeting",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.launch"
+      ],
       "template": "wf.campaign",
       "feature_id": "feat.marketing.retargeting",
       "service_id": "svc.marketing",
@@ -10441,6 +10572,10 @@
     },
     {
       "workflow_id": "wf.recurring_service::feat.marketing.monitoring",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.optimise"
+      ],
       "template": "wf.recurring_service",
       "feature_id": "feat.marketing.monitoring",
       "service_id": "svc.marketing",
@@ -10558,6 +10693,10 @@
     },
     {
       "workflow_id": "wf.optimise::feat.marketing.optimization",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.optimise"
+      ],
       "template": "wf.optimise",
       "feature_id": "feat.marketing.optimization",
       "service_id": "svc.marketing",
@@ -10689,6 +10828,10 @@
     },
     {
       "workflow_id": "wf.optimise::feat.marketing.ab_testing",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.optimise"
+      ],
       "template": "wf.optimise",
       "feature_id": "feat.marketing.ab_testing",
       "service_id": "svc.marketing",
@@ -10815,6 +10958,10 @@
     },
     {
       "workflow_id": "wf.report::feat.marketing.report",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.report"
+      ],
       "template": "wf.report",
       "feature_id": "feat.marketing.report",
       "service_id": "svc.marketing",
@@ -10938,6 +11085,10 @@
     },
     {
       "workflow_id": "wf.report::feat.marketing.strategy_meeting",
+      "pipeline": "pipe.marketing",
+      "pipeline_stages": [
+        "pipe.marketing.report"
+      ],
       "template": "wf.report",
       "feature_id": "feat.marketing.strategy_meeting",
       "service_id": "svc.marketing",
@@ -11045,7 +11196,9 @@
         "Next month's budget confirmed in writing",
         "Note sent the same day"
       ],
-      "approval_points": [],
+      "approval_points": [
+        "decide"
+      ],
       "failure_conditions": [
         "A figure that no platform screen supports",
         "A missed target not stated plainly",
@@ -11056,6 +11209,10 @@
     },
     {
       "workflow_id": "wf.provision::feat.social.account_setup",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.onboard"
+      ],
       "template": "wf.provision",
       "feature_id": "feat.social.account_setup",
       "service_id": "svc.social",
@@ -11186,6 +11343,10 @@
     },
     {
       "workflow_id": "wf.recurring_service::feat.social.platform_management",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.onboard"
+      ],
       "template": "wf.recurring_service",
       "feature_id": "feat.social.platform_management",
       "service_id": "svc.social",
@@ -11302,6 +11463,10 @@
     },
     {
       "workflow_id": "wf.plan::feat.social.content_calendar",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.plan"
+      ],
       "template": "wf.plan",
       "feature_id": "feat.social.content_calendar",
       "service_id": "svc.social",
@@ -11405,6 +11570,10 @@
     },
     {
       "workflow_id": "wf.plan::feat.social.content_strategy",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.plan"
+      ],
       "template": "wf.plan",
       "feature_id": "feat.social.content_strategy",
       "service_id": "svc.social",
@@ -11509,6 +11678,10 @@
     },
     {
       "workflow_id": "wf.content::feat.social.copywriting",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.produce"
+      ],
       "template": "wf.content",
       "feature_id": "feat.social.copywriting",
       "service_id": "svc.social",
@@ -11632,6 +11805,10 @@
     },
     {
       "workflow_id": "wf.design_asset::feat.social.post_design",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.produce"
+      ],
       "template": "wf.design_asset",
       "feature_id": "feat.social.post_design",
       "service_id": "svc.social",
@@ -11777,6 +11954,10 @@
     },
     {
       "workflow_id": "wf.content::feat.social.reels",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.produce"
+      ],
       "template": "wf.content",
       "feature_id": "feat.social.reels",
       "service_id": "svc.social",
@@ -11903,6 +12084,10 @@
     },
     {
       "workflow_id": "wf.content::feat.social.stories",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.produce"
+      ],
       "template": "wf.content",
       "feature_id": "feat.social.stories",
       "service_id": "svc.social",
@@ -12024,6 +12209,10 @@
     },
     {
       "workflow_id": "wf.content::feat.social.video_editing",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.produce"
+      ],
       "template": "wf.content",
       "feature_id": "feat.social.video_editing",
       "service_id": "svc.social",
@@ -12153,6 +12342,10 @@
     },
     {
       "workflow_id": "wf.recurring_service::feat.social.publishing",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.publish"
+      ],
       "template": "wf.recurring_service",
       "feature_id": "feat.social.publishing",
       "service_id": "svc.social",
@@ -12274,6 +12467,10 @@
     },
     {
       "workflow_id": "wf.recurring_service::feat.social.community_monitoring",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.engage"
+      ],
       "template": "wf.recurring_service",
       "feature_id": "feat.social.community_monitoring",
       "service_id": "svc.social",
@@ -12392,6 +12589,10 @@
     },
     {
       "workflow_id": "wf.recurring_service::feat.social.community_management",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.engage"
+      ],
       "template": "wf.recurring_service",
       "feature_id": "feat.social.community_management",
       "service_id": "svc.social",
@@ -12514,6 +12715,10 @@
     },
     {
       "workflow_id": "wf.plan::feat.social.hashtag_research",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.plan"
+      ],
       "template": "wf.plan",
       "feature_id": "feat.social.hashtag_research",
       "service_id": "svc.social",
@@ -12616,6 +12821,10 @@
     },
     {
       "workflow_id": "wf.plan::feat.social.audience_research",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.plan"
+      ],
       "template": "wf.plan",
       "feature_id": "feat.social.audience_research",
       "service_id": "svc.social",
@@ -12722,6 +12931,10 @@
     },
     {
       "workflow_id": "wf.report::feat.social.report",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.report"
+      ],
       "template": "wf.report",
       "feature_id": "feat.social.report",
       "service_id": "svc.social",
@@ -12845,6 +13058,10 @@
     },
     {
       "workflow_id": "wf.report::feat.social.growth_analysis",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.report"
+      ],
       "template": "wf.report",
       "feature_id": "feat.social.growth_analysis",
       "service_id": "svc.social",
@@ -12968,6 +13185,10 @@
     },
     {
       "workflow_id": "wf.optimise::feat.social.performance_optimization",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.report"
+      ],
       "template": "wf.optimise",
       "feature_id": "feat.social.performance_optimization",
       "service_id": "svc.social",
@@ -13099,6 +13320,10 @@
     },
     {
       "workflow_id": "wf.report::feat.social.strategy_review",
+      "pipeline": "pipe.social",
+      "pipeline_stages": [
+        "pipe.social.report"
+      ],
       "template": "wf.report",
       "feature_id": "feat.social.strategy_review",
       "service_id": "svc.social",
@@ -13205,7 +13430,9 @@
         "Every decision written down with an owner",
         "Note sent the same day"
       ],
-      "approval_points": [],
+      "approval_points": [
+        "decide"
+      ],
       "failure_conditions": [
         "A figure that no platform screen supports",
         "A missed target not stated plainly",
@@ -13216,6 +13443,10 @@
     },
     {
       "workflow_id": "wf.provision::feat.websites.domain",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.infrastructure"
+      ],
       "template": "wf.provision",
       "feature_id": "feat.websites.domain",
       "service_id": "svc.websites",
@@ -13349,6 +13580,10 @@
     },
     {
       "workflow_id": "wf.provision::feat.websites.hosting",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.infrastructure"
+      ],
       "template": "wf.provision",
       "feature_id": "feat.websites.hosting",
       "service_id": "svc.websites",
@@ -13483,6 +13718,10 @@
     },
     {
       "workflow_id": "wf.design_concept::feat.websites.uiux",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.design"
+      ],
       "template": "wf.design_concept",
       "feature_id": "feat.websites.uiux",
       "service_id": "svc.websites",
@@ -13637,6 +13876,10 @@
     },
     {
       "workflow_id": "wf.build::feat.websites.development",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.build"
+      ],
       "template": "wf.build",
       "feature_id": "feat.websites.development",
       "service_id": "svc.websites",
@@ -13772,6 +14015,10 @@
     },
     {
       "workflow_id": "wf.build::feat.websites.responsive",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.build"
+      ],
       "template": "wf.build",
       "feature_id": "feat.websites.responsive",
       "service_id": "svc.websites",
@@ -13895,6 +14142,10 @@
     },
     {
       "workflow_id": "wf.build::feat.websites.setup",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.build"
+      ],
       "template": "wf.build",
       "feature_id": "feat.websites.setup",
       "service_id": "svc.websites",
@@ -14031,6 +14282,10 @@
     },
     {
       "workflow_id": "wf.build::feat.websites.integrations",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.build"
+      ],
       "template": "wf.build",
       "feature_id": "feat.websites.integrations",
       "service_id": "svc.websites",
@@ -14164,6 +14419,10 @@
     },
     {
       "workflow_id": "wf.verify::feat.websites.testing",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.verify"
+      ],
       "template": "wf.verify",
       "feature_id": "feat.websites.testing",
       "service_id": "svc.websites",
@@ -14272,6 +14531,10 @@
     },
     {
       "workflow_id": "wf.release::feat.websites.deployment",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.launch"
+      ],
       "template": "wf.release",
       "feature_id": "feat.websites.deployment",
       "service_id": "svc.websites",
@@ -14380,6 +14643,10 @@
     },
     {
       "workflow_id": "wf.handover::feat.websites.handover",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.launch"
+      ],
       "template": "wf.handover",
       "feature_id": "feat.websites.handover",
       "service_id": "svc.websites",
@@ -14504,6 +14771,10 @@
     },
     {
       "workflow_id": "wf.build::feat.websites.extra_page",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.build"
+      ],
       "template": "wf.build",
       "feature_id": "feat.websites.extra_page",
       "service_id": "svc.websites",
@@ -14631,6 +14902,10 @@
     },
     {
       "workflow_id": "wf.design_concept::feat.websites.landing_design",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.design"
+      ],
       "template": "wf.design_concept",
       "feature_id": "feat.websites.landing_design",
       "service_id": "svc.websites",
@@ -14787,6 +15062,10 @@
     },
     {
       "workflow_id": "wf.build::feat.websites.landing_build",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.build"
+      ],
       "template": "wf.build",
       "feature_id": "feat.websites.landing_build",
       "service_id": "svc.websites",
@@ -14924,6 +15203,10 @@
     },
     {
       "workflow_id": "wf.release::feat.websites.landing_deploy",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.launch"
+      ],
       "template": "wf.release",
       "feature_id": "feat.websites.landing_deploy",
       "service_id": "svc.websites",
@@ -15040,6 +15323,12 @@
     },
     {
       "workflow_id": "wf.composite::feat.websites.extra_landing",
+      "pipeline": "pipe.websites",
+      "pipeline_stages": [
+        "pipe.websites.design",
+        "pipe.websites.build",
+        "pipe.websites.launch"
+      ],
       "template": "wf.composite",
       "feature_id": "feat.websites.extra_landing",
       "service_id": "svc.websites",

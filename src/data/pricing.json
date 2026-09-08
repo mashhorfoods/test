@@ -361,6 +361,9 @@
           "purpose": "For focused campaigns, launches and simple digital presence.",
           "price": "250",
           "billing": "billingOnce",
+          "scope": {
+            "pages": 1
+          },
           "featured": false,
           "ribbon": null,
           "features": [
@@ -415,6 +418,9 @@
           "purpose": "For companies and organizations requiring a professional multi-page website.",
           "price": "650",
           "billing": "billingOnce",
+          "scope": {
+            "pages": 5
+          },
           "featured": false,
           "ribbon": null,
           "features": [
@@ -435,6 +441,13 @@
               "ref": "feat.websites.uiux",
               "en": "Website UI/UX design",
               "ar": "تصميم واجهة وتجربة الموقع"
+            },
+            {
+              "carry": false,
+              "ref": "feat.websites.extra_page",
+              "qty": 4,
+              "en": "Up to 5 pages",
+              "ar": "حتى 5 صفحات"
             },
             {
               "carry": false,
@@ -487,6 +500,9 @@
           "purpose": "For businesses requiring a more advanced digital presence, content architecture, integrations and enhanced functionality.",
           "price": "1200",
           "billing": "billingOnce",
+          "scope": {
+            "pages": 10
+          },
           "featured": false,
           "ribbon": null,
           "features": [
@@ -507,6 +523,13 @@
               "ref": "feat.websites.uiux",
               "en": "Website UI/UX design",
               "ar": "تصميم واجهة وتجربة الموقع"
+            },
+            {
+              "carry": false,
+              "ref": "feat.websites.extra_page",
+              "qty": 9,
+              "en": "Up to 10 pages",
+              "ar": "حتى 10 صفحات"
             },
             {
               "carry": false,
@@ -646,9 +669,9 @@
           }
         },
         {
-          "id": "soc-growth",
+          "id": "soc-pro",
           "level": null,
-          "name": "Social Growth",
+          "name": "Social Pro",
           "purpose": null,
           "price": "400",
           "billing": "billingMonthly",
@@ -739,12 +762,13 @@
               "en": "2 rounds per design",
               "ar": "جولتان لكل تصميم"
             }
-          }
+          },
+          "_tier": "SOCIAL PRO IS THE CORE TIER, at 400 a month, settled by the owner on 8 September. The catalogue had the two the other way round — Growth at 400 and Pro at 650 — and the owner's instruction described the opposite as current. What moved was the price and the contents; the id and the name stayed together, because an id called soc-pro that meant the Growth tier would mislead every future reader and every join in the catalogue."
         },
         {
-          "id": "soc-pro",
+          "id": "soc-growth",
           "level": null,
-          "name": "Social Pro",
+          "name": "Social Growth",
           "purpose": null,
           "price": "650",
           "billing": "billingMonthly",
@@ -862,7 +886,8 @@
               "en": "2 rounds per design",
               "ar": "جولتان لكل تصميم"
             }
-          }
+          },
+          "_tier": "SOCIAL GROWTH IS THE ADVANCED TIER, at 650 a month: everything in Pro plus deeper audience and market research, growth analysis, performance optimisation and the monthly strategy review. Pro < Growth in price, scope and depth, and the ladder rule in build-catalogue.js now enforces that in that direction."
         }
       ]
     },

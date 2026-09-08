@@ -361,6 +361,90 @@ const totals = (p) => p.evaluate(() => {
       after === '', `"${after}"`);
   }
 
+  /* --- 14. the three parts ARE the whole, and are billed once --------------
+     The owner priced design 50, development 50, deployment 20 against a bundled
+     120. Selecting all three must read as one complete landing page, not three
+     fragments that happen to add up. */
+  await p.reload({ waitUntil: 'load' });
+  await p.waitForTimeout(400);
+  await useEnglish(p);
+  {
+    for (const id of ['feat.websites.landing_design', 'feat.websites.landing_build', 'feat.websites.landing_deploy']) {
+      await tick(p, id);
+      await p.waitForTimeout(120);
+    }
+    await p.waitForTimeout(200);
+    const composite = await state(p, 'feat.websites.extra_landing');
+    check('choosing all three parts is recognised as the complete landing page',
+      composite && composite.stateAttr === 'on', JSON.stringify(composite));
+    const t = await totals(p);
+    check('and it is charged once at the bundled price, not three times',
+      t.once === 120, JSON.stringify(t));
+    const txt = await p.evaluate(() => (document.querySelector('[data-build-list]') || {}).textContent || '');
+    check('the parts read as included in the whole rather than priced again',
+      (txt.match(/Included in/g) || []).length === 3, txt.replace(/\s+/g, ' ').slice(0, 140));
+  }
+
+  /* --- 15. a package covers a page count, not just a page feature ---------- */
+  await p.reload({ waitUntil: 'load' });
+  await p.waitForTimeout(400);
+  await useEnglish(p);
+  {
+    /* A Business Website includes five pages: one built, four additional. */
+    for (const id of ['feat.websites.uiux', 'feat.websites.development', 'feat.websites.setup', 'feat.websites.extra_page']) {
+      await tick(p, id);
+      await p.waitForTimeout(120);
+    }
+    await p.evaluate(() => {
+      const q = document.querySelector('[data-qty="feat.websites.extra_page"]');
+      q.value = '4'; q.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    await p.waitForTimeout(250);
+    const within = await p.evaluate(() => {
+      const el = document.querySelector('[data-build-cheaper]');
+      return el && !el.hidden ? el.textContent.trim() : '';
+    });
+    check('five pages is covered by Business Website', /Business Website/.test(within), `"${within}"`);
+
+    await p.evaluate(() => {
+      const q = document.querySelector('[data-qty="feat.websites.extra_page"]');
+      q.value = '20'; q.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    await p.waitForTimeout(250);
+    const beyond = await p.evaluate(() => {
+      const el = document.querySelector('[data-build-cheaper]');
+      return el && !el.hidden ? el.textContent.trim() : '';
+    });
+    check('twenty-one pages is not covered by Business Website',
+      !/Business Website/.test(beyond), `"${beyond}"`);
+    check('and the estimate moved with the page count',
+      (await totals(p)).once > 1000, JSON.stringify(await totals(p)));
+  }
+
+  /* --- 16. Pro is the core tier and Growth the advanced one --------------- */
+  {
+    const pkgs = await p.evaluate(() => {
+      const el = document.getElementById('build-packages');
+      return el ? JSON.parse(el.textContent) : [];
+    });
+    const soc = pkgs.find((c) => c.service === 'svc.social');
+    const byName = Object.fromEntries((soc ? soc.tiers : []).map((t) => [t.name, t]));
+    check('Social Pro is 400', byName['Social Pro'] && Number(byName['Social Pro'].price) === 400,
+      JSON.stringify(byName['Social Pro'] && byName['Social Pro'].price));
+    check('Social Growth is 650', byName['Social Growth'] && Number(byName['Social Growth'].price) === 650,
+      JSON.stringify(byName['Social Growth'] && byName['Social Growth'].price));
+    check('Growth contains more than Pro',
+      byName['Social Growth'] && byName['Social Pro']
+      && byName['Social Growth'].contents.length > byName['Social Pro'].contents.length,
+      `${byName['Social Pro'] && byName['Social Pro'].contents.length} vs ${byName['Social Growth'] && byName['Social Growth'].contents.length}`);
+    const proRefs = new Set((byName['Social Pro'] || { contents: [] }).contents.map((c) => c.ref));
+    const growthRefs = new Set((byName['Social Growth'] || { contents: [] }).contents.map((c) => c.ref));
+    check('Pro carries the core research capability', proRefs.has('feat.social.hashtag_research'));
+    check('Growth carries the deeper research capability', growthRefs.has('feat.social.audience_research'));
+    check('and Growth carries growth analysis and performance optimisation',
+      growthRefs.has('feat.social.growth_analysis') && growthRefs.has('feat.social.performance_optimization'));
+  }
+
   check('no console errors while all of that happened', errors.length === 0, errors.slice(0, 3).join(' | '));
 
   await browser.close();

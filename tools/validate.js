@@ -36,6 +36,21 @@ const path = require('path');
 const http = require('http');
 
 const ROOT = path.join(__dirname, '..');
+
+/* THE JOURNEY READS THE PACKAGE IT WALKS TO, rather than remembering it.
+   This check carried "400 USD" as a literal, and on 8 September the owner
+   settled the social hierarchy: Pro became the 400 core tier and Growth the
+   650 advanced one. The site was right and the journey failed — the fourth
+   time on this project that a guard fired at the site and was itself the thing
+   that was stale.
+
+   A price a test remembers is a price that goes wrong the day somebody changes
+   it, which is the day you most want the test to be right. */
+const PRICING = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/pricing.json'), 'utf8'));
+const PACKAGE = (categoryId, packageId) => {
+  const c = (PRICING.categories || []).find((x) => x.id === categoryId) || {};
+  return (c.packages || []).find((x) => x.id === packageId) || null;
+};
 const PAGES = ['index.html', 'pricing.html', 'about.html', 'story.html', 'privacy.html', 'terms.html', '404.html'];
 
 let chromium;
@@ -120,11 +135,14 @@ const fail = (sev, flow, text) => { findings.push({ sev, flow, text }); console.
       const a = document.querySelector('[data-about="social:soc-growth"]');
       return a ? decodeURIComponent(a.getAttribute('href')) : null;
     });
-    if (!cta) fail('HIGH', 'A', `${label}: no CTA carries social:soc-growth`);
+    const soc = PACKAGE('social', 'soc-growth');
+    if (!soc) fail('HIGH', 'A', 'src/data/pricing.json no longer holds social/soc-growth');
+    else if (!cta) fail('HIGH', 'A', `${label}: no CTA carries social:soc-growth`);
     else {
-      if (!/Social Growth/.test(cta)) fail('HIGH', 'A', `${label}: the message does not name the package`);
-      if (!/400 USD/.test(cta)) fail('HIGH', 'A', `${label}: the message does not carry the price`);
-      if (!/monthly/i.test(cta)) fail('MED', 'A', `${label}: the message omits the billing period`);
+      if (!cta.includes(soc.name)) fail('HIGH', 'A', `${label}: the message does not name the package (${soc.name})`);
+      if (!cta.includes(`${soc.price} USD`)) fail('HIGH', 'A', `${label}: the message does not carry the price (${soc.price} USD)`);
+      const period = soc.billing === 'billingMonthly' ? /monthly/i : /one-time/i;
+      if (!period.test(cta)) fail('MED', 'A', `${label}: the message omits the billing period`);
     }
     const facts = await p.evaluate(() => {
       const card = document.querySelector('[data-about="social:soc-growth"]')?.closest('.c-tier');

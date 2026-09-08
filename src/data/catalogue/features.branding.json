@@ -34,7 +34,9 @@
     "THE THREE PUBLISHED ADD-ON PRICES ARE UNTOUCHED — 15 a social design, 90 a",
     "presentation, 150 a company profile. Those are what the studio sells. Every",
     "other figure here is our own estimate, and a build-time check now keeps them",
-    "coherent with the packages they add up to."
+    "coherent with the packages they add up to.",
+    "",
+    "THE WORKFLOW AND THE FLAG HAD TO AGREE. An agent asking \"does a person have to sign this off?\" was getting one answer from the feature and another from its workflow, in twenty-three places. Where the workflow has an approval point, the flag says so; where the feature genuinely needs an approval the template does not model, it declares one rather than the flag claiming it alone. build-catalogue.js now refuses a disagreement."
   ],
   "service": "svc.branding",
   "features": [
@@ -309,7 +311,7 @@
         "scope": "Corrections only."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -678,7 +680,7 @@
         "scope": "Layout and detail corrections."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -744,7 +746,7 @@
         "scope": "Crop and detail corrections."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 1,
@@ -971,7 +973,7 @@
         "scope": "Corrections only."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 3,
@@ -1115,7 +1117,7 @@
         "scope": "Layout corrections."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 5,
@@ -1259,7 +1261,7 @@
         "scope": "Layout corrections."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 5,
@@ -1410,7 +1412,7 @@
         "scope": "Corrections only."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 0.6,
@@ -1640,7 +1642,7 @@
         "scope": "Missing files are supplied, not revised."
       },
       "automationPotential": "full",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 1,
@@ -1712,7 +1714,7 @@
         "scope": "Missing files are supplied, not revised."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 2,
@@ -1787,7 +1789,7 @@
         "scope": "Missing files are supplied, not revised."
       },
       "automationPotential": "partial",
-      "humanApprovalRequired": false,
+      "humanApprovalRequired": true,
       "estimatedEffort": {
         "unit": "hours",
         "min": 3,
