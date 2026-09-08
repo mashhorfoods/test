@@ -12,6 +12,7 @@ import http from 'node:http';
 import { createApp } from './app.js';
 import { createRoutes } from './routes.js';
 import { ApiError, toResponse, fail } from './errors.js';
+import { clientIp } from './client-ip.js';
 
 const MAX_BODY = 1024 * 1024; // an order payload is kilobytes; a megabyte is generous
 
@@ -91,6 +92,10 @@ export function createServer(overrides = {}) {
         query: Object.fromEntries(url.searchParams),
         body,
         headers: req.headers,
+        /* Derived from the socket unless a known number of trusted proxies sit
+           in front. A per-IP throttle that believes a forgeable header is a
+           throttle that does nothing. */
+        ip: clientIp(req, app.config.http.trustProxyHops),
         token: null,
         user: null,
       };
@@ -109,7 +114,13 @@ export function createServer(overrides = {}) {
         console.error('unhandled:', e && e.stack ? e.stack : e);
       }
       const { status, body } = toResponse(e, { production: app.config.production });
-      send(status, body);
+      /* A 429 that does not say when to come back is a 429 that gets retried
+         immediately. The number is in a header, never in the body — the body
+         must read the same for every caller. */
+      const extra = e instanceof ApiError && e.detail && e.detail.retryAfterSeconds
+        ? { 'retry-after': String(e.detail.retryAfterSeconds) }
+        : {};
+      send(status, body, extra);
     }
   });
 

@@ -215,7 +215,18 @@ export function transitionGuard(task, to, { by, actorType, output = null, qa = n
        and came back would otherwise let its first executor sign off the work
        they did. Phase 4's security pass found that gap through the API, where a
        reject-and-reassign made it reachable. */
-    if (task.approvalRequired) {
+    /* PHASE 4D FOUND THE HOLE IN THIS GUARD. It keyed on `approvalRequired`
+       alone — the flag that says a named approval STAGE exists. But a task can
+       carry `requiresHumanReview` without being an approval stage, and the
+       first task agent.qa-reader is eligible for is exactly that shape: an
+       automation-level of "partial", human review required, no approval stage.
+       On that task the guard did not run at all, so nothing in the domain
+       stopped `approveTask({ actorType: 'ai_agent' })` from succeeding.
+       Unreachable in practice — the registry forbids the operation, the agent
+       runtime never calls it and the API fixes the approver to the session —
+       but a rule that holds only because three other things hold is not the
+       rule §15 asks for. Either flag now demands a person. */
+    if (task.approvalRequired || task.requiresHumanReview) {
       if (actorType !== 'human') return deny('this task requires human approval and the approver is not a person');
       const executors = new Set((task.attempts || []).map((a) => a.executor).filter(Boolean));
       if (task.assignedTo) executors.add(task.assignedTo);

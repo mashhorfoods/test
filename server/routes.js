@@ -39,7 +39,7 @@ const need = (body, ...keys) => {
 };
 
 export function createRoutes(app) {
-  const { ops, auth, authz, agentRuntime, automation } = app;
+  const { ops, auth, authz, agentRuntime, automation, limiter } = app;
 
   /** Every guarded call goes through here: permission, then scope, then domain. */
   const guard = (user, operation) => { authz.assertMay(user, operation); return user; };
@@ -58,9 +58,35 @@ export function createRoutes(app) {
     /* --- open ------------------------------------------------------------- */
     ['GET', '/health', null, () => ok({ status: 'ok', ...app.info() })],
 
+    /**
+     * THE THROTTLE IS HERE AND NOT INSIDE `auth.login`. Counting failures is a
+     * property of the endpoint being on the internet, not of what a login
+     * means, and Phase 4D was told not to change authentication semantics.
+     *
+     * The gate is consulted BEFORE any password work: scrypt at N=16384 is
+     * expensive on purpose, and answering a throttled caller with a 429 costs
+     * nothing. Which bucket tripped is never disclosed, and the check depends
+     * only on what the caller typed — so an unknown address throttles exactly
+     * like a real one and this endpoint still cannot be used to enumerate.
+     */
     ['POST', '/auth/login', null, (ctx) => {
       const b = need(ctx.body, 'email', 'password');
-      return ok(auth.login(b.email, b.password, { userAgent: ctx.headers['user-agent'] || null }));
+      const keys = { ip: ctx.ip, email: b.email };
+      const gate = limiter.check(keys);
+      if (!gate.allowed) {
+        throw fail('RATE_LIMITED', 'too many sign-in attempts — wait a few minutes and try again',
+          { retryAfterSeconds: gate.retryAfterSeconds });
+      }
+      try {
+        const out = auth.login(b.email, b.password, { userAgent: ctx.headers['user-agent'] || null });
+        limiter.recordSuccess(keys);
+        return ok(out);
+      } catch (e) {
+        /* A wrong password counts. A malformed request does not — that is a
+           caller's bug, not a guess. */
+        if (e && e.code === 'AUTHENTICATION_ERROR') limiter.recordFailure(keys);
+        throw e;
+      }
     }],
 
     /* --- session ---------------------------------------------------------- */

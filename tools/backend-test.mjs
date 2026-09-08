@@ -108,10 +108,13 @@ section('4A — migrations and schema');
 {
   const db = openDatabase(dbFile('mig'), { migrationsDir: path.join(ROOT, 'server/migrations') });
   const applied = appliedMigrations(db);
-  ok('4A: migrations are versioned and recorded', applied.length === 2, JSON.stringify(applied.map((m) => m.version)));
-  ok('4A: re-running applies nothing', openDatabase(dbFile('mig'), { migrationsDir: path.join(ROOT, 'server/migrations') }) && appliedMigrations(db).length === 2);
+  /* Counted from the directory rather than hard-coded, so adding a migration
+     is not a test failure — what is asserted is that every one of them ran. */
+  const onDisk = fs.readdirSync(path.join(ROOT, 'server/migrations')).filter((f) => f.endsWith('.sql')).length;
+  ok('4A: migrations are versioned and recorded', applied.length === onDisk, JSON.stringify(applied.map((m) => m.version)));
+  ok('4A: re-running applies nothing', openDatabase(dbFile('mig'), { migrationsDir: path.join(ROOT, 'server/migrations') }) && appliedMigrations(db).length === onDisk);
   const tables = db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all().map((r) => r.name);
-  for (const t of ['clients', 'orders', 'projects', 'tasks', 'audit', 'users', 'sessions', 'events', 'automation_executions', 'agent_executions']) {
+  for (const t of ['clients', 'orders', 'projects', 'tasks', 'audit', 'users', 'sessions', 'events', 'automation_executions', 'agent_executions', 'login_attempts']) {
     ok(`4A: table ${t} exists`, tables.includes(t));
   }
   /* An edited migration must be refused, not silently re-applied. */

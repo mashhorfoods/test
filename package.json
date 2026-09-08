@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node build.js",
     "catalogue": "node tools/build-catalogue.js && node tools/build-capabilities.js && node tools/build-builder.js",
-    "check": "node tools/architecture-test.js && node tools/operations-test.mjs && node tools/task-test.mjs && node tools/backend-test.mjs && node tools/validate.js && node tools/qa.js && node tools/responsive.js && node tools/arabic.js && node tools/a11y.js && node tools/builder-test.cjs",
+    "check": "node tools/architecture-test.js && node tools/operations-test.mjs && node tools/task-test.mjs && node tools/backend-test.mjs && node tools/phase4d-test.mjs && node tools/validate.js && node tools/qa.js && node tools/responsive.js && node tools/arabic.js && node tools/a11y.js && node tools/builder-test.cjs",
     "release": "npm run build && npm run check",
     "film": "node tools/build-showpiece.js",
     "film:clips": "node tools/build-hero-from-clips.js",
@@ -25,7 +25,9 @@
     "task:test": "node tools/task-test.mjs",
     "serve": "node server/index.js",
     "backend:test": "node tools/backend-test.mjs",
-    "ai:live": "node tools/ai-live-test.mjs"
+    "ai:live": "node tools/ai-live-test.mjs",
+    "4d:test": "node tools/phase4d-test.mjs",
+    "4d:pilot": "node tools/ai-pilot.mjs"
   },
   "devDependencies": {
     "axe-core": "^4.13.0",

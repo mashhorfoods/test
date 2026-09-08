@@ -13,6 +13,7 @@ import { createOperations } from '../src/operations/index.js';
 import { openDatabase } from './db/database.js';
 import { sqliteRepositories } from './db/sqlite-store.js';
 import { createAuth } from './auth.js';
+import { createLoginLimiter } from './rate-limit.js';
 import { createAuthz } from './authz.js';
 import { createDurableAutomation } from './automation-runtime.js';
 import { createAgentRuntime } from './agent-runtime.js';
@@ -33,6 +34,10 @@ export function createApp(overrides = {}) {
 
   const auth = createAuth(db, config);
   const authz = createAuthz();
+  /* Phase 4D: the login throttle. It lives beside auth rather than inside it —
+     counting failures is an edge concern, and `login()` still means exactly
+     what it meant in Phase 4. */
+  const limiter = createLoginLimiter(db, config);
   auth.bootstrap();
 
   /* THE DOMAIN, UNCHANGED. Same call as the CLI makes, same call the tests
@@ -55,5 +60,5 @@ export function createApp(overrides = {}) {
   /* Phase 4C: the agent runtime, and the provider behind an adapter. */
   const agentRuntime = createAgentRuntime(db, ops, config);
 
-  return { config, db, auth, authz, ops, automation, agentRuntime, info: () => redact(config) };
+  return { config, db, auth, authz, limiter, ops, automation, agentRuntime, info: () => redact(config) };
 }

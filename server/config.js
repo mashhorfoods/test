@@ -36,6 +36,11 @@ export function loadConfig(overrides = {}) {
       /* Only the operator's own tooling talks to this. A wildcard origin on an
          API that moves money-shaped records is not a default worth having. */
       allowedOrigins: (env('PIXORA_ALLOWED_ORIGINS', '') || '').split(',').map((s) => s.trim()).filter(Boolean),
+      /* HOW MANY TRUSTED PROXIES SIT IN FRONT. Zero means X-Forwarded-For is
+         ignored and the socket address is the truth — the only safe default,
+         because a header anyone can send is not an identity. Behind one nginx
+         or one load balancer this is 1. See server/client-ip.js. */
+      trustProxyHops: num('PIXORA_TRUST_PROXY_HOPS', 0),
     },
 
     db: {
@@ -52,6 +57,18 @@ export function loadConfig(overrides = {}) {
       /* Used to seed the very first administrator, once, on an empty database. */
       bootstrapEmail: env('PIXORA_BOOTSTRAP_EMAIL', null),
       bootstrapPassword: env('PIXORA_BOOTSTRAP_PASSWORD', null),
+      /* Phase 4D §19. Two buckets, a window, and a lock that doubles.
+         `enabled` exists so a test can turn it off; production refuses to
+         start with it off, which is checked below. */
+      rateLimit: {
+        enabled: bool('PIXORA_LOGIN_RATELIMIT', true),
+        windowSeconds: num('PIXORA_LOGIN_WINDOW', 900),
+        accountFailures: num('PIXORA_LOGIN_ACCOUNT_FAILURES', 5),
+        accountLockSeconds: num('PIXORA_LOGIN_ACCOUNT_LOCK', 900),
+        ipFailures: num('PIXORA_LOGIN_IP_FAILURES', 50),
+        ipLockSeconds: num('PIXORA_LOGIN_IP_LOCK', 300),
+        maxLockSeconds: num('PIXORA_LOGIN_MAX_LOCK', 3600),
+      },
     },
 
     automation: {
@@ -95,6 +112,12 @@ export function assertProductionSecrets(config) {
   if (config.auth.bootstrapPassword) {
     problems.push('PIXORA_BOOTSTRAP_PASSWORD is set in production — seed the first administrator once, then remove it');
   }
+  if (!config.auth.rateLimit || !config.auth.rateLimit.enabled) {
+    problems.push('PIXORA_LOGIN_RATELIMIT is off — an unthrottled login endpoint is a credential-stuffing target and a CPU you can pin');
+  }
+  if (config.ai.provider === 'fixture') {
+    problems.push('PIXORA_AI_PROVIDER=fixture in production — the fixture provider answers from a script and is never a model');
+  }
   return problems;
 }
 
@@ -112,4 +135,5 @@ export const redact = (config) => ({
     apiKeyConfigured: Boolean(config.ai.apiKey),
     timeoutMs: config.ai.timeoutMs,
   },
+  auth: { rateLimit: Boolean(config.auth.rateLimit && config.auth.rateLimit.enabled), sessionHours: config.auth.sessionHours },
 });
