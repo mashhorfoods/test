@@ -692,14 +692,28 @@
        actually asking for. Centred, because a wrapped label ragged against
        one edge of a full-width button looks like a mistake.
 
+       AND THE HEIGHT IS ONE OF THE DECLARED ONES. The first attempt set it to
+       5.25rem, which is 84px, which is not 44, 48 or 56 — qa's control check
+       said so six times, once per class per language. A control system with
+       three heights and a fourth height in it is a control system with four
+       heights. So the label is set a little smaller and a little tighter, and
+       two lines of it fit inside 56px with the padding still on.
+
        Measured at 320, 360, 375, 390 and 414 in both languages: nothing
-       reaches past the viewport, and every CTA is the same height in English
-       and in Arabic. */
+       reaches past the viewport, every CTA is 56px, and English and Arabic
+       match. */
     .c-tier__cta,
     .c-detail__action {
       padding-inline: var(--space-12);
+      /* 12px of block padding put two wrapped lines at 61px, which is not one
+         of the three heights either. Eight gives the same two lines 53px of
+         content, and min-block-size then decides — so every one of these is
+         56px whether it wraps or not. */
+      padding-block: var(--space-8);
       white-space: normal;
-      min-block-size: 5.25rem;
+      min-block-size: 56px;
+      font-size: 0.8125rem;
+      line-height: 1.2;
       align-items: center;
       justify-content: center;
       text-align: center;
