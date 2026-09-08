@@ -140,7 +140,7 @@ srv.listen(4801, async()=>{
     coming back. */
  const atField = await page.$eval('.a-card .a-field__error', e=>e.textContent).catch(()=>'');
  const summary = await page.textContent('.a-problems__title').catch(()=>'');
- if (disabled && /digits only/.test(atField) && /1 thing to fix/.test(summary)) {
+ if (disabled && /must be a number/.test(atField) && /1 thing to fix/.test(summary)) {
    ok('P5 — an invalid price disables Save, names the problem AT the field, and summarises it in one line');
  } else no('P5 — validation', `disabled=${disabled} atField="${atField.slice(0,60)}" summary="${summary.slice(0,50)}"`);
 
@@ -192,7 +192,10 @@ srv.listen(4801, async()=>{
    const body = JSON.parse(put.body);
    const sent = new TextDecoder().decode(Uint8Array.from(atob(body.content), c=>c.charCodeAt(0)));
    const parsed = JSON.parse(sent);
-   const priceOk = parsed.categories[0].packages[0].price==='520';
+   /* A NUMBER on the wire. It was a string of digits until 8 September; the
+      dashboard's box is still text, because a text box is what a phone shows
+      well, but what it writes into the file is the amount. */
+   const priceOk = parsed.categories[0].packages[0].price===520;
    const shaOk = body.sha==='abc123';
    const trailing = sent.endsWith('\n');
    if (priceOk && shaOk && trailing) ok('P6 — PUT carries the edited value, the file sha, and the exact serialisation');
@@ -254,7 +257,11 @@ srv.listen(4801, async()=>{
       bytes did not. That is the benign case, and it is the common one: any
       commit that touches a file without changing it lands here. */
    const committed = JSON.parse(pricing);
-   committed.categories[0].packages[0].price = '520';
+   /* A NUMBER, because that is what a price is in this file since 8 September.
+      This line held '520' and the dashboard now writes 520, so the two differed
+      by type and the benign case was being read as a real conflict — the test
+      encoding the old contract, not the dashboard getting it wrong. */
+   committed.categories[0].packages[0].price = 520;
    await page.evaluate((t)=>{ window.__calls=[]; window.__conflictOnce=true;
      window.__serverSha='newsha'; window.__serverText=t; },
      JSON.stringify(committed, null, 2)+'\n');
@@ -273,7 +280,7 @@ srv.listen(4801, async()=>{
  // ---- P6d: a REAL conflict refuses to overwrite and says what to do
  {
    const changed = JSON.parse(pricing);
-   changed.categories[0].packages[0].price = '999';
+   changed.categories[0].packages[0].price = 999;
    await page.evaluate((t)=>{ window.__calls=[]; window.__conflictOnce=true; window.__serverText=t; },
      JSON.stringify(changed, null, 2)+'\n');
    await (await page.$('.a-card .a-field__input')).fill('540');

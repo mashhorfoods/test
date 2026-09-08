@@ -69,10 +69,19 @@ function expectFail(name, file, mutate, want) {
 
 const firstPkg = (d) => d.categories[0].packages[0];
 
-expectFail('a price with a currency symbol', P, (d) => { firstPkg(d).price = '$490'; }, 'digits only');
-expectFail('a price as a number, not text', P, (d) => { firstPkg(d).price = 490; }, 'must be text');
-expectFail('a price with a comma', P, (d) => { firstPkg(d).price = '1,990'; }, 'digits only');
-expectFail('a price starting with zero', P, (d) => { firstPkg(d).price = '0490'; }, 'cannot start with a zero');
+/* THE CONTRACT INVERTED ON 8 SEPTEMBER, and these four moved with it.
+   A price used to be a STRING of digits, and the fourth test below asserted
+   that a number was a mistake. The hardening pass made it a number: formatting
+   is the generator's job and a business value that has to be coerced before it
+   can be compared is not a value, it is a label. So the same four mistakes are
+   still caught — a symbol, a comma, a leading zero, and now the string itself —
+   and the one that used to be an error is now the only correct form. */
+expectFail('a price with a currency symbol', P, (d) => { firstPkg(d).price = '$490'; }, 'must be a number');
+expectFail('a price as text, not a number', P, (d) => { firstPkg(d).price = '490'; }, 'must be a number');
+expectFail('a price with a comma', P, (d) => { firstPkg(d).price = '1,990'; }, 'must be a number');
+expectFail('a price starting with zero', P, (d) => { firstPkg(d).price = '0490'; }, 'must be a number');
+expectFail('a price of zero', P, (d) => { firstPkg(d).price = 0; }, 'whole number above zero');
+expectFail('a price with a fraction', P, (d) => { firstPkg(d).price = 490.5; }, 'whole number above zero');
 expectFail('an empty package name', P, (d) => { firstPkg(d).name = ''; }, 'has no name');
 expectFail('two packages with the same name', P, (d) => { d.categories[0].packages[1].name = d.categories[0].packages[0].name; }, 'used twice');
 expectFail('a level in English with no Arabic', P, (d) => { firstPkg(d).levelAr = ''; }, 'and no Arabic one');

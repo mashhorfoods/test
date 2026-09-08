@@ -45,6 +45,8 @@ const read = (f) => JSON.parse(fs.readFileSync(path.join(SRC, f), 'utf8'));
 
 const SERVICES = read('services.json');
 const WORKFLOWS = read('workflows.json');
+const ROLES = read('roles.json');
+const CAPABILITIES = read('capabilities.json');
 const ADDON_GROUPS = read('addon-groups.json');
 const PLATFORMS = read('platforms.json');
 const PRICING = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/pricing.json'), 'utf8'));
@@ -572,7 +574,15 @@ const inheritedContents = new Map();
      `extra_page`, the add-on the studio already publishes at 70. No new pricing
      model, because one already existed. */
   {
-    const PAGE_BUILDERS = ['feat.websites.uiux', 'feat.websites.development'];
+    /* THE RULE ITSELF LIVES IN services.json. It was a literal here, which put
+       a business rule in a build script: add a page-building feature and this
+       list would have gone on being right about the two it named and silent
+       about the third. */
+    const allowance = SERVICES.services.map((x) => x.pageAllowance).find(Boolean);
+    if (!allowance) fail('no service declares a pageAllowance — nothing knows which features build pages');
+    const PAGE_BUILDERS = (allowance || {}).builtBy || [];
+    for (const f of PAGE_BUILDERS) if (!byId.has(f)) fail(`pageAllowance.builtBy names ${f}, which is not a feature`);
+    if (allowance && !byId.has(allowance.beyondFirst)) fail(`pageAllowance.beyondFirst names ${allowance.beyondFirst}, which is not a feature`);
     for (const c of PRICING.categories) {
       for (const p of c.packages) {
         const full = inherited.get(`${c.id}/${p.id}`);
@@ -589,7 +599,7 @@ const inheritedContents = new Map();
           fail(`${c.id}/${p.id}: builds pages and does not say how many — add scope.pages`);
           continue;
         }
-        const extra = full.get('feat.websites.extra_page');
+        const extra = full.get(allowance.beyondFirst);
         const priced = extra ? (extra.qty ?? 0) : 0;
         if (priced !== pages - 1) {
           fail(`${c.id}/${p.id}: includes ${pages} page(s), so ${pages - 1} beyond the first, and prices ${priced}`);
@@ -681,6 +691,147 @@ const inheritedContents = new Map();
   global.__catalogueRatios = ratios;
 }
 
+/* --- Roles, ownership and duration ---------------------------------------- */
+
+/* WHO DOES A STAGE, AND FOR HOW LONG. A pipeline that cannot say either can be
+   read but not run: nothing can assign it, nothing can escalate it, and nothing
+   can tell a client when it will be done. The schema now carries both, so the
+   answer is data rather than a conversation. */
+
+const roleById = new Map(ROLES.roles.map((r) => [r.id, r]));
+const SERVICE_ROLE = '$service.defaultRole';
+const DURATION_UNITS = new Set(['hours', 'days']);
+
+{
+  const seen = new Set();
+  for (const r of ROLES.roles) {
+    if (!/^role\.[a-z_]+$/.test(r.id)) fail(`role id "${r.id}" is not language-neutral in the shape role.something`);
+    if (seen.has(r.id)) fail(`duplicate role id ${r.id}`);
+    seen.add(r.id);
+    bilingual(r.name, `${r.id}: name`);
+    bilingual(r.description, `${r.id}: description`);
+    if (typeof r.external !== 'boolean') fail(`${r.id}: does not say whether it is external to the studio`);
+    if (!['none', 'assist', 'partial', 'full'].includes(r.automatable)) {
+      fail(`${r.id}: automatable is "${r.automatable}", which is not none/assist/partial/full`);
+    }
+  }
+
+  /* Every service names the role that does its work, so a shared template can
+     say "$service.defaultRole" instead of being copied once per service. */
+  for (const svc of SERVICES.services) {
+    if (!svc.defaultRole) fail(`${svc.id}: no defaultRole — a shared workflow stage cannot say who runs it`);
+    else if (!roleById.has(svc.defaultRole)) fail(`${svc.id}: defaultRole ${svc.defaultRole} is not a role`);
+  }
+
+  const okDuration = (d) => d && Number.isFinite(d.value) && d.value > 0 && DURATION_UNITS.has(d.unit);
+  for (const [tid, tpl] of Object.entries(WORKFLOWS.templates)) {
+    for (const st of tpl.stages || []) {
+      const where = `${tid}/${st.stage_id}`;
+      if (!st.owner) { fail(`${where}: no owner — a stage nobody owns cannot be assigned`); continue; }
+      if (st.owner.type !== 'role') fail(`${where}: owner.type is "${st.owner.type}"; a template stage is owned by a role`);
+      if (st.owner.id !== SERVICE_ROLE && !roleById.has(st.owner.id)) {
+        fail(`${where}: owner ${st.owner.id} is not a role and is not ${SERVICE_ROLE}`);
+      }
+      if (!okDuration(st.duration)) {
+        fail(`${where}: duration must be a positive number of ${[...DURATION_UNITS].join(' or ')} (got ${JSON.stringify(st.duration)})`);
+      }
+    }
+  }
+}
+
+/* --- Pipeline stages say what they are ------------------------------------ */
+
+/* A STAGE WITH NO FEATURES USED TO BE INVISIBLE. Two of the twenty-nine ran
+   nothing and delegated to nothing, and read as an oversight rather than the
+   deliberate intake stages they are. Every stage now declares its kind, and an
+   intake stage has to say what it produces and which features consume it —
+   which is the relationship that was missing, not a feature. */
+
+const STAGE_KINDS = new Set(['execution', 'intake', 'delegation']);
+const pipelineIds = new Set(SERVICES.services.map((s) => s.pipeline.id));
+
+{
+  for (const svc of SERVICES.services) {
+    for (const st of svc.pipeline.stages || []) {
+      const where = `${svc.id}/${st.id}`;
+      if (!STAGE_KINDS.has(st.kind)) {
+        fail(`${where}: kind is ${JSON.stringify(st.kind)}, which is not ${[...STAGE_KINDS].join('/')}`);
+        continue;
+      }
+      if (st.kind === 'execution') {
+        if (!(st.features || []).length) fail(`${where}: is an execution stage and runs no features`);
+        if (st.delegatesTo) fail(`${where}: is an execution stage and also delegates`);
+      }
+      if (st.kind === 'delegation') {
+        if (!st.delegatesTo) fail(`${where}: is a delegation stage and names nothing to delegate to`);
+        else if (!pipelineIds.has(st.delegatesTo)) fail(`${where}: delegates to ${st.delegatesTo}, which is not a pipeline`);
+        if ((st.features || []).length) fail(`${where}: delegates and also runs features of its own`);
+      }
+      if (st.kind === 'intake') {
+        if ((st.features || []).length) fail(`${where}: is an intake stage and also lists features`);
+        if (!(st.produces || []).length) fail(`${where}: is an intake stage and does not say what it produces`);
+        if (!(st.feeds || []).length) fail(`${where}: is an intake stage and does not say which features consume what it produces`);
+        if (!st.owner || st.owner.type !== 'role' || !roleById.has(st.owner.id)) {
+          fail(`${where}: is an intake stage with no role owner`);
+        }
+        for (const f of st.feeds || []) {
+          const fed = byId.get(f);
+          if (!fed) fail(`${where}: feeds ${f}, which is not a feature`);
+          else if (fed.service !== svc.id) fail(`${where}: feeds ${f}, which belongs to ${fed.service}`);
+        }
+      }
+    }
+  }
+}
+
+/* --- Capabilities resolve to something that can execute them -------------- */
+
+/* THE CHIPS ON THE HOME PAGE. Thirty strings that read like capabilities; each
+   one now says what carries it out. A chip is allowed to be marketing — what it
+   is not allowed to be is unanswered. */
+
+const CAP_TYPES = new Set(['feature', 'group', 'platform', 'marketing']);
+const capabilityIds = new Set();
+
+{
+  for (const entry of CAPABILITIES.services) {
+    const svc = serviceById.get(entry.service);
+    if (!svc) { fail(`capabilities: ${entry.service} is not a service`); continue; }
+    for (const c of entry.capabilities || []) {
+      const where = `capability ${c.id}`;
+      if (!/^cap\.[a-z_]+\.[a-z_]+$/.test(c.id || '')) fail(`${where}: id is not language-neutral in the shape cap.service.thing`);
+      if (capabilityIds.has(c.id)) fail(`duplicate capability id ${c.id}`);
+      capabilityIds.add(c.id);
+      bilingual(c.label, `${where}: label`, Boolean(c.latinLabel));
+      if (!CAP_TYPES.has(c.type)) { fail(`${where}: type is ${JSON.stringify(c.type)}, which is not ${[...CAP_TYPES].join('/')}`); continue; }
+
+      const refs = c.type === 'group' ? (c.featureIds || []) : (c.featureId ? [c.featureId] : []);
+      if (c.type === 'marketing') {
+        if (refs.length) fail(`${where}: is marketing-only and still points at a feature`);
+        if (!c.reason) fail(`${where}: is marketing-only and does not say why nothing executes it`);
+        continue;
+      }
+      if (!refs.length) fail(`${where}: is type "${c.type}" and names no feature`);
+      if (c.type === 'group' && refs.length < 2) fail(`${where}: is a group of ${refs.length} — a group is more than one feature`);
+      for (const ref of refs) {
+        const f = byId.get(ref);
+        if (!f) { fail(`${where}: names ${ref}, which is not a feature`); continue; }
+        if (f.service !== entry.service) fail(`${where}: names ${ref}, which belongs to ${f.service}, not ${entry.service}`);
+      }
+      if (c.type === 'platform') {
+        const f = byId.get(c.featureId);
+        if (f && !f.options) fail(`${where}: is a platform chip on ${c.featureId}, which has no option set`);
+        else if (f) {
+          const set = (PLATFORMS.sets || {})[f.options.set] || { platforms: [] };
+          if (!set.platforms.some((x) => x.id === c.platformId)) {
+            fail(`${where}: names platform ${c.platformId}, which is not in the "${f.options.set}" set`);
+          }
+        }
+      }
+    }
+  }
+}
+
 /* --- Materialise --------------------------------------------------------- */
 
 /* Resolve the $feature.* tokens a template carries. This is the mechanism
@@ -745,6 +896,12 @@ function materialise(feature) {
         output: (pf.outputs || [])[0] || null,
         validation: pf.completionCriteria || null,
         delegatesTo: `${pf.workflow}::${part}`,
+        /* A COMPOSITE OWNS NOTHING ITSELF. Naming a role here would put the
+           same work on two boards with two owners; the part's own workflow
+           already says who does it and for how long. So this stage says
+           `delegated` explicitly rather than leaving the question blank. */
+        owner: { type: 'delegated', to: `${pf.workflow}::${part}` },
+        duration: null,
         next_stage: parts[i + 1] ? parts[i + 1].split('.').pop() : null,
       };
     });
@@ -783,8 +940,38 @@ function materialise(feature) {
     ? feature.composedOf.map(stageFor).filter(Boolean)
     : [stageFor(feature.id)].filter(Boolean);
 
+  /* WHO RUNS A SHARED TEMPLATE. Nine of the seventeen templates are used by
+     more than one service, and the person who runs them is not the same person
+     — a monthly report is written by whoever runs that channel. The template
+     says `$service.defaultRole`; the service says which role that is. */
+  const svc = SERVICES.services.find((x) => x.id === feature.service);
+  for (const st of base.stages || []) {
+    if (st.owner && st.owner.id === SERVICE_ROLE) st.owner = { type: 'role', id: svc.defaultRole };
+  }
+
+  /* HOW LONG THE WHOLE THING TAKES, added up from its own stages rather than
+     estimated separately, so the two can never disagree. Hours are counted at
+     eight to a working day. A recurring stage is the service's monthly cycle
+     and is reported apart from the run-up rather than added into it. */
+  const HOURS_PER_DAY = 8;
+  let days = 0; let cycle = null; let unowned = 0;
+  for (const st of base.stages || []) {
+    if (!st.duration) { if (st.owner?.type !== 'delegated') unowned += 1; continue; }
+    const d = st.duration.unit === 'hours' ? st.duration.value / HOURS_PER_DAY : st.duration.value;
+    if (st.duration.recurring) cycle = { value: st.duration.value, unit: st.duration.unit };
+    else days += d;
+  }
+  const estimated = {
+    value: Math.round(days * 10) / 10,
+    unit: 'days',
+    basis: 'the sum of this workflow\'s own stage durations, hours counted at eight to a working day',
+  };
+  if (cycle) estimated.recurring_cycle = cycle;
+  if (unowned) estimated.incomplete = true;
+
   return {
     workflow_id: `${feature.workflow}::${feature.id}`,
+    estimated_duration: estimated,
     pipeline: (SERVICES.services.find((s) => s.id === feature.service) || {}).pipeline?.id || null,
     pipeline_stages: stages,
     template: feature.workflow,
@@ -810,6 +997,68 @@ for (const w of features.map(materialise)) {
 /* A materialised workflow with an unresolved token in it is a workflow that
    would hand an agent the literal string "$feature.tools". */
 const materialised = features.map(materialise);
+
+/* A COMPOSITE TAKES AS LONG AS ITS PARTS. Its own stages all delegate, so
+   summing them gives zero — which would tell a scheduler a complete landing
+   page is instant. Filled in here, once every part has been materialised. */
+{
+  const byFeature = new Map(materialised.map((w) => [w.feature_id, w]));
+  for (const w of materialised) {
+    const parts = (byId.get(w.feature_id) || {}).composedOf;
+    if (!parts || !parts.length) continue;
+    const each = parts.map((x) => byFeature.get(x)).filter(Boolean);
+    w.estimated_duration = {
+      value: Math.round(each.reduce((a, b) => a + b.estimated_duration.value, 0) * 10) / 10,
+      unit: 'days',
+      basis: `the sum of the workflows this one delegates to: ${parts.join(', ')}`,
+    };
+  }
+}
+
+/* --- Prices are numbers, and a package says where it sits ----------------- */
+
+/* A PRICE IS AN AMOUNT, NOT A LABEL. These were strings of digits, on the
+   argument that a value rendered verbatim should be stored the way it renders.
+   That put formatting and business data in one field, and every consumer that
+   wanted to compare or add two prices coerced first — which is string-based
+   arithmetic wearing a coat. The amount lives here; the currency is declared
+   once for the document; the formatting is the generator's problem. */
+{
+  if (!/^[A-Z]{3}$/.test(PRICING.currency || '')) {
+    fail(`src/data/pricing.json: currency is ${JSON.stringify(PRICING.currency)} — it must be a three-letter code declared once for the document`);
+  }
+  for (const c of PRICING.categories) {
+    const ranks = new Set();
+    let previous = null;
+    for (const p of c.packages) {
+      const where = `${c.id}/${p.id}`;
+      if (typeof p.price !== 'number' || !Number.isInteger(p.price) || p.price <= 0) {
+        fail(`${where}: price is ${JSON.stringify(p.price)} — it must be a positive whole number, with no currency symbol and no quotes`);
+      }
+      /* HIERARCHY IS DECLARED, NOT INFERRED. Reading the ladder off the price
+         is how Pro and Growth swapped places twice: the moment two packages
+         cost the same, or a promotion moves one, the order silently changes. */
+      if (!Number.isInteger(p.rank) || p.rank < 1) fail(`${where}: no rank — a package must say where it sits in its own ladder`);
+      else if (ranks.has(p.rank)) fail(`${where}: rank ${p.rank} is already taken in ${c.id}`);
+      ranks.add(p.rank);
+      /* …and the two must still agree. A declared rank that contradicts the
+         price is a ladder nobody can read either way. */
+      if (previous && p.rank > previous.rank && p.price < previous.price) {
+        fail(`${where}: is ranked above ${previous.id} and costs less (${p.price} against ${previous.price})`);
+      }
+      previous = p;
+      for (const [a, b] of [['level', 'levelAr'], ['purpose', 'purposeAr']]) {
+        if (!String(p[a] || '').trim()) fail(`${where}: no ${a}`);
+        if (!String(p[b] || '').trim()) fail(`${where}: no ${b}`);
+        else if (!/[؀-ۿ]/.test(p[b])) fail(`${where}: ${b} has no Arabic in it`);
+      }
+    }
+    const ordered = [...c.packages].sort((a, b) => a.rank - b.rank);
+    if (ordered.map((p) => p.id).join() !== c.packages.map((p) => p.id).join()) {
+      fail(`${c.id}: the packages are not written in rank order, and the page renders them in file order`);
+    }
+  }
+}
 {
   const leftover = JSON.stringify(materialised).match(/\$feature\.[a-zA-Z_.]+/g);
   if (leftover) fail(`unresolved tokens after materialising: ${[...new Set(leftover)].join(', ')}`);
@@ -885,10 +1134,19 @@ const publicCatalogue = {
   ],
   version: SERVICES.version,
   generated: 'tools/build-catalogue.js',
+  /* Declared once, not printed on twelve packages. */
+  currency: PRICING.currency,
   services: SERVICES.services.map((s) => ({
     id: s.id,
     order: s.order,
     legacyCategory: s.legacyCategory,
+    /* PUBLIC BECAUSE IT IS ALREADY PUBLISHED — "up to five pages" is on the
+       card. The builder needs the rule, not a second copy of it; the note
+       explaining WHY the rule lives in data is for whoever edits it, and does
+       not need shipping to a browser. */
+    pageAllowance: s.pageAllowance
+      ? Object.fromEntries(Object.entries(s.pageAllowance).filter(([k]) => k !== '_comment'))
+      : undefined,
     name: s.name,
     shortName: s.shortName,
     summary: s.summary,
@@ -924,22 +1182,161 @@ const publicCatalogue = {
   })),
 };
 
+/* --- The packages, materialised into the catalogue ------------------------ */
+
+/* ONE FILE ANSWERS THE WHOLE QUESTION.
+   src/data/pricing.json stays the authored source of packages and prices —
+   the admin dashboard edits it, the cards are generated from it, and nothing
+   here changes that. What was wrong is that catalogue.json, the file an
+   automation is told to read, held features and workflows and no packages at
+   all: an engineer handed it could see seventy things we do and had no way to
+   price any of them, and would have gone looking for a second file to join by
+   hand. That second join is the split brain.
+
+   So the packages are MATERIALISED here at build time, the same way workflows
+   are: derived, never authored twice, and stale by construction if the source
+   moves. The shapes are normalised on the way through — billing keys become
+   words, the price becomes an amount with a currency beside it, carried rows
+   are resolved — because a consumer of catalogue.json should not have to know
+   that `billingMonthly` is an i18n key in another file. */
+
+const BILLING = { billingMonthly: 'monthly', billingOnce: 'once' };
+
+const cataloguePackages = PRICING.categories.map((c) => {
+  const svc = SERVICES.services.find((x) => x.legacyCategory === c.id);
+  return {
+    id: c.id,
+    service: svc ? svc.id : null,
+    name: { en: c.label, ar: c.labelAr },
+    packages: c.packages.map((p) => {
+      const contents = inheritedContents.get(`${c.id}/${p.id}`) || new Map();
+      const own = new Set((packageScope.get(`${c.id}/${p.id}`) || { rows: new Map() }).rows.keys());
+      return {
+        id: p.id,
+        service: svc ? svc.id : null,
+        category: c.id,
+        rank: p.rank,
+        name: p.name,
+        level: { en: p.level, ar: p.levelAr },
+        purpose: { en: p.purpose, ar: p.purposeAr },
+        price: {
+          amount: p.price,
+          currency: PRICING.currency,
+          billing: BILLING[p.billing] || p.billing,
+          from: Boolean(p.priceFrom),
+        },
+        /* WHAT THE PACKAGE ALLOWS BEFORE AN ADD-ON IS NEEDED. Declared on the
+           package and cross-checked against the row that prices the overage,
+           so a builder can reason about quantity rather than guess. */
+        limits: p.scope || {},
+        featured: Boolean(p.featured),
+        facts: p.facts,
+        features: [...contents].map(([ref, meta]) => {
+          const f = byId.get(ref) || {};
+          const out = { ref, inherited: !own.has(ref) };
+          if (meta.tier) out.tier = meta.tier;
+          if (meta.qty !== undefined) out.qty = meta.qty;
+          if (meta.platforms) out.platforms = meta.platforms;
+          if (f.workflow) out.workflow = `${f.workflow}::${ref}`;
+          return out;
+        }),
+      };
+    }),
+  };
+});
+
+/* --- The index: the joins, pre-walked ------------------------------------- */
+
+/* THE QUESTIONS AN ORCHESTRATOR ASKS, ANSWERED WITHOUT A SEARCH.
+   Everything below is derivable from the arrays above — that is the point of
+   an index, and why it is generated rather than authored. What it buys is that
+   "which stage runs this feature?" is a lookup rather than a walk over five
+   pipelines, which is the difference between a join and a convention. */
+
+const catalogueIndex = (() => {
+  const featureToWorkflow = {};
+  const featureToStage = {};
+  const stageToFeatures = {};
+  const stageToWorkflows = {};
+  const featureToPackages = {};
+  const capabilityToFeatures = {};
+
+  for (const w of materialised) {
+    featureToWorkflow[w.feature_id] = w.workflow_id;
+    featureToStage[w.feature_id] = { pipeline: w.pipeline, stages: w.pipeline_stages };
+    for (const st of w.pipeline_stages) {
+      (stageToWorkflows[st] = stageToWorkflows[st] || []).push(w.workflow_id);
+    }
+  }
+  for (const svc of SERVICES.services) {
+    for (const st of svc.pipeline.stages || []) {
+      stageToFeatures[st.id] = st.features || [];
+    }
+  }
+  for (const cat of cataloguePackages) {
+    for (const p of cat.packages) {
+      for (const f of p.features) {
+        (featureToPackages[f.ref] = featureToPackages[f.ref] || []).push(p.id);
+      }
+    }
+  }
+  for (const entry of CAPABILITIES.services) {
+    for (const c of entry.capabilities || []) {
+      capabilityToFeatures[c.id] = c.type === 'group' ? c.featureIds : (c.featureId ? [c.featureId] : []);
+    }
+  }
+  return {
+    _comment: [
+      'GENERATED. Every map here is derived from services, features, workflows',
+      'and packages above — it adds no facts, it only pre-walks the joins an',
+      'orchestrator would otherwise walk on every question.',
+    ],
+    featureToWorkflow,
+    featureToStage,
+    stageToFeatures,
+    stageToWorkflows,
+    featureToPackages,
+    capabilityToFeatures,
+  };
+})();
+
 /* --- The full export ----------------------------------------------------- */
 
 const fullCatalogue = {
   _comment: [
     'GENERATED by tools/build-catalogue.js. Do not edit.',
-    'The whole service architecture in one file: services, pipelines,',
-    'features and one materialised workflow per feature. This is the file an',
-    'automation, a CRM, a quotation generator or an agent reads. No build',
-    'reads catalogue/, so nothing here can reach dist/ or a visitor.',
+    'The whole service architecture in one file: services, pipelines, roles,',
+    'capabilities, features, packages with their prices, one materialised',
+    'workflow per feature, and an index of the joins between them. This is the',
+    'file an automation, a CRM, a quotation generator or an agent reads, and it',
+    'is meant to be the ONLY file it has to read. No build reads catalogue/, so',
+    'nothing here can reach dist/ or a visitor.',
+    '',
+    '`sources` names where each block was authored. Editing this file edits',
+    'nothing: the next build overwrites it from those sources.',
   ],
   version: SERVICES.version,
   generated: 'tools/build-catalogue.js',
+  sources: {
+    services: 'src/data/catalogue/services.json',
+    features: 'src/data/catalogue/features.*.json',
+    workflows: 'src/data/catalogue/workflows.json',
+    roles: 'src/data/catalogue/roles.json',
+    capabilities: 'src/data/catalogue/capabilities.json',
+    platforms: 'src/data/catalogue/platforms.json',
+    addonGroups: 'src/data/catalogue/addon-groups.json',
+    packages: 'src/data/pricing.json',
+  },
+  currency: PRICING.currency,
   services: SERVICES.services,
+  roles: ROLES.roles,
   addonGroups: ADDON_GROUPS.groups,
+  platforms: PLATFORMS.sets,
+  capabilities: CAPABILITIES.services,
   features: features.map(({ _file, ...f }) => f),
+  packages: cataloguePackages,
   workflows: materialised,
+  index: catalogueIndex,
 };
 
 fs.mkdirSync(OUT, { recursive: true });

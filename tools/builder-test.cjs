@@ -86,6 +86,14 @@ const state = (p, id) => p.evaluate((f) => {
   };
 }, id);
 
+/* THE MACHINE-READABLE SCOPE. The island the builder rewrites on every change;
+   `{}` when nothing is chosen, which is the correct answer to "what did they
+   order?" before anything has been. */
+const order = (p) => p.evaluate(() => {
+  const el = document.getElementById('build-order');
+  try { return JSON.parse(el ? el.textContent : '{}'); } catch { return null; }
+});
+
 const totals = (p) => p.evaluate(() => {
   const t = (sel) => {
     const el = document.querySelector(sel);
@@ -443,6 +451,107 @@ const totals = (p) => p.evaluate(() => {
     check('Growth carries the deeper research capability', growthRefs.has('feat.social.audience_research'));
     check('and Growth carries growth analysis and performance optimisation',
       growthRefs.has('feat.social.growth_analysis') && growthRefs.has('feat.social.performance_optimization'));
+  }
+
+  /* --- 17. landing page deployment stands on its own --------------------- */
+  {
+    await p.reload({ waitUntil: 'load' });
+    await p.waitForTimeout(400);
+    await useEnglish(p);
+    await tick(p, 'feat.websites.landing_deploy');
+    await p.waitForTimeout(250);
+    const t = await totals(p);
+    check('deployment alone costs 20', t.once === 20, JSON.stringify(t));
+    for (const id of ['feat.websites.landing_design', 'feat.websites.landing_build']) {
+      const st = await state(p, id);
+      check(`deployment alone does not pull in ${id}`, st && !st.checked && st.stateAttr !== 'on', JSON.stringify(st));
+    }
+    const o = await order(p);
+    check('and the payload says exactly one feature was ordered',
+      o.services.length === 1 && o.services[0].features.length === 1
+      && o.services[0].features[0].featureId === 'feat.websites.landing_deploy',
+      JSON.stringify(o.services));
+    check('priced at 20, one-time, in USD',
+      o.pricing.total.oneTime === 20 && o.pricing.total.monthly === 0 && o.pricing.currency === 'USD',
+      JSON.stringify(o.pricing));
+  }
+
+  /* --- 18. the complete landing page is 120, charged once ---------------- */
+  {
+    await p.reload({ waitUntil: 'load' });
+    await p.waitForTimeout(400);
+    await useEnglish(p);
+    for (const id of ['feat.websites.landing_design', 'feat.websites.landing_build', 'feat.websites.landing_deploy']) {
+      await tick(p, id); await p.waitForTimeout(140);
+    }
+    await p.waitForTimeout(200);
+    const t = await totals(p);
+    check('all three parts together cost 120, not 50 + 50 + 20 twice', t.once === 120, JSON.stringify(t));
+    const o = await order(p);
+    const feats = o.services[0].features;
+    const composite = feats.find((f) => f.featureId === 'feat.websites.extra_landing');
+    check('the payload reports the composite', Boolean(composite), JSON.stringify(feats.map((f) => f.featureId)));
+    check('and charges 120 for it', composite && composite.pricing.amount === 120, JSON.stringify(composite));
+    const parts = feats.filter((f) => f.partOf === 'feat.websites.extra_landing');
+    check('the three parts are present as parts', parts.length === 3, JSON.stringify(parts.map((f) => f.featureId)));
+    check('and none of them is charged for again', parts.every((f) => f.pricing.amount === 0));
+    check('the payload total is 120', o.pricing.total.oneTime === 120, JSON.stringify(o.pricing.total));
+  }
+
+  /* --- 19. the payload is deterministic and language-independent ---------- */
+  {
+    const buildOne = async (lang) => {
+      await p.reload({ waitUntil: 'load' });
+      await p.waitForTimeout(400);
+      await p.evaluate((l) => {
+        const b = document.querySelector(`[data-lang="${l}"]`);
+        if (b && document.documentElement.lang !== l) b.click();
+      }, lang);
+      await p.waitForTimeout(350);
+      /* Ticked in a different order each time, on purpose — and chosen so that
+         none of the three requires another, because re-ticking something a
+         dependency already turned on would UNtick it and the two runs would
+         differ for a reason that has nothing to do with the payload. */
+      const picks = lang === 'ar'
+        ? ['feat.websites.extra_page', 'feat.social.reels', 'feat.branding.logo']
+        : ['feat.branding.logo', 'feat.social.reels', 'feat.websites.extra_page'];
+      for (const id of picks) { await tick(p, id); await p.waitForTimeout(140); }
+      await p.evaluate(() => {
+        const i = document.querySelector('.c-pick[data-feature="feat.websites.extra_page"] input[type=number]');
+        i.value = '4'; i.dispatchEvent(new Event('input', { bubbles: true }));
+        i.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      await p.waitForTimeout(300);
+      return order(p);
+    };
+    const en = await buildOne('en');
+    const ar = await buildOne('ar');
+    const strip = (o) => { const c = JSON.parse(JSON.stringify(o)); delete c.message; delete c.language; return c; };
+    check('the same selection produces the same payload in both languages',
+      JSON.stringify(strip(en)) === JSON.stringify(strip(ar)),
+      `${JSON.stringify(strip(en)).length} vs ${JSON.stringify(strip(ar)).length} bytes`);
+    check('only the message and the language tag differ',
+      en.language === 'en' && ar.language === 'ar' && en.message !== ar.message);
+    check('the payload carries stable ids, not labels',
+      en.services.every((s) => /^svc\./.test(s.serviceId) && s.features.every((f) => /^feat\./.test(f.featureId))));
+    check('quantities survive into the payload',
+      en.services.flatMap((s) => s.features).find((f) => f.featureId === 'feat.websites.extra_page').quantity === 4);
+    check('the page count is reported, not left to be inferred',
+      en.scope && en.scope.pages === 5, JSON.stringify(en.scope));
+    check('add-ons are listed as add-ons, with their group and quantity',
+      en.addons.some((a) => a.featureId === 'feat.websites.extra_page' && a.quantity === 4 && a.addonGroup)
+      && en.addons.every((a) => a.addonGroup),
+      JSON.stringify(en.addons));
+    check('the message is presentation, and says so by not being the record',
+      typeof en.message === 'string' && en.message.length > 0 && !/feat\./.test(en.message));
+  }
+
+  /* --- 20. nothing chosen is not an empty order, it is no order ---------- */
+  {
+    await p.reload({ waitUntil: 'load' });
+    await p.waitForTimeout(400);
+    const o = await order(p);
+    check('the payload is empty before anything is chosen', o && Object.keys(o).length === 0, JSON.stringify(o));
   }
 
   check('no console errors while all of that happened', errors.length === 0, errors.slice(0, 3).join(' | '));

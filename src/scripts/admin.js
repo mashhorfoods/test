@@ -383,9 +383,14 @@ function renderPricing(root, f) {
       const card = el('div', 'a-card');
       card.append(el('h4', 'a-card__title', k.name));
       const p = `categories[${ci}].packages[${pi}]`;
-      card.append(field('Price (digits only)', k.price,
+      /* The field is text, because a text box is what a phone shows well; the
+         VALUE is a number, because that is what the file holds. An empty or
+         non-numeric box stays as typed so the validator can name it rather
+         than silently turning it into zero. */
+      card.append(field('Price (digits only)', String(k.price ?? ''),
         'No currency symbol, no comma. The site adds "From" and "USD".',
-        (v) => { k.price = v; }, { error: at(`${p}.price`), path: `${p}.price` }));
+        (v) => { k.price = /^\d{1,6}$/.test(v.trim()) ? Number(v.trim()) : v.trim(); },
+        { error: at(`${p}.price`), path: `${p}.price` }));
       card.append(field('Delivery — English', k.facts?.delivery?.en, null,
         (v) => { k.facts.delivery.en = v; }, { error: at(`${p}.facts.delivery.en`), path: `${p}.facts.delivery.en` }));
       card.append(field('Delivery — Arabic', k.facts?.delivery?.ar, null,

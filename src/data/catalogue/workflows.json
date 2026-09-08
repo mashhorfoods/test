@@ -62,6 +62,14 @@
           ],
           "output": "An agreed written direction",
           "validation": "The client has responded to the direction, not merely received it.",
+          "owner": {
+            "type": "role",
+            "id": "role.strategist"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": "explore"
         },
         {
@@ -78,6 +86,14 @@
           ],
           "output": "Concepts, distinct in idea",
           "validation": "No two concepts are the same idea in different colours.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 3,
+            "unit": "days"
+          },
           "next_stage": "present"
         },
         {
@@ -96,6 +112,14 @@
           ],
           "output": "A chosen concept",
           "validation": "The client has chosen one, in writing.",
+          "owner": {
+            "type": "role",
+            "id": "role.account_manager"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": "refine"
         },
         {
@@ -115,6 +139,14 @@
           ],
           "output": "An approved final",
           "validation": "Rounds used are within $feature.revisionRules.rounds.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "days"
+          },
           "next_stage": "release"
         },
         {
@@ -133,6 +165,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": null
         }
       ],
@@ -190,6 +230,14 @@
           ],
           "output": "A first system",
           "validation": "Every part traces back to the approved core.",
+          "owner": {
+            "type": "role",
+            "id": "role.designer"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "days"
+          },
           "next_stage": "prove"
         },
         {
@@ -208,6 +256,14 @@
           ],
           "output": "A system that survived use",
           "validation": "Three real cases produced correct results without special handling.",
+          "owner": {
+            "type": "role",
+            "id": "role.designer"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": "document"
         },
         {
@@ -226,6 +282,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "role.designer"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "days"
+          },
           "next_stage": "approve"
         },
         {
@@ -244,6 +308,14 @@
           ],
           "output": "An approved system",
           "validation": "Client approval in writing.",
+          "owner": {
+            "type": "role",
+            "id": "role.client"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "days"
+          },
           "next_stage": null
         }
       ],
@@ -295,6 +367,14 @@
           ],
           "output": "A complete input set",
           "validation": "Nothing on the input list is missing or guessed.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "produce"
         },
         {
@@ -311,6 +391,14 @@
           ],
           "output": "A first version",
           "validation": "Made from the brand's system, not designed beside it.",
+          "owner": {
+            "type": "role",
+            "id": "role.designer"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "days"
+          },
           "next_stage": "check"
         },
         {
@@ -329,6 +417,14 @@
           ],
           "output": "A checked version",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "role.qa"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "approve"
         },
         {
@@ -347,6 +443,14 @@
           ],
           "output": "An approved item",
           "validation": "Approval in writing, rounds within limit.",
+          "owner": {
+            "type": "role",
+            "id": "role.client"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "days"
+          },
           "next_stage": "deliver"
         },
         {
@@ -364,6 +468,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "Every deliverable opens.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": null
         }
       ],
@@ -420,6 +532,14 @@
           ],
           "output": "An agreed outline",
           "validation": "No section added later that should have been foreseen.",
+          "owner": {
+            "type": "role",
+            "id": "role.strategist"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": "write"
         },
         {
@@ -437,6 +557,14 @@
           ],
           "output": "A complete draft",
           "validation": "Every rule is shown as well as stated.",
+          "owner": {
+            "type": "role",
+            "id": "role.copywriter"
+          },
+          "duration": {
+            "value": 3,
+            "unit": "days"
+          },
           "next_stage": "reconcile"
         },
         {
@@ -454,6 +582,14 @@
           ],
           "output": "A reconciled document",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "role.qa"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "deliver"
         },
         {
@@ -471,6 +607,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "Every deliverable opens and prints.",
+          "owner": {
+            "type": "role",
+            "id": "role.account_manager"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": null
         }
       ],
@@ -524,6 +668,14 @@
           ],
           "output": "An agreed shot list and call sheet",
           "validation": "Every item on the list is achievable at that location on that day.",
+          "owner": {
+            "type": "role",
+            "id": "role.producer"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "days"
+          },
           "next_stage": "shoot"
         },
         {
@@ -541,6 +693,14 @@
           ],
           "output": "Raw capture",
           "validation": "Every item on the list has usable coverage before leaving.",
+          "owner": {
+            "type": "role",
+            "id": "role.producer"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": "secure"
         },
         {
@@ -558,6 +718,14 @@
           ],
           "output": "Two verified backups",
           "validation": "A file has been opened from a backup, not merely copied to it.",
+          "owner": {
+            "type": "role",
+            "id": "role.producer"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "select"
         },
         {
@@ -576,6 +744,14 @@
           ],
           "output": "Finished selects",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "role.producer"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "days"
+          },
           "next_stage": "deliver"
         },
         {
@@ -593,6 +769,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "Count delivered matches the count agreed.",
+          "owner": {
+            "type": "role",
+            "id": "role.producer"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "days"
+          },
           "next_stage": null
         }
       ],
@@ -646,6 +830,14 @@
           ],
           "output": "A picture of what exists",
           "validation": "No duplicate created where a recoverable original exists.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "provision"
         },
         {
@@ -662,6 +854,14 @@
           ],
           "output": "A provisioned service",
           "validation": "Ownership sits with the client; our role is delegated access.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "secure"
         },
         {
@@ -680,6 +880,14 @@
           ],
           "output": "A secured, documented service",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "verify"
         },
         {
@@ -697,6 +905,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "The client has logged in successfully at least once.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": null
         }
       ],
@@ -754,6 +970,14 @@
           ],
           "output": "Confirmed inputs",
           "validation": "Nothing marked draft is being built against.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "implement"
         },
         {
@@ -770,6 +994,14 @@
           ],
           "output": "A working implementation on staging",
           "validation": "Matches the approved design at every supported width.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "days"
+          },
           "next_stage": "self_check"
         },
         {
@@ -789,6 +1021,14 @@
           ],
           "output": "A checked implementation",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": "review"
         },
         {
@@ -806,6 +1046,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "Client has seen it on their own device.",
+          "owner": {
+            "type": "role",
+            "id": "role.account_manager"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "days"
+          },
           "next_stage": null
         }
       ],
@@ -862,6 +1110,14 @@
           ],
           "output": "A written check list",
           "validation": "The list names every width, language and browser in scope.",
+          "owner": {
+            "type": "role",
+            "id": "role.qa"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": "execute"
         },
         {
@@ -878,6 +1134,14 @@
           ],
           "output": "A completed check list with results",
           "validation": "Every line has a result, including the ones that passed.",
+          "owner": {
+            "type": "role",
+            "id": "role.qa"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": "resolve"
         },
         {
@@ -896,6 +1160,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "role.developer"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": null
         }
       ],
@@ -921,10 +1193,11 @@
     },
     "wf.release": {
       "label": "Putting something live, where a mistake is visible to everyone",
-      "trigger": "Verification passed and the client has signed off on staging.",
+      "trigger": "The build to deploy exists and has been signed off — whether we produced it or the client supplied it.",
       "prerequisites": [
         "$feature.dependencies.requires",
-        "A written sign-off"
+        "A written sign-off naming the exact build being deployed",
+        "The build itself, from us or from the client"
       ],
       "inputs": [
         "$feature.inputs"
@@ -933,6 +1206,33 @@
         "$feature.outputs"
       ],
       "stages": [
+        {
+          "stage_id": "intake",
+          "objective": "Establish that the thing being deployed exists, is the approved one, and is ours to deploy — whoever built it.",
+          "inputs": [
+            "$feature.inputs"
+          ],
+          "actions": [
+            "Take delivery of the build, whether we produced it or the client supplied it.",
+            "Run it somewhere other than the machine it was made on, before anything is pointed at it.",
+            "Get the version being deployed named in writing.",
+            "Confirm who owns the domain and the hosting account, and that the access needed to deploy exists."
+          ],
+          "tools": [
+            "$feature.tools"
+          ],
+          "output": "An identified build, and the access to deploy it",
+          "validation": "The exact build is named in writing and runs outside the machine it was made on.",
+          "owner": {
+            "type": "role",
+            "id": "role.developer"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
+          "next_stage": "rehearse"
+        },
         {
           "stage_id": "rehearse",
           "objective": "Know how to undo it before doing it.",
@@ -949,6 +1249,14 @@
           ],
           "output": "A rollback that exists",
           "validation": "The rollback has been identified, not assumed.",
+          "owner": {
+            "type": "role",
+            "id": "role.developer"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": "release"
         },
         {
@@ -965,6 +1273,14 @@
           ],
           "output": "A live deployment",
           "validation": "The deploy reported success.",
+          "owner": {
+            "type": "role",
+            "id": "role.developer"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": "confirm"
         },
         {
@@ -984,10 +1300,23 @@
           ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "role.developer"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": null
         }
       ],
       "decision_points": [
+        {
+          "at": "intake",
+          "question": "Did the build come from the client rather than from us?",
+          "ifYes": "Check it ourselves before deploying it. What goes live is ours to answer for, and a build we did not make is a build we have not tested."
+        },
         {
           "at": "confirm",
           "question": "Does anything differ from staging?",
@@ -1003,7 +1332,8 @@
       "failure_conditions": [
         "Deployed with no identified rollback",
         "Live never checked independently of staging",
-        "Deployed at a time nobody could respond to a problem"
+        "Deployed at a time nobody could respond to a problem",
+        "Deployed a build nobody identified in writing"
       ],
       "completion_condition": "$feature.completionCriteria"
     },
@@ -1034,6 +1364,14 @@
           ],
           "output": "A structured archive",
           "validation": "Folder names describe contents, not our internal process.",
+          "owner": {
+            "type": "role",
+            "id": "role.account_manager"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": "index"
         },
         {
@@ -1052,6 +1390,14 @@
           ],
           "output": "A verified index",
           "validation": "Every index entry resolves to a file that exists.",
+          "owner": {
+            "type": "role",
+            "id": "role.account_manager"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "transfer"
         },
         {
@@ -1071,6 +1417,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "confirm"
         },
         {
@@ -1088,6 +1442,14 @@
           ],
           "output": "A confirmed handover",
           "validation": "The client has confirmed, not merely been sent.",
+          "owner": {
+            "type": "role",
+            "id": "role.client"
+          },
+          "duration": {
+            "value": 3,
+            "unit": "days"
+          },
           "next_stage": null
         }
       ],
@@ -1139,6 +1501,14 @@
           ],
           "output": "The material to plan from",
           "validation": "The previous period's report has been read, where one exists.",
+          "owner": {
+            "type": "role",
+            "id": "role.strategist"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": "decide"
         },
         {
@@ -1155,6 +1525,14 @@
           ],
           "output": "A draft plan",
           "validation": "Every element has a stated purpose, not just a slot.",
+          "owner": {
+            "type": "role",
+            "id": "role.strategist"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": "agree"
         },
         {
@@ -1173,6 +1551,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "role.client"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "days"
+          },
           "next_stage": null
         }
       ],
@@ -1224,6 +1610,14 @@
           ],
           "output": "A piece brief",
           "validation": "Every factual claim has a source.",
+          "owner": {
+            "type": "role",
+            "id": "role.strategist"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": "make"
         },
         {
@@ -1240,6 +1634,14 @@
           ],
           "output": "A first version",
           "validation": "Serves the stated purpose, and would be recognisable as this brand's.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": "check"
         },
         {
@@ -1258,6 +1660,14 @@
           ],
           "output": "A checked piece",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "role.qa"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": "approve"
         },
         {
@@ -1276,6 +1686,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "Approval recorded before scheduling.",
+          "owner": {
+            "type": "role",
+            "id": "role.client"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "days"
+          },
           "next_stage": null
         }
       ],
@@ -1328,6 +1746,14 @@
           ],
           "output": "A scheduled cycle",
           "validation": "There is a named person for every slot in the cycle.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "operate"
         },
         {
@@ -1344,6 +1770,15 @@
           ],
           "output": "The cycle's work, done",
           "validation": "Nothing older than the agreed window is outstanding.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 20,
+            "unit": "days",
+            "recurring": true
+          },
           "next_stage": "verify"
         },
         {
@@ -1361,6 +1796,14 @@
           ],
           "output": "A verified cycle",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": "log"
         },
         {
@@ -1377,6 +1820,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "Every exception has a date and an owner.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": null
         }
       ],
@@ -1429,6 +1880,14 @@
           ],
           "output": "A cleared preflight",
           "validation": "A test conversion has been seen, not assumed.",
+          "owner": {
+            "type": "role",
+            "id": "role.ads_specialist"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "build"
         },
         {
@@ -1445,6 +1904,14 @@
           ],
           "output": "A built, paused campaign",
           "validation": "Structure isolates each variable being tested.",
+          "owner": {
+            "type": "role",
+            "id": "role.ads_specialist"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "days"
+          },
           "next_stage": "review"
         },
         {
@@ -1462,6 +1929,14 @@
           ],
           "output": "A reviewed campaign",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "role.qa"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": "launch"
         },
         {
@@ -1480,6 +1955,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "Delivering, spending at the agreed rate, conversions arriving.",
+          "owner": {
+            "type": "role",
+            "id": "role.ads_specialist"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": null
         }
       ],
@@ -1538,6 +2021,14 @@
           ],
           "output": "A read of the current state",
           "validation": "The sample is large enough that the difference is not noise.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": "change"
         },
         {
@@ -1554,6 +2045,14 @@
           ],
           "output": "One change, made",
           "validation": "Exactly one variable moved.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "hours"
+          },
           "next_stage": "record"
         },
         {
@@ -1571,6 +2070,14 @@
           ],
           "output": "A change log entry",
           "validation": "The entry names a figure, not a feeling.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 1,
+            "unit": "hours"
+          },
           "next_stage": "observe"
         },
         {
@@ -1589,6 +2096,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 3,
+            "unit": "days"
+          },
           "next_stage": null
         }
       ],
@@ -1644,6 +2159,14 @@
           ],
           "output": "Verified figures",
           "validation": "Every figure traceable to a platform screen.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": "interpret"
         },
         {
@@ -1660,6 +2183,14 @@
           ],
           "output": "A draft report",
           "validation": "The agreed target is stated and compared to, whichever way it went.",
+          "owner": {
+            "type": "role",
+            "id": "$service.defaultRole"
+          },
+          "duration": {
+            "value": 4,
+            "unit": "hours"
+          },
           "next_stage": "decide"
         },
         {
@@ -1677,6 +2208,14 @@
           ],
           "output": "A report with a decision in it",
           "validation": "$feature.qualityChecks",
+          "owner": {
+            "type": "role",
+            "id": "role.strategist"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": "send"
         },
         {
@@ -1694,6 +2233,14 @@
           ],
           "output": "$feature.deliverables",
           "validation": "Sent within the agreed number of days after period end.",
+          "owner": {
+            "type": "role",
+            "id": "role.account_manager"
+          },
+          "duration": {
+            "value": 2,
+            "unit": "hours"
+          },
           "next_stage": null
         }
       ],

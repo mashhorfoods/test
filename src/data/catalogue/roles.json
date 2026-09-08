@@ -1,0 +1,123 @@
+{
+  "_comment": [
+    "WHO DOES THE WORK, as a role rather than a person.",
+    "",
+    "Every workflow stage in workflows.json names an owner from this list. The",
+    "point is assignment without hard-coding an employee: a studio of three",
+    "people fills six roles, a studio of twelve fills the same six, and neither",
+    "arrangement changes a workflow. A named person belongs in whatever system",
+    "eventually assigns the work, not in the definition of the work.",
+    "",
+    "`external: true` marks a role that is NOT ours. The client is a role",
+    "because approval is a stage someone has to do, and pretending the studio",
+    "owns it would let a scheduler promise a duration it cannot control.",
+    "",
+    "`automatable` is a property of the ROLE, not a promise about any stage: it",
+    "says whether an agent could stand in for this role at all. A stage is only",
+    "a candidate for automation when its own automationPotential says so AND",
+    "its owning role is automatable."
+  ],
+  "version": 1,
+  "roles": [
+    {
+      "id": "role.strategist",
+      "name": { "en": "Strategist", "ar": "مسؤول الاستراتيجية" },
+      "description": {
+        "en": "Decides what the work is trying to achieve and writes the direction the rest of the stages execute against.",
+        "ar": "يقرّر ما الذي يحاول العمل تحقيقه، ويكتب الاتجاه الذي تنفّذ بقية المراحل وفقه."
+      },
+      "external": false,
+      "automatable": "assist"
+    },
+    {
+      "id": "role.designer",
+      "name": { "en": "Designer", "ar": "المصمّم" },
+      "description": {
+        "en": "Produces original visual work: concepts, identity systems and the assets built from them.",
+        "ar": "ينتج العمل البصري الأصلي: المفاهيم وأنظمة الهوية والأصول المبنية عليها."
+      },
+      "external": false,
+      "automatable": "assist"
+    },
+    {
+      "id": "role.developer",
+      "name": { "en": "Developer", "ar": "المطوّر" },
+      "description": {
+        "en": "Builds, tests and releases anything that runs — sites, pages, integrations and the environments they live in.",
+        "ar": "يبني ويختبر ويطلق كل ما يعمل فعليًا — المواقع والصفحات والتكاملات والبيئات التي تعمل فيها."
+      },
+      "external": false,
+      "automatable": "partial"
+    },
+    {
+      "id": "role.copywriter",
+      "name": { "en": "Copywriter", "ar": "كاتب المحتوى" },
+      "description": {
+        "en": "Writes the words: captions, ad copy, documents and anything that has to read correctly in both languages.",
+        "ar": "يكتب النصوص: التعليقات ونصوص الإعلانات والمستندات وكل ما يجب أن يُقرأ صحيحًا باللغتين."
+      },
+      "external": false,
+      "automatable": "partial"
+    },
+    {
+      "id": "role.producer",
+      "name": { "en": "Producer", "ar": "منتج المحتوى المرئي" },
+      "description": {
+        "en": "Runs shoots and post-production: photography, videography, editing and delivery of the finished footage.",
+        "ar": "يدير التصوير وما بعد الإنتاج: التصوير الفوتوغرافي والفيديو والمونتاج وتسليم المواد النهائية."
+      },
+      "external": false,
+      "automatable": "none"
+    },
+    {
+      "id": "role.social_manager",
+      "name": { "en": "Social media manager", "ar": "مدير وسائل التواصل" },
+      "description": {
+        "en": "Runs the accounts on their cycle: scheduling, publishing, monitoring and community work.",
+        "ar": "يدير الحسابات وفق دورتها: الجدولة والنشر والمتابعة والتفاعل مع المجتمع."
+      },
+      "external": false,
+      "automatable": "partial"
+    },
+    {
+      "id": "role.ads_specialist",
+      "name": { "en": "Advertising specialist", "ar": "أخصائي الإعلانات" },
+      "description": {
+        "en": "Owns paid campaigns end to end: setup, targeting, spend, optimisation and what the numbers mean.",
+        "ar": "يملك الحملات المدفوعة من البداية إلى النهاية: الإعداد والاستهداف والإنفاق والتحسين وقراءة الأرقام."
+      },
+      "external": false,
+      "automatable": "partial"
+    },
+    {
+      "id": "role.qa",
+      "name": { "en": "Quality reviewer", "ar": "مراجع الجودة" },
+      "description": {
+        "en": "Checks the work against its own quality checks before a client sees it, and is never the person who made it.",
+        "ar": "يفحص العمل مقابل معايير جودته قبل أن يراه العميل، ولا يكون أبدًا الشخص الذي أنجزه."
+      },
+      "external": false,
+      "automatable": "assist"
+    },
+    {
+      "id": "role.account_manager",
+      "name": { "en": "Account manager", "ar": "مدير الحساب" },
+      "description": {
+        "en": "Holds the relationship: briefs in, presentations out, approvals chased, handover confirmed.",
+        "ar": "يمسك بالعلاقة: استلام الإحاطات وتقديم العروض ومتابعة الموافقات وتأكيد التسليم."
+      },
+      "external": false,
+      "automatable": "assist"
+    },
+    {
+      "id": "role.client",
+      "name": { "en": "Client", "ar": "العميل" },
+      "description": {
+        "en": "The person paying for the work. Owns every stage that is a decision rather than a task — approvals, choices and sign-off.",
+        "ar": "الشخص الذي يدفع مقابل العمل. يملك كل مرحلة هي قرار لا مهمة — الموافقات والاختيارات والاعتماد النهائي."
+      },
+      "external": true,
+      "automatable": "none"
+    }
+  ]
+}

@@ -1,0 +1,277 @@
+{
+  "_comment": [
+    "WHAT THE HOME PAGE SAYS WE DO, joined to what the catalogue can execute.",
+    "",
+    "These are the capability chips under each service on the home page. They",
+    "were thirty hand-written strings in index.html: eight of them repeated a",
+    "catalogue feature's name word for word, and twenty-two named nothing the",
+    "system had ever heard of. A visitor cannot tell the difference, and",
+    "neither could an agent — which is the problem. A string that reads like a",
+    "capability and resolves to nothing is worse than no string at all.",
+    "",
+    "So every chip now declares what it is:",
+    "",
+    "  feature   one catalogue feature executes it       -> featureId",
+    "  group     several features together are it        -> featureIds",
+    "  platform  a platform an existing feature runs on  -> featureId + platformId",
+    "  marketing copy, and nothing executes it           -> reason",
+    "",
+    "`marketing` is a legitimate answer and is meant to be used. What is not",
+    "legitimate is leaving the question unanswered, so build-catalogue.js",
+    "refuses a chip with no type, a featureId that resolves to nothing, a",
+    "featureId belonging to another service, or a `marketing` chip that gives",
+    "no reason.",
+    "",
+    "index.html no longer holds these words. tools/build-capabilities.js",
+    "renders them from here, in both languages, in the order below."
+  ],
+  "version": 1,
+  "services": [
+    {
+      "service": "svc.branding",
+      "capabilities": [
+        {
+          "id": "cap.branding.logo",
+          "label": { "en": "Logo Design", "ar": "تصميم الشعار" },
+          "type": "feature",
+          "featureId": "feat.branding.logo"
+        },
+        {
+          "id": "cap.branding.identity",
+          "label": { "en": "Brand Identity", "ar": "هوية العلامة" },
+          "type": "group",
+          "featureIds": [
+            "feat.branding.logo",
+            "feat.branding.color_system",
+            "feat.branding.type_system",
+            "feat.branding.identity_card"
+          ]
+        },
+        {
+          "id": "cap.branding.visual_identity",
+          "label": { "en": "Visual Identity", "ar": "الهوية البصرية" },
+          "type": "group",
+          "featureIds": [
+            "feat.branding.visual_language",
+            "feat.branding.guidelines_short",
+            "feat.branding.guidelines_full"
+          ]
+        },
+        {
+          "id": "cap.branding.social_design",
+          "label": { "en": "Social Media Design", "ar": "تصميم وسائل التواصل" },
+          "type": "group",
+          "featureIds": [
+            "feat.branding.social_profile",
+            "feat.branding.social_posts",
+            "feat.branding.social_design_system"
+          ]
+        },
+        {
+          "id": "cap.branding.ad_design",
+          "label": { "en": "Advertising Design", "ar": "التصميم الإعلاني" },
+          "type": "group",
+          "featureIds": [
+            "feat.branding.ad_templates_basic",
+            "feat.branding.ad_templates"
+          ]
+        },
+        {
+          "id": "cap.branding.visual_content",
+          "label": { "en": "Visual Content", "ar": "المحتوى البصري" },
+          "type": "group",
+          "featureIds": [
+            "feat.branding.photography",
+            "feat.branding.videography"
+          ]
+        }
+      ]
+    },
+    {
+      "service": "svc.websites",
+      "capabilities": [
+        {
+          "id": "cap.websites.domain_hosting",
+          "label": { "en": "Domain &amp; Hosting", "ar": "النطاق والاستضافة" },
+          "type": "group",
+          "featureIds": [
+            "feat.websites.domain",
+            "feat.websites.hosting"
+          ]
+        },
+        {
+          "id": "cap.websites.design",
+          "label": { "en": "Website Design", "ar": "تصميم الموقع" },
+          "type": "feature",
+          "featureId": "feat.websites.uiux"
+        },
+        {
+          "id": "cap.websites.development",
+          "label": { "en": "Website Development", "ar": "تطوير الموقع" },
+          "type": "feature",
+          "featureId": "feat.websites.development"
+        },
+        {
+          "id": "cap.websites.setup",
+          "label": { "en": "Website Setup", "ar": "إعداد الموقع" },
+          "type": "feature",
+          "featureId": "feat.websites.setup"
+        },
+        {
+          "id": "cap.websites.deployment",
+          "label": { "en": "Deployment", "ar": "النشر" },
+          "type": "feature",
+          "featureId": "feat.websites.deployment"
+        },
+        {
+          "id": "cap.websites.handover",
+          "label": { "en": "Delivery Ready for Use", "ar": "تسليم جاهز للاستخدام" },
+          "type": "feature",
+          "featureId": "feat.websites.handover"
+        }
+      ]
+    },
+    {
+      "service": "svc.social",
+      "capabilities": [
+        {
+          "id": "cap.social.account_setup",
+          "label": { "en": "Account Creation / Setup", "ar": "إنشاء الحسابات وإعدادها" },
+          "type": "feature",
+          "featureId": "feat.social.account_setup"
+        },
+        {
+          "id": "cap.social.content_strategy",
+          "label": { "en": "Content Strategy", "ar": "استراتيجية المحتوى" },
+          "type": "feature",
+          "featureId": "feat.social.content_strategy"
+        },
+        {
+          "id": "cap.social.copywriting",
+          "label": { "en": "Copywriting", "ar": "كتابة المحتوى" },
+          "type": "feature",
+          "featureId": "feat.social.copywriting"
+        },
+        {
+          "id": "cap.social.post_design",
+          "label": { "en": "Graphic Design", "ar": "التصميم الجرافيكي" },
+          "type": "feature",
+          "featureId": "feat.social.post_design"
+        },
+        {
+          "id": "cap.social.video",
+          "label": { "en": "Video Production", "ar": "إنتاج الفيديو" },
+          "type": "feature",
+          "featureId": "feat.social.video_editing"
+        },
+        {
+          "id": "cap.social.reels",
+          "label": { "en": "Reels", "ar": "Reels" },
+          "type": "feature",
+          "featureId": "feat.social.reels",
+          "latinLabel": true
+        },
+        {
+          "id": "cap.social.publishing",
+          "label": { "en": "Publishing", "ar": "نشر المحتوى" },
+          "type": "feature",
+          "featureId": "feat.social.publishing"
+        },
+        {
+          "id": "cap.social.community",
+          "label": { "en": "Community Monitoring", "ar": "متابعة التفاعل والتعليقات" },
+          "type": "feature",
+          "featureId": "feat.social.community_monitoring"
+        },
+        {
+          "id": "cap.social.performance",
+          "label": { "en": "Performance Analysis", "ar": "تحليل الأداء" },
+          "type": "group",
+          "featureIds": [
+            "feat.social.report",
+            "feat.social.growth_analysis"
+          ]
+        }
+      ]
+    },
+    {
+      "service": "svc.marketing",
+      "capabilities": [
+        {
+          "id": "cap.marketing.facebook_ads",
+          "label": { "en": "Facebook Ads", "ar": "Facebook Ads" },
+          "type": "platform",
+          "featureId": "feat.marketing.platform_management",
+          "platformId": "plat.meta",
+          "latinLabel": true
+        },
+        {
+          "id": "cap.marketing.instagram_ads",
+          "label": { "en": "Instagram Ads", "ar": "Instagram Ads" },
+          "type": "platform",
+          "featureId": "feat.marketing.platform_management",
+          "platformId": "plat.meta",
+          "latinLabel": true
+        },
+        {
+          "id": "cap.marketing.tiktok_ads",
+          "label": { "en": "TikTok Ads", "ar": "TikTok Ads" },
+          "type": "platform",
+          "featureId": "feat.marketing.platform_management",
+          "platformId": "plat.tiktok",
+          "latinLabel": true
+        },
+        {
+          "id": "cap.marketing.snapchat_ads",
+          "label": { "en": "Snapchat Ads", "ar": "Snapchat Ads" },
+          "type": "platform",
+          "featureId": "feat.marketing.platform_management",
+          "platformId": "plat.snapchat",
+          "latinLabel": true
+        },
+        {
+          "id": "cap.marketing.google_ads",
+          "label": { "en": "Google Ads", "ar": "Google Ads" },
+          "type": "platform",
+          "featureId": "feat.marketing.platform_management",
+          "platformId": "plat.google",
+          "latinLabel": true
+        },
+        {
+          "id": "cap.marketing.targeting",
+          "label": { "en": "Audience Targeting", "ar": "استهداف الجمهور" },
+          "type": "feature",
+          "featureId": "feat.marketing.audience"
+        },
+        {
+          "id": "cap.marketing.campaign_management",
+          "label": { "en": "Campaign Management", "ar": "إدارة الحملات" },
+          "type": "group",
+          "featureIds": [
+            "feat.marketing.campaign_strategy",
+            "feat.marketing.campaign_setup",
+            "feat.marketing.monitoring"
+          ]
+        },
+        {
+          "id": "cap.marketing.optimization",
+          "label": { "en": "Optimization", "ar": "التحسين" },
+          "type": "group",
+          "featureIds": [
+            "feat.marketing.optimization",
+            "feat.marketing.ab_testing"
+          ]
+        },
+        {
+          "id": "cap.marketing.tracking",
+          "label": { "en": "Performance Tracking", "ar": "تتبع الأداء" },
+          "type": "group",
+          "featureIds": [
+            "feat.marketing.conversion_tracking",
+            "feat.marketing.report"
+          ]
+        }
+      ]
+    }
+  ]
+}

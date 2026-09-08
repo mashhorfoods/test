@@ -111,13 +111,27 @@
       "packages": [
         {
           "id": "tier-starter",
+          "rank": 1,
           "level": "Foundation",
+          "levelAr": "الأساس",
           "name": "Starter",
           "purpose": "A foundational identity for new or small projects.",
-          "price": "490",
+          "purposeAr": "هوية أساسية للمشاريع الجديدة أو الصغيرة.",
+          "price": 490,
+          "priceFrom": true,
           "billing": "billingOnce",
           "featured": false,
           "ribbon": null,
+          "facts": {
+            "delivery": {
+              "en": "5–7 working days",
+              "ar": "5–7 أيام عمل"
+            },
+            "revisions": {
+              "en": "2 rounds",
+              "ar": "جولتان"
+            }
+          },
           "features": [
             {
               "carry": false,
@@ -162,32 +176,33 @@
               "en": "Basic final files",
               "ar": "ملفات نهائية أساسية"
             }
-          ],
-          "levelAr": "الأساس",
-          "purposeAr": "هوية أساسية للمشاريع الجديدة أو الصغيرة.",
-          "priceFrom": true,
-          "facts": {
-            "delivery": {
-              "en": "5–7 working days",
-              "ar": "5–7 أيام عمل"
-            },
-            "revisions": {
-              "en": "2 rounds",
-              "ar": "جولتان"
-            }
-          }
+          ]
         },
         {
           "id": "tier-professional",
+          "rank": 2,
           "level": "System",
+          "levelAr": "النظام",
           "name": "Professional",
           "purpose": "A more complete and structured visual identity.",
-          "price": "990",
+          "purposeAr": "هوية بصرية أكثر اكتمالًا وتنظيمًا.",
+          "price": 990,
+          "priceFrom": true,
           "billing": "billingOnce",
           "featured": true,
           "ribbon": {
             "en": "Most Requested",
             "ar": "الأكثر طلبًا"
+          },
+          "facts": {
+            "delivery": {
+              "en": "7–10 working days",
+              "ar": "7–10 أيام عمل"
+            },
+            "revisions": {
+              "en": "3 rounds",
+              "ar": "ثلاث جولات"
+            }
           },
           "features": [
             {
@@ -251,30 +266,31 @@
               "en": "Source and final files",
               "ar": "الملفات المصدرية والنهائية"
             }
-          ],
-          "levelAr": "النظام",
-          "purposeAr": "هوية بصرية أكثر اكتمالًا وتنظيمًا.",
+          ]
+        },
+        {
+          "id": "tier-advanced",
+          "rank": 3,
+          "level": "Ecosystem",
+          "levelAr": "المنظومة",
+          "name": "Advanced",
+          "purpose": "A complete visual identity and reusable brand ecosystem.",
+          "purposeAr": "هوية بصرية متكاملة ومنظومة علامة قابلة لإعادة الاستخدام.",
+          "price": 1990,
           "priceFrom": true,
+          "billing": "billingOnce",
+          "featured": false,
+          "ribbon": null,
           "facts": {
             "delivery": {
-              "en": "7–10 working days",
-              "ar": "7–10 أيام عمل"
+              "en": "12–15 working days",
+              "ar": "12–15 يوم عمل"
             },
             "revisions": {
               "en": "3 rounds",
               "ar": "ثلاث جولات"
             }
-          }
-        },
-        {
-          "id": "tier-advanced",
-          "level": "Ecosystem",
-          "name": "Advanced",
-          "purpose": "A complete visual identity and reusable brand ecosystem.",
-          "price": "1990",
-          "billing": "billingOnce",
-          "featured": false,
-          "ribbon": null,
+          },
           "features": [
             {
               "carry": true,
@@ -331,20 +347,7 @@
               "en": "Complete Brand Assets",
               "ar": "أصول العلامة كاملة"
             }
-          ],
-          "levelAr": "المنظومة",
-          "purposeAr": "هوية بصرية متكاملة ومنظومة علامة قابلة لإعادة الاستخدام.",
-          "priceFrom": true,
-          "facts": {
-            "delivery": {
-              "en": "12–15 working days",
-              "ar": "12–15 يوم عمل"
-            },
-            "revisions": {
-              "en": "3 rounds",
-              "ar": "ثلاث جولات"
-            }
-          }
+          ]
         }
       ]
     },
@@ -356,16 +359,29 @@
       "packages": [
         {
           "id": "web-landing",
+          "rank": 1,
           "level": "Foundation",
+          "levelAr": "الأساس",
           "name": "Landing Page",
           "purpose": "For focused campaigns, launches and simple digital presence.",
-          "price": "250",
+          "purposeAr": "لحملات محددة وعمليات الإطلاق والحضور الرقمي البسيط.",
+          "price": 250,
           "billing": "billingOnce",
           "scope": {
             "pages": 1
           },
           "featured": false,
           "ribbon": null,
+          "facts": {
+            "delivery": {
+              "en": "3–5 working days",
+              "ar": "3–5 أيام عمل"
+            },
+            "revisions": {
+              "en": "2 rounds",
+              "ar": "جولتان"
+            }
+          },
           "features": [
             {
               "carry": false,
@@ -397,32 +413,33 @@
               "en": "Delivery ready for use",
               "ar": "تسليم جاهز للاستخدام"
             }
-          ],
-          "levelAr": "الأساس",
-          "purposeAr": "لحملات محددة وعمليات الإطلاق والحضور الرقمي البسيط.",
-          "facts": {
-            "delivery": {
-              "en": "3–5 working days",
-              "ar": "3–5 أيام عمل"
-            },
-            "revisions": {
-              "en": "2 rounds",
-              "ar": "جولتان"
-            }
-          }
+          ]
         },
         {
           "id": "web-business",
+          "rank": 2,
           "level": "System",
+          "levelAr": "النظام",
           "name": "Business Website",
           "purpose": "For companies and organizations requiring a professional multi-page website.",
-          "price": "650",
+          "purposeAr": "للشركات والمؤسسات التي تحتاج موقعًا احترافيًا متعدد الصفحات.",
+          "price": 650,
           "billing": "billingOnce",
           "scope": {
             "pages": 5
           },
           "featured": false,
           "ribbon": null,
+          "facts": {
+            "delivery": {
+              "en": "7–10 working days",
+              "ar": "7–10 أيام عمل"
+            },
+            "revisions": {
+              "en": "2 rounds",
+              "ar": "جولتان"
+            }
+          },
           "features": [
             {
               "carry": false,
@@ -479,32 +496,33 @@
               "en": "Delivery ready for use",
               "ar": "تسليم جاهز للاستخدام"
             }
-          ],
-          "levelAr": "النظام",
-          "purposeAr": "للشركات والمؤسسات التي تحتاج موقعًا احترافيًا متعدد الصفحات.",
-          "facts": {
-            "delivery": {
-              "en": "7–10 working days",
-              "ar": "7–10 أيام عمل"
-            },
-            "revisions": {
-              "en": "2 rounds",
-              "ar": "جولتان"
-            }
-          }
+          ]
         },
         {
           "id": "web-professional",
+          "rank": 3,
           "level": "Ecosystem",
+          "levelAr": "المنظومة",
           "name": "Professional Website",
           "purpose": "For businesses requiring a more advanced digital presence, content architecture, integrations and enhanced functionality.",
-          "price": "1200",
+          "purposeAr": "للأعمال التي تحتاج حضورًا رقميًا أكثر تقدمًا، وبنية محتوى، وتكاملات، ووظائف موسّعة.",
+          "price": 1200,
           "billing": "billingOnce",
           "scope": {
             "pages": 10
           },
           "featured": false,
           "ribbon": null,
+          "facts": {
+            "delivery": {
+              "en": "12–18 working days",
+              "ar": "12–18 يوم عمل"
+            },
+            "revisions": {
+              "en": "3 rounds",
+              "ar": "ثلاث جولات"
+            }
+          },
           "features": [
             {
               "carry": false,
@@ -573,19 +591,7 @@
               "en": "Delivery ready for use",
               "ar": "تسليم جاهز للاستخدام"
             }
-          ],
-          "levelAr": "المنظومة",
-          "purposeAr": "للأعمال التي تحتاج حضورًا رقميًا أكثر تقدمًا، وبنية محتوى، وتكاملات، ووظائف موسّعة.",
-          "facts": {
-            "delivery": {
-              "en": "12–18 working days",
-              "ar": "12–18 يوم عمل"
-            },
-            "revisions": {
-              "en": "3 rounds",
-              "ar": "ثلاث جولات"
-            }
-          }
+          ]
         }
       ]
     },
@@ -597,13 +603,26 @@
       "packages": [
         {
           "id": "soc-starter",
-          "level": null,
+          "rank": 1,
+          "level": "Foundation",
+          "levelAr": "الأساس",
           "name": "Social Starter",
-          "purpose": null,
-          "price": "250",
+          "purpose": "A consistent presence for a business that is not posting regularly yet.",
+          "purposeAr": "حضور منتظم لعمل لم يبدأ النشر بانتظام بعد.",
+          "price": 250,
           "billing": "billingMonthly",
           "featured": false,
           "ribbon": null,
+          "facts": {
+            "delivery": {
+              "en": "Plan in 3 working days, then posts on schedule",
+              "ar": "الخطة خلال 3 أيام عمل، ثم النشر حسب الجدول"
+            },
+            "revisions": {
+              "en": "1 round per design",
+              "ar": "جولة واحدة لكل تصميم"
+            }
+          },
           "features": [
             {
               "carry": false,
@@ -656,29 +675,32 @@
               "en": "Brief monthly report",
               "ar": "تقرير شهري مختصر"
             }
-          ],
+          ]
+        },
+        {
+          "id": "soc-pro",
+          "rank": 2,
+          "level": "System",
+          "levelAr": "النظام",
+          "name": "Social Pro",
+          "purpose": "Regular publishing with a strategy behind it and someone answering the messages.",
+          "purposeAr": "نشر منتظم وراءه استراتيجية، وشخص يردّ على الرسائل.",
+          "price": 400,
+          "billing": "billingMonthly",
+          "featured": true,
+          "ribbon": {
+            "en": "Most Popular",
+            "ar": "الأكثر طلبًا"
+          },
           "facts": {
             "delivery": {
               "en": "Plan in 3 working days, then posts on schedule",
               "ar": "الخطة خلال 3 أيام عمل، ثم النشر حسب الجدول"
             },
             "revisions": {
-              "en": "1 round per design",
-              "ar": "جولة واحدة لكل تصميم"
+              "en": "2 rounds per design",
+              "ar": "جولتان لكل تصميم"
             }
-          }
-        },
-        {
-          "id": "soc-pro",
-          "level": null,
-          "name": "Social Pro",
-          "purpose": null,
-          "price": "400",
-          "billing": "billingMonthly",
-          "featured": true,
-          "ribbon": {
-            "en": "Most Popular",
-            "ar": "الأكثر طلبًا"
           },
           "features": [
             {
@@ -753,6 +775,20 @@
               "ar": "تقرير أداء شهري"
             }
           ],
+          "_tier": "SOCIAL PRO IS THE CORE TIER, at 400 a month, settled by the owner on 8 September. The catalogue had the two the other way round — Growth at 400 and Pro at 650 — and the owner's instruction described the opposite as current. What moved was the price and the contents; the id and the name stayed together, because an id called soc-pro that meant the Growth tier would mislead every future reader and every join in the catalogue."
+        },
+        {
+          "id": "soc-growth",
+          "rank": 3,
+          "level": "Ecosystem",
+          "levelAr": "المنظومة",
+          "name": "Social Growth",
+          "purpose": "Deeper strategy, more content, and a monthly reading of what the numbers changed.",
+          "purposeAr": "استراتيجية أعمق، ومحتوى أكثر، وقراءة شهرية لما غيّرته الأرقام.",
+          "price": 650,
+          "billing": "billingMonthly",
+          "featured": false,
+          "ribbon": null,
           "facts": {
             "delivery": {
               "en": "Plan in 3 working days, then posts on schedule",
@@ -763,17 +799,6 @@
               "ar": "جولتان لكل تصميم"
             }
           },
-          "_tier": "SOCIAL PRO IS THE CORE TIER, at 400 a month, settled by the owner on 8 September. The catalogue had the two the other way round — Growth at 400 and Pro at 650 — and the owner's instruction described the opposite as current. What moved was the price and the contents; the id and the name stayed together, because an id called soc-pro that meant the Growth tier would mislead every future reader and every join in the catalogue."
-        },
-        {
-          "id": "soc-growth",
-          "level": null,
-          "name": "Social Growth",
-          "purpose": null,
-          "price": "650",
-          "billing": "billingMonthly",
-          "featured": false,
-          "ribbon": null,
           "features": [
             {
               "carry": false,
@@ -877,16 +902,6 @@
               "ar": "تحسين الأداء"
             }
           ],
-          "facts": {
-            "delivery": {
-              "en": "Plan in 3 working days, then posts on schedule",
-              "ar": "الخطة خلال 3 أيام عمل، ثم النشر حسب الجدول"
-            },
-            "revisions": {
-              "en": "2 rounds per design",
-              "ar": "جولتان لكل تصميم"
-            }
-          },
           "_tier": "SOCIAL GROWTH IS THE ADVANCED TIER, at 650 a month: everything in Pro plus deeper audience and market research, growth analysis, performance optimisation and the monthly strategy review. Pro < Growth in price, scope and depth, and the ladder rule in build-catalogue.js now enforces that in that direction."
         }
       ]
@@ -899,13 +914,26 @@
       "packages": [
         {
           "id": "ads-starter",
+          "rank": 1,
           "level": "Foundation",
+          "levelAr": "الأساس",
           "name": "Ads Starter",
           "purpose": "Entry-level solution.",
-          "price": "250",
+          "purposeAr": "حل تمهيدي.",
+          "price": 250,
           "billing": "billingMonthly",
           "featured": false,
           "ribbon": null,
+          "facts": {
+            "delivery": {
+              "en": "Campaigns live within 3 working days",
+              "ar": "انطلاق الحملات خلال 3 أيام عمل"
+            },
+            "revisions": {
+              "en": "1 round per creative",
+              "ar": "جولة واحدة لكل تصميم"
+            }
+          },
           "features": [
             {
               "carry": false,
@@ -959,31 +987,32 @@
               "en": "Monthly report",
               "ar": "تقرير شهري"
             }
-          ],
-          "levelAr": "الأساس",
-          "purposeAr": "حل تمهيدي.",
+          ]
+        },
+        {
+          "id": "ads-growth",
+          "rank": 2,
+          "level": "System",
+          "levelAr": "النظام",
+          "name": "Ads Growth",
+          "purpose": "Balanced solution.",
+          "purposeAr": "حل متوازن.",
+          "price": 400,
+          "billing": "billingMonthly",
+          "featured": true,
+          "ribbon": {
+            "en": "Recommended",
+            "ar": "موصى به"
+          },
           "facts": {
             "delivery": {
               "en": "Campaigns live within 3 working days",
               "ar": "انطلاق الحملات خلال 3 أيام عمل"
             },
             "revisions": {
-              "en": "1 round per creative",
-              "ar": "جولة واحدة لكل تصميم"
+              "en": "2 rounds per creative",
+              "ar": "جولتان لكل تصميم"
             }
-          }
-        },
-        {
-          "id": "ads-growth",
-          "level": "System",
-          "name": "Ads Growth",
-          "purpose": "Balanced solution.",
-          "price": "400",
-          "billing": "billingMonthly",
-          "featured": true,
-          "ribbon": {
-            "en": "Recommended",
-            "ar": "موصى به"
           },
           "features": [
             {
@@ -1053,29 +1082,30 @@
               "en": "Monthly performance report",
               "ar": "تقرير أداء شهري"
             }
-          ],
-          "levelAr": "النظام",
-          "purposeAr": "حل متوازن.",
+          ]
+        },
+        {
+          "id": "ads-performance",
+          "rank": 3,
+          "level": "Ecosystem",
+          "levelAr": "المنظومة",
+          "name": "Ads Performance",
+          "purpose": "Advanced, performance-focused solution.",
+          "purposeAr": "حل متقدم يركّز على الأداء.",
+          "price": 600,
+          "billing": "billingMonthly",
+          "featured": false,
+          "ribbon": null,
           "facts": {
             "delivery": {
-              "en": "Campaigns live within 3 working days",
-              "ar": "انطلاق الحملات خلال 3 أيام عمل"
+              "en": "Campaigns live within 2 working days",
+              "ar": "انطلاق الحملات خلال يومَي عمل"
             },
             "revisions": {
               "en": "2 rounds per creative",
               "ar": "جولتان لكل تصميم"
             }
-          }
-        },
-        {
-          "id": "ads-performance",
-          "level": "Ecosystem",
-          "name": "Ads Performance",
-          "purpose": "Advanced, performance-focused solution.",
-          "price": "600",
-          "billing": "billingMonthly",
-          "featured": false,
-          "ribbon": null,
+          },
           "features": [
             {
               "carry": false,
@@ -1163,19 +1193,7 @@
               "en": "Monthly Strategy Meeting",
               "ar": "اجتماع استراتيجي شهري"
             }
-          ],
-          "levelAr": "المنظومة",
-          "purposeAr": "حل متقدم يركّز على الأداء.",
-          "facts": {
-            "delivery": {
-              "en": "Campaigns live within 2 working days",
-              "ar": "انطلاق الحملات خلال يومَي عمل"
-            },
-            "revisions": {
-              "en": "2 rounds per creative",
-              "ar": "جولتان لكل تصميم"
-            }
-          }
+          ]
         }
       ],
       "note": {
@@ -1183,5 +1201,6 @@
         "ar": "ميزانية الإعلانات نفسها غير مشمولة في رسوم الإدارة."
       }
     }
-  ]
+  ],
+  "currency": "USD"
 }

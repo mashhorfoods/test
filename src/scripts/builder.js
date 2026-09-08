@@ -63,6 +63,7 @@ function readRows(root) {
         .map((pair) => { const [id, f] = pair.split(':'); return [id, Number(f)]; })),
       optionInputs: Array.from(li.querySelectorAll('[data-option]')),
       optionWrap: li.querySelector('.c-pick__options'),
+      addonGroup: li.dataset.addonGroup || null,
       requires: ids(li, 'data-requires'),
       recommends: ids(li, 'data-recommends'),
       conflicts: ids(li, 'data-conflicts'),
@@ -275,6 +276,14 @@ export function initBuilder(scope = document) {
   const quoted = root.querySelector('[data-build-quoted]');
   const send = root.querySelector('[data-build-send]');
   const cheaper = root.querySelector('[data-build-cheaper]');
+  const payloadEl = root.querySelector('[data-build-payload]');
+
+  /* THE RULES THAT ARE NOT ON A ROW. Written onto the form by
+     tools/build-builder.js from services.json, so the page allowance the
+     payload reports is the same sentence the build validated. */
+  const CURRENCY_CODE = root.dataset.currency || 'USD';
+  let ALLOWANCE = null;
+  try { ALLOWANCE = JSON.parse(root.dataset.pageAllowance || 'null'); } catch { ALLOWANCE = null; }
 
   /* THE PUBLISHED PACKAGES. Read once, from the JSON island beside the form.
      Every package in this catalogue is cheaper than buying its own contents one
@@ -337,6 +346,11 @@ export function initBuilder(scope = document) {
     let once = 0; let month = 0; let quotes = 0;
     const perService = new Map();
     const lines = [];
+    /* The same pass, written down twice: once as a sentence for the panel and
+       once as data for the payload. Deriving the payload from the rendered
+       lines afterwards would mean parsing our own labels back — which is the
+       exact mistake the payload exists to stop. */
+    const entries = [];
     const services = [...new Set(picked.map((r) => r.service))];
 
     for (const svc of services) {
@@ -381,6 +395,30 @@ export function initBuilder(scope = document) {
         if (opts.length) name += ` — ${opts.join(ar ? '، ' : ', ')}`;
         else if ((r.qtyInput || r.optionsDriveQty) && q > 1) name += ` × ${q}`;
         lines.push({ name, price });
+
+        const factor = tier ? (r.tierFactors.get(tier) || 1) : 1;
+        const counted = (r.qtyInput || r.optionsDriveQty) ? q : 1;
+        const entry = {
+          featureId: r.id,
+          serviceId: r.service,
+          quantity: counted,
+          origin: manual.has(r.id) ? 'chosen'
+            : (partOf.has(r.id) ? 'part'
+              : (needed.has(r.id) ? 'required' : 'included')),
+          pricing: {
+            type: partOf.has(r.id) ? 'part' : r.priceType,
+            billing: r.monthly ? 'monthly' : 'once',
+            unitAmount: r.priceType === 'included' || r.priceType === 'quote' ? 0 : Math.round(r.price * factor),
+            amount: partOf.has(r.id) || r.priceType === 'included' || r.priceType === 'quote'
+              ? 0 : Math.round(r.price * factor * counted),
+          },
+        };
+        if (tier) entry.tier = tier;
+        if (r.optionInputs.length) entry.options = chosenOptions(r);
+        if (r.addonGroup) entry.addonGroup = r.addonGroup;
+        if (partOf.has(r.id)) entry.partOf = partOf.get(r.id);
+        if (r.composedOf.length) entry.composedOf = [...r.composedOf];
+        entries.push(entry);
       }
     }
 
@@ -438,6 +476,7 @@ export function initBuilder(scope = document) {
        for that service. A package that covers four of five things is not an
        answer, and saying so would be the kind of near-enough claim this site
        does not make. */
+    const covering = [];
     if (cheaper) {
       const suggestions = [];
       for (const cat of PACKAGES) {
@@ -470,6 +509,18 @@ export function initBuilder(scope = document) {
         const best = fits.reduce((a, b) => (Number(a.price) <= Number(b.price) ? a : b));
         const period = say(best.billing === 'billingMonthly' ? 'monthlyWord' : 'once', ar);
         suggestions.push(say('covers', ar, best.name, money(Number(best.price)), period));
+        covering.push({
+          packageId: best.id,
+          serviceId: cat.service,
+          name: best.name,
+          price: {
+            amount: Number(best.price),
+            currency: CURRENCY_CODE,
+            billing: best.billing === 'billingMonthly' ? 'monthly' : 'once',
+            from: Boolean(best.from),
+          },
+          coversEverythingChosen: true,
+        });
       }
       cheaper.textContent = suggestions.join(' ');
       cheaper.hidden = !suggestions.length;
@@ -479,7 +530,7 @@ export function initBuilder(scope = document) {
        Written in both languages and left on the data attributes contact.js
        already swaps on a language change, so this link behaves exactly like
        every other WhatsApp link on the site. */
-    if (send) {
+    {
       const build = (lang) => {
         const a = lang === 'ar';
         const out = [say('msgHead', a)];
@@ -500,12 +551,93 @@ export function initBuilder(scope = document) {
         return out.join('\n');
       };
 
-      const base = send.dataset.waEn || '';
+      const base = send ? (send.dataset.waEn || '') : '';
       const wa = /^https:\/\/wa\.me\/(\d+)/.exec(base);
-      if (wa && lines.length) {
+      if (send && wa && lines.length) {
         send.dataset.waEn = `https://wa.me/${wa[1]}?text=${encodeURIComponent(build('en'))}`;
         send.dataset.waAr = `https://wa.me/${wa[1]}?text=${encodeURIComponent(build('ar'))}`;
         send.href = ar ? send.dataset.waAr : send.dataset.waEn;
+      }
+
+      /* --- the same scope, for a machine ---
+         The message above is the presentation. This is the record: ids,
+         quantities and amounts, in a shape an order, a CRM row and a project
+         can all be created from without anyone parsing a sentence.
+
+         DETERMINISTIC, deliberately. Everything is sorted by id, so the same
+         selection produces byte-identical JSON however it was arrived at —
+         which is what makes it comparable, cacheable and diffable. */
+      if (payloadEl) {
+        const byService = new Map();
+        for (const e of entries) {
+          if (!byService.has(e.serviceId)) byService.set(e.serviceId, []);
+          byService.get(e.serviceId).push(e);
+        }
+        const servicesOut = [...byService.entries()]
+          .sort((a, b) => (a[0] < b[0] ? -1 : 1))
+          .map(([serviceId, list]) => ({
+            serviceId,
+            features: [...list].sort((a, b) => (a.featureId < b.featureId ? -1 : 1)),
+          }));
+
+        /* THE PAGE COUNT, where the rule says there is one. The first page is
+           included in the build; every page after it is the published add-on.
+           The rule is read from the form, not decided here. */
+        const scope = {};
+        if (ALLOWANCE) {
+          const buildsPages = (ALLOWANCE.builtBy || []).some((id) => active.has(id));
+          if (buildsPages) {
+            const extra = entries.find((e) => e.featureId === ALLOWANCE.beyondFirst);
+            scope.pages = (ALLOWANCE.firstPageIncluded ? 1 : 0) + (extra ? extra.quantity : 0);
+          }
+        }
+
+        const priced = entries.filter((e) => e.pricing.amount > 0);
+        const payload = {
+          version: '1.0',
+          source: 'pixora.package-builder',
+          currency: CURRENCY_CODE,
+          language: ar ? 'ar' : 'en',
+          services: servicesOut,
+          addons: entries.filter((e) => e.addonGroup)
+            .map((e) => ({
+              featureId: e.featureId,
+              serviceId: e.serviceId,
+              addonGroup: e.addonGroup,
+              quantity: e.quantity,
+              amount: e.pricing.amount,
+            }))
+            .sort((a, b) => (a.featureId < b.featureId ? -1 : 1)),
+          /* Not what was bought — what the builder OFFERED, because a published
+             package covering this exact scope for less is a fact about the
+             order and the reason a person may not place it as configured. */
+          packages: [...covering].sort((a, b) => (a.packageId < b.packageId ? -1 : 1)),
+          pricing: {
+            currency: CURRENCY_CODE,
+            /* One-time and monthly are not addable, so they are not added.
+               `discount` is always zero: this builder does not discount — the
+               published packages are the discount, and they are reported
+               above rather than applied here. */
+            subtotal: { oneTime: once, monthly: month },
+            discount: { oneTime: 0, monthly: 0 },
+            total: { oneTime: once, monthly: month },
+            quotedItems: quotes,
+            lineItems: priced.length,
+          },
+          message: build(ar ? 'ar' : 'en'),
+        };
+        if (Object.keys(scope).length) payload.scope = scope;
+        if (!entries.length) {
+          payloadEl.textContent = '{}';
+        } else {
+          payloadEl.textContent = JSON.stringify(payload);
+        }
+        /* Anything on the page — and anything a future order form is wired to —
+           can listen rather than poll. */
+        root.dispatchEvent(new CustomEvent('pixora:scope', {
+          bubbles: true,
+          detail: entries.length ? payload : null,
+        }));
       }
     }
   }

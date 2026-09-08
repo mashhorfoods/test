@@ -53,12 +53,18 @@ function pricingRules(data) {
       const who = k.name || `${c.label} package ${pi + 1}`;
 
       /* A price is the thing most likely to be edited and most expensive to
-         get wrong. It is a STRING of digits in this file — not a number —
-         because it is rendered verbatim and a JSON number would drop a
-         leading zero or gain an exponent. */
-      if (!isStr(k.price)) bad(`${pp}.price`, `"${who}" — the price must be text, not a number`);
-      else if (!/^\d{1,6}$/.test(k.price)) bad(`${pp}.price`, `"${who}" — the price must be digits only, with no currency symbol, comma or space (got "${k.price}")`);
-      else if (/^0/.test(k.price)) bad(`${pp}.price`, `"${who}" — a price cannot start with a zero (got "${k.price}")`);
+         get wrong. It is a NUMBER in this file. It used to be a string of
+         digits, on the argument that a rendered value should be stored the
+         way it renders — but that put a business value and its formatting in
+         the same field, and every consumer that wanted to compare or add two
+         prices had to coerce first. Formatting is the generator's job; this
+         file holds the amount. The currency is declared once, at the top of
+         the document, and is not repeated on every package. */
+      if (typeof k.price !== 'number' || !Number.isFinite(k.price)) {
+        bad(`${pp}.price`, `"${who}" — the price must be a number, with no currency symbol, comma or quotes (got ${JSON.stringify(k.price)})`);
+      } else if (!Number.isInteger(k.price) || k.price <= 0 || k.price > 999999) {
+        bad(`${pp}.price`, `"${who}" — the price must be a whole number above zero (got ${k.price})`);
+      }
 
       if (!filled(k.name)) bad(`${pp}.name`, `a package in "${c.label}" has no name`);
 

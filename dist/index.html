@@ -1460,6 +1460,7 @@ function readRows(root) {
         .map((pair) => { const [id, f] = pair.split(':'); return [id, Number(f)]; })),
       optionInputs: Array.from(li.querySelectorAll('[data-option]')),
       optionWrap: li.querySelector('.c-pick__options'),
+      addonGroup: li.dataset.addonGroup || null,
       requires: ids(li, 'data-requires'),
       recommends: ids(li, 'data-recommends'),
       conflicts: ids(li, 'data-conflicts'),
@@ -1601,6 +1602,10 @@ function initBuilder(scope = document) {
   const quoted = root.querySelector('[data-build-quoted]');
   const send = root.querySelector('[data-build-send]');
   const cheaper = root.querySelector('[data-build-cheaper]');
+  const payloadEl = root.querySelector('[data-build-payload]');
+  const CURRENCY_CODE = root.dataset.currency || 'USD';
+  let ALLOWANCE = null;
+  try { ALLOWANCE = JSON.parse(root.dataset.pageAllowance || 'null'); } catch { ALLOWANCE = null; }
   let PACKAGES = [];
   try {
     const el = document.getElementById('build-packages');
@@ -1643,6 +1648,7 @@ function initBuilder(scope = document) {
     let once = 0; let month = 0; let quotes = 0;
     const perService = new Map();
     const lines = [];
+    const entries = [];
     const services = [...new Set(picked.map((r) => r.service))];
     for (const svc of services) {
       const details = root.querySelector(`[data-build-service="${svc}"]`);
@@ -1679,6 +1685,29 @@ function initBuilder(scope = document) {
         if (opts.length) name += ` — ${opts.join(ar ? '، ' : ', ')}`;
         else if ((r.qtyInput || r.optionsDriveQty) && q > 1) name += ` × ${q}`;
         lines.push({ name, price });
+        const factor = tier ? (r.tierFactors.get(tier) || 1) : 1;
+        const counted = (r.qtyInput || r.optionsDriveQty) ? q : 1;
+        const entry = {
+          featureId: r.id,
+          serviceId: r.service,
+          quantity: counted,
+          origin: manual.has(r.id) ? 'chosen'
+            : (partOf.has(r.id) ? 'part'
+              : (needed.has(r.id) ? 'required' : 'included')),
+          pricing: {
+            type: partOf.has(r.id) ? 'part' : r.priceType,
+            billing: r.monthly ? 'monthly' : 'once',
+            unitAmount: r.priceType === 'included' || r.priceType === 'quote' ? 0 : Math.round(r.price * factor),
+            amount: partOf.has(r.id) || r.priceType === 'included' || r.priceType === 'quote'
+              ? 0 : Math.round(r.price * factor * counted),
+          },
+        };
+        if (tier) entry.tier = tier;
+        if (r.optionInputs.length) entry.options = chosenOptions(r);
+        if (r.addonGroup) entry.addonGroup = r.addonGroup;
+        if (partOf.has(r.id)) entry.partOf = partOf.get(r.id);
+        if (r.composedOf.length) entry.composedOf = [...r.composedOf];
+        entries.push(entry);
       }
     }
     const suggestions = [...new Set(
@@ -1726,6 +1755,7 @@ function initBuilder(scope = document) {
       quoted.textContent = quotes ? say('quotedCount', ar, quotes) : '';
       quoted.hidden = !quotes;
     }
+    const covering = [];
     if (cheaper) {
       const suggestions = [];
       for (const cat of PACKAGES) {
@@ -1753,11 +1783,23 @@ function initBuilder(scope = document) {
         const best = fits.reduce((a, b) => (Number(a.price) <= Number(b.price) ? a : b));
         const period = say(best.billing === 'billingMonthly' ? 'monthlyWord' : 'once', ar);
         suggestions.push(say('covers', ar, best.name, money(Number(best.price)), period));
+        covering.push({
+          packageId: best.id,
+          serviceId: cat.service,
+          name: best.name,
+          price: {
+            amount: Number(best.price),
+            currency: CURRENCY_CODE,
+            billing: best.billing === 'billingMonthly' ? 'monthly' : 'once',
+            from: Boolean(best.from),
+          },
+          coversEverythingChosen: true,
+        });
       }
       cheaper.textContent = suggestions.join(' ');
       cheaper.hidden = !suggestions.length;
     }
-    if (send) {
+    {
       const build = (lang) => {
         const a = lang === 'ar';
         const out = [say('msgHead', a)];
@@ -1777,12 +1819,70 @@ function initBuilder(scope = document) {
         out.push(say('msgEstimate', a));
         return out.join('\n');
       };
-      const base = send.dataset.waEn || '';
+      const base = send ? (send.dataset.waEn || '') : '';
       const wa = /^https:\/\/wa\.me\/(\d+)/.exec(base);
-      if (wa && lines.length) {
+      if (send && wa && lines.length) {
         send.dataset.waEn = `https://wa.me/${wa[1]}?text=${encodeURIComponent(build('en'))}`;
         send.dataset.waAr = `https://wa.me/${wa[1]}?text=${encodeURIComponent(build('ar'))}`;
         send.href = ar ? send.dataset.waAr : send.dataset.waEn;
+      }
+      if (payloadEl) {
+        const byService = new Map();
+        for (const e of entries) {
+          if (!byService.has(e.serviceId)) byService.set(e.serviceId, []);
+          byService.get(e.serviceId).push(e);
+        }
+        const servicesOut = [...byService.entries()]
+          .sort((a, b) => (a[0] < b[0] ? -1 : 1))
+          .map(([serviceId, list]) => ({
+            serviceId,
+            features: [...list].sort((a, b) => (a.featureId < b.featureId ? -1 : 1)),
+          }));
+        const scope = {};
+        if (ALLOWANCE) {
+          const buildsPages = (ALLOWANCE.builtBy || []).some((id) => active.has(id));
+          if (buildsPages) {
+            const extra = entries.find((e) => e.featureId === ALLOWANCE.beyondFirst);
+            scope.pages = (ALLOWANCE.firstPageIncluded ? 1 : 0) + (extra ? extra.quantity : 0);
+          }
+        }
+        const priced = entries.filter((e) => e.pricing.amount > 0);
+        const payload = {
+          version: '1.0',
+          source: 'pixora.package-builder',
+          currency: CURRENCY_CODE,
+          language: ar ? 'ar' : 'en',
+          services: servicesOut,
+          addons: entries.filter((e) => e.addonGroup)
+            .map((e) => ({
+              featureId: e.featureId,
+              serviceId: e.serviceId,
+              addonGroup: e.addonGroup,
+              quantity: e.quantity,
+              amount: e.pricing.amount,
+            }))
+            .sort((a, b) => (a.featureId < b.featureId ? -1 : 1)),
+          packages: [...covering].sort((a, b) => (a.packageId < b.packageId ? -1 : 1)),
+          pricing: {
+            currency: CURRENCY_CODE,
+            subtotal: { oneTime: once, monthly: month },
+            discount: { oneTime: 0, monthly: 0 },
+            total: { oneTime: once, monthly: month },
+            quotedItems: quotes,
+            lineItems: priced.length,
+          },
+          message: build(ar ? 'ar' : 'en'),
+        };
+        if (Object.keys(scope).length) payload.scope = scope;
+        if (!entries.length) {
+          payloadEl.textContent = '{}';
+        } else {
+          payloadEl.textContent = JSON.stringify(payload);
+        }
+        root.dispatchEvent(new CustomEvent('pixora:scope', {
+          bubbles: true,
+          detail: entries.length ? payload : null,
+        }));
       }
     }
   }
@@ -2202,12 +2302,12 @@ if (document.readyState === 'loading') {
                   <div class="c-service__body">
                     <p class="t-body-lg c-service__desc"><span data-lang-copy="en">Logo, identity and visual systems that give your business one consistent look across every channel.</span><span data-lang-copy="ar" lang="ar">شعار وهوية وأنظمة بصرية تمنح عملك مظهرًا واحدًا متسقًا في كل قناة.</span></p>
                 <ul class="c-service__caps" role="list">
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Logo Design</span><span data-lang-copy="ar" lang="ar">تصميم الشعار</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Brand Identity</span><span data-lang-copy="ar" lang="ar">هوية العلامة</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Visual Identity</span><span data-lang-copy="ar" lang="ar">الهوية البصرية</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Social Media Design</span><span data-lang-copy="ar" lang="ar">تصميم وسائل التواصل</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Advertising Design</span><span data-lang-copy="ar" lang="ar">التصميم الإعلاني</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Visual Content</span><span data-lang-copy="ar" lang="ar">المحتوى البصري</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.branding.logo"><span><span data-lang-copy="en">Logo Design</span><span data-lang-copy="ar" lang="ar">تصميم الشعار</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.branding.identity"><span><span data-lang-copy="en">Brand Identity</span><span data-lang-copy="ar" lang="ar">هوية العلامة</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.branding.visual_identity"><span><span data-lang-copy="en">Visual Identity</span><span data-lang-copy="ar" lang="ar">الهوية البصرية</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.branding.social_design"><span><span data-lang-copy="en">Social Media Design</span><span data-lang-copy="ar" lang="ar">تصميم وسائل التواصل</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.branding.ad_design"><span><span data-lang-copy="en">Advertising Design</span><span data-lang-copy="ar" lang="ar">التصميم الإعلاني</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.branding.visual_content"><span><span data-lang-copy="en">Visual Content</span><span data-lang-copy="ar" lang="ar">المحتوى البصري</span></span></li>
                 </ul>
                     <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#branding">
                       <span><span data-lang-copy="en">See what it covers</span><span data-lang-copy="ar" lang="ar">اطّلع على ما تشمله</span></span><span class="u-visually-hidden"><span data-lang-copy="en"> in Branding &amp; Design</span><span data-lang-copy="ar" lang="ar"> في الهوية والتصميم</span></span>
@@ -2247,12 +2347,12 @@ if (document.readyState === 'loading') {
                   <div class="c-service__body">
                     <p class="t-body-lg c-service__desc"><span data-lang-copy="en">Design, build and deployment — handed over as a working website, with domain and hosting arranged.</span><span data-lang-copy="ar" lang="ar">تصميم وتطوير ونشر — يُسلَّم موقعًا يعمل، مع تجهيز النطاق والاستضافة.</span></p>
                 <ul class="c-service__caps" role="list">
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Domain &amp; Hosting</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Website Design</span><span data-lang-copy="ar" lang="ar">تصميم الموقع</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Website Development</span><span data-lang-copy="ar" lang="ar">تطوير الموقع</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Website Setup</span><span data-lang-copy="ar" lang="ar">إعداد الموقع</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Deployment</span><span data-lang-copy="ar" lang="ar">النشر</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Delivery Ready for Use</span><span data-lang-copy="ar" lang="ar">تسليم جاهز للاستخدام</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.websites.domain_hosting"><span><span data-lang-copy="en">Domain &amp; Hosting</span><span data-lang-copy="ar" lang="ar">النطاق والاستضافة</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.websites.design"><span><span data-lang-copy="en">Website Design</span><span data-lang-copy="ar" lang="ar">تصميم الموقع</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.websites.development"><span><span data-lang-copy="en">Website Development</span><span data-lang-copy="ar" lang="ar">تطوير الموقع</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.websites.setup"><span><span data-lang-copy="en">Website Setup</span><span data-lang-copy="ar" lang="ar">إعداد الموقع</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.websites.deployment"><span><span data-lang-copy="en">Deployment</span><span data-lang-copy="ar" lang="ar">النشر</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.websites.handover"><span><span data-lang-copy="en">Delivery Ready for Use</span><span data-lang-copy="ar" lang="ar">تسليم جاهز للاستخدام</span></span></li>
                 </ul>
                     <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#websites">
                       <span><span data-lang-copy="en">See what it covers</span><span data-lang-copy="ar" lang="ar">اطّلع على ما تشمله</span></span><span class="u-visually-hidden"><span data-lang-copy="en"> in Websites</span><span data-lang-copy="ar" lang="ar"> في المواقع الإلكترونية</span></span>
@@ -2290,15 +2390,15 @@ if (document.readyState === 'loading') {
                   <div class="c-service__body">
                     <p class="t-body-lg c-service__desc"><span data-lang-copy="en">Strategy, content and publishing across your channels, with community monitoring and performance analysis.</span><span data-lang-copy="ar" lang="ar">استراتيجية ومحتوى ونشر عبر قنواتك، مع متابعة المجتمع وتحليل الأداء.</span></p>
                 <ul class="c-service__caps" role="list">
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Account Creation / Setup</span><span data-lang-copy="ar" lang="ar">إنشاء الحسابات وإعدادها</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Content Strategy</span><span data-lang-copy="ar" lang="ar">استراتيجية المحتوى</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Copywriting</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Graphic Design</span><span data-lang-copy="ar" lang="ar">التصميم الجرافيكي</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Video Production</span><span data-lang-copy="ar" lang="ar">إنتاج الفيديو</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Reels</span><span data-lang-copy="ar" lang="ar">Reels</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Publishing</span><span data-lang-copy="ar" lang="ar">نشر المحتوى</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Community Monitoring</span><span data-lang-copy="ar" lang="ar">متابعة التفاعل والتعليقات</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Performance Analysis</span><span data-lang-copy="ar" lang="ar">تحليل الأداء</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.social.account_setup"><span><span data-lang-copy="en">Account Creation / Setup</span><span data-lang-copy="ar" lang="ar">إنشاء الحسابات وإعدادها</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.social.content_strategy"><span><span data-lang-copy="en">Content Strategy</span><span data-lang-copy="ar" lang="ar">استراتيجية المحتوى</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.social.copywriting"><span><span data-lang-copy="en">Copywriting</span><span data-lang-copy="ar" lang="ar">كتابة المحتوى</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.social.post_design"><span><span data-lang-copy="en">Graphic Design</span><span data-lang-copy="ar" lang="ar">التصميم الجرافيكي</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.social.video"><span><span data-lang-copy="en">Video Production</span><span data-lang-copy="ar" lang="ar">إنتاج الفيديو</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.social.reels"><span><span data-lang-copy="en">Reels</span><span data-lang-copy="ar" lang="ar">Reels</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.social.publishing"><span><span data-lang-copy="en">Publishing</span><span data-lang-copy="ar" lang="ar">نشر المحتوى</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.social.community"><span><span data-lang-copy="en">Community Monitoring</span><span data-lang-copy="ar" lang="ar">متابعة التفاعل والتعليقات</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.social.performance"><span><span data-lang-copy="en">Performance Analysis</span><span data-lang-copy="ar" lang="ar">تحليل الأداء</span></span></li>
                 </ul>
                     <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#social">
                       <span><span data-lang-copy="en">See what it covers</span><span data-lang-copy="ar" lang="ar">اطّلع على ما تشمله</span></span><span class="u-visually-hidden"><span data-lang-copy="en"> in Social Media Management</span><span data-lang-copy="ar" lang="ar"> في وسائل التواصل</span></span>
@@ -2339,15 +2439,15 @@ if (document.readyState === 'loading') {
                   <div class="c-service__body">
                     <p class="t-body-lg c-service__desc"><span data-lang-copy="en">Paid campaigns across the major platforms, with audience targeting, campaign management, optimization and tracking.</span><span data-lang-copy="ar" lang="ar">حملات مدفوعة على المنصات الرئيسية، مع استهداف الجمهور وإدارة الحملات وتحسينها وتتبع النتائج.</span></p>
                 <ul class="c-service__caps" role="list">
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Facebook Ads</span><span data-lang-copy="ar" lang="ar">Facebook Ads</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Instagram Ads</span><span data-lang-copy="ar" lang="ar">Instagram Ads</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">TikTok Ads</span><span data-lang-copy="ar" lang="ar">TikTok Ads</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Snapchat Ads</span><span data-lang-copy="ar" lang="ar">Snapchat Ads</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Google Ads</span><span data-lang-copy="ar" lang="ar">Google Ads</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Audience Targeting</span><span data-lang-copy="ar" lang="ar">استهداف الجمهور</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Campaign Management</span><span data-lang-copy="ar" lang="ar">إدارة الحملات</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Optimization</span><span data-lang-copy="ar" lang="ar">التحسين</span></span></li>
-                  <li class="c-service__cap"><span><span data-lang-copy="en">Performance Tracking</span><span data-lang-copy="ar" lang="ar">تتبع الأداء</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.marketing.facebook_ads"><span><span data-lang-copy="en">Facebook Ads</span><span data-lang-copy="ar" lang="ar">Facebook Ads</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.marketing.instagram_ads"><span><span data-lang-copy="en">Instagram Ads</span><span data-lang-copy="ar" lang="ar">Instagram Ads</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.marketing.tiktok_ads"><span><span data-lang-copy="en">TikTok Ads</span><span data-lang-copy="ar" lang="ar">TikTok Ads</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.marketing.snapchat_ads"><span><span data-lang-copy="en">Snapchat Ads</span><span data-lang-copy="ar" lang="ar">Snapchat Ads</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.marketing.google_ads"><span><span data-lang-copy="en">Google Ads</span><span data-lang-copy="ar" lang="ar">Google Ads</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.marketing.targeting"><span><span data-lang-copy="en">Audience Targeting</span><span data-lang-copy="ar" lang="ar">استهداف الجمهور</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.marketing.campaign_management"><span><span data-lang-copy="en">Campaign Management</span><span data-lang-copy="ar" lang="ar">إدارة الحملات</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.marketing.optimization"><span><span data-lang-copy="en">Optimization</span><span data-lang-copy="ar" lang="ar">التحسين</span></span></li>
+                  <li class="c-service__cap" data-capability="cap.marketing.tracking"><span><span data-lang-copy="en">Performance Tracking</span><span data-lang-copy="ar" lang="ar">تتبع الأداء</span></span></li>
                 </ul>
                     <a class="c-btn c-btn--secondary c-btn--sm c-service__cta" href="#marketing">
                       <span><span data-lang-copy="en">See what it covers</span><span data-lang-copy="ar" lang="ar">اطّلع على ما تشمله</span></span><span class="u-visually-hidden"><span data-lang-copy="en"> in Digital Marketing &amp; Advertising</span><span data-lang-copy="ar" lang="ar"> في التسويق الرقمي والإعلانات</span></span>

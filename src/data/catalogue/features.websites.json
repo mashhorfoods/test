@@ -1011,14 +1011,12 @@
       "selectable": true,
       "addonGroup": null,
       "inputs": [
-        "A tested build",
+        "A tested build — ours, or one the client supplies",
         "A domain or subdomain, and who holds the account",
-        "Client sign-off on staging"
+        "Written sign-off on the version being deployed"
       ],
       "dependencies": {
-        "requires": [
-          "feat.websites.landing_build"
-        ],
+        "requires": [],
         "recommends": [
           "feat.websites.hosting"
         ],
@@ -1026,6 +1024,7 @@
       },
       "workflow": "wf.release",
       "executionSteps": [
+        "Take delivery of the build and identify it in writing — ours or the client’s.",
         "Provision or reuse hosting, in the client’s name.",
         "Point the domain or subdomain and force HTTPS.",
         "Deploy, then walk the live page rather than trusting the deploy.",
@@ -1067,7 +1066,19 @@
         "type": "fixed",
         "from": 20
       },
-      "status": "active"
+      "status": "active",
+      "_independence": "SEPARATELY SELLABLE, DELIBERATELY. A client who already has a built page can buy the deployment alone, so this feature requires nothing: the build is an INPUT, not a prerequisite feature. `suppliedInputs` below says where that input may come from instead. Ordering inside a complete landing page is not lost by this — the composite runs its parts in the order it lists them, and wf.release opens by identifying the build it was handed.",
+      "suppliedInputs": [
+        {
+          "input": {
+            "en": "A built landing page",
+            "ar": "صفحة هبوط مبنية"
+          },
+          "insteadOf": "feat.websites.landing_build",
+          "verification": "Run the supplied build outside the machine it was made on, and check it at 320, 375, 414, 768, 1024 and 1280 before pointing a domain at it.",
+          "ifUnusable": "Say so before deploying, in writing, with what is wrong. Deploying a build we know is broken makes it ours."
+        }
+      ]
     },
     {
       "id": "feat.websites.extra_landing",

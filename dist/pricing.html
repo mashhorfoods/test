@@ -1460,6 +1460,7 @@ function readRows(root) {
         .map((pair) => { const [id, f] = pair.split(':'); return [id, Number(f)]; })),
       optionInputs: Array.from(li.querySelectorAll('[data-option]')),
       optionWrap: li.querySelector('.c-pick__options'),
+      addonGroup: li.dataset.addonGroup || null,
       requires: ids(li, 'data-requires'),
       recommends: ids(li, 'data-recommends'),
       conflicts: ids(li, 'data-conflicts'),
@@ -1601,6 +1602,10 @@ function initBuilder(scope = document) {
   const quoted = root.querySelector('[data-build-quoted]');
   const send = root.querySelector('[data-build-send]');
   const cheaper = root.querySelector('[data-build-cheaper]');
+  const payloadEl = root.querySelector('[data-build-payload]');
+  const CURRENCY_CODE = root.dataset.currency || 'USD';
+  let ALLOWANCE = null;
+  try { ALLOWANCE = JSON.parse(root.dataset.pageAllowance || 'null'); } catch { ALLOWANCE = null; }
   let PACKAGES = [];
   try {
     const el = document.getElementById('build-packages');
@@ -1643,6 +1648,7 @@ function initBuilder(scope = document) {
     let once = 0; let month = 0; let quotes = 0;
     const perService = new Map();
     const lines = [];
+    const entries = [];
     const services = [...new Set(picked.map((r) => r.service))];
     for (const svc of services) {
       const details = root.querySelector(`[data-build-service="${svc}"]`);
@@ -1679,6 +1685,29 @@ function initBuilder(scope = document) {
         if (opts.length) name += ` — ${opts.join(ar ? '، ' : ', ')}`;
         else if ((r.qtyInput || r.optionsDriveQty) && q > 1) name += ` × ${q}`;
         lines.push({ name, price });
+        const factor = tier ? (r.tierFactors.get(tier) || 1) : 1;
+        const counted = (r.qtyInput || r.optionsDriveQty) ? q : 1;
+        const entry = {
+          featureId: r.id,
+          serviceId: r.service,
+          quantity: counted,
+          origin: manual.has(r.id) ? 'chosen'
+            : (partOf.has(r.id) ? 'part'
+              : (needed.has(r.id) ? 'required' : 'included')),
+          pricing: {
+            type: partOf.has(r.id) ? 'part' : r.priceType,
+            billing: r.monthly ? 'monthly' : 'once',
+            unitAmount: r.priceType === 'included' || r.priceType === 'quote' ? 0 : Math.round(r.price * factor),
+            amount: partOf.has(r.id) || r.priceType === 'included' || r.priceType === 'quote'
+              ? 0 : Math.round(r.price * factor * counted),
+          },
+        };
+        if (tier) entry.tier = tier;
+        if (r.optionInputs.length) entry.options = chosenOptions(r);
+        if (r.addonGroup) entry.addonGroup = r.addonGroup;
+        if (partOf.has(r.id)) entry.partOf = partOf.get(r.id);
+        if (r.composedOf.length) entry.composedOf = [...r.composedOf];
+        entries.push(entry);
       }
     }
     const suggestions = [...new Set(
@@ -1726,6 +1755,7 @@ function initBuilder(scope = document) {
       quoted.textContent = quotes ? say('quotedCount', ar, quotes) : '';
       quoted.hidden = !quotes;
     }
+    const covering = [];
     if (cheaper) {
       const suggestions = [];
       for (const cat of PACKAGES) {
@@ -1753,11 +1783,23 @@ function initBuilder(scope = document) {
         const best = fits.reduce((a, b) => (Number(a.price) <= Number(b.price) ? a : b));
         const period = say(best.billing === 'billingMonthly' ? 'monthlyWord' : 'once', ar);
         suggestions.push(say('covers', ar, best.name, money(Number(best.price)), period));
+        covering.push({
+          packageId: best.id,
+          serviceId: cat.service,
+          name: best.name,
+          price: {
+            amount: Number(best.price),
+            currency: CURRENCY_CODE,
+            billing: best.billing === 'billingMonthly' ? 'monthly' : 'once',
+            from: Boolean(best.from),
+          },
+          coversEverythingChosen: true,
+        });
       }
       cheaper.textContent = suggestions.join(' ');
       cheaper.hidden = !suggestions.length;
     }
-    if (send) {
+    {
       const build = (lang) => {
         const a = lang === 'ar';
         const out = [say('msgHead', a)];
@@ -1777,12 +1819,70 @@ function initBuilder(scope = document) {
         out.push(say('msgEstimate', a));
         return out.join('\n');
       };
-      const base = send.dataset.waEn || '';
+      const base = send ? (send.dataset.waEn || '') : '';
       const wa = /^https:\/\/wa\.me\/(\d+)/.exec(base);
-      if (wa && lines.length) {
+      if (send && wa && lines.length) {
         send.dataset.waEn = `https://wa.me/${wa[1]}?text=${encodeURIComponent(build('en'))}`;
         send.dataset.waAr = `https://wa.me/${wa[1]}?text=${encodeURIComponent(build('ar'))}`;
         send.href = ar ? send.dataset.waAr : send.dataset.waEn;
+      }
+      if (payloadEl) {
+        const byService = new Map();
+        for (const e of entries) {
+          if (!byService.has(e.serviceId)) byService.set(e.serviceId, []);
+          byService.get(e.serviceId).push(e);
+        }
+        const servicesOut = [...byService.entries()]
+          .sort((a, b) => (a[0] < b[0] ? -1 : 1))
+          .map(([serviceId, list]) => ({
+            serviceId,
+            features: [...list].sort((a, b) => (a.featureId < b.featureId ? -1 : 1)),
+          }));
+        const scope = {};
+        if (ALLOWANCE) {
+          const buildsPages = (ALLOWANCE.builtBy || []).some((id) => active.has(id));
+          if (buildsPages) {
+            const extra = entries.find((e) => e.featureId === ALLOWANCE.beyondFirst);
+            scope.pages = (ALLOWANCE.firstPageIncluded ? 1 : 0) + (extra ? extra.quantity : 0);
+          }
+        }
+        const priced = entries.filter((e) => e.pricing.amount > 0);
+        const payload = {
+          version: '1.0',
+          source: 'pixora.package-builder',
+          currency: CURRENCY_CODE,
+          language: ar ? 'ar' : 'en',
+          services: servicesOut,
+          addons: entries.filter((e) => e.addonGroup)
+            .map((e) => ({
+              featureId: e.featureId,
+              serviceId: e.serviceId,
+              addonGroup: e.addonGroup,
+              quantity: e.quantity,
+              amount: e.pricing.amount,
+            }))
+            .sort((a, b) => (a.featureId < b.featureId ? -1 : 1)),
+          packages: [...covering].sort((a, b) => (a.packageId < b.packageId ? -1 : 1)),
+          pricing: {
+            currency: CURRENCY_CODE,
+            subtotal: { oneTime: once, monthly: month },
+            discount: { oneTime: 0, monthly: 0 },
+            total: { oneTime: once, monthly: month },
+            quotedItems: quotes,
+            lineItems: priced.length,
+          },
+          message: build(ar ? 'ar' : 'en'),
+        };
+        if (Object.keys(scope).length) payload.scope = scope;
+        if (!entries.length) {
+          payloadEl.textContent = '{}';
+        } else {
+          payloadEl.textContent = JSON.stringify(payload);
+        }
+        root.dispatchEvent(new CustomEvent('pixora:scope', {
+          bubbles: true,
+          detail: entries.length ? payload : null,
+        }));
       }
     }
   }
@@ -2594,8 +2694,13 @@ if (document.readyState === 'loading') {
           <div class="c-tiers" data-reveal-group>
           <article class="c-tier" style="--i: 0"
             aria-labelledby="price-social-soc-starter-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 3 24 9.5 13 16 2 9.5 13 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+              <span class="c-tier__level-name"><span data-lang-copy="en">Foundation</span><span data-lang-copy="ar" lang="ar">الأساس</span></span>
+            </p>
             <div>
               <h3 class="c-tier__name" id="price-social-soc-starter-name" lang="en" dir="ltr">Social Starter</h3>
+              <p class="c-tier__purpose"><span data-lang-copy="en">A consistent presence for a business that is not posting regularly yet.</span><span data-lang-copy="ar" lang="ar">حضور منتظم لعمل لم يبدأ النشر بانتظام بعد.</span></p>
             </div>
             <p class="c-tier__price-block">
               <span class="c-tier__price">
@@ -2664,8 +2769,13 @@ if (document.readyState === 'loading') {
           <article class="c-tier c-tier--featured" style="--i: 1"
             aria-labelledby="price-social-soc-pro-name">
             <span class="c-tier__ribbon"><span data-lang-copy="en">Most Popular</span><span data-lang-copy="ar" lang="ar">الأكثر طلبًا</span></span>
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 2 24 8.5 13 15 2 8.5 13 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M2 15.5 13 22l11-6.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.55" /></svg>
+              <span class="c-tier__level-name"><span data-lang-copy="en">System</span><span data-lang-copy="ar" lang="ar">النظام</span></span>
+            </p>
             <div>
               <h3 class="c-tier__name" id="price-social-soc-pro-name" lang="en" dir="ltr">Social Pro</h3>
+              <p class="c-tier__purpose"><span data-lang-copy="en">Regular publishing with a strategy behind it and someone answering the messages.</span><span data-lang-copy="ar" lang="ar">نشر منتظم وراءه استراتيجية، وشخص يردّ على الرسائل.</span></p>
             </div>
             <p class="c-tier__price-block">
               <span class="c-tier__price">
@@ -2736,8 +2846,13 @@ if (document.readyState === 'loading') {
           </article>
           <article class="c-tier" style="--i: 2"
             aria-labelledby="price-social-soc-growth-name">
+            <p class="c-tier__level">
+              <svg class="c-tier__mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false"><path d="M13 1.5 24 7.5 13 13.5 2 7.5 13 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /><path d="M2 12.5 13 18.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.6" /><path d="M2 17.5 13 23.5l11-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.32" /></svg>
+              <span class="c-tier__level-name"><span data-lang-copy="en">Ecosystem</span><span data-lang-copy="ar" lang="ar">المنظومة</span></span>
+            </p>
             <div>
               <h3 class="c-tier__name" id="price-social-soc-growth-name" lang="en" dir="ltr">Social Growth</h3>
+              <p class="c-tier__purpose"><span data-lang-copy="en">Deeper strategy, more content, and a monthly reading of what the numbers changed.</span><span data-lang-copy="ar" lang="ar">استراتيجية أعمق، ومحتوى أكثر، وقراءة شهرية لما غيّرته الأرقام.</span></p>
             </div>
             <p class="c-tier__price-block">
               <span class="c-tier__price">
@@ -3111,8 +3226,9 @@ if (document.readyState === 'loading') {
                 <span class="c-detail__accent">Build your own.</span></span><span data-lang-copy="ar" lang="ar">لا تناسبك أي منها؟<br /> <span class="c-detail__accent">كوّن باقتك بنفسك.</span></span></h2>
               <p class="t-body-lg c-build-lead"><span data-lang-copy="en">Every service, broken into the things it is actually made of. Tick what you need — we will keep a running estimate beside you and tell you when one choice needs another.</span><span data-lang-copy="ar" lang="ar">كل خدمة، مقسَّمة إلى ما تتكوّن منه فعلًا. حدّد ما تحتاجه — وسنحتفظ بتقدير متغيّر إلى جوارك، ونخبرك حين يحتاج اختيارٌ اختيارًا آخر.</span></p>
             </div>
-          <script type="application/json" id="build-packages">[{"service":"svc.branding","name":{"en":"Branding & Design","ar":"الهوية والتصميم"},"tiers":[{"id":"tier-starter","name":"Starter","price":"490","from":true,"billing":"billingOnce","contents":[{"ref":"feat.branding.logo"},{"ref":"feat.branding.color_system"},{"ref":"feat.branding.type_system"},{"ref":"feat.branding.identity_card"},{"ref":"feat.branding.social_profile"},{"ref":"feat.branding.social_posts","qty":3},{"ref":"feat.branding.files_basic"}]},{"id":"tier-professional","name":"Professional","price":"990","from":true,"billing":"billingOnce","contents":[{"ref":"feat.branding.logo"},{"ref":"feat.branding.color_system"},{"ref":"feat.branding.type_system"},{"ref":"feat.branding.guidelines_short"},{"ref":"feat.branding.business_card"},{"ref":"feat.branding.letterhead"},{"ref":"feat.branding.social_profile"},{"ref":"feat.branding.social_posts","qty":6},{"ref":"feat.branding.ad_templates_basic"},{"ref":"feat.branding.files_source"}]},{"id":"tier-advanced","name":"Advanced","price":"1990","from":true,"billing":"billingOnce","contents":[{"ref":"feat.branding.logo"},{"ref":"feat.branding.color_system"},{"ref":"feat.branding.type_system"},{"ref":"feat.branding.guidelines_short"},{"ref":"feat.branding.business_card"},{"ref":"feat.branding.letterhead"},{"ref":"feat.branding.social_profile"},{"ref":"feat.branding.social_posts","qty":6},{"ref":"feat.branding.ad_templates_basic"},{"ref":"feat.branding.files_source"},{"ref":"feat.branding.guidelines_full"},{"ref":"feat.branding.visual_language"},{"ref":"feat.branding.social_design_system"},{"ref":"feat.branding.ad_templates"},{"ref":"feat.branding.presentation_template"},{"ref":"feat.branding.profile_template"},{"ref":"feat.branding.content_templates","qty":10},{"ref":"feat.branding.brand_assets"}]}]},{"service":"svc.websites","name":{"en":"Websites","ar":"المواقع الإلكترونية"},"tiers":[{"id":"web-landing","name":"Landing Page","price":"250","from":false,"billing":"billingOnce","contents":[{"ref":"feat.websites.domain"},{"ref":"feat.websites.hosting"},{"ref":"feat.websites.uiux"},{"ref":"feat.websites.responsive"},{"ref":"feat.websites.handover"}]},{"id":"web-business","name":"Business Website","price":"650","from":false,"billing":"billingOnce","contents":[{"ref":"feat.websites.domain"},{"ref":"feat.websites.hosting"},{"ref":"feat.websites.uiux"},{"ref":"feat.websites.extra_page","qty":4},{"ref":"feat.websites.development"},{"ref":"feat.websites.responsive"},{"ref":"feat.websites.setup"},{"ref":"feat.websites.testing"},{"ref":"feat.websites.handover"}]},{"id":"web-professional","name":"Professional Website","price":"1200","from":false,"billing":"billingOnce","contents":[{"ref":"feat.websites.domain"},{"ref":"feat.websites.hosting"},{"ref":"feat.websites.uiux"},{"ref":"feat.websites.extra_page","qty":9},{"ref":"feat.websites.development"},{"ref":"feat.websites.responsive"},{"ref":"feat.websites.setup"},{"ref":"feat.websites.integrations"},{"ref":"feat.websites.testing"},{"ref":"feat.websites.deployment"},{"ref":"feat.websites.handover"}]}]},{"service":"svc.social","name":{"en":"Social Media Management","ar":"إدارة وسائل التواصل"},"tiers":[{"id":"soc-starter","name":"Social Starter","price":"250","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.social.platform_management","qty":2},{"ref":"feat.social.content_calendar"},{"ref":"feat.social.post_design","qty":8},{"ref":"feat.social.copywriting"},{"ref":"feat.social.publishing"},{"ref":"feat.social.hashtag_research","tier":"basic"},{"ref":"feat.social.report"}]},{"id":"soc-pro","name":"Social Pro","price":"400","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.social.platform_management","qty":3},{"ref":"feat.social.content_strategy","tier":"core"},{"ref":"feat.social.post_design","qty":12},{"ref":"feat.social.reels","qty":4},{"ref":"feat.social.copywriting"},{"ref":"feat.social.publishing"},{"ref":"feat.social.stories"},{"ref":"feat.social.community_monitoring"},{"ref":"feat.social.hashtag_research","tier":"core"},{"ref":"feat.social.report"}]},{"id":"soc-growth","name":"Social Growth","price":"650","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.social.platform_management","qty":5},{"ref":"feat.social.content_strategy","tier":"complete"},{"ref":"feat.social.hashtag_research","tier":"core"},{"ref":"feat.social.post_design","qty":16},{"ref":"feat.social.reels","qty":8},{"ref":"feat.social.stories"},{"ref":"feat.social.copywriting"},{"ref":"feat.social.video_editing"},{"ref":"feat.social.publishing"},{"ref":"feat.social.community_management"},{"ref":"feat.social.report"},{"ref":"feat.social.strategy_review"},{"ref":"feat.social.audience_research"},{"ref":"feat.social.growth_analysis"},{"ref":"feat.social.performance_optimization"}]}]},{"service":"svc.marketing","name":{"en":"Digital Marketing & Advertising","ar":"التسويق الرقمي والإعلانات"},"tiers":[{"id":"ads-starter","name":"Ads Starter","price":"250","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.marketing.platform_management","qty":1},{"ref":"feat.marketing.campaign_setup"},{"ref":"feat.marketing.audience","tier":"targeting"},{"ref":"feat.marketing.ad_copy"},{"ref":"feat.marketing.ad_creative","qty":2},{"ref":"feat.marketing.monitoring"},{"ref":"feat.marketing.optimization","tier":"basic"},{"ref":"feat.marketing.report"}]},{"id":"ads-growth","name":"Ads Growth","price":"400","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.marketing.platform_management","qty":1},{"ref":"feat.marketing.campaign_setup","qty":4},{"ref":"feat.marketing.audience","tier":"research"},{"ref":"feat.marketing.ad_creative"},{"ref":"feat.marketing.ad_copy"},{"ref":"feat.marketing.optimization","tier":"campaign"},{"ref":"feat.marketing.retargeting"},{"ref":"feat.marketing.conversion_tracking"},{"ref":"feat.marketing.report"}]},{"id":"ads-performance","name":"Ads Performance","price":"600","from":false,"billing":"billingMonthly","contents":[{"ref":"feat.marketing.platform_management","qty":2},{"ref":"feat.marketing.campaign_strategy"},{"ref":"feat.marketing.audience","tier":"segmentation"},{"ref":"feat.marketing.campaign_setup"},{"ref":"feat.marketing.ad_copy"},{"ref":"feat.marketing.ad_creative"},{"ref":"feat.marketing.retargeting"},{"ref":"feat.marketing.conversion_tracking"},{"ref":"feat.marketing.ab_testing"},{"ref":"feat.marketing.optimization","tier":"full"},{"ref":"feat.marketing.report"},{"ref":"feat.marketing.strategy_meeting"}]}]}]</script>
-          <form class="c-build" id="build-form" novalidate data-build>
+          <script type="application/json" id="build-packages">[{"service":"svc.branding","name":{"en":"Branding & Design","ar":"الهوية والتصميم"},"tiers":[{"id":"tier-starter","name":"Starter","price":490,"from":true,"billing":"billingOnce","contents":[{"ref":"feat.branding.logo"},{"ref":"feat.branding.color_system"},{"ref":"feat.branding.type_system"},{"ref":"feat.branding.identity_card"},{"ref":"feat.branding.social_profile"},{"ref":"feat.branding.social_posts","qty":3},{"ref":"feat.branding.files_basic"}]},{"id":"tier-professional","name":"Professional","price":990,"from":true,"billing":"billingOnce","contents":[{"ref":"feat.branding.logo"},{"ref":"feat.branding.color_system"},{"ref":"feat.branding.type_system"},{"ref":"feat.branding.guidelines_short"},{"ref":"feat.branding.business_card"},{"ref":"feat.branding.letterhead"},{"ref":"feat.branding.social_profile"},{"ref":"feat.branding.social_posts","qty":6},{"ref":"feat.branding.ad_templates_basic"},{"ref":"feat.branding.files_source"}]},{"id":"tier-advanced","name":"Advanced","price":1990,"from":true,"billing":"billingOnce","contents":[{"ref":"feat.branding.logo"},{"ref":"feat.branding.color_system"},{"ref":"feat.branding.type_system"},{"ref":"feat.branding.guidelines_short"},{"ref":"feat.branding.business_card"},{"ref":"feat.branding.letterhead"},{"ref":"feat.branding.social_profile"},{"ref":"feat.branding.social_posts","qty":6},{"ref":"feat.branding.ad_templates_basic"},{"ref":"feat.branding.files_source"},{"ref":"feat.branding.guidelines_full"},{"ref":"feat.branding.visual_language"},{"ref":"feat.branding.social_design_system"},{"ref":"feat.branding.ad_templates"},{"ref":"feat.branding.presentation_template"},{"ref":"feat.branding.profile_template"},{"ref":"feat.branding.content_templates","qty":10},{"ref":"feat.branding.brand_assets"}]}]},{"service":"svc.websites","name":{"en":"Websites","ar":"المواقع الإلكترونية"},"tiers":[{"id":"web-landing","name":"Landing Page","price":250,"from":false,"billing":"billingOnce","contents":[{"ref":"feat.websites.domain"},{"ref":"feat.websites.hosting"},{"ref":"feat.websites.uiux"},{"ref":"feat.websites.responsive"},{"ref":"feat.websites.handover"}]},{"id":"web-business","name":"Business Website","price":650,"from":false,"billing":"billingOnce","contents":[{"ref":"feat.websites.domain"},{"ref":"feat.websites.hosting"},{"ref":"feat.websites.uiux"},{"ref":"feat.websites.extra_page","qty":4},{"ref":"feat.websites.development"},{"ref":"feat.websites.responsive"},{"ref":"feat.websites.setup"},{"ref":"feat.websites.testing"},{"ref":"feat.websites.handover"}]},{"id":"web-professional","name":"Professional Website","price":1200,"from":false,"billing":"billingOnce","contents":[{"ref":"feat.websites.domain"},{"ref":"feat.websites.hosting"},{"ref":"feat.websites.uiux"},{"ref":"feat.websites.extra_page","qty":9},{"ref":"feat.websites.development"},{"ref":"feat.websites.responsive"},{"ref":"feat.websites.setup"},{"ref":"feat.websites.integrations"},{"ref":"feat.websites.testing"},{"ref":"feat.websites.deployment"},{"ref":"feat.websites.handover"}]}]},{"service":"svc.social","name":{"en":"Social Media Management","ar":"إدارة وسائل التواصل"},"tiers":[{"id":"soc-starter","name":"Social Starter","price":250,"from":false,"billing":"billingMonthly","contents":[{"ref":"feat.social.platform_management","qty":2},{"ref":"feat.social.content_calendar"},{"ref":"feat.social.post_design","qty":8},{"ref":"feat.social.copywriting"},{"ref":"feat.social.publishing"},{"ref":"feat.social.hashtag_research","tier":"basic"},{"ref":"feat.social.report"}]},{"id":"soc-pro","name":"Social Pro","price":400,"from":false,"billing":"billingMonthly","contents":[{"ref":"feat.social.platform_management","qty":3},{"ref":"feat.social.content_strategy","tier":"core"},{"ref":"feat.social.post_design","qty":12},{"ref":"feat.social.reels","qty":4},{"ref":"feat.social.copywriting"},{"ref":"feat.social.publishing"},{"ref":"feat.social.stories"},{"ref":"feat.social.community_monitoring"},{"ref":"feat.social.hashtag_research","tier":"core"},{"ref":"feat.social.report"}]},{"id":"soc-growth","name":"Social Growth","price":650,"from":false,"billing":"billingMonthly","contents":[{"ref":"feat.social.platform_management","qty":5},{"ref":"feat.social.content_strategy","tier":"complete"},{"ref":"feat.social.hashtag_research","tier":"core"},{"ref":"feat.social.post_design","qty":16},{"ref":"feat.social.reels","qty":8},{"ref":"feat.social.stories"},{"ref":"feat.social.copywriting"},{"ref":"feat.social.video_editing"},{"ref":"feat.social.publishing"},{"ref":"feat.social.community_management"},{"ref":"feat.social.report"},{"ref":"feat.social.strategy_review"},{"ref":"feat.social.audience_research"},{"ref":"feat.social.growth_analysis"},{"ref":"feat.social.performance_optimization"}]}]},{"service":"svc.marketing","name":{"en":"Digital Marketing & Advertising","ar":"التسويق الرقمي والإعلانات"},"tiers":[{"id":"ads-starter","name":"Ads Starter","price":250,"from":false,"billing":"billingMonthly","contents":[{"ref":"feat.marketing.platform_management","qty":1},{"ref":"feat.marketing.campaign_setup"},{"ref":"feat.marketing.audience","tier":"targeting"},{"ref":"feat.marketing.ad_copy"},{"ref":"feat.marketing.ad_creative","qty":2},{"ref":"feat.marketing.monitoring"},{"ref":"feat.marketing.optimization","tier":"basic"},{"ref":"feat.marketing.report"}]},{"id":"ads-growth","name":"Ads Growth","price":400,"from":false,"billing":"billingMonthly","contents":[{"ref":"feat.marketing.platform_management","qty":1},{"ref":"feat.marketing.campaign_setup","qty":4},{"ref":"feat.marketing.audience","tier":"research"},{"ref":"feat.marketing.ad_creative"},{"ref":"feat.marketing.ad_copy"},{"ref":"feat.marketing.optimization","tier":"campaign"},{"ref":"feat.marketing.retargeting"},{"ref":"feat.marketing.conversion_tracking"},{"ref":"feat.marketing.report"}]},{"id":"ads-performance","name":"Ads Performance","price":600,"from":false,"billing":"billingMonthly","contents":[{"ref":"feat.marketing.platform_management","qty":2},{"ref":"feat.marketing.campaign_strategy"},{"ref":"feat.marketing.audience","tier":"segmentation"},{"ref":"feat.marketing.campaign_setup"},{"ref":"feat.marketing.ad_copy"},{"ref":"feat.marketing.ad_creative"},{"ref":"feat.marketing.retargeting"},{"ref":"feat.marketing.conversion_tracking"},{"ref":"feat.marketing.ab_testing"},{"ref":"feat.marketing.optimization","tier":"full"},{"ref":"feat.marketing.report"},{"ref":"feat.marketing.strategy_meeting"}]}]}]</script>
+          <form class="c-build" id="build-form" novalidate data-build
+            data-currency="USD" data-page-allowance='{"builtBy":["feat.websites.uiux","feat.websites.development"],"firstPageIncluded":true,"beyondFirst":"feat.websites.extra_page"}'>
             <div class="c-build__grid">
               <div class="c-build__services">
                 <details class="c-build__service" data-build-service="svc.branding">
@@ -3247,7 +3363,7 @@ if (document.readyState === 'loading') {
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.branding.social_posts" data-service="svc.branding" data-price-type="unit" data-price="15" data-recommends="feat.branding.logo feat.branding.social_design_system">
+                      <li class="c-pick" data-feature="feat.branding.social_posts" data-service="svc.branding" data-price-type="unit" data-price="15" data-recommends="feat.branding.logo feat.branding.social_design_system" data-addon-group="addon.design">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-branding-social_posts" value="feat.branding.social_posts" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3314,7 +3430,7 @@ if (document.readyState === 'loading') {
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.branding.presentation_design" data-service="svc.branding" data-price-type="project" data-price="90" data-recommends="feat.branding.presentation_template">
+                      <li class="c-pick" data-feature="feat.branding.presentation_design" data-service="svc.branding" data-price-type="project" data-price="90" data-recommends="feat.branding.presentation_template" data-addon-group="addon.design">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-branding-presentation_design" value="feat.branding.presentation_design" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3338,7 +3454,7 @@ if (document.readyState === 'loading') {
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.branding.company_profile" data-service="svc.branding" data-price-type="project" data-price="150" data-recommends="feat.branding.logo feat.branding.profile_template">
+                      <li class="c-pick" data-feature="feat.branding.company_profile" data-service="svc.branding" data-price-type="project" data-price="150" data-recommends="feat.branding.logo feat.branding.profile_template" data-addon-group="addon.branding">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-branding-company_profile" value="feat.branding.company_profile" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3369,7 +3485,7 @@ if (document.readyState === 'loading') {
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.branding.photography" data-service="svc.branding" data-price-type="quote" data-recommends="feat.branding.visual_language">
+                      <li class="c-pick" data-feature="feat.branding.photography" data-service="svc.branding" data-price-type="quote" data-recommends="feat.branding.visual_language" data-addon-group="addon.media">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-branding-photography" value="feat.branding.photography" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3381,7 +3497,7 @@ if (document.readyState === 'loading') {
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.branding.videography" data-service="svc.branding" data-price-type="quote" data-recommends="feat.branding.visual_language">
+                      <li class="c-pick" data-feature="feat.branding.videography" data-service="svc.branding" data-price-type="quote" data-recommends="feat.branding.visual_language" data-addon-group="addon.media">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-branding-videography" value="feat.branding.videography" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3516,7 +3632,7 @@ if (document.readyState === 'loading') {
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.websites.extra_page" data-service="svc.websites" data-price-type="unit" data-price="70" data-requires="feat.websites.development">
+                      <li class="c-pick" data-feature="feat.websites.extra_page" data-service="svc.websites" data-price-type="unit" data-price="70" data-requires="feat.websites.development" data-addon-group="addon.digital">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-websites-extra_page" value="feat.websites.extra_page" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3559,7 +3675,7 @@ if (document.readyState === 'loading') {
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.websites.landing_deploy" data-service="svc.websites" data-price-type="fixed" data-price="20" data-requires="feat.websites.landing_build" data-recommends="feat.websites.hosting">
+                      <li class="c-pick" data-feature="feat.websites.landing_deploy" data-service="svc.websites" data-price-type="fixed" data-price="20" data-recommends="feat.websites.hosting">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-websites-landing_deploy" value="feat.websites.landing_deploy" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3571,7 +3687,7 @@ if (document.readyState === 'loading') {
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.websites.extra_landing" data-service="svc.websites" data-price-type="unit" data-price="120" data-recommends="feat.websites.hosting feat.marketing.conversion_tracking" data-composed-of="feat.websites.landing_design feat.websites.landing_build feat.websites.landing_deploy">
+                      <li class="c-pick" data-feature="feat.websites.extra_landing" data-service="svc.websites" data-price-type="unit" data-price="120" data-recommends="feat.websites.hosting feat.marketing.conversion_tracking" data-composed-of="feat.websites.landing_design feat.websites.landing_build feat.websites.landing_deploy" data-addon-group="addon.digital">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-websites-extra_landing" value="feat.websites.extra_landing" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3721,7 +3837,7 @@ if (document.readyState === 'loading') {
                           </span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.social.copywriting" data-service="svc.social" data-price-type="unit" data-price="20" data-recommends="feat.social.content_calendar">
+                      <li class="c-pick" data-feature="feat.social.copywriting" data-service="svc.social" data-price-type="unit" data-price="20" data-recommends="feat.social.content_calendar" data-addon-group="addon.content">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-social-copywriting" value="feat.social.copywriting" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3759,7 +3875,7 @@ if (document.readyState === 'loading') {
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.social.reels" data-service="svc.social" data-price-type="unit" data-price="45" data-period="monthly" data-recommends="feat.branding.videography feat.social.content_calendar">
+                      <li class="c-pick" data-feature="feat.social.reels" data-service="svc.social" data-price-type="unit" data-price="45" data-period="monthly" data-recommends="feat.branding.videography feat.social.content_calendar" data-addon-group="addon.content">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-social-reels" value="feat.social.reels" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -3790,7 +3906,7 @@ if (document.readyState === 'loading') {
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.social.video_editing" data-service="svc.social" data-price-type="unit" data-price="60" data-recommends="feat.branding.videography">
+                      <li class="c-pick" data-feature="feat.social.video_editing" data-service="svc.social" data-price-type="unit" data-price="60" data-recommends="feat.branding.videography" data-addon-group="addon.content">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-social-video_editing" value="feat.social.video_editing" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -4083,7 +4199,7 @@ if (document.readyState === 'loading') {
                           <span class="c-pick__note" data-pick-note hidden></span>
                         </span>
                   </li>
-                      <li class="c-pick" data-feature="feat.marketing.ad_creative" data-service="svc.marketing" data-price-type="unit" data-price="20" data-recommends="feat.branding.ad_templates feat.marketing.ad_copy">
+                      <li class="c-pick" data-feature="feat.marketing.ad_creative" data-service="svc.marketing" data-price-type="unit" data-price="20" data-recommends="feat.branding.ad_templates feat.marketing.ad_copy" data-addon-group="addon.design">
                         <label class="c-pick__control">
                           <input class="c-pick__input" type="checkbox" id="pick-feat-marketing-ad_creative" value="feat.marketing.ad_creative" data-pick>
                           <span class="c-pick__box" aria-hidden="true"></span>
@@ -4239,6 +4355,7 @@ if (document.readyState === 'loading') {
                   <p class="c-build__quoted" data-build-quoted hidden></p>
                 </div>
                 <p class="c-build__cheaper" data-build-cheaper hidden></p>
+                <script type="application/json" id="build-order" data-build-payload>{}</script>
                 <p class="c-build__caveat"><span data-lang-copy="en">An estimate, not a quotation. Every figure is a starting price; the final one depends on the scope we agree together.</span><span data-lang-copy="ar" lang="ar">هذا تقدير وليس عرض سعر. كل رقم هو سعر بداية، والسعر النهائي يعتمد على النطاق الذي نتفق عليه.</span></p>
                 <a class="c-btn c-btn--primary c-build__send" data-build-send
                   href="https://wa.me/249962672192?text=Hi%20Pixora%20%E2%80%94%20I%20built%20a%20scope%20on%20your%20site%20and%20would%20like%20to%20talk%20about%20it."

@@ -362,6 +362,7 @@ never failed is not a guard.**
 | `qa.js` §39 | Does every generated name say itself in both languages, and in neither by accident? | Removing the Arabic from Company Profile — the original defect |
 | `build-catalogue.js` | Does a pricing category's label agree with the service's declared short form? | Renaming the social category to "Social" |
 | `builder-test.cjs` | Do the dependency rules do anything when a person clicks? | It failed on its first run, on a rule that was doing nothing |
+| `architecture-test.js` | Are the LOCKED BUSINESS FACTS still true? | Shape rules belong in the build; "Social Pro is 400" is not a shape rule and would make the build unreusable. See `docs/128` |
 
 §37 is deliberately not a copy of the build-time check. `build-catalogue.js`
 asks whether the references resolve **in the source**; §37 asks whether they
@@ -410,3 +411,22 @@ why four features carry it.
 `docs/126` records the owner's decisions of 8 September and what encoding them
 found. Where the two disagree, `docs/126` is later and wins — §6 above, and
 three of the advisories §4 lists, which are answered rather than outstanding.
+
+
+---
+
+## Superseded by `docs/128`
+
+The hardening pass of 8 September changed four things this document describes:
+
+- **`catalogue.json` now carries the packages**, materialised from
+  `pricing.json` at build time, plus `roles`, `capabilities`, `platforms` and an
+  `index` of the joins. It is meant to be the only file an automation reads.
+- **Every pipeline stage declares a `kind`** — execution, intake or delegation —
+  and an intake stage says what it produces and which features consume it.
+- **Every workflow stage carries an `owner` and a `duration`**, from
+  `roles.json`. Shared templates say `$service.defaultRole`.
+- **`feat.websites.landing_deploy` requires nothing.** The build is an input,
+  not a prerequisite feature, so deployment is separately sellable.
+
+Where the two disagree, `docs/128` is current.

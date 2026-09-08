@@ -421,6 +421,10 @@ console.log('— content —');
    lets a visitor assemble a scope nobody can execute. */
 require('./tools/build-catalogue.js');
 require('./tools/build-pricing.js');
+/* The home page's capability chips, from the same catalogue: thirty strings
+   that used to be typed into index.html, each one now joined to the feature,
+   group or platform that carries it out. */
+require('./tools/build-capabilities.js');
 require('./tools/build-builder.js');
 require('./tools/build-i18n.js');
 require('./tools/build-story.js');

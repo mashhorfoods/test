@@ -253,6 +253,10 @@ function pickRow(f) {
     f.tiers ? `data-tiers="${f.tiers.levels.map((l) => `${l.id}:${l.priceFactor}`).join(' ')}"` : '',
     f.tiers ? `data-tier-default="${f.tiers.default}"` : '',
     f.options && f.options.drivesQuantity ? 'data-options-drive-qty' : '',
+    /* An add-on is a published thing with its own id, and the structured order
+       has to be able to say "this line is the Additional website page add-on"
+       rather than leaving a consumer to infer it from the price type. */
+    f.addonGroup ? `data-addon-group="${f.addonGroup}"` : '',
   ].filter(Boolean).join(' ');
 
   return `                  <li class="c-pick" ${data}>
@@ -383,9 +387,17 @@ function renderBuilder() {
     })),
   }))).replace(/</g, '\\u003c');
 
+  /* THE RULES THE PAYLOAD NEEDS THAT ARE NOT ON A ROW. The page allowance is a
+     business rule authored in services.json; it is written here rather than
+     re-derived in the script, so the browser and the validator read the same
+     sentence. */
+  const allowance = JSON.stringify((C.services.find((s) => s.pageAllowance) || {}).pageAllowance || null)
+    .replace(/</g, '\\u003c');
+
   return `<!-- BUILDER:START -->
           <script type="application/json" id="build-packages">${packageData}</script>
-          <form class="c-build" id="build-form" novalidate data-build>
+          <form class="c-build" id="build-form" novalidate data-build
+            data-currency="${esc(C.currency || 'USD')}" data-page-allowance='${allowance}'>
             <div class="c-build__grid">
               <div class="c-build__services">
 ${indent(SERVICES.map(serviceBlock).join('\n\n'), 4)}
@@ -427,6 +439,20 @@ ${indent(SERVICES.map(serviceBlock).join('\n\n'), 4)}
                      quoting somebody 1,636 a month for something the card above
                      sells at 650. -->
                 <p class="c-build__cheaper" data-build-cheaper hidden></p>
+
+                <!-- THE SAME SCOPE, FOR A MACHINE.
+                     Everything above this line is written for a person: labels
+                     in the language showing, prices formatted, a WhatsApp
+                     message. None of it can be read back reliably — the
+                     message is prose, and prose is where an order goes to
+                     die. This island holds the same selection as ids,
+                     quantities and amounts, rewritten by the script on every
+                     change. It is the source of truth for what was chosen;
+                     the message beside it is the presentation of it.
+
+                     It ships empty and stays empty with the script off, which
+                     is correct: nothing has been chosen. -->
+                <script type="application/json" id="build-order" data-build-payload>{}</script>
 
                 <p class="c-build__caveat">${pair({
     en: 'An estimate, not a quotation. Every figure is a starting price; the final one depends on the scope we agree together.',

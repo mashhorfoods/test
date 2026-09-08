@@ -8,6 +8,7 @@
   ],
   "version": 1,
   "generated": "tools/build-catalogue.js",
+  "currency": "USD",
   "services": [
     {
       "id": "svc.branding",
@@ -31,6 +32,14 @@
       "id": "svc.websites",
       "order": 2,
       "legacyCategory": "websites",
+      "pageAllowance": {
+        "builtBy": [
+          "feat.websites.uiux",
+          "feat.websites.development"
+        ],
+        "firstPageIncluded": true,
+        "beyondFirst": "feat.websites.extra_page"
+      },
       "name": {
         "en": "Websites",
         "ar": "المواقع الإلكترونية"
@@ -3001,9 +3010,7 @@
         "from": 20
       },
       "dependencies": {
-        "requires": [
-          "feat.websites.landing_build"
-        ],
+        "requires": [],
         "recommends": [
           "feat.websites.hosting"
         ],
@@ -3079,7 +3086,7 @@
         {
           "id": "tier-starter",
           "name": "Starter",
-          "price": "490",
+          "price": 490,
           "priceFrom": true,
           "billing": "billingOnce",
           "contents": [
@@ -3110,7 +3117,7 @@
         {
           "id": "tier-professional",
           "name": "Professional",
-          "price": "990",
+          "price": 990,
           "priceFrom": true,
           "billing": "billingOnce",
           "contents": [
@@ -3150,7 +3157,7 @@
         {
           "id": "tier-advanced",
           "name": "Advanced",
-          "price": "1990",
+          "price": 1990,
           "priceFrom": true,
           "billing": "billingOnce",
           "contents": [
@@ -3225,7 +3232,7 @@
         {
           "id": "web-landing",
           "name": "Landing Page",
-          "price": "250",
+          "price": 250,
           "priceFrom": false,
           "billing": "billingOnce",
           "scope": {
@@ -3252,7 +3259,7 @@
         {
           "id": "web-business",
           "name": "Business Website",
-          "price": "650",
+          "price": 650,
           "priceFrom": false,
           "billing": "billingOnce",
           "scope": {
@@ -3292,7 +3299,7 @@
         {
           "id": "web-professional",
           "name": "Professional Website",
-          "price": "1200",
+          "price": 1200,
           "priceFrom": false,
           "billing": "billingOnce",
           "scope": {
@@ -3348,7 +3355,7 @@
         {
           "id": "soc-starter",
           "name": "Social Starter",
-          "price": "250",
+          "price": 250,
           "priceFrom": false,
           "billing": "billingMonthly",
           "contents": [
@@ -3381,7 +3388,7 @@
         {
           "id": "soc-pro",
           "name": "Social Pro",
-          "price": "400",
+          "price": 400,
           "priceFrom": false,
           "billing": "billingMonthly",
           "contents": [
@@ -3425,7 +3432,7 @@
         {
           "id": "soc-growth",
           "name": "Social Growth",
-          "price": "650",
+          "price": 650,
           "priceFrom": false,
           "billing": "billingMonthly",
           "contents": [
@@ -3494,7 +3501,7 @@
         {
           "id": "ads-starter",
           "name": "Ads Starter",
-          "price": "250",
+          "price": 250,
           "priceFrom": false,
           "billing": "billingMonthly",
           "contents": [
@@ -3531,7 +3538,7 @@
         {
           "id": "ads-growth",
           "name": "Ads Growth",
-          "price": "400",
+          "price": 400,
           "priceFrom": false,
           "billing": "billingMonthly",
           "contents": [
@@ -3571,7 +3578,7 @@
         {
           "id": "ads-performance",
           "name": "Ads Performance",
-          "price": "600",
+          "price": 600,
           "priceFrom": false,
           "billing": "billingMonthly",
           "contents": [

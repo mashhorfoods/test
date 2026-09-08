@@ -50,6 +50,7 @@
       "id": "svc.branding",
       "order": 1,
       "legacyCategory": "branding",
+      "defaultRole": "role.designer",
       "name": {
         "en": "Branding & Design",
         "ar": "الهوية والتصميم"
@@ -78,7 +79,23 @@
             "objective": "Establish what the business is, who it speaks to, and what the identity has to survive.",
             "entry": "Signed scope and a completed brand questionnaire.",
             "exit": "A written direction the client has agreed to in words, before anything is drawn.",
-            "features": []
+            "kind": "intake",
+            "owner": {
+              "type": "role",
+              "id": "role.strategist"
+            },
+            "features": [],
+            "produces": [
+              "A written creative direction, agreed by the client in words",
+              "The brand questionnaire, completed",
+              "The business name in every language it will appear in",
+              "Sector and competitor references"
+            ],
+            "feeds": [
+              "feat.branding.logo",
+              "feat.branding.color_system",
+              "feat.branding.type_system"
+            ]
           },
           {
             "id": "pipe.branding.core",
@@ -89,6 +106,7 @@
             "objective": "Build the three things everything else is derived from.",
             "entry": "Agreed direction.",
             "exit": "Logo, colour system and type system approved.",
+            "kind": "execution",
             "features": [
               "feat.branding.logo",
               "feat.branding.color_system",
@@ -104,6 +122,7 @@
             "objective": "Turn the core into rules other people can follow without asking.",
             "entry": "Core identity approved.",
             "exit": "Guidelines and visual language documented.",
+            "kind": "execution",
             "features": [
               "feat.branding.identity_card",
               "feat.branding.guidelines_short",
@@ -120,6 +139,7 @@
             "objective": "Apply the system to the surfaces the business actually uses.",
             "entry": "Core identity approved. Guidelines where the scope includes them.",
             "exit": "Every applied item approved at its own revision limit.",
+            "kind": "execution",
             "features": [
               "feat.branding.business_card",
               "feat.branding.letterhead",
@@ -144,6 +164,7 @@
             "objective": "Produce original imagery where the identity needs it and stock will not do.",
             "entry": "Approved direction. A shot list agreed with the client.",
             "exit": "Selected, retouched files delivered.",
+            "kind": "execution",
             "features": [
               "feat.branding.photography",
               "feat.branding.videography"
@@ -158,6 +179,7 @@
             "objective": "Hand over files the client owns and can use without us.",
             "entry": "Every in-scope item approved.",
             "exit": "Archive delivered and receipt confirmed.",
+            "kind": "execution",
             "features": [
               "feat.branding.files_basic",
               "feat.branding.files_source",
@@ -171,6 +193,16 @@
       "id": "svc.websites",
       "order": 2,
       "legacyCategory": "websites",
+      "defaultRole": "role.developer",
+      "pageAllowance": {
+        "_comment": "HOW MANY PAGES A PACKAGE INCLUDES, and what happens past it. This used to be a list of feature ids inside tools/build-catalogue.js, which meant a business rule lived in a build script: a new page-building feature would have been priced without an allowance and nothing would have said so. It is data now, and both the validator and the builder read it from here.",
+        "builtBy": [
+          "feat.websites.uiux",
+          "feat.websites.development"
+        ],
+        "firstPageIncluded": true,
+        "beyondFirst": "feat.websites.extra_page"
+      },
       "name": {
         "en": "Websites",
         "ar": "المواقع الإلكترونية"
@@ -198,7 +230,24 @@
             "objective": "Agree what pages exist, what each is for, and what the site has to do.",
             "entry": "Signed scope.",
             "exit": "An agreed sitemap and a content list naming who supplies each item.",
-            "features": []
+            "kind": "intake",
+            "owner": {
+              "type": "role",
+              "id": "role.strategist"
+            },
+            "features": [],
+            "produces": [
+              "An agreed page list and what each page is for",
+              "The site map, with the page count the package allows",
+              "What the site has to do — enquiries, bookings, sales or reading",
+              "Content and asset inventory, with what is missing named"
+            ],
+            "feeds": [
+              "feat.websites.uiux",
+              "feat.websites.development",
+              "feat.websites.domain",
+              "feat.websites.hosting"
+            ]
           },
           {
             "id": "pipe.websites.infrastructure",
@@ -209,6 +258,7 @@
             "objective": "Secure the address and the place the site will live.",
             "entry": "A chosen name, confirmed available, and the client's decision on who holds the account.",
             "exit": "Domain registered and hosting provisioned, both in the client's name.",
+            "kind": "execution",
             "features": [
               "feat.websites.domain",
               "feat.websites.hosting"
@@ -223,6 +273,7 @@
             "objective": "Design every page at every width before any of it is built.",
             "entry": "Agreed sitemap. Brand assets, ours or the client's.",
             "exit": "Design approved at desktop and phone widths.",
+            "kind": "execution",
             "features": [
               "feat.websites.uiux",
               "feat.websites.landing_design"
@@ -237,6 +288,7 @@
             "objective": "Build the approved design as a working site.",
             "entry": "Approved design. Final copy and images in hand.",
             "exit": "Every page built, responsive, and matching the approved design.",
+            "kind": "execution",
             "features": [
               "feat.websites.development",
               "feat.websites.responsive",
@@ -255,6 +307,7 @@
             "objective": "Prove it works before anyone else sees it.",
             "entry": "Build complete on a staging address.",
             "exit": "Every check passed and recorded.",
+            "kind": "execution",
             "features": [
               "feat.websites.testing"
             ]
@@ -268,6 +321,7 @@
             "objective": "Put it live and hand over the keys.",
             "entry": "Testing passed. Client sign-off on the staging site.",
             "exit": "Live on the client's domain, credentials transferred, receipt confirmed.",
+            "kind": "execution",
             "features": [
               "feat.websites.deployment",
               "feat.websites.landing_deploy",
@@ -281,6 +335,7 @@
       "id": "svc.social",
       "order": 3,
       "legacyCategory": "social",
+      "defaultRole": "role.social_manager",
       "name": {
         "en": "Social Media Management",
         "ar": "إدارة وسائل التواصل"
@@ -310,11 +365,12 @@
             "objective": "Get access to the accounts and agree the voice.",
             "entry": "Signed scope.",
             "exit": "Publishing access confirmed on every in-scope platform.",
+            "once": true,
+            "kind": "execution",
             "features": [
               "feat.social.account_setup",
               "feat.social.platform_management"
-            ],
-            "once": true
+            ]
           },
           {
             "id": "pipe.social.plan",
@@ -325,6 +381,7 @@
             "objective": "Decide what goes out this month, and why.",
             "entry": "Approved voice. Last month's report, from month two onward.",
             "exit": "A calendar the client has approved.",
+            "kind": "execution",
             "features": [
               "feat.social.content_strategy",
               "feat.social.content_calendar",
@@ -341,6 +398,7 @@
             "objective": "Make everything the calendar promised.",
             "entry": "Approved calendar. Brand assets and any client-supplied material.",
             "exit": "Every item approved at its revision limit and scheduled.",
+            "kind": "execution",
             "features": [
               "feat.social.copywriting",
               "feat.social.post_design",
@@ -358,6 +416,7 @@
             "objective": "Put it out on time, on the right account.",
             "entry": "Approved content, scheduled.",
             "exit": "Every scheduled item live, verified on the platform itself.",
+            "kind": "execution",
             "features": [
               "feat.social.publishing"
             ]
@@ -371,6 +430,7 @@
             "objective": "Answer people, and escalate what we cannot answer.",
             "entry": "Published content.",
             "exit": "No unanswered message older than the agreed response window.",
+            "kind": "execution",
             "features": [
               "feat.social.community_monitoring",
               "feat.social.community_management"
@@ -385,6 +445,7 @@
             "objective": "Say what happened, what caused it, and what changes next month.",
             "entry": "A complete calendar month of published activity.",
             "exit": "Report sent. Next month's plan carries at least one decision taken from it.",
+            "kind": "execution",
             "features": [
               "feat.social.report",
               "feat.social.growth_analysis",
@@ -399,6 +460,7 @@
       "id": "svc.marketing",
       "order": 4,
       "legacyCategory": "marketing",
+      "defaultRole": "role.ads_specialist",
       "name": {
         "en": "Digital Marketing & Advertising",
         "ar": "التسويق الرقمي والإعلانات"
@@ -435,10 +497,11 @@
             "objective": "Get into the ad accounts, legitimately and reversibly.",
             "entry": "Signed scope.",
             "exit": "Partner access granted on every in-scope platform, with the client owning the account.",
+            "once": true,
+            "kind": "execution",
             "features": [
               "feat.marketing.platform_management"
-            ],
-            "once": true
+            ]
           },
           {
             "id": "pipe.marketing.strategy",
@@ -449,6 +512,7 @@
             "objective": "Decide who we are talking to and what counts as success.",
             "entry": "Account access. An agreed objective and a monthly budget figure from the client.",
             "exit": "A written target, a defined audience, and a conversion the client agrees to be measured on.",
+            "kind": "execution",
             "features": [
               "feat.marketing.campaign_strategy",
               "feat.marketing.audience"
@@ -463,6 +527,7 @@
             "objective": "Make the ads.",
             "entry": "Approved audience and target. Brand assets.",
             "exit": "Copy and creative approved, and compliant with each platform's policy.",
+            "kind": "execution",
             "features": [
               "feat.marketing.ad_copy",
               "feat.marketing.ad_creative"
@@ -477,6 +542,7 @@
             "objective": "Make the result measurable before the money starts moving.",
             "entry": "A destination we can put a tag on, and the client's permission to place it.",
             "exit": "A test conversion recorded end to end.",
+            "kind": "execution",
             "features": [
               "feat.marketing.conversion_tracking"
             ]
@@ -490,6 +556,7 @@
             "objective": "Build the campaign and turn it on.",
             "entry": "Approved creative. Tracking verified. Budget confirmed in writing.",
             "exit": "Campaign live, delivering, and spending at the agreed daily rate.",
+            "kind": "execution",
             "features": [
               "feat.marketing.campaign_setup",
               "feat.marketing.retargeting"
@@ -504,6 +571,7 @@
             "objective": "Improve the result while it runs, without breaking what works.",
             "entry": "A live campaign with enough data to read.",
             "exit": "Each change recorded with the number that justified it.",
+            "kind": "execution",
             "features": [
               "feat.marketing.monitoring",
               "feat.marketing.optimization",
@@ -519,6 +587,7 @@
             "objective": "Say what the money bought, and what changes next month.",
             "entry": "A complete calendar month of spend.",
             "exit": "Report sent with spend, result and cost per result, and a decision for next month.",
+            "kind": "execution",
             "features": [
               "feat.marketing.report",
               "feat.marketing.strategy_meeting"
@@ -531,6 +600,7 @@
       "id": "svc.integrated",
       "order": 5,
       "legacyCategory": null,
+      "defaultRole": "role.account_manager",
       "name": {
         "en": "Integrated Digital Solutions",
         "ar": "الحلول الرقمية المتكاملة"
@@ -575,6 +645,7 @@
             "objective": "Build the foundation.",
             "entry": "Signed scope across the composed services.",
             "exit": "Brand core approved — everything downstream depends on it.",
+            "kind": "delegation",
             "delegatesTo": "pipe.branding"
           },
           {
@@ -586,6 +657,7 @@
             "objective": "Create the digital presence.",
             "entry": "Brand core approved.",
             "exit": "Site live on the client's domain.",
+            "kind": "delegation",
             "delegatesTo": "pipe.websites"
           },
           {
@@ -597,6 +669,7 @@
             "objective": "Build ongoing engagement.",
             "entry": "Brand core approved. A destination to send people to.",
             "exit": "The monthly loop running.",
+            "kind": "delegation",
             "delegatesTo": "pipe.social"
           },
           {
@@ -608,6 +681,7 @@
             "objective": "Reach the right audience.",
             "entry": "A live destination and measurable conversions.",
             "exit": "Campaigns live and reporting monthly.",
+            "kind": "delegation",
             "delegatesTo": "pipe.marketing"
           }
         ]
