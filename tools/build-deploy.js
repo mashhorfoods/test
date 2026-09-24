@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
@@ -140,14 +141,55 @@ ${URL ? `\nSitemap: ${URL}/sitemap.xml\n` : `
 `}`;
 };
 
-/* --- sitemap.xml ----------------------------------------------------------- */
+/* --- sitemap.xml -----------------------------------------------------------
+
+   LASTMOD IS PER PAGE, AND IT IS THE PAGE'S OWN DATE.
+
+   It used to be today's date on every entry, because the build stamped the
+   moment it ran. That meant a rebuild — even one that changed nothing —
+   announced that all five pages had changed. lastmod is a claim about
+   CONTENT, and a claim that is wrong every time it is made is worse than no
+   claim: crawlers learn to discount the field, and it stops helping the pages
+   that genuinely did change.
+
+   The date now comes from the last commit that touched the page's own source
+   file. That is the right granularity because every generator on this project
+   writes INTO the source page — pricing.json lands in pricing.html and
+   index.html, story.json in story.html, the translations in all of them — so
+   a content change always shows up as a change to the page itself.
+
+   Stylesheets and scripts are deliberately NOT counted. Restyling a page does
+   not change what it says, and lastmod describes what it says.
+
+   Uncommitted work falls back to today, because the file HAS changed and the
+   last commit no longer describes it. No git, or a file with no history, does
+   the same — a slightly-too-recent date is a smaller lie than a stale one. */
+
+/** The date a page's content last actually changed, as YYYY-MM-DD. */
+function lastmodFor(file, fallback) {
+  const src = path.join(ROOT, file);
+  if (!fs.existsSync(src)) return fallback;
+  try {
+    // Uncommitted changes: the commit date no longer describes the file.
+    const dirty = execFileSync('git', ['status', '--porcelain', '--', file],
+      { cwd: ROOT, encoding: 'utf8' }).trim();
+    if (dirty) return fallback;
+
+    const date = execFileSync('git', ['log', '-1', '--format=%cs', '--', file],
+      { cwd: ROOT, encoding: 'utf8' }).trim();
+    return /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 const sitemap = (stamp) => `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${cfg.pages.filter((p) => p.index !== false).map((p) => {
   const loc = `${URL}/${p.file === 'index.html' ? '' : p.file}`;
   return `  <url>
     <loc>${loc}</loc>
-    <lastmod>${stamp}</lastmod>
+    <lastmod>${lastmodFor(p.file, stamp)}</lastmod>
     <changefreq>${p.changefreq || 'monthly'}</changefreq>
     <priority>${p.priority || '0.5'}</priority>
   </url>`;
