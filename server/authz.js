@@ -33,14 +33,19 @@ const GROUPS = {
   execution: ['assignTask', 'startTask', 'provideInput', 'recordOutput', 'submitTaskForReview', 'blockTask'],
   review: ['judgeQa', 'rejectTask', 'approveTask', 'completeTask'],
   admin: ['setAgentStatus', 'setKillSwitch', 'createUser', 'listUsers', 'setUserStatus', 'recoverStaleExecutions'],
+  /* Starting and checking agent runs — held by staff, not by an agent. */
   agent: ['evaluateAgentEligibility', 'assignTaskToAgent'],
 };
 
 /**
- * Role -> groups. Note what `client` cannot do: a client may look at their own
- * work and nothing else. Note what `agent` cannot do: it has no read group, no
- * review group, and no execution group — its entire authority is checking
- * eligibility and starting a qa-reader run, and approval is not among them.
+ * Role -> groups. These are PEOPLE's roles. Note what `client` cannot do: a
+ * client may look at their own work and nothing else.
+ *
+ * There is no `agent` or `system` login. The qa-reader runs inside the server
+ * process and never holds a session; its authority is the agent registry's
+ * allowlist, not this table. An `agent` account existed here with nothing to
+ * use it — except that it could start paid model runs through /qa-reader.
+ * When an agent runs out of process, it gets a role then, with a reason.
  */
 const MATRIX = {
   admin: ['read', 'crm', 'ordering', 'commercial', 'planning', 'execution', 'review', 'admin', 'agent'],
@@ -48,8 +53,6 @@ const MATRIX = {
   reviewer: ['read', 'review'],
   executor: ['read', 'execution'],
   client: [],
-  agent: ['agent'],
-  system: ['read', 'planning'],
 };
 
 /** The roles the system knows — the matrix's own keys, so a role cannot exist

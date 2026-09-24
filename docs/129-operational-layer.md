@@ -4,6 +4,15 @@
 foundation; this is what was built on top of it, and — first — what was found
 underneath.
 
+> **Superseded in one respect (24 September 2026).** The store this document
+> describes — committed JSON files under `operations/`, written by
+> `tools/ops.mjs` and shown read-only in the admin dashboard — is gone. The
+> server's SQLite database became the store of record in Phase 4 and never read
+> those files, so there were two stores that could not see each other. The
+> files, the JSON adapter and the admin tab were removed; `tools/ops.mjs` now
+> writes to the same database as the API (`docs/132` §8). Everything else here —
+> the domain model, snapshots, conversion, the repository contract — stands.
+
 ---
 
 ## 1 — What the architecture actually is

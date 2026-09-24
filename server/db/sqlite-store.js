@@ -1,13 +1,11 @@
 /**
  * SQLITE-STORE — the repository adapter.
  *
- * THE POINT OF PHASE 2 ARRIVING HERE.
- * The domain depends on four methods: get, put, all, find. That contract was
- * written before any database existed, precisely so this file could be added
- * without the domain moving a line. It is a drop-in replacement for
- * `jsonFileStore`, and `operations-test.mjs` — written against the JSON
- * adapter — passes against this one unchanged. That is the test that the
- * abstraction was real rather than decorative.
+ * THE STORE OF RECORD. The domain depends on four methods: get, put, all,
+ * find. That contract was written before any database existed, precisely so
+ * this file could be added without the domain moving a line — and the Phase 2
+ * suite's persistence section now runs against this adapter, two separate
+ * connections over one file.
  *
  * Each row is the domain's own document plus the few fields worth indexing.
  * `find(fn)` takes a JavaScript predicate, so it loads and filters: correct,

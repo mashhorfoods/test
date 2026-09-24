@@ -153,7 +153,24 @@ configuration flag.
 
 ---
 
-## 8. Operational endpoints
+## 8. Operating it
+
+**The store of record is the SQLite file `PIXORA_DB` names.** There is no
+second one: the API and the operator's command line write the same rows
+through the same domain operations.
+
+    PIXORA_DB=/var/lib/pixora/pixora.db node tools/ops.mjs list orders
+    PIXORA_DB=/var/lib/pixora/pixora.db node tools/ops.mjs order create --payload scope.json --client cli.…
+
+`ops order create` applies the same catalogue price check as `POST /orders`.
+The CLI cannot switch an agent on or off or throw the kill switch — those are
+runtime state inside the server process, so use the endpoints below.
+
+Only people log in. The roles are `admin`, `operations`, `reviewer`,
+`executor` and `client`; the qa-reader runs inside the server and holds no
+account.
+
+### Endpoints
 
 | Call | For |
 |---|---|

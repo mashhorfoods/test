@@ -898,6 +898,60 @@ section('21 — the permission table grants nothing no route checks');
   ok('21: every operation a route checks is granted to somebody', ungranted.length === 0, ungranted.join(', '));
 }
 
+section('D — one store of record: the CLI and the API see the same rows');
+{
+  /* SQLite is the store of record. The operator's CLI used to write committed
+     JSON files the server never read. Asserted across real processes: the CLI
+     writes, the running server reads. */
+  const { spawnSync } = await import('node:child_process');
+  const file = dbFile('one-store');
+  const cli = (...args) => spawnSync(process.execPath, [path.join(ROOT, 'tools/ops.mjs'), ...args], {
+    env: { ...process.env, PIXORA_DB: file, PIXORA_ENV: 'development', PIXORA_LOG: 'off' }, encoding: 'utf8',
+  });
+  const made = cli('client', 'add', '--name', 'CLI Co', '--email', 'cli@pixora.test');
+  ok('D: the CLI writes a client', made.status === 0, made.stderr);
+  const clientId = made.status === 0 ? JSON.parse(made.stdout).id : null;
+
+  const scope = path.join(tmpdir, 'cli-scope.json');
+  fs.writeFileSync(scope, JSON.stringify(payload([{ featureId: 'feat.branding.logo' }])));
+  const order = cli('order', 'create', '--payload', scope, '--client', clientId);
+  ok('D: the CLI creates an order', order.status === 0, order.stderr);
+
+  const cheap = payload([{ featureId: 'feat.branding.logo' }]);
+  cheap.services[0].features[0].pricing.amount = 1; cheap.services[0].features[0].pricing.unitAmount = 1;
+  cheap.pricing.subtotal.oneTime = 1; cheap.pricing.total.oneTime = 1;
+  fs.writeFileSync(scope, JSON.stringify(cheap));
+  const refused = cli('order', 'create', '--payload', scope, '--client', clientId);
+  ok('D: the CLI refuses an under-priced payload, as the API does', refused.status !== 0 && /catalogue prices it/.test(refused.stderr), refused.stderr);
+
+  const kill = cli('agent', 'kill', 'on');
+  ok('D: the CLI no longer pretends to throw the kill switch', kill.status !== 0 && /unknown command/.test(kill.stderr));
+
+  await withServerAt(file, async ({ app, api }) => {
+    const { token } = await admin(app, api, { email: 'one-store@pixora.test' });
+    const clients = (await api.get('/clients', token)).body.clients;
+    ok('D: the API sees the client the CLI wrote', clients.some((c) => c.id === clientId), JSON.stringify(clients.map((c) => c.id)));
+    const orders = (await api.get('/orders', token)).body.orders;
+    ok('D: and the order', orders.length === 1 && orders[0].clientId === clientId);
+  });
+  ok('D: there is no operations/ directory of JSON files any more', !fs.existsSync(path.join(ROOT, 'operations')));
+}
+
+section('21 — only people log in');
+{
+  /* The agent runs in-process and never holds a session. An `agent` login role
+     used to exist with nothing to use it, except that it could start paid model
+     runs through /qa-reader. */
+  const app = createApp({ config: { db: { file: dbFile('roles'), createIfMissing: true } } });
+  for (const role of ['agent', 'system']) {
+    let refused = null;
+    try { app.auth.createUser({ email: `${role}@pixora.test`, name: role, password: 'a-long-enough-password', role }); }
+    catch (e) { refused = e; }
+    ok(`21: an account with the "${role}" role is refused`, refused && refused.code === 'VALIDATION_ERROR', String(refused && refused.message));
+  }
+  app.db.close();
+}
+
 section('21 — one pricing rule, browser and server (regression: composite parts refused)');
 {
   const { verifyPayloadPrices } = await import('../server/order-verification.js');

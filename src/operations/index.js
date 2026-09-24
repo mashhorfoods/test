@@ -854,7 +854,7 @@ export { AGENT_GRANTABLE, AGENT_FORBIDDEN } from './agent.js';
 export { AUTOMATION_ALLOWED_ACTIONS } from './automation.js';
 export { findCycle } from './task-generator.js';
 export { taskKey, taskId } from './task.js';
-export { memoryStore, jsonFileStore, repositories } from './repository.js';
+export { memoryStore, repositories } from './repository.js';
 export { createCatalogue } from './catalogue-read.js';
 export { createStatus } from './status.js';
 export { allWorkflows, workflowFor, pipelineFor } from './project.js';

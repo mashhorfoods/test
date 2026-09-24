@@ -372,7 +372,7 @@ width it broke at.
 | **`operations-test.mjs`** | **no browser** | **both, on the data** | **`src/operations/` — 227 assertions: order, CRM and project against the real catalogue, with a frozen clock** |
 | **`task-test.mjs`** | **no browser** | **both, on the data** | **`src/operations/` — 215 assertions: task engine, automation, agent contract, scenarios A–Y** |
 | **`backend-test.mjs`** | **no browser** | **both, over HTTP** | **`server/` — 167 assertions: migrations, persistence across restart, auth, authorization, isolation, durable automation, the agent contract** |
-| **`phase4d-test.mjs`** | **no browser** | **n/a** | **production validation — 225 assertions: staging readiness, secret containment, envelope minimisation, prompt injection, self-approval, timeout and retry, restart durability, idempotency across two connections, login rate limiting, proxy handling** |
+| **`phase4d-test.mjs`** | **no browser** | **n/a** | **production validation — 234 assertions: staging readiness, secret containment, envelope minimisation, prompt injection, self-approval, timeout and retry, restart durability, idempotency across two connections, login rate limiting, proxy handling** |
 | **`ai-pilot.mjs`** | **no browser** | **n/a** | **the controlled pilot and its measurement — 12 tasks, human ground truth declared before the run, `LIVE` with a credential and `REHEARSAL` without** |
 | **`ai-live-test.mjs`** | **no browser** | **n/a** | **the real provider adapter against a wire-protocol stub and against api.anthropic.com (19 assertions; the full round trip needs a key)** |
 

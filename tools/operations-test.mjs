@@ -17,9 +17,12 @@
    ============================================================================= */
 
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createOperations, memoryStore, jsonFileStore } from '../src/operations/index.js';
+import { createOperations, memoryStore } from '../src/operations/index.js';
+import { openDatabase } from '../server/db/database.js';
+import { sqliteRepositories } from '../server/db/sqlite-store.js';
 import { createCatalogue } from '../src/operations/catalogue-read.js';
 import { validateOrder } from '../src/operations/order.js';
 import { createHarness } from './lib/harness.mjs';
@@ -503,42 +506,35 @@ group('amendment');
   ok('an amendment with no reason is refused', o.amendOrder(made.order.id, next, {}).ok === false);
 }
 
-/* ---------- the file store round-trips ------------------------------------- */
+/* ---------- the store of record round-trips -------------------------------- */
 group('persistence');
 {
-  const dir = fs.mkdtempSync(path.join(ROOT, '.ops-test-'));
+  /* SQLite is the store of record, so this is where the round trip is proven:
+     two completely separate connections over one database file, which is what
+     the API and the operator's command line are. */
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pixora-ops-'));
+  const file = path.join(dir, 'ops.db');
+  const migrationsDir = path.join(ROOT, 'server/migrations');
+  const first = openDatabase(file, { migrationsDir });
+  const second = openDatabase(file, { migrationsDir });
   try {
-    const stores = {
-      clients: jsonFileStore(path.join(dir, 'clients.json'), fs),
-      orders: jsonFileStore(path.join(dir, 'orders.json'), fs),
-      projects: jsonFileStore(path.join(dir, 'projects.json'), fs),
-    };
     const f = fixtures();
-    const a = createOperations({ catalogue: CATALOGUE, statuses: STATUSES, stores, ...f });
+    const a = createOperations({ catalogue: CATALOGUE, statuses: STATUSES, stores: sqliteRepositories(first), ...f });
     const { client } = a.resolveClient(CLIENT);
     const made = mustCreate(a, payload([{ featureId: 'feat.branding.logo' }]), { clientId: client.id });
     a.submitOrder(made.order.id); a.reviewOrder(made.order.id); a.approveOrder(made.order.id);
     const conv = a.convertOrderToProject(made.order.id);
 
-    /* A COMPLETELY SEPARATE instance over the same files — which is what the
-       next operator's session is. */
-    const b = createOperations({
-      catalogue: CATALOGUE,
-      statuses: STATUSES,
-      stores: {
-        clients: jsonFileStore(path.join(dir, 'clients.json'), fs),
-        orders: jsonFileStore(path.join(dir, 'orders.json'), fs),
-        projects: jsonFileStore(path.join(dir, 'projects.json'), fs),
-      },
-      ...fixtures(),
-    });
+    const b = createOperations({ catalogue: CATALOGUE, statuses: STATUSES, stores: sqliteRepositories(second), ...fixtures() });
     ok('the client survived the round trip', b.getClient(client.id).name === 'Al Mada');
     ok('the order survived', b.getOrder(made.order.id).pricing.total.oneTime === 350);
     ok('the project survived', b.getProject(conv.project.id).orderId === made.order.id);
     ok('and conversion is still idempotent across sessions',
       b.convertOrderToProject(made.order.id).created === false);
-    ok('the file is valid JSON with a version', JSON.parse(fs.readFileSync(path.join(dir, 'orders.json'), 'utf8')).version === 1);
+    ok('the order is one row, with its status in a real column',
+      second.prepare('SELECT status FROM orders WHERE id = ?').get(made.order.id).status === 'converted_to_project');
   } finally {
+    first.close(); second.close();
     fs.rmSync(dir, { recursive: true, force: true });
   }
 }

@@ -1,19 +1,15 @@
 /* =============================================================================
-   OPS — the operator's command line for orders, clients and projects.
+   OPS — the operator's command line for clients, orders, projects and tasks.
 
-   WHY A COMMAND LINE AND NOT A FORM.
-   There is no backend (`docs/129` §1). A visitor's browser cannot write to this
-   repository, and giving it credentials so it could would be the worst idea in
-   the project. So the write path is the one that already exists for prices: a
-   person, with a token, committing a file.
+   IT WRITES TO THE STORE OF RECORD: the server's SQLite database, the one
+   PIXORA_DB names, through the same createApp() the server boots. So the CLI
+   and the API are two doors into one set of records, with the same domain
+   operations, the same automation ledger and the same audit trail behind both.
+   (Until September 2026 this wrote committed JSON files under operations/,
+   which the server never read. There is one store now.)
 
-   This is that person's tool. It calls exactly the same domain functions an
-   HTTP handler would — `createOperations()` from src/operations — so when a
-   backend does arrive, the API implements the same eleven calls and this file
-   keeps working or gets deleted, without the business logic moving.
-
-   Everything it writes lands in operations/*.json, which is committed. `git log`
-   is the audit trail nobody had to build.
+   It runs against whatever PIXORA_DB and PIXORA_ENV say, exactly like the
+   server: point it at staging to try something, at production to do it.
 
      node tools/ops.mjs client add --name "Al Mada" --email ops@almada.example
      node tools/ops.mjs order create --payload scope.json --client cli.…
@@ -22,33 +18,21 @@
      node tools/ops.mjs order convert ord.…
      node tools/ops.mjs project show  prj.…
      node tools/ops.mjs list orders
+
+   WHAT IT DOES NOT DO: switch an agent on or off, or throw the kill switch.
+   Those are runtime state held by the server process, and a command that
+   changed them in this short-lived process would report success and stop
+   nothing. Use the API: POST /agents/:id/status, POST /agents/kill-switch.
    ============================================================================= */
 
 import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { createOperations, jsonFileStore } from '../src/operations/index.js';
+import { createApp } from '../server/app.js';
+import { verifyPayloadPrices } from '../server/order-verification.js';
 
-const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OPS = path.join(ROOT, 'operations');
-const read = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
+if (!process.env.PIXORA_LOG) process.env.PIXORA_LOG = 'off';
 
-const ops = createOperations({
-  catalogue: read('catalogue/catalogue.json'),
-  statuses: read('src/data/operations/statuses.json'),
-  /* Phase 3. The execution policy, the automation rules and the agent registry
-     are data; without them this is exactly the Phase 2 tool. */
-  execution: read('src/data/operations/execution.json'),
-  automationRules: read('src/data/operations/automation.json'),
-  agentRegistry: read('src/data/operations/agents.json'),
-  stores: {
-    clients: jsonFileStore(path.join(OPS, 'clients.json'), fs),
-    orders: jsonFileStore(path.join(OPS, 'orders.json'), fs),
-    projects: jsonFileStore(path.join(OPS, 'projects.json'), fs),
-    tasks: jsonFileStore(path.join(OPS, 'tasks.json'), fs),
-    audit: jsonFileStore(path.join(OPS, 'audit.json'), fs),
-  },
-});
+const app = createApp();
+const { ops } = app;
 
 /* ---------- arguments ------------------------------------------------------ */
 
@@ -112,9 +96,7 @@ ops — orders, clients and projects
   task   cancel     <taskId> [--reason "..."]
 
   agent  list
-  agent  status     <agentId> active|paused|disabled
   agent  eligible   <taskId> [--agent <agentId>]
-  agent  kill       on|off
 
   audit  list       [--project <id>] [--entity <id>] [--actor human|system|automation|ai_agent]
   rules  list
@@ -145,6 +127,11 @@ const commands = {
     create() {
       if (!flags.payload) die('order create needs --payload <file.json> — the builder payload, not a message');
       const payload = JSON.parse(fs.readFileSync(flags.payload, 'utf8'));
+      /* The same boundary check POST /orders applies: every price recomputed
+         from the catalogue before it becomes a snapshot. A payload is a claim,
+         whichever door it comes through. */
+      const wrong = verifyPayloadPrices(payload, ops.catalogue);
+      if (wrong.length) problems({ problems: wrong });
       const r = ops.createOrder(payload, { clientId: flags.client || null });
       return r.ok ? out(r.order) : problems(r);
     },
@@ -230,9 +217,7 @@ const commands = {
         integration: (a.metadata || {}).integration,
       })));
     },
-    status() { const r = ops.setAgentStatus(positional[0], positional[1]); return r.ok ? out(r.agent) : problems(r); },
     eligible() { const r = ops.evaluateAgentEligibility({ taskId: positional[0], agentId: flags.agent || null }); return r.ok ? out(r) : problems(r); },
-    kill() { const r = ops.setKillSwitch(positional[0] === 'on'); return r.ok ? out(r) : problems(r); },
   },
 
   audit: {
@@ -288,5 +273,6 @@ if (group === 'states') {
   if (!g) die(`unknown group "${group}"\n${USAGE}`);
   const fn = g[action];
   if (!fn) die(`unknown command "${group} ${action}"\n${USAGE}`);
-  try { fn(); } catch (e) { die(`\n${e.message}\n`); }
+  try { fn(); } catch (e) { app.db.close(); die(`\n${e.message}\n`); }
 }
+app.db.close();
