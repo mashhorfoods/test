@@ -367,12 +367,12 @@ width it broke at.
 | **`responsive.js`** | **320, 375, 414, 768, 1024** | **English and Arabic** | **all eight** |
 | **`arabic.js`** | — *(static, no browser)* | **the pairing between them** | **all built pages + `navigation-map.js`** |
 | `a11y.js` | axe defaults | both | all built pages |
-| **`builder-test.cjs`** | **1280** | **English and Arabic** | **`/pricing` only — it drives the package builder (73 assertions)** |
+| **`builder-test.cjs`** | **1280** | **English and Arabic** | **`/pricing` only — it drives the package builder (74 assertions)** |
 | **`architecture-test.js`** | **no browser** | **both, on the data** | **`catalogue/` and `src/data/` — 1,463 assertions on the locked business facts, in about a second** |
 | **`operations-test.mjs`** | **no browser** | **both, on the data** | **`src/operations/` — 227 assertions: order, CRM and project against the real catalogue, with a frozen clock** |
 | **`task-test.mjs`** | **no browser** | **both, on the data** | **`src/operations/` — 215 assertions: task engine, automation, agent contract, scenarios A–Y** |
-| **`backend-test.mjs`** | **no browser** | **both, over HTTP** | **`server/` — 168 assertions: migrations, persistence across restart, auth, authorization, isolation, durable automation, the agent contract** |
-| **`phase4d-test.mjs`** | **no browser** | **n/a** | **production validation — 194 assertions: staging readiness, secret containment, envelope minimisation, prompt injection, self-approval, timeout and retry, restart durability, idempotency across two connections, login rate limiting, proxy handling** |
+| **`backend-test.mjs`** | **no browser** | **both, over HTTP** | **`server/` — 167 assertions: migrations, persistence across restart, auth, authorization, isolation, durable automation, the agent contract** |
+| **`phase4d-test.mjs`** | **no browser** | **n/a** | **production validation — 225 assertions: staging readiness, secret containment, envelope minimisation, prompt injection, self-approval, timeout and retry, restart durability, idempotency across two connections, login rate limiting, proxy handling** |
 | **`ai-pilot.mjs`** | **no browser** | **n/a** | **the controlled pilot and its measurement — 12 tasks, human ground truth declared before the run, `LIVE` with a credential and `REHEARSAL` without** |
 | **`ai-live-test.mjs`** | **no browser** | **n/a** | **the real provider adapter against a wire-protocol stub and against api.anthropic.com (19 assertions; the full round trip needs a key)** |
 

@@ -674,3 +674,42 @@ the twelve readings independently (W-4D-7), and only then decide whether
 `agent.qa-reader` widens beyond a pilot.
 
 Phase 4D ends here. Phase 5 is not started.
+
+---
+
+## Addendum — maintainability review, 24 September 2026
+
+A later code-quality review found three defects that Phase 4D's own tests had
+missed. They are recorded here because two of them sit squarely in what this
+report certified.
+
+**A1 — automation never escalated an exhausted agent on the server.** The
+Phase 4B wrapper around the rule engine claimed a rule's idempotency key before
+the engine evaluated the rule's conditions. On an agent's first failure (attempts
+left, condition false) `auto.escalate-no-agent` recorded itself as completed, and
+at the last failure it was skipped as already done. Escalation after three human
+rejections worked only by accident, under the rework rule's ledger row. §29 of
+this report was satisfied by a test that called `escalateTask` by hand, which is
+exactly why it was missed. The claim now happens inside the engine, after the
+conditions pass, through a pluggable ledger (`src/operations/automation.js`,
+`server/automation-runtime.js`). The regression test drives the real domain
+operation; it fails five times against the old code.
+
+**A2 — three recovery jobs were written and never scheduled.** Stale agent
+executions, expired sessions and elapsed login counters. `app.sweep()` now runs
+all four timed jobs, and the server's timer calls it. A stale automation row now
+escalates instead of returning to `pending`, a state no code ever left.
+
+**Pricing — the server refused the complete landing page.** The builder and the
+server priced a composite's parts differently, so `POST /orders` would have
+refused every builder payload that included it. Section 17's "price payload
+manipulation: PASS" was true for everything it tested and had never been given a
+composite. One `linePrice()` now serves both, and `builder-test` feeds the real
+builder's payload into the server's check.
+
+**W-4D-4 is closed.** `tools/lib/browser.cjs` finds an installed Chromium; the
+whole suite passes with `PLAYWRIGHT_CHROMIUM` unset.
+
+None of this changes the production-readiness decision in §21. It does lower
+confidence in anything this report called PASS on the strength of a test that
+never drove the real path: A1 and A2 were both of that kind.

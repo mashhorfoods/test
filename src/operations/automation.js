@@ -27,7 +27,7 @@
  * actions run — so a rule whose conditions were not met has claimed nothing,
  * and a later event that does meet them still fires. (The Phase 4B wrapper
  * claimed before the conditions were evaluated, which silently burned the
- * escalation keys; see docs/phase-4d report addendum.)
+ * escalation keys; see the addendum to docs/phase-4d-production-validation-report.md.)
  */
 
 import { EVENTS } from './events.js';
