@@ -342,6 +342,69 @@ function scenario(name, { withRuntime = false } = {}) {
 }
 
 
+section('4A — indexed reads (where)');
+{
+  /* The domain asks `where({ field: value })` for every equality lookup, so
+     the SQLite store can answer from an index instead of parsing every row.
+     Three things are asserted: the answers are exactly what find() gives, the
+     database really does use the index, and the column map matches what put()
+     writes, because if they drift the index silently answers the wrong question. */
+  const db = openDatabase(dbFile('where'), { migrationsDir: path.join(ROOT, 'server/migrations') });
+  const stores = sqliteRepositories(db);
+  for (let p = 0; p < 6; p += 1) {
+    for (let t = 0; t < 5; t += 1) {
+      stores.tasks.put({ id: `tsk.${p}.${t}`, key: `k.${p}.${t}`, projectId: `prj.${p}`, clientId: `cli.${p % 2}`,
+        status: ['pending', 'ready', 'assigned', 'in_progress', 'completed'][t], assignedTo: t % 2 ? 'agent.qa-reader' : 'worker-1',
+        executorType: t % 2 ? 'ai' : 'human' });
+    }
+  }
+  const same = (a, b) => JSON.stringify(a.map((r) => r.id).sort()) === JSON.stringify(b.map((r) => r.id).sort());
+  const cases = [
+    [{ projectId: 'prj.3' }, (r) => r.projectId === 'prj.3'],
+    [{ status: ['assigned', 'in_progress'], assignedTo: 'agent.qa-reader', executorType: 'ai' },
+      (r) => ['assigned', 'in_progress'].includes(r.status) && r.assignedTo === 'agent.qa-reader' && r.executorType === 'ai'],
+    [{ clientId: 'cli.1', status: 'completed' }, (r) => r.clientId === 'cli.1' && r.status === 'completed'],
+    [{ executorType: 'human' }, (r) => r.executorType === 'human'],
+    [{ projectId: 'prj.nope' }, () => false],
+    [{ status: [] }, () => false],
+  ];
+  for (const [filter, fn] of cases) {
+    ok(`4A: where(${JSON.stringify(filter)}) answers exactly what find() does`, same(stores.tasks.where(filter), stores.tasks.find(fn)));
+  }
+
+  stores.tasks.where({ projectId: 'prj.1' });
+  ok('4A: an indexed field goes into the SQL', /WHERE project_id = \?/.test(stores.tasks.lastQuery), stores.tasks.lastQuery);
+  const plan = (sql, ...args) => db.prepare(`EXPLAIN QUERY PLAN ${sql}`).all(...args).map((r) => r.detail).join(' | ');
+  ok('4A: tasks by project are read through an index',
+    /USING INDEX idx_tasks_project/.test(plan('SELECT doc FROM tasks WHERE project_id = ?', 'prj.1')));
+  ok('4A: tasks by assignee are read through an index (migration 004)',
+    /USING INDEX idx_tasks_assigned/.test(plan('SELECT doc FROM tasks WHERE assigned_to = ?', 'agent.qa-reader')));
+  ok('4A: projects by order are read through an index (migration 004)',
+    /USING INDEX idx_projects_order/.test(plan('SELECT doc FROM projects WHERE order_id = ?', 'ord.x')));
+
+  /* The column map, checked against what put() actually writes. */
+  const { FIELD_COLUMNS } = await import('../server/db/sqlite-store.js');
+  const drift = [];
+  for (const [table, fields] of Object.entries(FIELD_COLUMNS)) {
+    for (const [field, column] of Object.entries(fields)) {
+      const id = `probe.${table}.${field}`;
+      /* Defaults for the NOT NULL columns, then the field under test on top. */
+      stores[table].put({ id, key: `key-${id}`, status: 'probe', projectId: 'prj.probe',
+        createdAt: '2026-01-01T00:00:00.000Z', [field]: `value-of-${field}` });
+      const got = db.prepare(`SELECT ${column} AS v FROM ${table} WHERE id = ?`).get(id).v;
+      if (got !== `value-of-${field}`) drift.push(`${table}.${field} -> ${column} holds ${got}`);
+    }
+  }
+  ok('4A: every field where() maps to a column is the field put() writes there', drift.length === 0, drift.join('; '));
+
+  /* And the domain no longer hands its stores a predicate for a plain lookup. */
+  const domain = fs.readdirSync(path.join(ROOT, 'src/operations')).filter((f) => f.endsWith('.js'))
+    .map((f) => fs.readFileSync(path.join(ROOT, 'src/operations', f), 'utf8')).join('\n');
+  ok('4A: no domain module scans a store with find() for an equality lookup',
+    !/\b(repo\.[a-z]+|store|orders|projects|tasks)\.find\(\(/.test(domain));
+  db.close();
+}
+
 section('4B — automation state is durable');
 {
   const s = scenario('durable');

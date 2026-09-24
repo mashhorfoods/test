@@ -241,7 +241,7 @@ export function createOperations({
 
     getProject: (id) => repo.projects.get(id),
     listProjects: () => repo.projects.all(),
-    projectForOrder: (orderId) => repo.projects.find((p) => p.orderId === orderId)[0] || null,
+    projectForOrder: (orderId) => repo.projects.where({ orderId })[0] || null,
 
     getProjectPipelines: (id) => {
       const p = repo.projects.get(id);
@@ -291,7 +291,7 @@ export function createOperations({
      * all arrive here, and all three are checked the same way.
      */
 
-    _tasksOf: (projectId) => repo.tasks.find((t) => t.projectId === projectId),
+    _tasksOf: (projectId) => repo.tasks.where({ projectId }),
     _taskById: (id) => repo.tasks.get(id),
 
     _moveTask(task, to, { by, actorType = 'human', reason = null, event = null, agentId = null, ruleId = null }) {
@@ -330,7 +330,7 @@ export function createOperations({
 
     getTask: (id) => repo.tasks.get(id),
     getTasks(filter = {}) {
-      return repo.tasks.find((t) => Object.entries(filter).every(([k, v]) => t[k] === v));
+      return repo.tasks.where(filter);
     },
     explainTask(id) {
       const t = repo.tasks.get(id);
@@ -585,7 +585,7 @@ export function createOperations({
     _syncProgress(projectId, { by = 'system' } = {}) {
       const project = repo.projects.get(projectId);
       if (!project) return null;
-      const all = repo.tasks.find((t) => t.projectId === projectId);
+      const all = repo.tasks.where({ projectId });
       const at = clock();
       const done_ = (list) => list.length > 0 && list.every((t) => ['completed', 'cancelled'].includes(t.status));
       const started = (list) => list.some((t) => t.status !== 'pending' && t.status !== 'ready');
@@ -626,7 +626,7 @@ export function createOperations({
 
     /** Counted, never estimated. */
     executionProgress(projectId) {
-      const all = repo.tasks.find((t) => t.projectId === projectId);
+      const all = repo.tasks.where({ projectId });
       const by_ = (k) => all.reduce((m, t) => ({ ...m, [t[k]]: (m[t[k]] || 0) + 1 }), {});
       return {
         tasks: { total: all.length, completed: all.filter((t) => t.status === 'completed').length },
@@ -657,8 +657,7 @@ export function createOperations({
       return done(out);
     },
 
-    _runningFor: (agentId) => repo.tasks.find((t) => t.executorType === 'ai' && t.assignedTo === agentId
-      && ['assigned', 'in_progress'].includes(t.status)).length,
+    _runningFor: (agentId) => repo.tasks.where({ assignedTo: agentId, executorType: 'ai', status: ['assigned', 'in_progress'] }).length,
 
     evaluateAgentEligibility({ taskId, agentId = null }, { by = 'system' } = {}) {
       if (!agents) return fail([{ path: 'agents', message: 'no agent registry is loaded' }]);

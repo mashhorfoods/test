@@ -148,8 +148,8 @@ export function updateClient(client, patch, { now = () => new Date(), by = 'oper
 
 /** Everything this client has asked for, newest first. */
 export const ordersOf = (clientId, orders) =>
-  orders.find((o) => o.clientId === clientId).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+  orders.where({ clientId }).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
 
 /** Everything being built for them. */
 export const projectsOf = (clientId, projects) =>
-  projects.find((p) => p.clientId === clientId).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+  projects.where({ clientId }).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));

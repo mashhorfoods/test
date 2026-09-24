@@ -39,8 +39,8 @@ export function createAudit(store, { now = () => new Date() } = {}) {
       return entry;
     },
     all: () => store.all(),
-    forEntity: (entityId) => store.find((e) => e.entityId === entityId),
-    forProject: (projectId) => store.find((e) => e.projectId === projectId),
-    byActorType: (t) => store.find((e) => e.actorType === t),
+    forEntity: (entityId) => store.where({ entityId }),
+    forProject: (projectId) => store.where({ projectId }),
+    byActorType: (actorType) => store.where({ actorType }),
   };
 }

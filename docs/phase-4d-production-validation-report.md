@@ -707,6 +707,12 @@ manipulation: PASS" was true for everything it tested and had never been given a
 composite. One `linePrice()` now serves both, and `builder-test` feeds the real
 builder's payload into the server's check.
 
+**W-4D-6 is closed.** The domain now asks its stores `where({ field: value })`
+for every equality lookup, and SQLite answers from an index (migration 004 adds
+the two that were missing). On 5,000 tasks, reading one project's tasks went
+from about 51 ms to 0.12 ms, and counting an agent's running tasks from about
+40 ms to 0.04 ms.
+
 **W-4D-4 is closed.** `tools/lib/browser.cjs` finds an installed Chromium; the
 whole suite passes with `PLAYWRIGHT_CHROMIUM` unset.
 

@@ -32,7 +32,7 @@ export function generateTasksForProject(project, {
 }) {
   if (!project) throw new Error('task-generator: no project');
 
-  const existingForProject = tasks.find((t) => t.projectId === project.id);
+  const existingForProject = tasks.where({ projectId: project.id });
   const byKey = new Map(existingForProject.map((t) => [t.key, t]));
 
   const created = [];
@@ -180,7 +180,7 @@ export function findCycle(list) {
  * Deterministic and cheap: it reads state rather than polling for it.
  */
 export function refreshReadiness(projectId, { tasks, status, at = new Date().toISOString(), by = 'system' }) {
-  const list = tasks.find((t) => t.projectId === projectId);
+  const list = tasks.where({ projectId });
   const byId = (id) => list.find((t) => t.id === id) || null;
   const moved = [];
   for (const task of list) {

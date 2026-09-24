@@ -20,10 +20,27 @@
  *   all()        -> record[]
  *   find(fn)     -> record[]
  *
+ * and one optional fifth, which `repositories()` supplies if a store lacks it:
+ *
+ *   where({ field: value, … }) -> record[]
+ *
+ * Equality on each field; an array value means "any of these". It exists
+ * because `find(fn)` hands the store an opaque function, so a database can do
+ * nothing with it but load every row and let JavaScript decide. `where` says
+ * WHAT is wanted, so the SQLite store can answer it with an indexed WHERE and
+ * parse only the rows that match. The domain uses `where` for every lookup
+ * that is plain equality and keeps `find` for the ones that are not.
+ *
  * Deliberately synchronous. Both adapters are (node:sqlite is synchronous),
  * the tests are, and pretending otherwise would put `await` through every
  * call site to buy nothing today.
  */
+
+/** Does a record match a `where` filter? The one definition of it. */
+export const matches = (fields) => {
+  const entries = Object.entries(fields);
+  return (record) => entries.every(([k, v]) => (Array.isArray(v) ? v.includes(record[k]) : record[k] === v));
+};
 
 /** Records in memory. The tests use this; nothing is persisted. */
 export function memoryStore(seed = []) {
@@ -38,6 +55,7 @@ export function memoryStore(seed = []) {
     },
     all: () => [...rows.values()].map((r) => structuredClone(r)),
     find(fn) { return this.all().filter(fn); },
+    where(fields) { return this.all().filter(matches(fields)); },
   };
 }
 
@@ -60,5 +78,16 @@ export function repositories({ clients, orders, projects, tasks = null, audit = 
       }
     }
   }
-  return { clients, orders, projects, tasks: tasks || memoryStore(), audit: audit || memoryStore() };
+  /* A store written before `where` existed still works: it gets the slow,
+     correct version on top of find(). */
+  const withWhere = (store) => (typeof store.where === 'function'
+    ? store
+    : Object.assign(Object.create(store), { where: (fields) => store.find(matches(fields)) }));
+  return {
+    clients: withWhere(clients),
+    orders: withWhere(orders),
+    projects: withWhere(projects),
+    tasks: withWhere(tasks || memoryStore()),
+    audit: withWhere(audit || memoryStore()),
+  };
 }

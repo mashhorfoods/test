@@ -56,7 +56,7 @@ export function convertOrderToProject(order, {
        licence to make a second one silently. */
     throw new Error(`project: order ${order.id} names project ${order.projectId}, which does not exist`);
   }
-  const already = projects.find((p) => p.orderId === order.id)[0];
+  const already = projects.where({ orderId: order.id })[0];
   if (already) return { project: already, created: false, reason: 'a project already references this order' };
 
   /* --- only an approved order becomes work -------------------------------- */

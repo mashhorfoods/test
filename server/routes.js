@@ -134,7 +134,7 @@ export function createRoutes(app) {
          that loads everything and then hides most of it has already read it. */
       const scope = authz.scope(ctx.user);
       const orders = Object.keys(scope).length
-        ? ops.stores.orders.findWhere(scope)
+        ? ops.stores.orders.where(scope)
         : ops.listOrders();
       return ok({ orders });
     }],
@@ -198,7 +198,7 @@ export function createRoutes(app) {
     ['GET', '/projects', 'auth', (ctx) => {
       guard(ctx.user, 'listProjects');
       const scope = authz.scope(ctx.user);
-      const projects = Object.keys(scope).length ? ops.stores.projects.findWhere(scope) : ops.listProjects();
+      const projects = Object.keys(scope).length ? ops.stores.projects.where(scope) : ops.listProjects();
       return ok({ projects });
     }],
     ['GET', '/projects/:id', 'auth', (ctx) => {

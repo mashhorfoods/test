@@ -8,11 +8,25 @@
  * connections over one file.
  *
  * Each row is the domain's own document plus the few fields worth indexing.
- * `find(fn)` takes a JavaScript predicate, so it loads and filters: correct,
- * and O(n) — which is the right trade at an agency's scale and the wrong one at
- * a marketplace's. `findWhere()` is the indexed path, used by the API for
- * scoping, never by the domain.
+ * `find(fn)` takes a JavaScript predicate, so all it can do is load every row
+ * and filter. `where({ field: value })` is the indexed path: every field that
+ * has a real column becomes part of the SQL WHERE, so only matching rows are
+ * read and parsed, and the full filter is then re-applied to what came back,
+ * so a field without a column is still honoured, just not by the index.
  */
+
+import { matches } from '../../src/operations/repository.js';
+
+/* Which document fields have a real column, and what it is called. The same
+   facts as COLUMNS below, the other way round — kept next to it so the two
+   cannot drift apart unnoticed (backend-test checks that they agree). */
+export const FIELD_COLUMNS = {
+  clients: { email: 'email', phone: 'phone' },
+  orders: { clientId: 'client_id', projectId: 'project_id', status: 'status' },
+  projects: { clientId: 'client_id', orderId: 'order_id', status: 'status' },
+  tasks: { key: 'task_key', projectId: 'project_id', clientId: 'client_id', status: 'status', assignedTo: 'assigned_to' },
+  audit: { projectId: 'project_id', entityId: 'entity_id', entityType: 'entity_type', actorType: 'actor_type', action: 'action' },
+};
 
 const COLUMNS = {
   clients: (r) => ({ email: r.email || null, phone: r.phone || null }),
@@ -72,19 +86,29 @@ export function sqliteStore(db, table) {
       return this.all().filter(fn);
     },
 
-    /* --- beyond the contract, for the API only ---------------------------- */
-
     /**
-     * The indexed path. Used where isolation matters — listing a client's own
-     * projects must not begin by loading everybody's. The domain never calls
-     * this: it would be a second way to ask a question the contract already
-     * answers, and the two would drift.
+     * Equality lookup through the indexes. `lastQuery` records the SQL of the
+     * most recent call, so a test can assert the index was actually used
+     * rather than trusting that it was.
      */
-    findWhere(where = {}, { limit = null } = {}) {
-      const keys = Object.keys(where);
-      const sql = `SELECT doc FROM ${table}${keys.length ? ` WHERE ${keys.map((k) => `${k} = ?`).join(' AND ')}` : ''}`
-        + (limit ? ` LIMIT ${Number(limit)}` : '');
-      return db.prepare(sql).all(...keys.map((k) => where[k])).map(parse);
+    where(fields = {}) {
+      const indexed = FIELD_COLUMNS[table];
+      const clauses = []; const args = [];
+      for (const [field, value] of Object.entries(fields)) {
+        const column = indexed[field];
+        if (!column || value === undefined || value === null) continue;
+        if (Array.isArray(value)) {
+          if (!value.length) return [];
+          clauses.push(`${column} IN (${value.map(() => '?').join(', ')})`);
+          args.push(...value);
+        } else {
+          clauses.push(`${column} = ?`);
+          args.push(value);
+        }
+      }
+      const sql = `SELECT doc FROM ${table}${clauses.length ? ` WHERE ${clauses.join(' AND ')}` : ''}`;
+      this.lastQuery = sql;
+      return db.prepare(sql).all(...args).map(parse).filter(matches(fields));
     },
   };
 }

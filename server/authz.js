@@ -108,7 +108,7 @@ export function createAuthz() {
     /** The filter a listing must apply before it returns anything. */
     scope(user) {
       if (!user) throw fail('AUTHENTICATION_ERROR', 'not signed in');
-      return user.role === 'client' ? { client_id: user.clientId } : {};
+      return user.role === 'client' ? { clientId: user.clientId } : {};
     },
   };
 }
