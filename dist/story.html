@@ -1420,6 +1420,13 @@ function initChallenge(scope = document) {
     });
   });
 }
+function linePrice({ type, from = 0, factor = 1, quantity = 1, isPart = false }) {
+  const unpriced = type === 'included' || type === 'quote';
+  const unitAmount = unpriced ? 0 : Math.round(from * factor);
+  const counted = type === 'unit' ? quantity : 1;
+  const amount = unpriced || isPart ? 0 : unitAmount * counted;
+  return { unitAmount, amount };
+}
 const SEL = '[data-build]';
 const list = (el, sel) => Array.from(el.querySelectorAll(sel));
 const ids = (el, attr) => (el.getAttribute(attr) || '').split(/\s+/).filter(Boolean);
@@ -1659,7 +1666,7 @@ function initBuilder(scope = document) {
         else {
           const factor = tier ? (r.tierFactors.get(tier) || 1) : 1;
           const counted = (r.qtyInput || r.optionsDriveQty) ? q : 1;
-          const sum = Math.round(r.price * factor * counted);
+          const sum = linePrice({ type: r.priceType, from: r.price, factor, quantity: counted }).amount;
           if (r.monthly) month += sum; else once += sum;
           perService.set(r.service, (perService.get(r.service) || 0) + sum);
           price = `${money(sum)} ${say('currency', ar)}${r.monthly ? ` ${say('perMonth', ar)}` : ''}`;
@@ -1679,6 +1686,7 @@ function initBuilder(scope = document) {
         lines.push({ name, price });
         const factor = tier ? (r.tierFactors.get(tier) || 1) : 1;
         const counted = (r.qtyInput || r.optionsDriveQty) ? q : 1;
+        const priced = linePrice({ type: r.priceType, from: r.price, factor, quantity: counted, isPart: partOf.has(r.id) });
         const entry = {
           featureId: r.id,
           serviceId: r.service,
@@ -1689,9 +1697,8 @@ function initBuilder(scope = document) {
           pricing: {
             type: partOf.has(r.id) ? 'part' : r.priceType,
             billing: r.monthly ? 'monthly' : 'once',
-            unitAmount: r.priceType === 'included' || r.priceType === 'quote' ? 0 : Math.round(r.price * factor),
-            amount: partOf.has(r.id) || r.priceType === 'included' || r.priceType === 'quote'
-              ? 0 : Math.round(r.price * factor * counted),
+            unitAmount: priced.unitAmount,
+            amount: priced.amount,
           },
         };
         if (tier) entry.tier = tier;

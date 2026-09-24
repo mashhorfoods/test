@@ -25,10 +25,10 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 
-let chromium;
-try { ({ chromium } = require('playwright-core')); } catch {
+try { require.resolve('playwright-core'); } catch {
   console.log('builder-test: playwright-core is not installed — skipping.'); process.exit(0);
 }
+const { launchChromium } = require('./lib/browser.cjs');
 
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
@@ -115,7 +115,7 @@ const totals = (p) => p.evaluate(() => {
   }
   const server = await serve();
   const BASE = `http://127.0.0.1:${server.address().port}`;
-  const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROMIUM || undefined });
+  const browser = await launchChromium();
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 1000 } });
   const p = await ctx.newPage();
   const errors = [];
@@ -496,6 +496,16 @@ const totals = (p) => p.evaluate(() => {
     check('the three parts are present as parts', parts.length === 3, JSON.stringify(parts.map((f) => f.featureId)));
     check('and none of them is charged for again', parts.every((f) => f.pricing.amount === 0));
     check('the payload total is 120', o.pricing.total.oneTime === 120, JSON.stringify(o.pricing.total));
+
+    /* AND THE SERVER ACCEPTS WHAT THE BUILDER WROTE. The two used to price a
+       composite's parts differently, so this exact payload — the complete
+       landing page — was refused by POST /orders. Both now call the one
+       linePrice(); this is the check that they still agree. */
+    const { verifyPayloadPrices } = await import(path.join(ROOT, 'server/order-verification.js'));
+    const { createCatalogue } = await import(path.join(ROOT, 'src/operations/catalogue-read.js'));
+    const cat = createCatalogue(JSON.parse(fs.readFileSync(path.join(ROOT, 'catalogue/catalogue.json'), 'utf8')));
+    const disagreements = verifyPayloadPrices(o, cat);
+    check('the server re-prices the builder\'s composite payload and agrees', disagreements.length === 0, JSON.stringify(disagreements));
   }
 
   /* --- 19. the payload is deterministic and language-independent ---------- */

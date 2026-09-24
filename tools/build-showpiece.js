@@ -70,11 +70,6 @@ const SPEC = {
   crf: 24, // H.264 needs less here than the flat CSS scene did; VP9 tracks it.
 };
 
-function chromium() {
-  const { chromium: c } = require('playwright-core');
-  return c;
-}
-
 function ffmpeg() {
   try {
     return require('ffmpeg-static');
@@ -84,8 +79,8 @@ function ffmpeg() {
 }
 
 async function frames(dir) {
-  const exe = process.env.PLAYWRIGHT_CHROMIUM;
-  const browser = await chromium().launch(exe ? { executablePath: exe, args: ['--no-sandbox'] } : { args: ['--no-sandbox'] });
+  const { launchChromium } = require('./lib/browser.cjs');
+  const browser = await launchChromium();
   const page = await browser.newPage({
     viewport: { width: SPEC.width, height: SPEC.height },
     deviceScaleFactor: 1,

@@ -25,6 +25,8 @@
  * disagree with the page they are standing on.
  */
 
+import { linePrice } from '../operations/line-price.js';
+
 const SEL = '[data-build]';
 
 /* ---------- reading the page --------------------------------------------- */
@@ -374,7 +376,7 @@ export function initBuilder(scope = document) {
         else {
           const factor = tier ? (r.tierFactors.get(tier) || 1) : 1;
           const counted = (r.qtyInput || r.optionsDriveQty) ? q : 1;
-          const sum = Math.round(r.price * factor * counted);
+          const sum = linePrice({ type: r.priceType, from: r.price, factor, quantity: counted }).amount;
           if (r.monthly) month += sum; else once += sum;
           perService.set(r.service, (perService.get(r.service) || 0) + sum);
           price = `${money(sum)} ${say('currency', ar)}${r.monthly ? ` ${say('perMonth', ar)}` : ''}`;
@@ -398,6 +400,7 @@ export function initBuilder(scope = document) {
 
         const factor = tier ? (r.tierFactors.get(tier) || 1) : 1;
         const counted = (r.qtyInput || r.optionsDriveQty) ? q : 1;
+        const priced = linePrice({ type: r.priceType, from: r.price, factor, quantity: counted, isPart: partOf.has(r.id) });
         const entry = {
           featureId: r.id,
           serviceId: r.service,
@@ -408,9 +411,8 @@ export function initBuilder(scope = document) {
           pricing: {
             type: partOf.has(r.id) ? 'part' : r.priceType,
             billing: r.monthly ? 'monthly' : 'once',
-            unitAmount: r.priceType === 'included' || r.priceType === 'quote' ? 0 : Math.round(r.price * factor),
-            amount: partOf.has(r.id) || r.priceType === 'included' || r.priceType === 'quote'
-              ? 0 : Math.round(r.price * factor * counted),
+            unitAmount: priced.unitAmount,
+            amount: priced.amount,
           },
         };
         if (tier) entry.tier = tier;

@@ -34,10 +34,10 @@ const DIST = path.join(ROOT, 'dist');
 const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
 const pricing = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/pricing.json'), 'utf8'));
 
-let chromium;
-try { ({ chromium } = require('playwright-core')); } catch {
+try { require.resolve('playwright-core'); } catch {
   console.log('qa: playwright-core is not installed — skipping.'); process.exit(0);
 }
+const { launchChromium } = require('./lib/browser.cjs');
 
 const PAGES = cfg.pages.map((p) => p.file).filter((f) => fs.existsSync(path.join(DIST, f)));
 const findings = [];
@@ -62,8 +62,7 @@ function serve() {
 (async () => {
   const server = await serve();
   const BASE = `http://127.0.0.1:${server.address().port}`;
-  const exe = process.env.PLAYWRIGHT_CHROMIUM;
-  const browser = await chromium.launch(exe ? { executablePath: exe, args: ['--no-sandbox'] } : { args: ['--no-sandbox'] });
+  const browser = await launchChromium();
 
   /* The archive's manifest, not cfg.pages: several checks below are about what
      a VISITOR gets, and styleguide.html is built into dist/ but deliberately

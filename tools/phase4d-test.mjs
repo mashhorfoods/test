@@ -898,6 +898,51 @@ section('21 — the permission table grants nothing no route checks');
   ok('21: every operation a route checks is granted to somebody', ungranted.length === 0, ungranted.join(', '));
 }
 
+section('21 — one pricing rule, browser and server (regression: composite parts refused)');
+{
+  const { verifyPayloadPrices } = await import('../server/order-verification.js');
+  const { createCatalogue } = await import('../src/operations/catalogue-read.js');
+  const { CATALOGUE } = await import('./lib/fixtures.mjs');
+  const cat = createCatalogue(CATALOGUE);
+
+  /* The complete landing page: the composite charged once, its three parts
+     present with their own unit price and an amount of 0 — the shape the
+     builder writes. The server used to demand a unit price of 0 for a part
+     and refused this payload outright. */
+  for (const c of CATALOGUE.features.filter((f) => f.composedOf)) {
+    const lines = [{ featureId: c.id }, ...c.composedOf.map((id) => ({ featureId: id, partOf: c.id }))];
+    const good = verifyPayloadPrices(payload(lines), cat);
+    ok(`21: the server accepts a correctly priced ${c.id}`, good.length === 0, JSON.stringify(good));
+
+    const cheap = payload(lines);
+    const head = cheap.services.flatMap((s) => s.features).find((f) => f.featureId === c.id);
+    head.pricing.amount = 1; head.pricing.unitAmount = 1;
+    cheap.pricing.subtotal.oneTime = 1; cheap.pricing.total.oneTime = 1;
+    ok(`21: and still refuses an under-priced ${c.id}`, verifyPayloadPrices(cheap, cat).length > 0);
+
+    const chargedTwice = payload(lines);
+    const part = chargedTwice.services.flatMap((s) => s.features).find((f) => f.partOf === c.id);
+    part.pricing.amount = part.pricing.unitAmount;
+    chargedTwice.pricing.total.oneTime += part.pricing.amount;
+    ok(`21: and refuses a ${c.id} whose part is charged again`, verifyPayloadPrices(chargedTwice, cat).length > 0);
+  }
+
+  /* Tiers at every quantity: the rule rounds the unit, then multiplies. */
+  for (const f of CATALOGUE.features.filter((x) => x.tiers)) {
+    for (const level of f.tiers.levels) {
+      const p = payload([{ featureId: f.id, tier: level.id }]);
+      ok(`21: ${f.id} at ${level.id} verifies`, verifyPayloadPrices(p, cat).length === 0);
+    }
+  }
+
+  /* Neither side may grow its own copy back. */
+  const builderSrc = fs.readFileSync(path.join(ROOT, 'src/scripts/builder.js'), 'utf8');
+  const verifySrc = fs.readFileSync(path.join(ROOT, 'server/order-verification.js'), 'utf8');
+  ok('21: the builder prices lines with linePrice()', /import \{ linePrice \} from '\.\.\/operations\/line-price\.js'/.test(builderSrc));
+  ok('21: the server prices lines with linePrice()', /import \{ linePrice \} from '\.\.\/src\/operations\/line-price\.js'/.test(verifySrc));
+  ok('21: and neither rounds a price itself', !/Math\.round\([^)]*(price|from)/.test(builderSrc + verifySrc));
+}
+
 section('31 — production configuration');
 {
   const base = loadConfig({ environment: 'production', production: true });

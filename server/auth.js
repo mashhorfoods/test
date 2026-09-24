@@ -14,12 +14,12 @@
 
 import crypto from 'node:crypto';
 import { fail } from './errors.js';
+import { newId } from '../src/operations/ids.js';
+import { ROLES } from './authz.js';
 
 const now = () => new Date().toISOString();
 const hashToken = (token) => crypto.createHash('sha256').update(token).digest('hex');
 
-/** The roles the system knows. Anything else is refused at creation. */
-export const ROLES = ['admin', 'operations', 'reviewer', 'executor', 'client', 'agent', 'system'];
 
 export function createAuth(db, config) {
   const { scrypt } = config.auth;
@@ -51,7 +51,7 @@ export function createAuth(db, config) {
       }
 
       const { salt, hash } = hashPassword(String(password));
-      const id = `usr.${now().slice(0, 10)}.${crypto.randomBytes(4).toString('hex')}`;
+      const id = newId('user');
       db.prepare(`INSERT INTO users (id, email, name, role, client_id, password_hash, password_salt, status, created_at, updated_at)
                   VALUES (?, ?, ?, ?, ?, ?, ?, 'active', ?, ?)`)
         .run(id, address, name, role, clientId, hash, salt, now(), now());

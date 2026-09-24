@@ -22,6 +22,7 @@
  */
 
 import { fail } from './errors.js';
+import { linePrice } from '../src/operations/line-price.js';
 
 export function verifyPayloadPrices(payload, catalogue) {
   const problems = [];
@@ -53,9 +54,7 @@ export function verifyPayloadPrices(payload, catalogue) {
         factor = level.priceFactor || 1;
       }
 
-      const free = isPart || pricing.type === 'included' || pricing.type === 'quote';
-      const unit = free ? 0 : Math.round(pricing.from * factor);
-      const amount = free ? 0 : unit * (pricing.type === 'unit' ? qty : 1);
+      const { unitAmount: unit, amount } = linePrice({ type: pricing.type, from: pricing.from, factor, quantity: qty, isPart });
       const billing = pricing.period === 'monthly' ? 'monthly' : 'once';
 
       const claimed = line.pricing || {};

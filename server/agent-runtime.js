@@ -22,7 +22,7 @@
  * can do is be reported as evidence.
  */
 
-import crypto from 'node:crypto';
+import { newId } from '../src/operations/ids.js';
 import { createProvider } from './ai/provider.js';
 import { validateQaResult, QA_RESULT_SCHEMA } from './ai/qa-schema.js';
 import { fail, isRetryable } from './errors.js';
@@ -32,7 +32,6 @@ export const QA_READER_PROMPT_VERSION = 'qa-reader/1.0.0';
 export const QA_READER_AGENT_ID = 'agent.qa-reader';
 
 const nowIso = () => new Date().toISOString();
-const newId = (p) => `${p}.${nowIso().slice(0, 10)}.${crypto.randomBytes(4).toString('hex')}`;
 
 const SYSTEM_PROMPT = `You are a quality reader for a design agency's production system.
 
@@ -130,7 +129,7 @@ export function createAgentRuntime(db, ops, config, options = {}) {
 
       const envelope = started.envelope;
       const current = ops.getTask(taskId);
-      const executionId = newId('gex');
+      const executionId = newId('agentExecution');
       const timeoutAt = new Date(Date.now() + config.ai.timeoutMs).toISOString();
 
       record({

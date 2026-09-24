@@ -15,6 +15,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createCatalogue } from '../../src/operations/catalogue-read.js';
+import { linePrice } from '../../src/operations/line-price.js';
 
 export const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 export const read = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
@@ -37,8 +38,7 @@ export function payload(lines, { scope = null, packages = [], currency = 'USD', 
     const qty = line.quantity ?? 1;
     const factor = line.tier ? ((f.tiers.levels.find((l) => l.id === line.tier) || {}).priceFactor || 1) : 1;
     const isPart = Boolean(line.partOf);
-    const unit = p.type === 'included' || p.type === 'quote' ? 0 : Math.round(p.from * factor);
-    const amount = isPart || p.type === 'included' || p.type === 'quote' ? 0 : unit * qty;
+    const { unitAmount: unit, amount } = linePrice({ type: p.type, from: p.from, factor, quantity: qty, isPart });
     if (p.type === 'quote') quoted += 1;
     const billing = (p.period === 'monthly' || line.billing === 'monthly') ? 'monthly' : 'once';
     if (amount > 0) { if (billing === 'monthly') monthly += amount; else once += amount; }

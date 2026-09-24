@@ -52,6 +52,10 @@ const MATRIX = {
   system: ['read', 'planning'],
 };
 
+/** The roles the system knows — the matrix's own keys, so a role cannot exist
+    in one place and not the other. auth.js refuses anything else at creation. */
+export const ROLES = Object.keys(MATRIX);
+
 const ALLOWED = Object.fromEntries(
   Object.entries(MATRIX).map(([role, groups]) => [role, new Set(groups.flatMap((g) => GROUPS[g] || []))]),
 );

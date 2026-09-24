@@ -33,9 +33,8 @@ const OUT = path.join(ROOT, 'src/assets/share-card.jpg');
 const W = 1200, H = 630, QUALITY = 88;
 
 (async () => {
-  const { chromium } = require('playwright-core');
-  const exe = process.env.PLAYWRIGHT_CHROMIUM;
-  const browser = await chromium.launch(exe ? { executablePath: exe, args: ['--no-sandbox'] } : { args: ['--no-sandbox'] });
+  const { launchChromium } = require('./lib/browser.cjs');
+  const browser = await launchChromium();
   const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 2 });
   await page.goto(`file://${CARD}`, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);

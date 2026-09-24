@@ -24,7 +24,7 @@
    Run: node tools/admin-ui-test.mjs   ·   npm run admin:ui
    ============================================================================= */
 
-const {chromium}=require('playwright-core');
+const { launchChromium } = require('./lib/browser.cjs');
 const http=require('http'),fs=require('fs'),path=require('path');
 const ROOT=process.cwd();
 const MIME={'.html':'text/html','.css':'text/css','.js':'text/javascript','.json':'application/json','.svg':'image/svg+xml','.webp':'image/webp','.woff2':'font/woff2'};
@@ -38,7 +38,7 @@ const ok=(n)=>console.log(`  ✓ ${n}`);
 const no=(n,d)=>{fails++;console.log(`  ✗ ${n}${d?`\n      ${d}`:''}`);};
 
 srv.listen(4801, async()=>{
- const b=await chromium.launch({executablePath:process.env.PLAYWRIGHT_CHROMIUM});
+ const b=await launchChromium();
   /* 390x667 — an iPhone SE, the device docs/121 §5b measured and the one
     the phone defects all live on. The suite used to run at 420x900, which
     is taller than any phone and where a message hidden behind the sticky

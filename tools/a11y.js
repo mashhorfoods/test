@@ -36,10 +36,11 @@ const http = require('http');
 
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
+const { launchChromium } = require('./lib/browser.cjs');
 
-let chromium, axeSource;
+let axeSource;
 try {
-  ({ chromium } = require('playwright-core'));
+  require.resolve('playwright-core');
   axeSource = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 } catch {
   console.log('a11y: playwright-core or axe-core is not installed — skipping.');
@@ -76,8 +77,7 @@ function serve() {
 (async () => {
   const server = await serve();
   const BASE = `http://127.0.0.1:${server.address().port}`;
-  const exe = process.env.PLAYWRIGHT_CHROMIUM;
-  const browser = await chromium.launch(exe ? { executablePath: exe, args: ['--no-sandbox'] } : { args: ['--no-sandbox'] });
+  const browser = await launchChromium();
 
   /* WCAG 2.0 and 2.1, levels A and AA. Not `best-practice`: those are axe's
      house style rather than the standard, and a harness that reports opinions

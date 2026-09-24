@@ -41,9 +41,8 @@ const OUT = path.join(ROOT, 'src/assets/brand/apple-touch-icon.png');
 const SIZE = 180;
 
 (async () => {
-  const { chromium } = require('playwright-core');
-  const exe = process.env.PLAYWRIGHT_CHROMIUM;
-  const browser = await chromium.launch(exe ? { executablePath: exe, args: ['--no-sandbox'] } : { args: ['--no-sandbox'] });
+  const { launchChromium } = require('./lib/browser.cjs');
+  const browser = await launchChromium();
   const page = await browser.newPage({ viewport: { width: SIZE, height: SIZE }, deviceScaleFactor: 2 });
 
   /* The SVG is placed in a page rather than opened directly: a browser asked

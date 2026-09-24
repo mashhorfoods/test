@@ -25,10 +25,9 @@
         four landmarks, no console errors
 
    Usage:  node tools/validate.js
-   Needs:  playwright-core and a Chromium. Set PLAYWRIGHT_CHROMIUM to the
-           binary if it is not where Playwright usually puts it. Without them
-           the command says so and exits 0, because a missing test tool is not
-           a failing site.
+   Needs:  playwright-core and a Chromium; tools/lib/browser.cjs finds one
+           (PLAYWRIGHT_CHROMIUM overrides it). Without them the command says
+           so and exits 0, because a missing test tool is not a failing site.
    ============================================================================= */
 
 const fs = require('fs');
@@ -53,14 +52,14 @@ const PACKAGE = (categoryId, packageId) => {
 };
 const PAGES = ['index.html', 'pricing.html', 'about.html', 'story.html', 'privacy.html', 'terms.html', '404.html'];
 
-let chromium;
 try {
-  ({ chromium } = require('playwright-core'));
+  require.resolve('playwright-core');
 } catch {
   console.log('validate: playwright-core is not installed — skipping.');
   console.log('          npm i -D playwright-core, then re-run.');
   process.exit(0);
 }
+const { launchChromium } = require('./lib/browser.cjs');
 
 const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript',
   '.json': 'application/json', '.svg': 'image/svg+xml', '.webp': 'image/webp',
@@ -91,8 +90,7 @@ const fail = (sev, flow, text) => { findings.push({ sev, flow, text }); console.
 (async () => {
   const server = await serve();
   const BASE = `http://127.0.0.1:${server.address().port}`;
-  const exe = process.env.PLAYWRIGHT_CHROMIUM;
-  const browser = await chromium.launch(exe ? { executablePath: exe, args: ['--no-sandbox'] } : { args: ['--no-sandbox'] });
+  const browser = await launchChromium();
 
   /* 1 — links */ {
     const p = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage();

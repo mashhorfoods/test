@@ -31,7 +31,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const { chromium } = require('playwright-core');
+const { launchChromium } = require('./lib/browser.cjs');
 
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
@@ -171,7 +171,7 @@ const probe = (vw) => {
   const srv = serve();
   await new Promise((r) => srv.listen(PORT, r));
   const BASE = `http://localhost:${PORT}`;
-  const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROMIUM });
+  const browser = await launchChromium();
 
   for (const width of WIDTHS) {
     const ctx = await browser.newContext({
