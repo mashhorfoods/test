@@ -58,6 +58,10 @@
       "priority": "0.3",
       "changefreq": "yearly",
       "index": true
+    },
+    {
+      "file": "404.html",
+      "index": false
     }
   ],
   "contact": {

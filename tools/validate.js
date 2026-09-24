@@ -25,10 +25,17 @@
         four landmarks, no console errors
 
    Usage:  node tools/validate.js
-   Needs:  playwright-core and a Chromium. Set PLAYWRIGHT_CHROMIUM to the
-           binary if it is not where Playwright usually puts it. Without them
-           the command says so and exits 0, because a missing test tool is not
-           a failing site.
+   Needs:  playwright-core (or playwright) and a Chromium. Set
+           PLAYWRIGHT_CHROMIUM to the binary if it is not where Playwright
+           usually puts it.
+
+   Exit codes: 0 clean · 1 a HIGH finding · 2 could not run.
+   A missing browser used to exit 0 with "skipping"; it no longer does. See
+   tools/lib/browser.js for why, and for the deliberate way to skip.
+
+   Before any browser work, one check runs that needs no browser: every page's
+   shared shell — header, drawer, verification band, footer — is compared to
+   the homepage's. See tools/lib/shell.js.
    ============================================================================= */
 
 const fs = require('fs');
@@ -38,13 +45,23 @@ const http = require('http');
 const ROOT = path.join(__dirname, '..');
 const PAGES = ['index.html', 'pricing.html', 'about.html', 'story.html', 'privacy.html', '404.html'];
 
-let chromium;
-try {
-  ({ chromium } = require('playwright-core'));
-} catch {
-  console.log('validate: playwright-core is not installed — skipping.');
-  console.log('          npm i -D playwright-core, then re-run.');
-  process.exit(0);
+const { loadChromium } = require('./lib/browser.js');
+const { shellDrift } = require('./lib/shell.js');
+
+const findings = [];
+const fail = (sev, flow, text) => { findings.push({ sev, flow, text }); console.log(`  ${sev}  [${flow}] ${text}`); };
+
+/* 0 — THE SHELL. Static, so it runs whether or not a browser is available. */
+console.log('validate: shared shell');
+for (const d of shellDrift(ROOT, PAGES)) {
+  fail('HIGH', 'shell', `${d.page}, ${d.region}, differs from index.html\n        expected …${d.expected}…\n        found    …${d.found}…`);
+}
+
+const chromium = loadChromium('validate');
+if (!chromium) {
+  const high = findings.filter((f) => f.sev === 'HIGH').length;
+  console.log(`\nvalidate: ${findings.length} finding(s) from the static checks; browser checks skipped on request`);
+  process.exit(high ? 1 : 0);
 }
 
 const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript',
@@ -66,8 +83,6 @@ function serve() {
   return new Promise((resolve) => server.listen(0, '127.0.0.1', () => resolve(server)));
 }
 
-const findings = [];
-const fail = (sev, flow, text) => { findings.push({ sev, flow, text }); console.log(`  ${sev}  [${flow}] ${text}`); };
 
 (async () => {
   const server = await serve();

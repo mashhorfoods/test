@@ -22,6 +22,7 @@
                         the scope-fact disclosure closed and open
 
    Usage:  node tools/qa.js        (run `node build.js` first)
+   Exit:   0 clean · 1 a HIGH finding · 2 could not run
    ============================================================================= */
 
 const fs = require('fs');
@@ -33,10 +34,11 @@ const DIST = path.join(ROOT, 'dist');
 const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
 const pricing = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/pricing.json'), 'utf8'));
 
-let chromium;
-try { ({ chromium } = require('playwright-core')); } catch {
-  console.log('qa: playwright-core is not installed — skipping.'); process.exit(0);
-}
+/* A missing browser is a failure (exit 2), not a silent pass. See
+   tools/lib/browser.js. */
+const { loadChromium } = require('./lib/browser.js');
+const chromium = loadChromium('qa');
+if (!chromium) process.exit(0);
 
 const PAGES = cfg.pages.map((p) => p.file).filter((f) => fs.existsSync(path.join(DIST, f)));
 const findings = [];

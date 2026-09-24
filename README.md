@@ -10,6 +10,8 @@
 
 **Before every upload:** `node build.js` · `node tools/validate.js` · `node tools/qa.js`
 
+Both checks exit `0` clean, `1` on a HIGH finding, `2` if they could not run. A missing browser is a failure, not a skip — install `playwright-core`, or set `SKIP_BROWSER_CHECKS=1` to skip deliberately.
+
 
 Built in stages on a token-driven design system. Every stage builds on the
 system rather than working around it.
