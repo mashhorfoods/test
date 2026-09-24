@@ -18,16 +18,16 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createServer } from '../server/index.js';
 import { createApp } from '../server/app.js';
 import { openDatabase, appliedMigrations } from '../server/db/database.js';
 import { sqliteRepositories } from '../server/db/sqlite-store.js';
 import { createOperations } from '../src/operations/index.js';
-import { validateQaResult } from '../server/ai/qa-schema.js';
 import { createAgentRuntime } from '../server/agent-runtime.js';
 import { fixtureProvider } from '../server/ai/provider.js';
-import { loadConfig } from '../server/config.js';
 import { AGENT_FORBIDDEN } from '../src/operations/index.js';
+import { createHarness } from './lib/harness.mjs';
+import { payload, drive, answer } from './lib/fixtures.mjs';
+import { aiApp as aiAppAt, qaScenario as qaScenarioIn, withServer as withServerAt } from './lib/server-fixtures.mjs';
 
 process.env.PIXORA_LOG = 'off';
 
@@ -36,70 +36,17 @@ const read = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
 const CATALOGUE = read('catalogue/catalogue.json');
 const CAT_AT_LOAD = JSON.stringify(CATALOGUE);
 
-const fails = [];
-let passed = 0;
-const ok = (label, cond, detail = '') => {
-  if (cond) passed += 1; else fails.push(`${label}${detail ? ` — ${detail}` : ''}`);
-};
-const section = (n) => { if (process.env.VERBOSE) console.log(`\n--- ${n}`); };
+const harness = createHarness('backend-test');
+const { ok, section } = harness;
 
 const tmpdir = fs.mkdtempSync(path.join(os.tmpdir(), 'pixora-'));
 const dbFile = (name) => path.join(tmpdir, `${name}.db`);
 
-/* ---------- a builder payload, from the real catalogue --------------------- */
-function payload(lines, scope = null) {
-  const feats = lines.map((l) => ({ ...l, f: CATALOGUE.features.find((x) => x.id === l.featureId) }));
-  let once = 0;
-  const services = new Map();
-  for (const l of feats) {
-    const amt = ['included', 'quote'].includes(l.f.pricing.type) ? 0 : l.f.pricing.from * (l.quantity ?? 1);
-    if (l.f.pricing.period !== 'monthly') once += amt;
-    const e = { featureId: l.featureId, serviceId: l.f.service, quantity: l.quantity ?? 1, origin: 'chosen',
-      pricing: { type: l.f.pricing.type, billing: l.f.pricing.period === 'monthly' ? 'monthly' : 'once', unitAmount: ['included', 'quote'].includes(l.f.pricing.type) ? 0 : l.f.pricing.from, amount: amt } };
-    if (l.f.addonGroup) e.addonGroup = l.f.addonGroup;
-    if (!services.has(l.f.service)) services.set(l.f.service, []);
-    services.get(l.f.service).push(e);
-  }
-  const out = {
-    version: '1.0', source: 'pixora.package-builder', currency: 'USD', language: 'en',
-    services: [...services.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1))
-      .map(([serviceId, features]) => ({ serviceId, features: features.sort((a, b) => (a.featureId < b.featureId ? -1 : 1)) })),
-    addons: [], packages: [],
-    pricing: { currency: 'USD', subtotal: { oneTime: once, monthly: 0 }, discount: { oneTime: 0, monthly: 0 },
-      total: { oneTime: once, monthly: 0 }, quotedItems: 0, lineItems: lines.length },
-    message: 'Hi Pixora — …',
-  };
-  if (scope) out.scope = scope;
-  return out;
-}
+/* This suite names its databases; the shared fixtures take paths. */
+const withServer = (name, fn, overrides) => withServerAt(dbFile(name), fn, overrides);
+const aiApp = (name, script, extra = {}) => aiAppAt(dbFile(name), script, { timeoutMs: 200, ...extra });
+const qaScenario = (name, script, extra = {}) => qaScenarioIn(aiApp(name, script, extra), { email: `qa-${name}@t.test` });
 
-/* ---------- an HTTP client, so the API is exercised over the wire ---------- */
-function client(base, token = null) {
-  const call = async (method, p, body = null, tok = token) => {
-    const res = await fetch(base + p, {
-      method,
-      headers: { 'content-type': 'application/json', ...(tok ? { authorization: `Bearer ${tok}` } : {}) },
-      body: body === null ? undefined : JSON.stringify(body),
-    });
-    let parsed = null;
-    try { parsed = await res.json(); } catch { parsed = null; }
-    return { status: res.status, body: parsed };
-  };
-  return {
-    get: (p, tok) => call('GET', p, null, tok),
-    post: (p, b, tok) => call('POST', p, b, tok),
-    as: (tok) => client(base, tok),
-  };
-}
-
-async function withServer(name, fn, overrides = {}) {
-  const file = dbFile(name);
-  const { app, server } = createServer({ config: { db: { file, createIfMissing: true } }, ...overrides });
-  await new Promise((r) => server.listen(0, '127.0.0.1', r));
-  const base = `http://127.0.0.1:${server.address().port}`;
-  try { return await fn({ app, base, file, api: client(base) }); }
-  finally { await new Promise((r) => server.close(r)); app.db.close(); }
-}
 
 /* ========================================================================== */
 /* PHASE 4A — backend, auth, authorization, persistence                        */
@@ -394,20 +341,6 @@ function scenario(name, { withRuntime = false } = {}) {
   return { app, project, tasks, order: made.order };
 }
 
-const drive = (ops, id, { by = 'reviewer-1', executor = 'worker-1' } = {}) => {
-  let t = ops.getTask(id);
-  if (t.status === 'pending' || t.status === 'blocked') ops.refreshTaskReadiness({ projectId: t.projectId });
-  if (ops.getTask(id).status === 'ready') ops.assignTask(id, { assignee: executor });
-  if (ops.getTask(id).status === 'assigned') ops.startTask(id);
-  t = ops.getTask(id);
-  if (t.status !== 'in_progress') return t;
-  for (const o of t.outputs) if (!o.produced) ops.recordOutput(id, { key: o.key, value: `v-${o.key}` });
-  ops.submitTaskForReview(id);
-  ops.passAllQa(id, { by });
-  ops.approveTask(id, { by });
-  ops.completeTask(id);
-  return ops.getTask(id);
-};
 
 section('4B — automation state is durable');
 {
@@ -486,67 +419,6 @@ section('4B — the rules still behave');
 
 /* ========================================================================== */
 /* PHASE 4C — the first real agent                                             */
-
-/** An app whose provider is a scripted fixture. Never used in production. */
-function aiApp(name, script, extra = {}) {
-  const app = createApp({
-    config: {
-      db: { file: dbFile(name), createIfMissing: true },
-      ai: { ...loadConfig().ai, enabled: true, qaReaderEnabled: true, provider: 'fixture', timeoutMs: 200, ...extra },
-    },
-  });
-  app.agentRuntime = createAgentRuntime(app.db, app.ops, app.config, { provider: fixtureProvider(app.config, script) });
-  return app;
-}
-
-/**
- * A project containing a task the qa-reader is genuinely eligible for.
- *
- * The agent holds cap.quality-review, which maps to role.qa — the CHECK stage
- * of a design asset, not the first stage of anything. That stage sits partway
- * down a workflow, because checking comes after making, so the scenario walks
- * its dependencies to reach it. Choosing a task by hand and hoping it matched
- * would have tested the test rather than the agent.
- */
-function qaScenario(name, script, extra = {}) {
-  const app = aiApp(name, script, extra);
-  const { client: c } = app.ops.resolveClient({ name: 'QA', email: `qa-${name}@t.test` });
-  const made = app.ops.createOrder(payload([{ featureId: 'feat.branding.social_posts', quantity: 6 }]), { clientId: c.id });
-  app.ops.submitOrder(made.order.id); app.ops.reviewOrder(made.order.id); app.ops.approveOrder(made.order.id);
-  const project = app.ops.convertOrderToProject(made.order.id).project;
-  app.ops.generateTasksFromWorkflow(project.id);
-  app.ops.setAgentStatus('agent.qa-reader', 'active');
-
-  const agent = app.ops.getAgent('agent.qa-reader');
-  const target = app.ops.getTasks({ projectId: project.id })
-    .filter((t) => t.aiEligible && t.requiredCapabilities.length
-      && t.requiredCapabilities.every((cap) => agent.capabilities.includes(cap)))
-    .sort((a, b) => a.order - b.order)[0];
-  if (!target) throw new Error('qaScenario: no task in this project matches the qa-reader');
-
-  /* Walk to it: complete what it waits on, then give it what it needs. */
-  const clear = (id, seen = new Set()) => {
-    for (const dep of app.ops.getTask(id).dependencies) {
-      if (seen.has(dep)) continue;
-      seen.add(dep);
-      clear(dep, seen);
-      if (app.ops.getTask(dep).status !== 'completed') drive(app.ops, dep);
-    }
-    app.ops.refreshTaskReadiness({ projectId: project.id });
-  };
-  clear(target.id);
-  for (const i of app.ops.getTask(target.id).inputs) {
-    app.ops.provideInput(target.id, { key: i.key, value: `supplied ${i.key}` });
-  }
-  return { app, project, task: app.ops.getTask(target.id), order: made.order };
-}
-
-const answer = (task, { result = 'pass', status = 'pass', criteria = null, extra = {} } = {}) => JSON.stringify({
-  result,
-  checks: (criteria || task.qaCriteria.map((c) => c.id)).map((id) => ({ criterionId: id, status, evidence: 'seen' })),
-  missing: [], warnings: [], confidence: 0.9, summary: 'A reading.',
-  ...extra,
-});
 
 section('4C — the switches');
 {
@@ -780,10 +652,4 @@ section('audit');
 
 fs.rmSync(tmpdir, { recursive: true, force: true });
 
-if (fails.length) {
-  console.error(`\nbackend-test: ${passed} passed, ${fails.length} FAILED\n`);
-  fails.forEach((f) => console.error(`  ✗ ${f}`));
-  console.error('');
-  process.exit(1);
-}
-console.log(`backend-test: ${passed} passed, 0 failed`);
+harness.finish();

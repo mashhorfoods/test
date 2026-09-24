@@ -34,18 +34,15 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import http from 'node:http';
-import { fileURLToPath } from 'node:url';
 import { anthropicProvider } from '../server/ai/provider.js';
-import { createAgentRuntime } from '../server/agent-runtime.js';
 import { createApp } from '../server/app.js';
 import { loadConfig } from '../server/config.js';
 import { validateQaResult } from '../server/ai/qa-schema.js';
+import { createHarness } from './lib/harness.mjs';
 
 process.env.PIXORA_LOG = 'off';
-const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const fails = [];
-let passed = 0;
-const ok = (l, c, d = '') => { if (c) passed += 1; else fails.push(`${l}${d ? ` — ${d}` : ''}`); };
+const harness = createHarness('ai-live-test');
+const { ok } = harness;
 const note = (m) => console.log(`  · ${m}`);
 
 const tmpdir = fs.mkdtempSync(path.join(os.tmpdir(), 'pixora-ai-'));
@@ -155,7 +152,7 @@ if (!KEY) {
   });
   /* Build a real project, walk to a task the qa-reader is eligible for, and let
      a real model read it. */
-  const { runLiveQaReader } = await import('./ai-live-helpers.mjs');
+  const { runLiveQaReader } = await import('./lib/server-fixtures.mjs');
   const out = await runLiveQaReader(app);
   ok('live: the model answered', out.ok, JSON.stringify(out.problems || []));
   ok('live: the answer validated against the schema', out.ok && Boolean(out.qa));
@@ -169,10 +166,5 @@ if (!KEY) {
 fs.rmSync(tmpdir, { recursive: true, force: true });
 
 console.log('');
-if (fails.length) {
-  console.error(`ai-live-test: ${passed} passed, ${fails.length} FAILED\n`);
-  fails.forEach((f) => console.error(`  ✗ ${f}`));
-  process.exit(1);
-}
-console.log(`ai-live-test: ${passed} passed, 0 failed`);
+harness.finish();
 if (!KEY) console.log('  (the full model round trip needs ANTHROPIC_API_KEY — see docs/131 §9)');

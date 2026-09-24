@@ -21,6 +21,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createOperations, memoryStore, mockExecutor, AGENT_FORBIDDEN, findCycle } from '../src/operations/index.js';
 import { createCatalogue } from '../src/operations/catalogue-read.js';
+import { createHarness } from './lib/harness.mjs';
+import { payload } from './lib/fixtures.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
@@ -36,13 +38,8 @@ const CAT = createCatalogue(CATALOGUE);
 const stripped = (file) => fs.readFileSync(path.join(ROOT, 'src/operations', file), 'utf8')
   .replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
 
-const fails = [];
-let passed = 0;
-const ok = (label, cond, detail = '') => {
-  if (cond) passed += 1;
-  else fails.push(`${label}${detail ? ` — ${detail}` : ''}`);
-};
-const group = (n) => { if (process.env.VERBOSE) console.log(`\n--- ${n}`); };
+const harness = createHarness('task-test');
+const { ok, section: group } = harness;
 
 function fixtures() {
   let t = Date.parse('2026-09-08T09:00:00Z');
@@ -62,43 +59,6 @@ function ops(extra = {}) {
   });
 }
 
-/* --- payload fixtures, in the builder's own shape -------------------------- */
-function payload(lines, { scope = null, currency = 'USD' } = {}) {
-  const byService = new Map();
-  let once = 0; let monthly = 0;
-  const addons = [];
-  for (const line of lines) {
-    const f = CAT.feature(line.featureId);
-    const p = f.pricing;
-    const svc = f.service;
-    const qty = line.quantity ?? 1;
-    const factor = line.tier ? ((f.tiers.levels.find((l) => l.id === line.tier) || {}).priceFactor || 1) : 1;
-    const isPart = Boolean(line.partOf);
-    const unit = ['included', 'quote'].includes(p.type) ? 0 : Math.round(p.from * factor);
-    const amount = isPart || ['included', 'quote'].includes(p.type) ? 0 : unit * qty;
-    const billing = p.period === 'monthly' ? 'monthly' : 'once';
-    if (amount > 0) { if (billing === 'monthly') monthly += amount; else once += amount; }
-    const e = { featureId: line.featureId, serviceId: svc, quantity: qty, origin: line.origin || (isPart ? 'part' : 'chosen'),
-      pricing: { type: isPart ? 'part' : p.type, billing, unitAmount: unit, amount } };
-    if (line.tier) e.tier = line.tier;
-    if (line.partOf) e.partOf = line.partOf;
-    if (f.composedOf) e.composedOf = [...f.composedOf];
-    if (f.addonGroup) { e.addonGroup = f.addonGroup; addons.push({ featureId: line.featureId, serviceId: svc, addonGroup: f.addonGroup, quantity: qty, amount }); }
-    if (!byService.has(svc)) byService.set(svc, []);
-    byService.get(svc).push(e);
-  }
-  const out = {
-    version: '1.0', source: 'pixora.package-builder', currency, language: 'en',
-    services: [...byService.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1))
-      .map(([serviceId, features]) => ({ serviceId, features: features.sort((a, b) => (a.featureId < b.featureId ? -1 : 1)) })),
-    addons: addons.sort((a, b) => (a.featureId < b.featureId ? -1 : 1)), packages: [],
-    pricing: { currency, subtotal: { oneTime: once, monthly }, discount: { oneTime: 0, monthly: 0 },
-      total: { oneTime: once, monthly }, quotedItems: 0, lineItems: lines.filter((l) => !l.partOf).length },
-    message: 'Hi Pixora — …',
-  };
-  if (scope) out.scope = scope;
-  return out;
-}
 
 const CLIENT = { name: 'Test Co', email: 'test@example.test', phone: '+249900000001' };
 
@@ -815,10 +775,4 @@ group('observability');
 
 /* ========================================================================== */
 
-if (fails.length) {
-  console.error(`\ntask-test: ${passed} passed, ${fails.length} FAILED\n`);
-  fails.forEach((f) => console.error(`  ✗ ${f}`));
-  console.error('');
-  process.exit(1);
-}
-console.log(`task-test: ${passed} passed, 0 failed`);
+harness.finish();

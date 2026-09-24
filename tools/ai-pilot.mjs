@@ -36,7 +36,7 @@ import { anthropicProvider } from '../server/ai/provider.js';
 import { createAgentRuntime } from '../server/agent-runtime.js';
 import { loadConfig } from '../server/config.js';
 import { createApp } from '../server/app.js';
-import { qaScenario } from './scenario-helpers.mjs';
+import { qaScenario } from './lib/server-fixtures.mjs';
 
 process.env.PIXORA_LOG = 'off';
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');

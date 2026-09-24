@@ -22,6 +22,8 @@ import { fileURLToPath } from 'node:url';
 import { createOperations, memoryStore, jsonFileStore } from '../src/operations/index.js';
 import { createCatalogue } from '../src/operations/catalogue-read.js';
 import { validateOrder } from '../src/operations/order.js';
+import { createHarness } from './lib/harness.mjs';
+import { payload } from './lib/fixtures.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
@@ -31,13 +33,7 @@ const CATALOGUE = read('catalogue/catalogue.json');
 const CATALOGUE_AT_LOAD = JSON.stringify(CATALOGUE);
 const STATUSES = read('src/data/operations/statuses.json');
 
-const fails = [];
-const passes = [];
-const ok = (label, cond, detail = '') => {
-  if (cond) passes.push(label);
-  else fails.push(`${label}${detail ? ` — ${detail}` : ''}`);
-};
-const group = (name) => passes.push(`--- ${name}`);
+const { ok, section: group, finish } = createHarness('operations-test');
 
 /* A clock that ticks a second per call, and a deterministic "random". */
 function fixtures() {
@@ -61,65 +57,10 @@ function ops(extra = {}) {
   });
 }
 
-/* ---------- payload fixtures, in the builder's own shape ------------------- */
+/* ---------- the catalogue, read the way the domain reads it --------------- */
 
 const CAT = createCatalogue(CATALOGUE);
-const price = (id) => CAT.featurePricing(id);
 
-/** Build a payload the way the builder does, from catalogue prices. */
-function payload(lines, { scope = null, packages = [], currency = 'USD', language = 'en' } = {}) {
-  const byService = new Map();
-  let once = 0; let monthly = 0; let quoted = 0;
-  const addons = [];
-  for (const line of lines) {
-    const f = CAT.feature(line.featureId);
-    const p = price(line.featureId);
-    const svc = CAT.serviceOf(line.featureId);
-    const qty = line.quantity ?? 1;
-    const factor = line.tier ? ((f.tiers.levels.find((l) => l.id === line.tier) || {}).priceFactor || 1) : 1;
-    const isPart = Boolean(line.partOf);
-    const unit = p.type === 'included' || p.type === 'quote' ? 0 : Math.round(p.from * factor);
-    const amount = isPart || p.type === 'included' || p.type === 'quote' ? 0 : unit * qty;
-    if (p.type === 'quote') quoted += 1;
-    if (amount > 0) { if (p.period === 'monthly' || line.billing === 'monthly') monthly += amount; else once += amount; }
-    const billing = (p.period === 'monthly' || line.billing === 'monthly') ? 'monthly' : 'once';
-    const entry = {
-      featureId: line.featureId,
-      serviceId: svc,
-      quantity: qty,
-      origin: line.origin || (isPart ? 'part' : 'chosen'),
-      pricing: { type: isPart ? 'part' : p.type, billing, unitAmount: unit, amount },
-    };
-    if (line.tier) entry.tier = line.tier;
-    if (line.options) entry.options = line.options;
-    if (line.partOf) entry.partOf = line.partOf;
-    if (f.composedOf) entry.composedOf = [...f.composedOf];
-    if (f.addonGroup) { entry.addonGroup = f.addonGroup; addons.push({ featureId: line.featureId, serviceId: svc, addonGroup: f.addonGroup, quantity: qty, amount }); }
-    if (!byService.has(svc)) byService.set(svc, []);
-    byService.get(svc).push(entry);
-  }
-  const out = {
-    version: '1.0',
-    source: 'pixora.package-builder',
-    currency,
-    language,
-    services: [...byService.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1))
-      .map(([serviceId, features]) => ({ serviceId, features: features.sort((a, b) => (a.featureId < b.featureId ? -1 : 1)) })),
-    addons: addons.sort((a, b) => (a.featureId < b.featureId ? -1 : 1)),
-    packages,
-    pricing: {
-      currency,
-      subtotal: { oneTime: once, monthly },
-      discount: { oneTime: 0, monthly: 0 },
-      total: { oneTime: once, monthly },
-      quotedItems: quoted,
-      lineItems: lines.filter((l) => !l.partOf).length,
-    },
-    message: 'Hi Pixora — I built this scope on your site: …',
-  };
-  if (scope) out.scope = scope;
-  return out;
-}
 
 /* A fixture that will not build is a broken TEST, and should say so where it
    broke rather than throwing `undefined` three lines later. */
@@ -625,10 +566,4 @@ group('no duplication');
 
 /* ========================================================================== */
 
-if (fails.length) {
-  console.error(`\noperations-test: ${passes.filter((p) => !p.startsWith('---')).length} passed, ${fails.length} FAILED\n`);
-  fails.forEach((f) => console.error(`  ✗ ${f}`));
-  console.error('');
-  process.exit(1);
-}
-console.log(`operations-test: ${passes.filter((p) => !p.startsWith('---')).length} passed, 0 failed`);
+finish();

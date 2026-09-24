@@ -27,67 +27,32 @@ import http from 'node:http';
 import { fileURLToPath } from 'node:url';
 import { DatabaseSync } from 'node:sqlite';
 
-import { createServer } from '../server/index.js';
 import { createApp } from '../server/app.js';
 import { openDatabase, appliedMigrations } from '../server/db/database.js';
 import { loadConfig, assertProductionSecrets, redact } from '../server/config.js';
 import { createLoginLimiter } from '../server/rate-limit.js';
 import { clientIp } from '../server/client-ip.js';
-import { createProvider, fixtureProvider, anthropicProvider } from '../server/ai/provider.js';
-import { createAgentRuntime, QA_READER_PROMPT_VERSION } from '../server/agent-runtime.js';
-import { validateQaResult } from '../server/ai/qa-schema.js';
+import { createProvider, anthropicProvider } from '../server/ai/provider.js';
+import { QA_READER_PROMPT_VERSION } from '../server/agent-runtime.js';
 import { AGENT_FORBIDDEN } from '../src/operations/index.js';
 import { ACTOR_TYPES } from '../src/operations/events.js';
-import { aiApp, qaScenario, answer, useProvider, useScript, drive, payload } from './scenario-helpers.mjs';
+import { createHarness } from './lib/harness.mjs';
+import { payload, drive, answer } from './lib/fixtures.mjs';
+import { aiApp, qaScenario, useProvider, useScript, withServer as withServerAt } from './lib/server-fixtures.mjs';
 
 process.env.PIXORA_LOG = 'off';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const fails = [];
-let passed = 0;
-const ok = (label, cond, detail = '') => { if (cond) passed += 1; else fails.push(`${label}${detail ? ` — ${detail}` : ''}`); };
-const section = (n) => { if (process.env.VERBOSE) console.log(`\n--- ${n}`); };
+const harness = createHarness('phase4d-test');
+const { ok, section } = harness;
 
 const tmpdir = fs.mkdtempSync(path.join(os.tmpdir(), 'pixora-4d-'));
 const dbFile = (name) => path.join(tmpdir, `${name}.db`);
 const MIGRATIONS = path.join(ROOT, 'server/migrations');
 
-/* An HTTP client that also hands back headers — Retry-After is the point. */
-function client(base, token = null) {
-  const call = async (method, p, body = null, tok = token, headers = {}) => {
-    const res = await fetch(base + p, {
-      method,
-      headers: { 'content-type': 'application/json', ...(tok ? { authorization: `Bearer ${tok}` } : {}), ...headers },
-      body: body === null ? undefined : JSON.stringify(body),
-    });
-    let parsed = null;
-    try { parsed = await res.json(); } catch { parsed = null; }
-    return { status: res.status, body: parsed, headers: Object.fromEntries(res.headers.entries()) };
-  };
-  return {
-    get: (p, tok, h) => call('GET', p, null, tok, h),
-    post: (p, b, tok, h) => call('POST', p, b, tok, h),
-  };
-}
+/* This suite names its databases; the shared fixture takes a path. */
+const withServer = (name, fn, overrides) => withServerAt(dbFile(name), fn, overrides);
 
-async function withServer(name, fn, overrides = {}) {
-  /* THE `config` KEY IS MERGED, NOT SPREAD OVER.
-     Written the obvious way — `{ config: {…}, ...overrides }` — the trailing
-     spread put `overrides.config` back whole and dropped the temp database
-     with it, so one case quietly ran against `server/data/pixora.db` and
-     inherited five failed logins from the previous run of this file. It passed
-     once and failed the second time, which is the worst way for a test to be
-     wrong. */
-  const { config: configOverride = {}, ...rest } = overrides;
-  const { app, server } = createServer({
-    ...rest,
-    config: { db: { file: dbFile(name), createIfMissing: true }, ...configOverride },
-  });
-  await new Promise((r) => server.listen(0, '127.0.0.1', r));
-  const base = `http://127.0.0.1:${server.address().port}`;
-  try { return await fn({ app, base, api: client(base), file: dbFile(name) }); }
-  finally { await new Promise((r) => server.close(r)); app.db.close(); }
-}
 
 const admin = async (app, api, { email = 'admin@pixora.test', password = 'a-long-enough-password' } = {}) => {
   app.auth.createUser({ email, name: 'Admin', password, role: 'admin' });
@@ -1035,9 +1000,4 @@ section('34 — performance sanity');
 /* ========================================================================== */
 fs.rmSync(tmpdir, { recursive: true, force: true });
 
-if (fails.length) {
-  console.error(`phase4d-test: ${passed} passed, ${fails.length} FAILED\n`);
-  fails.forEach((f) => console.error(`  ✗ ${f}`));
-  process.exit(1);
-}
-console.log(`phase4d-test: ${passed} passed, 0 failed`);
+harness.finish();
