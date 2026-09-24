@@ -116,7 +116,7 @@ function buildFooterLink(section) {
  * CROSS-PAGE ANCHORS.
  *
  * The header, drawer and footer are one component shared by every page — the
- * markup says so and tools/build-chrome.js enforces it. But their links are
+ * markup says so and tools/build-pages.js builds every page from it. But their links are
  * page anchors: "#services" is correct on the homepage and dead anywhere else.
  *
  * Rather than teach every link builder which page it is on, this asks the only

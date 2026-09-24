@@ -137,6 +137,9 @@ That created a second problem worth naming: the header has claimed since Stage
 existed, that promise needed something keeping it. A hand-copied header drifts.
 
 - **`tools/build-chrome.js`** copies the header, drawer and footer *from*
+  *(Superseded: `build-chrome.js` was removed once every page, including this
+  one, was built by `tools/build-pages.js` — the copy tool was not part of the
+  build, and the 404 it maintained drifted on the live site.)*
   `index.html` into every other page, matched on markup rather than line
   numbers. `index.html` stays the single source and is never written to.
 - **Cross-page anchors** resolve themselves. `#services` is correct on the

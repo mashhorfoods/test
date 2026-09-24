@@ -1,7 +1,9 @@
 /* =============================================================================
    BUILD-STORY
    Renders the success story from ONE source: src/data/story.json, into
-   story.html between the STORY markers.
+   src/pages/story.html between the STORY markers. build-pages.js then
+   wraps it in the shared shell to make story.html — the same path every other
+   page takes.
 
    WHY A GENERATOR AND NOT HAND-WRITTEN MARKUP.
    The copy in story.json is every line the page says, in both languages, and
@@ -30,7 +32,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const PAGE = path.join(ROOT, 'story.html');
+const PAGE = path.join(ROOT, 'src/pages/story.html');
 const DATA = path.join(ROOT, 'src/data/story.json');
 
 const data = JSON.parse(fs.readFileSync(DATA, 'utf8'));
@@ -309,7 +311,7 @@ ${data.chapters.map((c, i) => renderChapter(c, i, i === data.chapters.length - 1
 let html = fs.readFileSync(PAGE, 'utf8');
 const before = html;
 if (!html.includes('<!-- STORY:START -->') || !html.includes('<!-- STORY:END -->')) {
-  throw new Error('story markers not found in story.html');
+  throw new Error('story markers not found in src/pages/story.html');
 }
 html = html.replace(/<!-- STORY:START -->[\s\S]*?<!-- STORY:END -->/, () => block);
 fs.writeFileSync(PAGE, html);
