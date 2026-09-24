@@ -148,12 +148,6 @@ export function createLoginLimiter(db, config) {
       return db.prepare('DELETE FROM login_attempts WHERE last_at < ? AND (locked_until IS NULL OR locked_until < ?)')
         .run(cutoff, at).changes;
     },
-
-    /** For operations: how many buckets are locked right now, and nothing more. */
-    state({ at = nowIso() } = {}) {
-      const rows = db.prepare('SELECT scope, COUNT(*) AS n FROM login_attempts WHERE locked_until > ? GROUP BY scope').all(at);
-      return { locked: Object.fromEntries(rows.map((r) => [r.scope, r.n])) };
-    },
   };
 
   return api;

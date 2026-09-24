@@ -37,6 +37,7 @@ import { createProvider, fixtureProvider, anthropicProvider } from '../server/ai
 import { createAgentRuntime, QA_READER_PROMPT_VERSION } from '../server/agent-runtime.js';
 import { validateQaResult } from '../server/ai/qa-schema.js';
 import { AGENT_FORBIDDEN } from '../src/operations/index.js';
+import { ACTOR_TYPES } from '../src/operations/events.js';
 import { aiApp, qaScenario, answer, useProvider, useScript, drive, payload } from './scenario-helpers.mjs';
 
 process.env.PIXORA_LOG = 'off';
@@ -917,6 +918,21 @@ await withServer('security', async ({ app, api }) => {
 });
 
 /* ========================================================================== */
+section('21 — the permission table grants nothing no route checks');
+{
+  /* A grant that no route checks reads as a permission and guards nothing.
+     The table carried 23 of them; this keeps it from growing them back. */
+  const authzSrc = fs.readFileSync(path.join(ROOT, 'server/authz.js'), 'utf8');
+  const groupsSrc = authzSrc.slice(authzSrc.indexOf('const GROUPS'), authzSrc.indexOf('};', authzSrc.indexOf('const GROUPS')));
+  const granted = new Set([...groupsSrc.matchAll(/'([A-Za-z]+)'/g)].map((m) => m[1]));
+  const routesSrc = fs.readFileSync(path.join(ROOT, 'server/routes.js'), 'utf8');
+  const checked = new Set([...routesSrc.matchAll(/guard\(ctx\.user, '([A-Za-z]+)'\)/g)].map((m) => m[1]));
+  const unchecked = [...granted].filter((op) => !checked.has(op));
+  const ungranted = [...checked].filter((op) => !granted.has(op));
+  ok('21: every granted operation is checked by some route', unchecked.length === 0, unchecked.join(', '));
+  ok('21: every operation a route checks is granted to somebody', ungranted.length === 0, ungranted.join(', '));
+}
+
 section('31 — production configuration');
 {
   const base = loadConfig({ environment: 'production', production: true });
@@ -994,7 +1010,7 @@ section('35 — logging and audit');
   ok('35: human actions stay marked human', trail.some((e) => e.actorType === 'human'));
   ok('35: every line is timestamped', trail.every((e) => e.at));
   ok('35: the actor types in use are the declared ones',
-    [...new Set(trail.map((e) => e.actorType))].every((t) => ['human', 'system', 'automation', 'ai_agent'].includes(t)),
+    [...new Set(trail.map((e) => e.actorType))].every((t) => ACTOR_TYPES.includes(t)),
     [...new Set(trail.map((e) => e.actorType))].join(','));
   app.db.close();
 }

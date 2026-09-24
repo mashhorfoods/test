@@ -190,15 +190,11 @@
     }
   }
 
-  .c-hero__action-arrow,
-    .c-hero__action-chevron {
+  .c-hero__action-arrow {
     inline-size: var(--icon-sm);
     block-size: var(--icon-sm);
   }
 
-
-  @media (min-width: 48em) {
-  }
 
   /* On a short desktop window the composition needs the room more than the
      page needs a hint that it scrolls. */

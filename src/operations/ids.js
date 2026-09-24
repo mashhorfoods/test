@@ -25,7 +25,7 @@ export const PREFIXES = {
   workflowInstance: 'win',
   event: 'evt',
   /* Server-side records (Phase 4). One generator for every id in the system,
-     so every id reads the same way and `isId` recognises all of them. */
+     so every id reads the same way wherever it turns up. */
   user: 'usr',
   automationExecution: 'aex',
   agentExecution: 'gex',
@@ -47,13 +47,3 @@ export function newId(type, { now = () => new Date(), random = Math.random } = {
   const day = now().toISOString().slice(0, 10);
   return `${prefix}.${day}.${tail(6, random)}`;
 }
-
-/** Does this id belong to that kind of record? Used by the architecture tests. */
-export const isId = (type, value) =>
-  typeof value === 'string' && new RegExp(`^${PREFIXES[type]}\\.\\d{4}-\\d{2}-\\d{2}\\.[a-z2-9]{6}$`).test(value);
-
-/** The kind of record an id names, or null. */
-export const typeOf = (value) => {
-  const prefix = String(value || '').split('.')[0];
-  return Object.keys(PREFIXES).find((k) => PREFIXES[k] === prefix) || null;
-};

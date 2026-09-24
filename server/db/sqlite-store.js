@@ -74,16 +74,6 @@ export function sqliteStore(db, table) {
       return this.all().filter(fn);
     },
 
-    delete(id) {
-      const before = this.size();
-      db.prepare(`DELETE FROM ${table} WHERE id = ?`).run(id);
-      return this.size() !== before;
-    },
-
-    size() {
-      return db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get().n;
-    },
-
     /* --- beyond the contract, for the API only ---------------------------- */
 
     /**

@@ -86,9 +86,3 @@ export function record(target, name, { at = new Date().toISOString(), by = 'syst
   target.events.push(entry);
   return entry;
 }
-
-/** Every event on a record, oldest first. */
-export const eventsOf = (target) => [...((target || {}).events || [])];
-
-/** Has this already happened? The cheap half of idempotency. */
-export const hasHappened = (target, name) => eventsOf(target).some((e) => e.event === name);

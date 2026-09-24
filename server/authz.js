@@ -14,31 +14,33 @@
 
 import { fail } from './errors.js';
 
-/** Operation groups, so the matrix reads as intent rather than as a list. */
+/**
+ * Operation groups, so the matrix reads as intent rather than as a list.
+ *
+ * EVERY NAME HERE IS AN OPERATION SOME ROUTE CHECKS, and a test enforces it
+ * (phase4d-test §21). The table used to grant 23 operations no route exposed —
+ * amendOrder, cancelTask, getTaskEnvelope and the rest — which read as
+ * permissions but guarded nothing. A route that needs one adds it here.
+ */
 const GROUPS = {
   read: ['getClient', 'listClients', 'clientDossier', 'getOrder', 'listOrders', 'orderSummary',
-    'getProject', 'listProjects', 'getProjectPipelines', 'projectProgress', 'executionProgress',
-    'getTask', 'getTasks', 'explainTask', 'checkTaskReadiness', 'listAgents', 'getAgent',
-    'automationRules', 'auditFor'],
-  crm: ['createClient', 'updateClient', 'resolveClient', 'matchClient', 'assignOrderToClient'],
-  ordering: ['createOrder', 'submitOrder', 'validateOrder'],
-  commercial: ['reviewOrder', 'approveOrder', 'rejectOrder', 'cancelOrder', 'amendOrder', 'convertOrderToProject'],
-  planning: ['generateTasksFromWorkflow', 'setProjectStatus', 'setPipelineStatus', 'setWorkflowStatus',
-    'refreshTaskReadiness'],
-  execution: ['assignTask', 'unassignTask', 'startTask', 'requestInput', 'provideInput',
-    'recordOutput', 'submitTaskForReview', 'blockTask', 'unblockTask', 'retryTask'],
-  review: ['judgeQa', 'passAllQa', 'rejectTask', 'approveTask', 'completeTask'],
-  admin: ['cancelTask', 'escalateTask', 'setAgentStatus', 'setKillSwitch', 'createUser',
-    'listUsers', 'setUserStatus', 'recoverStaleExecutions'],
-  agent: ['getTaskEnvelope', 'startAgentExecution', 'submitAgentOutput', 'reportTaskFailure',
-    'evaluateAgentEligibility', 'assignTaskToAgent'],
+    'getProject', 'listProjects', 'getProjectPipelines', 'projectProgress',
+    'getTask', 'getTasks', 'explainTask', 'listAgents', 'automationRules', 'auditFor'],
+  crm: ['createClient', 'assignOrderToClient'],
+  ordering: ['createOrder', 'submitOrder'],
+  commercial: ['reviewOrder', 'approveOrder', 'rejectOrder', 'convertOrderToProject'],
+  planning: ['generateTasksFromWorkflow', 'setProjectStatus'],
+  execution: ['assignTask', 'startTask', 'provideInput', 'recordOutput', 'submitTaskForReview', 'blockTask'],
+  review: ['judgeQa', 'rejectTask', 'approveTask', 'completeTask'],
+  admin: ['setAgentStatus', 'setKillSwitch', 'createUser', 'listUsers', 'setUserStatus', 'recoverStaleExecutions'],
+  agent: ['evaluateAgentEligibility', 'assignTaskToAgent'],
 };
 
 /**
  * Role -> groups. Note what `client` cannot do: a client may look at their own
  * work and nothing else. Note what `agent` cannot do: it has no read group, no
- * review group, and no execution group — its entire authority is the four
- * operations Phase 3 already allowlists, and approval is not among them.
+ * review group, and no execution group — its entire authority is checking
+ * eligibility and starting a qa-reader run, and approval is not among them.
  */
 const MATRIX = {
   admin: ['read', 'crm', 'ordering', 'commercial', 'planning', 'execution', 'review', 'admin', 'agent'],
@@ -59,9 +61,6 @@ const CLIENT_READS = new Set(['getOrder', 'orderSummary', 'getProject', 'project
 
 export function createAuthz() {
   return {
-    groups: () => GROUPS,
-    matrix: () => MATRIX,
-
     may(user, operation) {
       if (!user) return { allowed: false, reason: 'not signed in' };
       if (user.role === 'client') {

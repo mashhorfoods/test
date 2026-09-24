@@ -1163,7 +1163,6 @@
    which also restores the reserved space documented above.
    --------------------------------------------------------------------------- */
 .c-brandboard__image,
-.c-devices__image,
 .c-modules__image {
   background-color: var(--color-surface-2, #262626);
 }
@@ -1271,8 +1270,7 @@
     }
 
     /* The grid placements above, explicitly retired for this width. */
-    .c-device--desktop,
-    .c-modules__module--lead {
+    .c-device--desktop {
       grid-column: auto;
       grid-row: auto;
     }
