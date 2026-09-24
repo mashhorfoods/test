@@ -9,10 +9,19 @@
 | Future | `pixora.net` or similar | one field in `site.config.json`, then rebuild |
 
 **Before every upload:** `npm run release` — that is `node build.js` followed by
-all five harnesses (`validate.js` · `qa.js` · `responsive.js` · `arabic.js` ·
-`a11y.js`).
-What each one actually renders is tabled in `docs/69` §5d; run them individually
-with `npm run check`, `npm run responsive`, `npm run a11y`.
+`npm run check`, which runs every suite: the data and domain suites
+(`architecture-test`, `operations-test`, `task-test`, `backend-test`,
+`phase4d-test`) and the site harnesses (`validate`, `qa`, `responsive`,
+`arabic`, `a11y`, `builder-test`). CI runs the same command on every push.
+What each one renders is tabled in `docs/69` §5d.
+
+The browser harnesses find an installed Chromium by themselves
+(`tools/lib/browser.cjs`); set `PLAYWRIGHT_CHROMIUM` only to override it.
+
+**There is also a server** — orders, projects, tasks, and the first AI agent —
+in `server/`, with SQLite as the one store of record. Deploying it is
+`docs/132-deployment.md`; how it was validated is
+`docs/phase-4d-production-validation-report.md`.
 
 
 Built in stages on a token-driven design system. Every stage builds on the
@@ -59,7 +68,7 @@ src/styles/                 The product stylesheet
   components/               button · card · header · navigation · hero ·
                             orbit · services · service-detail ·
                             campaign · pricing · addons · value ·
-                            process · cta · contact · footer ·
+                            process · contact · footer ·
                             ecosystem · disclosure · field · faq
                             (value.css is now the arrangement contrast only)
 src/data/pricing.json       The package data — the source of truth
@@ -77,14 +86,33 @@ tools/build-reel.js         `npm run reel -- <master>` — encodes a showreel
 tools/build-showpiece.js    `npm run film` — draws the hero from scene.html
 tools/build-hero-from-clips.js  `npm run film:clips` — hero from real footage
 
-  --- the four harnesses, none of them decoration ---
+  --- the site harnesses, none of them decoration ---
 tools/validate.js           Walks the buyer journeys at 1280 and 390
-tools/qa.js                 30 sections over the built files
+tools/qa.js                 Runs the checks in tools/qa/, one file each, named
+                            by the section number the repo cites ("qa.js §12"
+                            is tools/qa/12-dead-css.js)
 tools/responsive.js         320/768/1024 x 8 pages x EN+AR — the widths and
                             combinations the other two never render
 tools/arabic.js             The bilingual layer, statically — pairing, lang,
                             figures that disagree, the WhatsApp messages
 tools/a11y.js               axe-core
+tools/builder-test.cjs      Drives the package builder, and hands the payload
+                            it writes to the server's price check
+tools/lib/                  Shared by the suites: harness, fixtures, the
+                            server fixtures and the Chromium launcher
+
+  --- the catalogue, the domain and the server (docs/124–132) ---
+catalogue/                  Generated from src/data/catalogue — never edited
+src/operations/             The domain: orders, projects, tasks, automation,
+                            the agent contract. Knows no database and no HTTP
+src/operations/line-price.js  The one pricing rule, used by the browser
+                            builder and the server alike
+server/                     The API, auth, SQLite store of record, durable
+                            automation, the agent runtime (docs/131, docs/132)
+tools/ops.mjs               The operator's command line, against the same
+                            database as the API (PIXORA_DB)
+tools/*-test.*              architecture · operations · task · backend ·
+                            phase4d · ai-live, plus ai-pilot for measurement
 
   --- the dashboard (docs/120, docs/121) ---
 admin.html                  Prices and Arabic strings, edited in a form and
@@ -124,7 +152,7 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 | 11 | Add-ons & extra services | Done |
 | 12 | Why us / value proposition | Merged into 09 — see `docs/18-refinement.md` |
 | 13 | Process / how we work | Done — labels are placeholders, see below |
-| 14 | Final CTA / conversion | Done |
+| 14 | Final CTA / conversion | Retired — no page carries it; its stylesheet was deleted in September 2026 |
 | 15 | Footer | Done |
 | 16 | Global QA & production readiness | Done |
 | 17 | Contact | Done |
@@ -139,11 +167,11 @@ src/assets/fonts/           Self-hosted woff2 subsets (156KB total)
 `dist/index.html` is the whole site in **one file** — no CSS, JavaScript, font
 or icon requests. Open it directly from disk, e-mail it, or drop it on any host.
 
-> **Currently twelve requests, not zero.** The Branding panels, the Websites
-> device renders and the Social Media modules hotlink twelve PNGs from
-> `i.ibb.co`, and the build cannot inline what it does not have on disk. `node build.js` says so explicitly every run. Save those four files
-> under `src/assets/` and point `src="./…"` at them, and the build inlines them
-> like everything else — the zero-request property comes straight back.
+> **Not literally zero requests.** Images are self-hosted under
+> `src/assets/images/` and copied into `dist/assets/`, and the showpiece film
+> loads on demand. The actual request count and bytes of every page are
+> measured on every run by `validate.js` and `qa.js` §9 rather than written
+> down here, where they would go stale.
 
 ```bash
 node build.js
@@ -164,10 +192,6 @@ identical to the modular source on every measured property — fonts, headline
 size, brand, navigation counts, constellation geometry in both directions,
 hero height, the ecosystem wiring, and the mobile menu.
 
-| | Requests | Size |
-| --- | --- | --- |
-| Modular source | 41 | 321KB |
-| `dist/index.html` | **13** (1 + 12 hotlinked images) | 442KB raw, **146KB gzipped** |
 
 **Trade-offs of one file**, worth knowing before choosing it over the modular
 source in production:

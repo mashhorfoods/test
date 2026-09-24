@@ -1,10 +1,10 @@
 # =============================================================================
-# CHECK — build the site and run all three harnesses on every push.
+# CHECK — build the site and run every suite on every push.
 #
 # WHY THIS EXISTS.
 # `docs/27` Phase 14 has listed "no CI" as a gap since the audit, and until now
 # every quality control on this project ran only when a person remembered to
-# run it. Four harnesses that are a habit are not a control: the value of
+# run it. Checks that are a habit are not a control: the value of
 # `qa.js` refusing a 1MB page or `a11y.js` refusing an axe violation is exactly
 # zero on the day someone ships without running them.
 #
@@ -143,10 +143,13 @@ jobs:
             exit 1
           }
 
-      # validate.js, qa.js, responsive.js, arabic.js, a11y.js. Each exits
-      # non-zero only on a HIGH finding;
-      # MEDIUM and LOW print and pass, which is deliberate (docs/56 §3) — so
-      # read the log rather than only the tick.
+      # `npm run check` is every suite. The data and domain suites
+      # (architecture, operations, task, backend, phase4d, builder) fail on any
+      # failed assertion. The site harnesses (validate, qa, responsive, arabic,
+      # a11y) exit non-zero only on a HIGH finding; MEDIUM and LOW print and
+      # pass, which is deliberate (docs/56 §3), so read the log rather than
+      # only the tick. The harnesses find the Chromium installed above through
+      # tools/lib/browser.cjs.
       #
       # DELIBERATELY BEFORE THE COMMIT BELOW. A build that has not been checked
       # is not one to write back to the branch: if a price edit breaks a page,
@@ -185,7 +188,7 @@ jobs:
           git commit -m "Rebuild dist for ${GITHUB_SHA:0:7}
 
           Data was edited without a local build — see .github/workflows/check.yml.
-          All three harnesses passed before this commit was made."
+          Every suite in npm run check passed before this commit was made."
           git push origin "HEAD:${GITHUB_REF_NAME}"
           echo "dist/ rebuilt and committed."
 
