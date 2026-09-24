@@ -320,6 +320,8 @@ function buildPage(file) {
    Order matters: pricing and i18n write index.html, story writes story.html,
    and pages reads the finished index.html as its shell. */
 console.log('— content —');
+// Contact values first: every generator after this reads the pages it fixes.
+require('./tools/build-contact.js');
 require('./tools/build-pricing.js');
 require('./tools/build-i18n.js');
 require('./tools/build-story.js');

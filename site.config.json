@@ -65,8 +65,12 @@
     }
   ],
   "contact": {
-    "_comment": "WhatsApp number in wa.me form (digits only, country code first). One place: build-pricing.js renders every package CTA from it.",
-    "whatsapp": "249962672192"
+    "_comment": "THE ONE PLACE these are written. tools/build-contact.js carries them into every page — links, visible text, aria-labels, the copy button and the form — and build-pricing.js renders every package CTA from `whatsapp`. Numbers are digits only, country code first; each *Display is exactly what a visitor reads and must spell the same digits. To change one: edit it here, run `node build.js`.",
+    "whatsapp": "249962672192",
+    "whatsappDisplay": "+249 962672192",
+    "phone": "249119005441",
+    "phoneDisplay": "+249 119005441",
+    "email": "muhalabsalah@gmail.com"
   },
   "analytics": {
     "_comment": [

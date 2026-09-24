@@ -2764,9 +2764,12 @@
 
            EVERY VALUE IS THE APPROVED ONE, character for character. The
            visible number is business data and is never reformatted; the href
-           is the action. Both come from CONTACT_CHANNELS in
-           navigation-map.js, so the number shown and the number dialled
-           cannot drift apart, and a test compares both against the brief.
+           is the action. Both are written from site.config.json's `contact`
+           block by tools/build-contact.js, which fails the build if any
+           spelling of a number or address on any page disagrees with it — so
+           the number shown and the number dialled cannot drift apart.
+           (This comment used to credit CONTACT_CHANNELS in navigation-map.js.
+           Nothing ever read that array; the values here were typed by hand.)
 
            THE FORM HAS NO BACKEND AND DOES NOT PRETEND TO. Its action is a
            real mailto: to the approved address, so it submits with
