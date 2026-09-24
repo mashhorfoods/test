@@ -24,6 +24,11 @@ export const PREFIXES = {
   pipelineInstance: 'pin',
   workflowInstance: 'win',
   event: 'evt',
+  /* Server-side records (Phase 4). One generator for every id in the system,
+     so every id reads the same way and `isId` recognises all of them. */
+  user: 'usr',
+  automationExecution: 'aex',
+  agentExecution: 'gex',
 };
 
 const ALPHABET = 'abcdefghijkmnpqrstuvwxyz23456789'; // no l/o/0/1 — read aloud

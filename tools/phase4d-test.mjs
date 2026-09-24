@@ -143,7 +143,11 @@ await withServer('lifecycle', async ({ app, api }) => {
   ok('02: /health reports the rate-limit posture', health.body.auth && health.body.auth.rateLimit === true);
   ok('02: AI is off by default', health.body.ai.enabled === false && health.body.ai.qaReaderEnabled === false);
   ok('02: the sweeper starts and stops without leaking a timer',
-    typeof app.automation.startSweeper === 'function' && typeof app.automation.startSweeper()() === 'undefined');
+    typeof app.startSweeper === 'function' && typeof app.startSweeper()() === 'undefined');
+  const swept = app.sweep();
+  ok('02: one sweep runs every timed job',
+    ['automation', 'agentExecutions', 'sessions', 'loginAttempts'].every((k) => k in swept && !swept[k].error),
+    JSON.stringify(swept));
 });
 
 /* ========================================================================== */
@@ -523,10 +527,91 @@ section('16/29 — failure, timeout, retry, escalation');
     `${f.agentRuntime.executions({ taskId: sf.task.id }).length} executions for a budget of ${budget}`);
   ok('29: and the refusal says why', /eligib|attempt|status/i.test(JSON.stringify(outcomes[outcomes.length - 1].problems)),
     JSON.stringify(outcomes[outcomes.length - 1].problems));
-  const esc = f.ops.escalateTask({ taskId: sf.task.id, reason: 'every attempt failed' }, { by: 'system' });
-  ok('29: an exhausted task escalates to a person', esc.ok && f.ops.getTask(sf.task.id).escalation);
-  ok('29: and the escalation names who it goes to', Boolean(f.ops.getTask(sf.task.id).escalation.to));
   f.db.close();
+}
+
+section('29 — escalation is automatic (regression: burned idempotency keys)');
+{
+  /* THIS SECTION USED TO CALL escalateTask BY HAND, and that is how it missed
+     the bug. The Phase 4B wrapper claimed a rule's key before the engine had
+     checked the rule's conditions, so on an agent's FIRST failure — attempts
+     left, condition false — `auto.escalate-no-agent` recorded itself as done,
+     and at the LAST failure it was skipped as "already completed". The server
+     never escalated; the in-memory engine did. Asserted here through the real
+     domain operation, on the real server wiring. */
+  const app = createApp({ config: { db: { file: dbFile('auto-escalate'), createIfMissing: true } } });
+  const s = qaScenario(app, { email: 'autoesc@pixora.test' });
+  const id = s.task.id;
+  const max = app.ops.getTask(id).maxAttempts;
+
+  app.ops.triggerAutomation('agent.execution.failed', { task: { ...app.ops.getTask(id), attemptCount: 1 } }, { by: 'system' });
+  ok('29: a failure with attempts left does not escalate', !app.ops.getTask(id).escalation);
+  ok('29: and claims nothing for the escalation rule',
+    app.automation.executions({ ruleId: 'auto.escalate-no-agent' }).length === 0);
+
+  app.ops.triggerAutomation('agent.execution.failed', { task: { ...app.ops.getTask(id), attemptCount: max } }, { by: 'system' });
+  ok('29: the failure that uses the last attempt escalates, with nobody calling escalateTask',
+    Boolean(app.ops.getTask(id).escalation));
+  ok('29: and the escalation names who it goes to', Boolean((app.ops.getTask(id).escalation || {}).to));
+  const rows = app.automation.executions({ ruleId: 'auto.escalate-no-agent' });
+  ok('29: under exactly one ledger row, belonging to the rule that did it',
+    rows.length === 1 && rows[0].status === 'completed', JSON.stringify(rows.map((r) => r.status)));
+  app.db.close();
+
+  /* The human path: three rejections. Escalation must be recorded under
+     auto.escalate-exhausted, claimed only when it actually ran — not burned on
+     the first rejection and then carried out by the rework rule's row. */
+  const h = createApp({ config: { db: { file: dbFile('auto-escalate-human'), createIfMissing: true } } });
+  const hs = qaScenario(h, { email: 'autoesc-human@pixora.test' });
+  const tid = hs.task.id;
+  if (h.ops.getTask(tid).status === 'ready') h.ops.assignTask(tid, { assignee: 'worker-1' });
+  if (h.ops.getTask(tid).status === 'assigned') h.ops.startTask(tid);
+  const escalationRowsAfter = [];
+  for (let round = 1; round <= max && h.ops.getTask(tid).status === 'in_progress'; round += 1) {
+    for (const o of h.ops.getTask(tid).outputs) h.ops.recordOutput(tid, { key: o.key, value: `v${round}` });
+    h.ops.submitTaskForReview(tid);
+    h.ops.rejectTask(tid, { reason: 'not yet', by: 'reviewer-1' });
+    escalationRowsAfter.push(h.automation.executions({ ruleId: 'auto.escalate-exhausted' }).length);
+  }
+  ok('29: rejections with attempts left claim no escalation row',
+    escalationRowsAfter.slice(0, -1).every((n) => n === 0), JSON.stringify(escalationRowsAfter));
+  ok('29: the rejection that exhausts the task escalates it', Boolean(h.ops.getTask(tid).escalation));
+  ok('29: recorded under the escalation rule\'s own row',
+    escalationRowsAfter[escalationRowsAfter.length - 1] === 1, JSON.stringify(escalationRowsAfter));
+  const reworkRows = h.automation.executions({ ruleId: 'auto.rework-on-rejection' });
+  ok('29: and rework ran once per rejection that had attempts left',
+    reworkRows.length === max - 1 && reworkRows.every((r) => r.status === 'completed'),
+    JSON.stringify(reworkRows.map((r) => `${r.idempotency_key}:${r.status}`)));
+  h.db.close();
+}
+
+section('A2 — the sweep runs every timed job (regression: jobs written, never scheduled)');
+{
+  /* agentRuntime.recoverStale, auth.pruneSessions and limiter.prune existed and
+     were tested, but nothing in the server ever called them: a crash during a
+     model call left the run `running` for ever, holding the agent's slot, and
+     the sessions and login_attempts tables only grew. app.sweep() is what the
+     server's timer calls, so that is what is asserted. */
+  const app = aiApp(dbFile('sweep'), []);
+  const s = qaScenario(app, { email: 'sweep@pixora.test' });
+  const task = app.ops.getTask(s.task.id);
+  useScript(app, [{ text: answer(task) }]);
+  await app.agentRuntime.runQaReader(task.id, { by: 'op' });
+  app.db.prepare("UPDATE agent_executions SET status = 'running', timeout_at = '2000-01-01T00:00:00.000Z'").run();
+
+  app.auth.createUser({ email: 'sweeper@pixora.test', name: 'S', password: 'a-long-enough-password', role: 'operations' });
+  app.auth.login('sweeper@pixora.test', 'a-long-enough-password');
+  app.db.prepare("UPDATE sessions SET expires_at = '2000-01-01T00:00:00.000Z'").run();
+  app.limiter.recordFailure({ ip: '10.9.9.9', email: 'x@y.test', at: '2000-01-01T00:00:00.000Z' });
+
+  const out = app.sweep();
+  ok('A2: the sweep recovered the stale agent execution', out.agentExecutions.checked === 1, JSON.stringify(out.agentExecutions));
+  ok('A2: which is timed out, not running',
+    app.agentRuntime.executions({ taskId: task.id }).every((r) => r.status !== 'running'));
+  ok('A2: the sweep pruned the expired session', out.sessions === 1, String(out.sessions));
+  ok('A2: the sweep pruned the elapsed login counters', out.loginAttempts === 2, String(out.loginAttempts));
+  ok('A2: no job errored', Object.values(out).every((v) => !(v && v.error)), JSON.stringify(out));
+  app.db.close();
 }
 
 section('28 — the kill switch');

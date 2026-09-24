@@ -46,6 +46,9 @@ export function createOperations({
   execution = null,
   automationRules = null,
   agentRegistry = null,
+  /* Where automation records what ran. Omitted, it is an in-memory Map; the
+     server passes one backed by its database. The domain never learns which. */
+  automationLedger = undefined,
   now = () => new Date(),
   random = Math.random,
 }) {
@@ -838,6 +841,7 @@ export function createOperations({
       },
       audit,
       now,
+      ledger: automationLedger,
     })
     : null;
 

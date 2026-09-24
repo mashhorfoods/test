@@ -19,6 +19,15 @@
  *   maxRuns      a cap per key, so a mistake stops rather than accumulates
  *   cascadeDepth an action that causes an event that fires a rule stops at a
  *                declared depth instead of spiralling
+ *
+ * WHERE THE RECORD OF WHAT RAN LIVES IS PLUGGABLE. The default ledger is a Map,
+ * which is honest inside one process. The server passes a ledger backed by a
+ * database row per run (server/automation-runtime.js). Either way the claim is
+ * taken HERE, per rule, after its conditions have passed and before its
+ * actions run — so a rule whose conditions were not met has claimed nothing,
+ * and a later event that does meet them still fires. (The Phase 4B wrapper
+ * claimed before the conditions were evaluated, which silently burned the
+ * escalation keys; see docs/phase-4d report addendum.)
  */
 
 import { EVENTS } from './events.js';
@@ -35,7 +44,7 @@ export const AUTOMATION_ALLOWED_ACTIONS = new Set([
 const KNOWN_EVENTS = new Set(Object.values(EVENTS));
 
 /** `{{task.projectId}}` -> the value. No expressions, on purpose. */
-const renderTemplate = (value, context) => {
+export const renderTemplate = (value, context) => {
   if (typeof value !== 'string') return value;
   return value.replace(/\{\{([a-zA-Z0-9_.]+)\}\}/g, (_, path) => {
     const got = readPath(context, path);
@@ -62,7 +71,25 @@ const OPERATORS = {
   exists: (a) => a !== undefined && a !== null,
 };
 
-export function createAutomation(config, { operations, audit, now = () => new Date() }) {
+/**
+ * The in-memory ledger: a count per key. A ledger answers two questions —
+ * may this rule run for this key (`claim`), and how did it go (`finish`) — and
+ * may optionally persist the event itself (`event`).
+ */
+export function memoryLedger() {
+  const runs = new Map();
+  return {
+    claim({ key, maxRuns }) {
+      const already = runs.get(key) || 0;
+      if (already >= maxRuns) return { claimed: false, reason: `already ran ${already} time(s) for this key` };
+      runs.set(key, already + 1);
+      return { claimed: true, id: null };
+    },
+    finish() {},
+  };
+}
+
+export function createAutomation(config, { operations, audit, now = () => new Date(), ledger = memoryLedger() }) {
   /* --- validate the rules once, at load ---------------------------------- */
   for (const rule of config.rules) {
     if (!KNOWN_EVENTS.has(rule.trigger.event)) {
@@ -79,10 +106,6 @@ export function createAutomation(config, { operations, audit, now = () => new Da
     if (!rule.idempotencyKey) throw new Error(`automation: rule ${rule.id} has no idempotency key — a redelivered event would run it twice`);
   }
 
-  /* Runs already made, by rendered key. In memory: this is a single-process
-     operator tool, and the durable record of what a rule did is the audit
-     trail, not this map. */
-  const runs = new Map();
   const cascadeLimit = config.cascadeDepth ?? 4;
   let depth = 0;
 
@@ -99,14 +122,13 @@ export function createAutomation(config, { operations, audit, now = () => new Da
 
   return {
     rules: () => config.rules.map((r) => ({ ...r })),
-    runCount: (key) => runs.get(key) || 0,
 
     /**
      * An event happened. Fire whatever matches, once each.
      * Returns what ran and what was skipped, with the reason — an automation
      * that silently does nothing is one nobody can debug.
      */
-    dispatch(eventName, context, { by = 'automation' } = {}) {
+    dispatch(eventName, context, { by = 'automation', actorType = 'automation' } = {}) {
       const fired = [];
       const skipped = [];
 
@@ -114,6 +136,10 @@ export function createAutomation(config, { operations, audit, now = () => new Da
         skipped.push({ rule: '*', reason: `cascade depth ${cascadeLimit} reached — refusing to go deeper` });
         return { fired, skipped };
       }
+
+      /* The event is recorded once, whether or not any rule fires — a durable
+         ledger keeps it; the in-memory one has nowhere to put it. */
+      const eventId = ledger.event ? ledger.event(eventName, context, { by, actorType }) : null;
 
       for (const rule of config.rules) {
         if (!rule.enabled) { skipped.push({ rule: rule.id, reason: 'disabled' }); continue; }
@@ -125,9 +151,9 @@ export function createAutomation(config, { operations, audit, now = () => new Da
         }
 
         const key = renderTemplate(rule.idempotencyKey, context);
-        const already = runs.get(key) || 0;
-        if (already >= (rule.maxRuns ?? 1)) {
-          skipped.push({ rule: rule.id, key, reason: `already ran ${already} time(s) for this key` });
+        const claim = ledger.claim({ ruleId: rule.id, key, maxRuns: rule.maxRuns ?? 1, eventId });
+        if (!claim.claimed) {
+          skipped.push({ rule: rule.id, key, reason: claim.reason });
           audit.write({
             action: EVENTS.AUTOMATION_SKIPPED, actorType: 'automation', actor: rule.id,
             entityType: rule.trigger.entityType, entityId: readPath(context, `${rule.trigger.entityType}.id`),
@@ -136,15 +162,17 @@ export function createAutomation(config, { operations, audit, now = () => new Da
           });
           continue;
         }
-        runs.set(key, already + 1);
 
         depth += 1;
+        const results = [];
+        let error = null;
         try {
           for (const action of rule.actions) {
             const args = {};
             for (const [k, v] of Object.entries(action.args || {})) args[k] = renderTemplate(v, context);
             const result = operations[action.operation](args, { by: rule.id, actorType: 'automation' });
-            fired.push({ rule: rule.id, action: action.operation, key, result });
+            results.push({ operation: action.operation, ok: !(result && result.ok === false) });
+            fired.push({ rule: rule.id, action: action.operation, key, result, executionId: claim.id });
             audit.write({
               action: EVENTS.AUTOMATION_TRIGGERED, actorType: 'automation', actor: rule.id,
               entityType: rule.trigger.entityType, entityId: readPath(context, `${rule.trigger.entityType}.id`),
@@ -152,11 +180,20 @@ export function createAutomation(config, { operations, audit, now = () => new Da
               detail: { operation: action.operation, args }, ruleId: rule.id, at: now().toISOString(),
             });
           }
+        } catch (e) {
+          /* An action that throws is recorded as failed and does not take the
+             domain operation that emitted the event down with it: the task has
+             already moved, and the ledger now says this rule did not finish. */
+          error = e;
+          skipped.push({ rule: rule.id, key, reason: `failed: ${e.message}` });
         } finally {
           depth -= 1;
+          ledger.finish(claim.id, error
+            ? { status: 'failed', error }
+            : { status: results.every((r) => r.ok) ? 'completed' : 'failed', result: results });
         }
       }
-      return { fired, skipped };
+      return { fired, skipped, eventId };
     },
   };
 }

@@ -130,7 +130,7 @@ export function createServer(overrides = {}) {
 /** `node server/index.js` starts it. */
 if (process.argv[1] && process.argv[1].endsWith('server/index.js')) {
   const { app, server } = createServer();
-  const stopSweeper = app.automation.startSweeper();
+  const stopSweeper = app.startSweeper();
   server.listen(app.config.http.port, app.config.http.host, () => {
     console.log(`pixora api on http://${app.config.http.host}:${app.config.http.port}`);
     console.log(JSON.stringify(app.info(), null, 2));

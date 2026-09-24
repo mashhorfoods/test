@@ -456,18 +456,12 @@ section('4B — concurrency, timeout, recovery, retry');
     .run(new Date(Date.now() - 60000).toISOString());
   const rec1 = s.app.automation.recoverStale();
   ok('4B: the sweeper found the stale execution', rec1.checked === 1, JSON.stringify(rec1));
-  ok('4B: within its attempt budget it is retried', rec1.recovered[0].outcome === 'retry');
-  ok('4B: and it is no longer stuck in running',
-    s.app.automation.executions({ ruleId: 'auto.test' })[0].status === 'pending');
-
-  /* Exhaust the budget: it escalates rather than retrying for ever. */
-  for (let i = 0; i < 5; i += 1) {
-    s.app.db.prepare("UPDATE automation_executions SET status='running', timeout_at=? WHERE idempotency_key='race:1'")
-      .run(new Date(Date.now() - 60000).toISOString());
-    s.app.automation.recoverStale();
-  }
+  /* A row still running past its timeout means the process died mid-action.
+     It used to go back to `pending` — a state nothing ever left, because no
+     code re-drives pending rows. It escalates to a person instead. */
+  ok('4B: a stale execution escalates rather than going back to pending', rec1.recovered[0].outcome === 'escalated');
   const final = s.app.automation.executions({ ruleId: 'auto.test' })[0];
-  ok('4B: an exhausted execution escalates', final.status === 'escalated', final.status);
+  ok('4B: and it is no longer stuck in running', final.status === 'escalated', final.status);
   ok('4B: with the reason recorded', final.error_code === 'TIMEOUT');
   ok('4B: nothing is left permanently running',
     s.app.automation.executions({ status: 'running' }).length === 0);
