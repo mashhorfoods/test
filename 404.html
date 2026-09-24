@@ -257,9 +257,71 @@
     </main>
 
     <!-- CHROME:FOOT:START -->
-    <!-- FOOTER — COPIED FROM index.html by tools/build-chrome.js.
+    <!-- VERIFICATION BAND + FOOTER — COPIED FROM index.html by tools/build-chrome.js.
          Do not edit here: edit index.html and re-run the tool, or this file
          will be overwritten and the two pages will disagree. -->
+
+    <!-- Quick links render from the same array as the header (§25). The
+         footer itself is designed in a later stage. -->
+    <!-- =============================================================
+         FOOTER (Stage 15)
+         The last navigation system, the last action, and the closure.
+
+         NO SECOND DISPLAY CTA. Stage 14 sits directly above this and is the
+         conversion moment §05 asks for; repeating a display headline and a
+         large button a hundred pixels below it would be two climaxes in a
+         row. The action is carried forward as the primary button in the
+         fourth column instead.
+
+         NOTHING INVENTED. Stage 15 shipped with no contact detail and no
+         social profile, because none existed — §14/§15/§17 all say not to
+         create them — and parked a bottom row for them. Stage 17 supplied
+         three profiles, so that row now holds them, rendered from the same
+         SOCIAL_LINKS the drawer uses. Still no legal page, so still none
+         here. The direct channels live in the contact section, one screen
+         above, rather than being repeated here.
+
+         SEEDED, NOT JUST RENDERED. Both link lists are written out in the
+         markup as well as carrying [data-nav-render]. The script replaces
+         them with identical content on boot and on language change; without
+         it they still work. The header and drawer are seeded the same way
+         for the same reason — see the note there.
+         ============================================================= -->
+      <!-- ===================================================================
+           VERIFICATION BAND — wireframe W2, problem PS-01.
+
+           The trust gap was never a permission problem. Four claims, each one
+           checkable in a click, none of them requiring a client to say yes:
+           a named human, a reply window we can keep, and the work itself where
+           a stranger can already see it.
+
+           A link with no live destination is OMITTED, not greyed: an empty
+           proof slot is worse than none. When a Google Business Profile or a
+           directory listing exists, it is added here — and not before.
+           =================================================================== -->
+      <section class="c-verify" aria-labelledby="verify-title">
+        <div class="l-container c-verify__inner">
+          <h2 class="t-label c-verify__title" id="verify-title" data-i18n="verifyHeading">Who you are talking to</h2>
+          <div class="c-verify__grid">
+            <div class="c-verify__person">
+              <p class="c-verify__name">Muhalab Salah</p>
+              <p class="c-verify__role"><span data-lang-copy="en">Founder — brand and web design</span><span data-lang-copy="ar" lang="ar">المؤسس — تصميم الهوية والمواقع</span></p>
+              <p class="c-verify__note"><span data-lang-copy="en">Working remotely with clients across the Gulf and Egypt.</span><span data-lang-copy="ar" lang="ar">نعمل عن بُعد مع عملاء في الخليج ومصر.</span></p>
+            </div>
+            <div class="c-verify__promise">
+              <p class="c-verify__window" data-i18n="replyWindow">We reply within 2 working hours</p>
+              <p class="c-verify__hours" data-i18n="replyHours">Sunday to Thursday</p>
+            </div>
+            <div class="c-verify__links">
+              <p class="c-verify__check" data-i18n="verifyCheck">Check us:</p>
+              <ul class="c-verify__list">
+                <li><a class="c-link" href="https://www.behance.net/MuhalabSalah" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">The work, on Behance</span><span data-lang-copy="ar" lang="ar">الأعمال على Behance</span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
+                <li><a class="c-link" href="https://www.linkedin.com/in/muhalabsalah/" target="_blank" rel="noopener noreferrer"><span data-lang-copy="en">The person, on LinkedIn</span><span data-lang-copy="ar" lang="ar">الملف الشخصي على LinkedIn</span><span class="u-visually-hidden"><span data-lang-copy="en"> (opens in a new tab)</span><span data-lang-copy="ar" lang="ar"> (يفتح في نافذة جديدة)</span></span></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
     <footer class="c-footer">
       <div class="l-container">
         <div class="c-footer__top" data-reveal-group>
@@ -323,6 +385,9 @@
           <p class="c-footer__copyright">
             © <span class="c-footer__year" data-year>2026</span> Pixora.
             <span data-i18n="rights">All rights reserved.</span>
+            <a class="c-link c-footer__legal" href="./privacy"><span data-lang-copy="en">Privacy</span><span data-lang-copy="ar" lang="ar">الخصوصية</span></a>
+            <a class="c-link c-footer__legal" href="./terms"><span data-lang-copy="en">Terms</span><span data-lang-copy="ar" lang="ar">الشروط</span></a>
+            <a class="c-link c-footer__legal" href="./accessibility"><span data-lang-copy="en">Accessibility</span><span data-lang-copy="ar" lang="ar">إمكانية الوصول</span></a>
           </p>
           <!-- An anchor, not a button: it works without JavaScript, is
                keyboard-reachable for free, and the smooth scroll is the

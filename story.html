@@ -471,9 +471,36 @@
     </main>
 
     <!-- CHROME:FOOT:START -->
-    <!-- FOOTER — COPIED FROM index.html by tools/build-chrome.js.
+    <!-- VERIFICATION BAND + FOOTER — COPIED FROM index.html by tools/build-chrome.js.
          Do not edit here: edit index.html and re-run the tool, or this file
          will be overwritten and the two pages will disagree. -->
+
+    <!-- Quick links render from the same array as the header (§25). The
+         footer itself is designed in a later stage. -->
+    <!-- =============================================================
+         FOOTER (Stage 15)
+         The last navigation system, the last action, and the closure.
+
+         NO SECOND DISPLAY CTA. Stage 14 sits directly above this and is the
+         conversion moment §05 asks for; repeating a display headline and a
+         large button a hundred pixels below it would be two climaxes in a
+         row. The action is carried forward as the primary button in the
+         fourth column instead.
+
+         NOTHING INVENTED. Stage 15 shipped with no contact detail and no
+         social profile, because none existed — §14/§15/§17 all say not to
+         create them — and parked a bottom row for them. Stage 17 supplied
+         three profiles, so that row now holds them, rendered from the same
+         SOCIAL_LINKS the drawer uses. Still no legal page, so still none
+         here. The direct channels live in the contact section, one screen
+         above, rather than being repeated here.
+
+         SEEDED, NOT JUST RENDERED. Both link lists are written out in the
+         markup as well as carrying [data-nav-render]. The script replaces
+         them with identical content on boot and on language change; without
+         it they still work. The header and drawer are seeded the same way
+         for the same reason — see the note there.
+         ============================================================= -->
       <!-- ===================================================================
            VERIFICATION BAND — wireframe W2, problem PS-01.
 
@@ -573,6 +600,8 @@
             © <span class="c-footer__year" data-year>2026</span> Pixora.
             <span data-i18n="rights">All rights reserved.</span>
             <a class="c-link c-footer__legal" href="./privacy"><span data-lang-copy="en">Privacy</span><span data-lang-copy="ar" lang="ar">الخصوصية</span></a>
+            <a class="c-link c-footer__legal" href="./terms"><span data-lang-copy="en">Terms</span><span data-lang-copy="ar" lang="ar">الشروط</span></a>
+            <a class="c-link c-footer__legal" href="./accessibility"><span data-lang-copy="en">Accessibility</span><span data-lang-copy="ar" lang="ar">إمكانية الوصول</span></a>
           </p>
           <!-- An anchor, not a button: it works without JavaScript, is
                keyboard-reachable for free, and the smooth scroll is the

@@ -429,6 +429,10 @@ require('./tools/build-builder.js');
 require('./tools/build-i18n.js');
 require('./tools/build-story.js');
 require('./tools/build-challenge.js');
+/* The two pages that are not built from the shell (story.html has its own
+   generated body, 404.html its own head) still take their header, band and
+   footer from index.html — every build, not when somebody remembers. */
+require('./tools/build-chrome.js');
 require('./tools/build-pages.js');
 console.log('');
 

@@ -12,7 +12,8 @@
 
    index.html stays the single source. This tool never writes to it.
 
-   Run after changing the header or footer:  node tools/build-chrome.js
+   build.js runs this on every build. It used to be a manual step, which is
+   how story.html and 404.html drifted from the homepage unnoticed.
    ============================================================================= */
 
 const fs = require('fs');
@@ -29,8 +30,15 @@ const src = fs.readFileSync(SOURCE, 'utf8');
 const top = src.match(/(\n {4}<a class="c-skip-link"[\s\S]*?)\n {4}<!-- =+\n {9}PAGE SECTIONS/);
 if (!top) throw new Error('could not locate the header block in index.html');
 
-const foot = src.match(/\n {4}<footer class="c-footer">[\s\S]*?\n {4}<\/footer>/);
-if (!foot) throw new Error('could not locate the footer block in index.html');
+/* EVERYTHING BETWEEN </main> AND THE END OF THE FOOTER — the verification
+   band as well as the footer. build-pages.js gives every other page that whole
+   span, because it copies the shell's tail; this copied only the <footer>, so
+   the two pages kept here drifted: story.html kept an old band inside its
+   markers, and both lost the Terms and Accessibility links the footer gained
+   later. Same span, same markup, on every page. */
+const footMatch = src.match(/\n {4}<\/main>([\s\S]*?\n {4}<\/footer>)/);
+if (!footMatch) throw new Error('could not locate the verification band and footer in index.html');
+const foot = [footMatch[1]];
 
 const NOTE = (what) => `
     <!-- ${what} — COPIED FROM index.html by tools/build-chrome.js.
@@ -45,7 +53,7 @@ for (const name of TARGETS) {
 
   for (const [key, body, label] of [
     ['TOP', NOTE('HEADER + MOBILE DRAWER') + top[1], 'header'],
-    ['FOOT', NOTE('FOOTER') + foot[0], 'footer'],
+    ['FOOT', NOTE('VERIFICATION BAND + FOOTER') + foot[0], 'footer'],
   ]) {
     const a = `<!-- CHROME:${key}:START -->`;
     const b = `<!-- CHROME:${key}:END -->`;
